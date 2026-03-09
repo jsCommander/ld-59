@@ -1,0 +1,161 @@
+[gd_resource type="Theme" script_class="UiTheme" load_steps=14 format=3 uid="uid://f3gbxjll107l"]
+
+[ext_resource type="FontFile" uid="uid://bgsxvmv337dvf" path="res://game_kit/assets/fonts/Roboto-Bold.ttf" id="1_3k03w"]
+[ext_resource type="Script" uid="uid://bp1wc6jgtosqm" path="res://game_kit/resources/themes/ui_theme_resource.gd" id="2_s7c6p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nt2f"]
+bg_color = Color(1, 0.870588, 0.631373, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h27ae"]
+bg_color = Color(1, 0.870588, 0.631373, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjqi4"]
+bg_color = Color(1, 0.780392, 0.321569, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gpyc2"]
+bg_color = Color(0.894118, 0.560784, 0.266667, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1h7u"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_26cd0"]
+bg_color = Color(1, 0.780392, 0.321569, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnlon"]
+bg_color = Color(1, 0.870588, 0.631373, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j26u"]
+bg_color = Color(0.874152, 0.876338, 0.849289, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sf4qg"]
+bg_color = Color(1, 0.780392, 0.321569, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48cky"]
+bg_color = Color(1, 0.510256, 0.443869, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ey3cy"]
+bg_color = Color(0.462135, 0.680315, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[resource]
+default_font = ExtResource("1_3k03w")
+default_font_size = 24
+Button/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/colors/font_focus_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/colors/font_hover_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/colors/font_hover_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/colors/font_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/styles/disabled = null
+Button/styles/focus = SubResource("StyleBoxFlat_6nt2f")
+Button/styles/hover = SubResource("StyleBoxFlat_h27ae")
+Button/styles/normal = SubResource("StyleBoxFlat_vjqi4")
+Button/styles/pressed = SubResource("StyleBoxFlat_gpyc2")
+ButtonLarge/base_type = &"Button"
+ButtonLarge/font_sizes/font_size = 48
+HBoxContainer/constants/separation = 8
+Label/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
+LabelLarge/base_type = &"Label"
+LabelLarge/font_sizes/font_size = 48
+MarginContainer/constants/margin_bottom = 8
+MarginContainer/constants/margin_left = 8
+MarginContainer/constants/margin_right = 8
+MarginContainer/constants/margin_top = 8
+MarginContainerLarge/base_type = &"MarginContainer"
+MarginContainerLarge/constants/margin_bottom = 24
+MarginContainerLarge/constants/margin_left = 24
+MarginContainerLarge/constants/margin_right = 24
+MarginContainerLarge/constants/margin_top = 24
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_g1h7u")
+PanelContainerAccent/base_type = &"PanelContainer"
+PanelContainerAccent/styles/panel = SubResource("StyleBoxFlat_26cd0")
+PanelContainerAccentHover/base_type = &"PanelContainer"
+PanelContainerAccentHover/styles/panel = SubResource("StyleBoxFlat_rnlon")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_2j26u")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_sf4qg")
+ProgressBarHealth/base_type = &"ProgressBar"
+ProgressBarHealth/styles/fill = SubResource("StyleBoxFlat_48cky")
+ProgressBarMana/base_type = &"ProgressBar"
+ProgressBarMana/styles/fill = SubResource("StyleBoxFlat_ey3cy")
+RichTextLabel/colors/default_color = Color(0.470588, 0.301961, 0.196078, 1)
+VBoxContainer/constants/separation = 8
+VBoxContainerLarge/base_type = &"VBoxContainer"
+VBoxContainerLarge/constants/separation = 16
+VBoxContainerSmall/base_type = &"VBoxContainer"
+VBoxContainerSmall/constants/separation = 4
+script = ExtResource("2_s7c6p")
+card = Color(0.905882, 0.964706, 0.901961, 1)
+text = Color(0.470588, 0.301961, 0.196078, 1)
+text_muted = Color(0.627451, 0.458824, 0.309804, 1)
+accent = Color(1, 0.780392, 0.321569, 1)
+accent_hover = Color(1, 0.871365, 0.630513, 1)
+accent_active = Color(0.870588, 0.556863, 0.211765, 1)
+success = Color(0.87451, 0.843137, 0.356863, 1)
+danger = Color(0.937255, 0.509804, 0.321569, 1)
+border = Color(0.470588, 0.301961, 0.196078, 1)
+progress_bar = Color(0.643137, 0.776471, 0.682353, 1)
+progress_bar_bg = Color(0.996078, 0.937255, 0.839216, 1)
+metadata/_custom_type_script = "uid://bp1wc6jgtosqm"

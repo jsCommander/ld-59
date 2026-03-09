@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjmpyefdpx1r"]
+
+[ext_resource type="Script" uid="uid://c0wv2bcmivrj7" path="res://game_kit/scenes/help_text/help_text.gd" id="1_5j5wg"]
+[ext_resource type="FontFile" uid="uid://cof01hgecqg2p" path="res://game_kit/assets/fonts/HennyPenny-Regular.ttf" id="2_rllr3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6h8n0"]
+font = ExtResource("2_rllr3")
+font_size = 48
+font_color = Color(0.918091, 0.918091, 0.918091, 1)
+shadow_size = 2
+shadow_color = Color(0.0505108, 0.0505108, 0.0505108, 1)
+
+[node name="HelpText" type="CenterContainer"]
+offset_right = 336.0
+offset_bottom = 58.0
+script = ExtResource("1_5j5wg")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelHelp"
+text = "Some text to help player"
+label_settings = SubResource("LabelSettings_6h8n0")
+horizontal_alignment = 1
+vertical_alignment = 1

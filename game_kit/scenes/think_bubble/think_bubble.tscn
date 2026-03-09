@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://jgjks03ps4ir"]
+
+[ext_resource type="Texture2D" uid="uid://cu7ocooqwkl3n" path="res://assets/ld-58/prop_thinkbox_@0.5x.png" id="1_eurx7"]
+[ext_resource type="Script" uid="uid://danrjjsv8g77b" path="res://game_kit/scenes/think_bubble/think_bubble.gd" id="2_p3n0e"]
+[ext_resource type="Texture2D" uid="uid://b0fsd8akuuycp" path="res://game_kit/assets/icons/icn_heart.png" id="3_o3mcg"]
+
+[node name="ThinkBuble" type="TextureRect"]
+offset_left = -112.0
+offset_top = -80.0
+offset_right = 112.0
+offset_bottom = 79.0
+pivot_offset = Vector2(112, 80)
+texture = ExtResource("1_eurx7")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("2_p3n0e")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="IconRect" type="TextureRect" parent="MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("3_o3mcg")
+expand_mode = 1
+stretch_mode = 5

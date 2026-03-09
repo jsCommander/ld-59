@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk56elq863m31"]
+
+[ext_resource type="Texture2D" uid="uid://cwjkm8c300266" path="res://game_kit/resources/shadow_texture.tres" id="1_1xhbg"]
+
+[node name="shadow" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(1.73438, 0.59375)
+texture = ExtResource("1_1xhbg")

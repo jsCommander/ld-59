@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://drh0aygthm87"]
+
+[ext_resource type="Script" uid="uid://bin3y8bgw3o4i" path="res://game_kit/ui/components/ui_todo_list/ui_todo_item.gd" id="1_0g36k"]
+
+[node name="HudTodoItem" type="HBoxContainer"]
+offset_right = 29.0
+offset_bottom = 24.0
+size_flags_horizontal = 3
+script = ExtResource("1_0g36k")
+
+[node name="Label" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "- [s]this is todo list item and it is very long. O long jonson[/s]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 2

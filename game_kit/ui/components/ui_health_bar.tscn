@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bid303ne0f8qq"]
+
+[ext_resource type="PackedScene" uid="uid://b5a1fug3bvp36" path="res://game_kit/ui/components/ui_progress_bar/ui_progress_bar.tscn" id="1_uhclf"]
+[ext_resource type="Texture2D" uid="uid://b0fsd8akuuycp" path="res://game_kit/assets/icons/icn_heart.png" id="2_w4fp6"]
+
+[node name="UiHealthBar" instance=ExtResource("1_uhclf")]
+
+[node name="TextureRect" parent="." index="0"]
+visible = true
+texture = ExtResource("2_w4fp6")
+
+[node name="ProgressBar" parent="PanelContainer" index="0"]
+theme_type_variation = &"ProgressBarHealth"

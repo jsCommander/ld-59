@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://2puc6ypy6of"]
+
+[ext_resource type="PackedScene" path="res://game_kit/scenes/base_shadow.tscn" id="1_3i71o"]
+[ext_resource type="Script" uid="uid://bl3f8qh30tt1y" path="res://game_kit/scenes/base_rig/base_rig.gd" id="1_c1do8"]
+[ext_resource type="Texture2D" uid="uid://bfps7v2dhx2wo" path="res://game_kit/assets/char/char_man_mustache_@0.5x.png" id="2_c1do8"]
+[ext_resource type="Shader" uid="uid://bntbkgw4pwjtp" path="res://game_kit/shaders/set_color.gdshader" id="3_4agpl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4agpl"]
+resource_local_to_scene = true
+shader = ExtResource("3_4agpl")
+shader_parameter/active = false
+shader_parameter/color = Color(1, 1, 1, 1)
+
+[node name="BaseRig" type="Node2D"]
+script = ExtResource("1_c1do8")
+
+[node name="AnimationRig" type="Node2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4agpl")
+position = Vector2(0, -105)
+
+[node name="shadow" parent="AnimationRig" instance=ExtResource("1_3i71o")]
+z_index = -1
+position = Vector2(0, 105)
+
+[node name="Body" type="Sprite2D" parent="AnimationRig"]
+use_parent_material = true
+position = Vector2(-6.18019, -11.2241)
+texture = ExtResource("2_c1do8")

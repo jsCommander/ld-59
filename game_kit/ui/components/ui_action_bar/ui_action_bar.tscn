@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=3 uid="uid://bx386he4l2vsw"]
+
+[ext_resource type="Theme" uid="uid://f3gbxjll107l" path="res://game_kit/resources/themes/ui_pastel_theme.tres" id="1_ly1vj"]
+[ext_resource type="Script" uid="uid://113s0vq8r6vn" path="res://game_kit/ui/components/ui_action_bar/ui_action_bar.gd" id="1_pjasm"]
+[ext_resource type="Script" uid="uid://bw2amd7nm0o2b" path="res://game_kit/ui/components/ui_action_bar/ui_action_bar_item_resource.gd" id="3_wsaxb"]
+[ext_resource type="Texture2D" uid="uid://beplhvlaukcbb" path="res://game_kit/assets/char/char_bee_smile_@0.5x.png" id="4_51e1l"]
+[ext_resource type="Texture2D" uid="uid://c0hbabm0w2d50" path="res://game_kit/assets/hand_props/p_hand_bottle_@0.5x.png" id="5_okef2"]
+[ext_resource type="Texture2D" uid="uid://6f8lqwnfsli2" path="res://game_kit/assets/hand_props/p_hand_hachapuri_@0.5x.png" id="6_plp20"]
+
+[sub_resource type="Resource" id="Resource_okef2"]
+script = ExtResource("3_wsaxb")
+id = "bee"
+icon = ExtResource("4_51e1l")
+metadata/_custom_type_script = "uid://bw2amd7nm0o2b"
+
+[sub_resource type="Resource" id="Resource_posmy"]
+script = ExtResource("3_wsaxb")
+id = "beer"
+icon = ExtResource("5_okef2")
+metadata/_custom_type_script = "uid://bw2amd7nm0o2b"
+
+[sub_resource type="Resource" id="Resource_rxrwl"]
+script = ExtResource("3_wsaxb")
+id = "hacho"
+icon = ExtResource("6_plp20")
+metadata/_custom_type_script = "uid://bw2amd7nm0o2b"
+
+[node name="UiActionBar" type="PanelContainer"]
+offset_right = 272.0
+offset_bottom = 96.0
+size_flags_horizontal = 3
+theme = ExtResource("1_ly1vj")
+script = ExtResource("1_pjasm")
+items = Array[ExtResource("3_wsaxb")]([SubResource("Resource_okef2"), SubResource("Resource_posmy"), SubResource("Resource_rxrwl")])
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/UiActionBarItem" to="MarginContainer/HBoxContainer/UiActionBarItem" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/UiActionBarItem" to="MarginContainer/HBoxContainer/UiActionBarItem" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/@PanelContainer@22996" to="MarginContainer/HBoxContainer/@PanelContainer@22996" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/@PanelContainer@22996" to="MarginContainer/HBoxContainer/@PanelContainer@22996" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/@PanelContainer@22997" to="MarginContainer/HBoxContainer/@PanelContainer@22997" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/@PanelContainer@22997" to="MarginContainer/HBoxContainer/@PanelContainer@22997" method="_on_mouse_exited"]

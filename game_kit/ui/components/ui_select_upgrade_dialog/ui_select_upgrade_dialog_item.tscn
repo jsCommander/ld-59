@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://bp3r8qxoqwdbn"]
+
+[ext_resource type="Theme" uid="uid://f3gbxjll107l" path="res://game_kit/resources/themes/ui_pastel_theme.tres" id="1_paaeb"]
+[ext_resource type="Script" uid="uid://dxvsmr0jwn6ek" path="res://game_kit/ui/components/ui_select_upgrade_dialog/ui_select_upgrade_dialog_item.gd" id="1_qeyfb"]
+[ext_resource type="Texture2D" uid="uid://beplhvlaukcbb" path="res://game_kit/assets/char/char_bee_smile_@0.5x.png" id="2_2bbrm"]
+[ext_resource type="Script" uid="uid://dpkv53rwepoal" path="res://game_kit/ui/components/ui_select_upgrade_dialog/ui_select_upgrade_dialog_item_resource.gd" id="3_paaeb"]
+
+[sub_resource type="Resource" id="Resource_33liv"]
+script = ExtResource("3_paaeb")
+id = "bee"
+icon = ExtResource("2_2bbrm")
+text = "some text 228"
+metadata/_custom_type_script = "uid://dpkv53rwepoal"
+
+[node name="PanelContainer" type="PanelContainer" groups=["card"]]
+offset_right = 316.0
+offset_bottom = 463.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_paaeb")
+script = ExtResource("1_qeyfb")
+item = SubResource("Resource_33liv")
+button_text = "take"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_2bbrm")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "some text 228"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "take"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

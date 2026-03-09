@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4edfn4bv30s6"]
+
+[ext_resource type="Script" uid="uid://4crjv1todn0e" path="res://game_kit/ui/components/ui_resource_count/ui_resource_count.gd" id="1_hj46c"]
+
+[node name="UiResourceCount" type="VBoxContainer"]
+offset_left = 944.0
+offset_top = 496.0
+offset_right = 1008.0
+offset_bottom = 597.0
+script = ExtResource("1_hj46c")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
