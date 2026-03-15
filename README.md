@@ -50,6 +50,18 @@ The robots are us: grinding through cycles, building from the ashes of past fail
 
 The ice storm is not the villain. It's the universe doing what it does. The question the game asks is not "can you win?" but "what do you build from the wreckage, knowing the wreckage is coming again?"
 
+## View & Screen Layout
+
+Side-scrolling view. The camera looks at the world from the side — like a terrarium cross-section. The surface is a horizontal strip; plants grow upward, roots go down, ice presses in from the edges.
+
+**Resolution:** 1920×1080 (16:9).
+
+**Screen split:**
+- **Top ~60%** — the game world. Scrollable horizontally. Shows the frozen surface, thawed slots with plants and buildings, robots moving between them, the drill below. The storm visual effects play here
+- **Bottom ~40%** — persistent UI panel. Building cards (showing stats, upgrade costs, production), resource bar (biofuel amount, drain rate), DNA counter, storm intensity indicator. Does not scroll with the world
+
+The player sees everything from the side: drill punches up through ice at the bottom of the game area, slots open left and right along the surface, plants grow upward, robots walk along the ground carrying fruits.
+
 ## Art Style
 
 Neon outlines on pure black. No fills. The line itself carries all emotion and information.

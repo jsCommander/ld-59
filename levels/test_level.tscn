@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://d3ytykmb1ciyv"]
+
+[ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://slot0001" path="res://scenes/slot/slot.tscn" id="2_slot"]
+[ext_resource type="PackedScene" uid="uid://building001" path="res://scenes/building/building.tscn" id="3_building"]
+[ext_resource type="Resource" path="res://resources/slot/default_slot.tres" id="3_ly3hx"]
+[ext_resource type="PackedScene" uid="uid://plant00001" path="res://scenes/plant/plant.tscn" id="4_plant"]
+[ext_resource type="Resource" path="res://resources/building/drill.tres" id="5_4n8tn"]
+[ext_resource type="PackedScene" uid="uid://unit000001" path="res://scenes/unit/unit.tscn" id="5_unit"]
+[ext_resource type="Resource" path="res://resources/unit/worker.tres" id="6_e7anx"]
+[ext_resource type="Resource" path="res://resources/plant/basic_plant.tres" id="7_wkb0e"]
+
+[node name="TestLevel" type="Node2D" unique_id=2046311676]
+script = ExtResource("1_script")
+
+[node name="Slot" parent="." unique_id=1804107804 instance=ExtResource("2_slot")]
+position = Vector2(200, 400)
+stat = ExtResource("3_ly3hx")
+
+[node name="Building" parent="." unique_id=1656435310 instance=ExtResource("3_building")]
+position = Vector2(400, 400)
+stat = ExtResource("5_4n8tn")
+
+[node name="Plant" parent="." unique_id=377825284 instance=ExtResource("4_plant")]
+position = Vector2(600, 400)
+stat = ExtResource("7_wkb0e")
+
+[node name="Unit" parent="." unique_id=1019318389 instance=ExtResource("5_unit")]
+position = Vector2(800, 400)
+stat = ExtResource("6_e7anx")
