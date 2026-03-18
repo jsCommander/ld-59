@@ -1,71 +1,147 @@
 # Signal Bus (Шина событий) в Godot
 
-Паттерн: централизованная коммуникация между компонентами через глобальный синглтон с сигналами.
+## TL;DR
+
+Централизованная коммуникация между системами через autoload singleton с сигналами:
+- **Слабая связность** — компоненты не знают друг о друге
+- **Broadcast** — один emit, много подписчиков
+- **Типизированные сигналы** — IDE подсказки, меньше багов
 
 ---
 
-## Суть подхода
+## Какую задачу решает
 
-```
-SignalBus (autoload)
-    ├── signal resource_updated(id, amount)
-    ├── signal button_pressed(button_id)
-    ├── signal enemy_damaged(enemy, damage)
-    └── signal game_over()
-           ↑
-    emit() │ connect()
-           │
-    ┌──────┴──────┐
-    │             │
-UI Layer    Game Logic    Audio    Save System
-```
-
-**Проблема без Signal Bus:**
+### Проблема 1: Жёсткая связность компонентов
 
 ```gdscript
-# Без шины: жёсткая связность
+# Плохо: HealthBar зависит от Player
 class_name HealthBar
 
 var player: Player  # Нужна прямая ссылка!
 
 func _ready():
-    player.health_changed.connect(_on_health_changed)  # Зависим от Player
+    player.health_changed.connect(_on_health_changed)
+
+# Проблемы:
+# - Как получить ссылку на player?
+# - Что если player ещё не создан?
+# - Что если несколько player'ов?
 ```
 
-**С Signal Bus:**
+**Решение:** Signal Bus — HealthBar подписывается на глобальный сигнал, не зная кто его отправит.
+
+### Проблема 2: Спагетти-зависимости
+
+```
+# Плохо: всё связано со всем
+Player ←→ UI ←→ Audio ←→ SaveSystem ←→ Achievements
+   ↑________↑_______↑__________↑____________↑
+
+# Добавить новую систему = менять 5 других файлов
+```
+
+**Решение:** Все общаются через шину — добавление системы = подписка на нужные сигналы.
+
+### Проблема 3: Сложно отследить поток событий
 
 ```gdscript
-# С шиной: слабая связность
-class_name HealthBar
+# Плохо: событие передаётся по цепочке
+player.emit_signal("damaged")  # Кто слушает? Где искать?
+# → health_bar.gd? audio.gd? achievements.gd? analytics.gd?
+```
 
+**Решение:** Все сигналы в одном файле — легко найти что происходит в игре.
+
+### Проблема 4: Race conditions при инициализации
+
+```gdscript
+# Плохо: порядок _ready() не гарантирован
 func _ready():
-    SignalBus.health_changed.connect(_on_health_changed)  # Не знаем про Player
+    var player = get_node("/root/Main/Player")  # Может не существовать!
+    player.health_changed.connect(_on_health_changed)
+```
+
+**Решение:** SignalBus — autoload, всегда существует первым.
+
+---
+
+## Верхнеуровневая архитектура
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  SignalBus (autoload)                   │
+│                                                         │
+│  signal resource_generated(id, amount, source)          │
+│  signal resource_updated(id, new_value)                 │
+│  signal enemy_damaged(enemy_id, damage)                 │
+│  signal tab_changed(tab_data)                           │
+│  signal game_paused()                                   │
+│  ...                                                    │
+└─────────────────────────────────────────────────────────┘
+              ↑ emit()              ↓ connect()
+    ┌─────────┴─────────┐ ┌────────┴────────┐
+    │                   │ │                 │
+┌───┴───┐ ┌───┴───┐ ┌───┴───┐ ┌───┴───┐ ┌───┴───┐
+│  UI   │ │ Audio │ │ Save  │ │Manager│ │  ...  │
+└───────┘ └───────┘ └───────┘ └───────┘ └───────┘
+
+Компоненты НЕ знают друг о друге — только о SignalBus
+```
+
+**Поток данных (пример):**
+
+```
+Игрок кликнул кнопку "Добыть дерево"
+              │
+              ▼
+UI: SignalBus.progress_button_pressed.emit("wood", 10)
+              │
+              ▼
+         SignalBus
+              │
+     ┌────────┼────────┬────────┐
+     ▼        ▼        ▼        ▼
+Controller  Audio   Analytics  Achievements
+(добавляет) (звук)  (логирует) (проверяет)
+     │
+     ▼
+SignalBus.resource_generated.emit("wood", 10)
+     │
+     ┌────────┼────────┐
+     ▼        ▼        ▼
+  Manager    UI     SaveFile
+(сохраняет) (обновл) (автосейв)
 ```
 
 ---
 
-## Реализация
+## Компоненты
 
-### 1. Autoload скрипт
+### 1. SignalBus (autoload)
 
 ```gdscript
-# signal_bus.gd
+# global/autoload/signal_bus.gd
 extends Node
 
-# === UI сигналы ===
-signal button_hover(button_id: String)
-signal button_pressed(button_id: String)
-signal tab_changed(tab_index: int)
+# === UI → Controller ===
+signal button_pressed(id: String)
+signal tab_changed(tab_data: TabData)
+signal slider_changed(id: String, value: float)
 
-# === Игровые сигналы ===
-signal resource_generated(id: String, amount: int)
-signal resource_updated(id: String, new_value: int)
-signal enemy_damaged(enemy_id: String, damage: int)
-signal player_death()
-
-# === Системные сигналы ===
+# === Controller → Manager ===
+signal resource_generated(id: String, amount: int, source: String)
+signal enemy_damage(damage: int, source: String)
 signal save_requested()
-signal settings_changed(setting: String, value: Variant)
+
+# === Manager → UI ===
+signal resource_updated(id: String, new_value: int)
+signal enemy_damaged(enemy_id: String, remaining_hp: int)
+signal save_completed(success: bool)
+
+# === Глобальные ===
+signal main_ready()
+signal game_paused()
+signal game_resumed()
 signal language_updated(locale: String)
 ```
 
@@ -74,15 +150,17 @@ signal language_updated(locale: String)
 ```ini
 [autoload]
 
-SignalBus="*res://global/autoload/signal_bus.gd"
+SignalBus="*res://global/autoload/signal_bus/signal_bus.tscn"
 ```
 
-Звёздочка `*` означает — создать при старте игры.
+---
 
-### 3. Emit (отправка)
+## Использование
+
+### Emit (отправка)
 
 ```gdscript
-# В любом месте игры
+# Из любого места в игре
 func _on_button_click():
     SignalBus.button_pressed.emit("upgrade_sword")
 
@@ -94,10 +172,9 @@ func take_damage(amount: int):
         SignalBus.player_death.emit()
 ```
 
-### 4. Connect (подписка)
+### Connect (подписка)
 
 ```gdscript
-# UI компонент
 func _ready():
     SignalBus.player_damaged.connect(_on_player_damaged)
     SignalBus.player_death.connect(_on_player_death)
@@ -117,44 +194,29 @@ func _on_player_death():
 ### По слоям архитектуры
 
 ```gdscript
-extends Node
-
 # ╔════════════════════════════════════════╗
 # ║              UI → Controller           ║
 # ╚════════════════════════════════════════╝
-# UI отправляет намерения пользователя
 signal button_pressed(id: String)
-signal slider_changed(id: String, value: float)
 signal item_dropped(from_slot: int, to_slot: int)
 
 # ╔════════════════════════════════════════╗
 # ║           Controller → Manager         ║
 # ╚════════════════════════════════════════╝
-# Контроллеры командуют менеджерам
 signal add_resource(id: String, amount: int)
 signal spawn_enemy(type: String, position: Vector2)
-signal save_game()
 
 # ╔════════════════════════════════════════╗
 # ║            Manager → UI                ║
 # ╚════════════════════════════════════════╝
-# Менеджеры уведомляют об изменениях
 signal resource_updated(id: String, new_value: int)
 signal enemy_spawned(enemy: Node)
-signal game_saved()
-
-# ╔════════════════════════════════════════╗
-# ║              Глобальные                ║
-# ╚════════════════════════════════════════╝
-signal game_paused()
-signal game_resumed()
-signal scene_changing(to: String)
 ```
 
 ### Naming convention
 
-| Слой | Паттерн | Пример |
-|------|---------|--------|
+| Направление | Паттерн | Пример |
+|-------------|---------|--------|
 | UI → Logic | `{action}_{target}` | `button_pressed`, `item_dropped` |
 | Logic → UI | `{target}_{past_tense}` | `resource_updated`, `enemy_killed` |
 | Состояние | `{noun}_{change}` | `health_changed`, `level_up` |
@@ -164,10 +226,8 @@ signal scene_changing(to: String)
 
 ## Типизированные сигналы
 
-### С параметрами
-
 ```gdscript
-# Типизация помогает IDE и предотвращает ошибки
+# Типизация = IDE подсказки + меньше багов
 signal damage_dealt(
     target_id: String,
     amount: int,
@@ -175,10 +235,10 @@ signal damage_dealt(
     is_critical: bool
 )
 
-# Использование
+# Emit
 SignalBus.damage_dealt.emit("goblin_01", 50, "fire", true)
 
-# Подписка с правильными типами
+# Connect — IDE покажет типы параметров
 func _on_damage_dealt(target_id: String, amount: int, type: String, crit: bool):
     if crit:
         _show_critical_effect(target_id, amount)
@@ -187,66 +247,30 @@ func _on_damage_dealt(target_id: String, amount: int, type: String, crit: bool):
 ### Enum вместо String
 
 ```gdscript
-# Безопаснее использовать enum
 enum DamageType { PHYSICAL, FIRE, ICE, LIGHTNING }
 
 signal damage_dealt(target_id: String, amount: int, type: DamageType)
 
-# Использование
+# Использование — autocomplete работает
 SignalBus.damage_dealt.emit("goblin", 50, DamageType.FIRE)
 ```
 
 ---
 
-## Отключение сигналов
+## Паттерны
 
-### При удалении ноды
-
-```gdscript
-func _ready():
-    SignalBus.game_event.connect(_on_game_event)
-
-func _exit_tree():
-    # Godot 4 делает это автоматически, но explicit лучше
-    if SignalBus.game_event.is_connected(_on_game_event):
-        SignalBus.game_event.disconnect(_on_game_event)
-```
-
-### One-shot сигналы
+### Broadcast (один ко многим)
 
 ```gdscript
-# Автоотключение после первого вызова
-SignalBus.level_loaded.connect(_on_first_load, CONNECT_ONE_SHOT)
+# Один emit
+SignalBus.game_paused.emit()
 
-func _on_first_load():
-    _play_intro_cutscene()  # Только один раз
+# Много подписчиков (каждый реагирует по-своему)
+# - UI: показать меню паузы
+# - Audio: приглушить музыку
+# - Enemies: остановить AI
+# - Particles: заморозить
 ```
-
----
-
-## Deferred vs Immediate
-
-### Immediate (по умолчанию)
-
-```gdscript
-# Выполняется сразу в текущем frame
-SignalBus.button_pressed.emit("attack")
-print("После emit")  # Выведется ПОСЛЕ обработки всех подписчиков
-```
-
-### Deferred
-
-```gdscript
-# Выполнится в конце frame (безопаснее для удаления нод)
-SignalBus.enemy_killed.connect(_on_enemy_killed, CONNECT_DEFERRED)
-
-func _on_enemy_killed(enemy: Node):
-    enemy.queue_free()  # Безопасно, т.к. deferred
-```
-
----
-
-## Паттерны использования
 
 ### Request-Response
 
@@ -269,34 +293,23 @@ func _on_save_button():
     SignalBus.save_completed.connect(_on_save_done, CONNECT_ONE_SHOT)
 
 func _on_save_done(success: bool):
-    if success:
-        _show_notification("Saved!")
+    _show_notification("Saved!" if success else "Failed!")
 ```
 
-### Broadcast
-
-```gdscript
-# Один emit — много подписчиков
-SignalBus.game_paused.emit()
-
-# Подписаны: UI, Audio, Enemies, Physics, Particles...
-# Все получат сигнал и среагируют по-своему
-```
-
-### Chain
+### Chain (цепочка)
 
 ```gdscript
 # UI → Controller → Manager → UI
 
-# 1. UI отправляет
+# 1. UI отправляет намерение
 SignalBus.upgrade_button_pressed.emit("sword")
 
-# 2. Controller обрабатывает
+# 2. Controller проверяет и командует
 func _on_upgrade_pressed(item_id: String):
     if _can_afford(item_id):
         SignalBus.apply_upgrade.emit(item_id)
 
-# 3. Manager применяет
+# 3. Manager применяет изменение
 func _on_apply_upgrade(item_id: String):
     items[item_id].level += 1
     SignalBus.item_upgraded.emit(item_id, items[item_id].level)
@@ -308,16 +321,40 @@ func _on_item_upgraded(item_id: String, new_level: int):
 
 ---
 
+## Флаги подключения
+
+### CONNECT_ONE_SHOT
+
+```gdscript
+# Автоотключение после первого вызова
+SignalBus.level_loaded.connect(_on_first_load, CONNECT_ONE_SHOT)
+
+func _on_first_load():
+    _play_intro_cutscene()  # Только один раз
+```
+
+### CONNECT_DEFERRED
+
+```gdscript
+# Выполнится в конце frame (безопаснее для удаления нод)
+SignalBus.enemy_killed.connect(_on_enemy_killed, CONNECT_DEFERRED)
+
+func _on_enemy_killed(enemy: Node):
+    enemy.queue_free()  # Безопасно — deferred
+```
+
+---
+
 ## Когда НЕ использовать Signal Bus
 
-### ❌ Для parent-child
+### Parent ↔ Child
 
 ```gdscript
 # Плохо: шина для локальной коммуникации
 class_name InventorySlot
 
 func _on_click():
-    SignalBus.inventory_slot_clicked.emit(slot_index)  # Избыточно
+    SignalBus.inventory_slot_clicked.emit(slot_index)  # Избыточно!
 
 # Хорошо: прямой сигнал
 signal clicked(slot_index: int)
@@ -326,23 +363,22 @@ func _on_click():
     clicked.emit(slot_index)  # Parent подпишется напрямую
 ```
 
-### ❌ Для tight coupling
+### Получение данных
 
 ```gdscript
-# Плохо: данные летают через шину
-SignalBus.get_player_health.emit()
-# Как получить ответ? Куда?
+# Плохо: данные через шину
+SignalBus.get_player_health.emit()  # Как получить ответ?
 
-# Хорошо: прямой доступ или dependency injection
-var health = player.get_health()
+# Хорошо: прямой доступ
+var health = SaveFile.resources.get("hp", 100)
 ```
 
-### ✅ Когда использовать
+### Таблица решений
 
 | Сценарий | Signal Bus? |
 |----------|-------------|
 | UI ↔ Game Logic | Да |
-| Глобальные события | Да |
+| Глобальные события (пауза, смерть) | Да |
 | Несвязанные системы | Да |
 | Parent ↔ Child | Нет |
 | Получение данных | Нет |
@@ -355,7 +391,7 @@ var health = player.get_health()
 ### Логирование всех сигналов
 
 ```gdscript
-# debug_signal_logger.gd (только для разработки)
+# debug_signal_logger.gd (только для dev)
 extends Node
 
 func _ready():
@@ -369,7 +405,6 @@ func _log_signal(signal_name: String):
 ### Проверка подписчиков
 
 ```gdscript
-# Сколько подписчиков у сигнала?
 var connections = SignalBus.get_signal_connection_list("player_death")
 print("Подписчиков: ", connections.size())
 
@@ -379,15 +414,45 @@ for conn in connections:
 
 ---
 
+## Структура файлов
+
+```
+global/autoload/signal_bus/
+├── signal_bus.gd     # Все сигналы
+└── signal_bus.tscn   # Нода (если нужны дочерние)
+```
+
+---
+
+## Плюсы и минусы
+
+### Плюсы
+
+| Фича | Польза |
+|------|--------|
+| Слабая связность | Компоненты независимы |
+| Централизация | Все события в одном месте |
+| Broadcast | Один emit → много реакций |
+| Простота добавления | Новая система = только connect |
+
+### Минусы
+
+| Проблема | Когда критично |
+|----------|----------------|
+| Неявный поток данных | Сложно отследить кто на что подписан |
+| Глобальное состояние | Много сигналов = хаос |
+| Нет возврата значения | Не для получения данных |
+
+---
+
 ## Резюме
 
-| Аспект | Рекомендация |
-|--------|--------------|
-| Где хранить | `autoload/signal_bus.gd` |
-| Именование | `{noun}_{verb}` или `{action}_{target}` |
-| Типизация | Всегда указывать типы параметров |
-| Отключение | Godot 4 делает автоматически, но explicit лучше |
-| Scope | Только глобальные/cross-system события |
-| Debug | Логировать в dev, отключать в prod |
+| Проблема | Решение |
+|----------|---------|
+| Жёсткая связность | Компоненты знают только SignalBus |
+| Спагетти-зависимости | Все общаются через шину |
+| Сложно найти обработчики | Все сигналы в одном файле |
+| Race conditions при init | Autoload существует первым |
+| Broadcast события | Один emit → много connect |
 
-**Главное правило:** Signal Bus — для слабосвязанных систем. Если компоненты тесно связаны, используйте прямые сигналы или dependency injection.
+**Главное правило:** Signal Bus — для слабосвязанных систем. Parent-child и получение данных — напрямую.

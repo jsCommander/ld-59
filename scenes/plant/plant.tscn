@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://plant00001"]
-
-[ext_resource type="Script" path="res://scenes/plant/plant.gd" id="1_script"]
-
-[node name="Plant" type="Node2D" groups=["plant"]]
-script = ExtResource("1_script")
-
-[node name="Sprite" type="Sprite2D" parent="."]
-unique_name_in_owner = true

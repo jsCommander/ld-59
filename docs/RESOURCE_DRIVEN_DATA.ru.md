@@ -1,33 +1,121 @@
 # Data-Driven архитектура через Godot Resources
 
-Паттерн: все статические игровые данные в `.tres` файлах, централизованная загрузка через autoload.
+## TL;DR
+
+Все статические игровые данные в `.tres` файлах с тремя ключевыми принципами:
+- **Resources (.tres)** — неизменяемые данные (характеристики, конфиги)
+- **SaveFile (JSON)** — изменяемое состояние (прогресс, инвентарь)
+- **Константы для ID** — защита от опечаток, autocomplete
 
 ---
 
-## Суть подхода
+## Какую задачу решает
 
-```
-Resources (autoload)
-    ├── items: Dictionary         # {"sword": Item, "axe": Item, ...}
-    ├── enemies: Dictionary        # {"goblin": Enemy, ...}
-    └── abilities: Dictionary      # {"fireball": Ability, ...}
-           ↑
-           │ загружается из
-           │
-    resources/game_data/item/tres/
-           ├── sword.tres
-           ├── axe.tres
-           └── potion.tres
+### Проблема 1: Данные размазаны по коду
+
+```gdscript
+# Плохо: характеристики захардкожены
+func create_sword():
+    var sword = Item.new()
+    sword.damage = 25
+    sword.price = 150
+    # Чтобы изменить — ищи по всему коду
 ```
 
-**Разделение:**
+**Решение:** Данные в `.tres` файлах — меняешь в инспекторе Godot, код не трогаешь.
 
-- **Resources (.tres)** = неизменяемые данные (характеристики, конфиги)
-- **SaveFile (JSON)** = изменяемое состояние (прогресс, инвентарь)
+### Проблема 2: Опечатки в строковых ID
+
+```gdscript
+# Плохо: опечатка = краш в runtime
+var item = Resources.items["swrod"]  # KeyError! "sword" → "swrod"
+
+# Ещё хуже: опечатка не крашит, но данные неверные
+SaveFile.resources["workerr"] += 1  # Создался новый ключ
+```
+
+**Решение:** Константы — опечатка = ошибка компиляции, autocomplete работает.
+
+### Проблема 3: Циклические зависимости в .tres
+
+```gdscript
+# Плохо: Enemy.tres ссылается на Item.tres, Item.tres на Enemy.tres
+@export var dropped_by: Enemy  # Циклическая зависимость!
+```
+
+**Решение:** Хранить только String ID, резолвить в runtime через Dictionary.
+
+### Проблема 4: Динамика в Resource = баги
+
+```gdscript
+# Плохо: состояние в Resource
+class_name Item extends Resource
+var current_durability: int = 100  # Shared между всеми экземплярами!
+
+# sword1.current_durability = 50
+# sword2.current_durability тоже станет 50!
+```
+
+**Решение:** Resource = template (статика), отдельный класс = instance (динамика).
 
 ---
 
-## Реализация
+## Верхнеуровневая архитектура
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  Resources (autoload)                   │
+│                                                         │
+│  items: Dictionary        enemies: Dictionary           │
+│  {"sword": Item}          {"goblin": Enemy}             │
+│  {"axe": Item}            {"dragon": Enemy}             │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+        ↑                           ↑
+        │ загрузка при старте       │
+        │                           │
+┌───────┴───────┐           ┌───────┴───────┐
+│ resources/    │           │ resources/    │
+│ item/tres/    │           │ enemy/tres/   │
+│ ├── sword.tres│           │ ├── goblin.tres
+│ ├── axe.tres  │           │ └── dragon.tres
+│ └── potion.tres           │
+└───────────────┘           └───────────────┘
+```
+
+**Поток данных:**
+
+```
+Запрос данных
+      │
+      ▼
+Constants.SWORD ──► "sword" (String ID)
+      │
+      ▼
+Resources.items["sword"] ──► Item (.tres)
+      │
+      ▼
+item.damage, item.price, item.icon
+```
+
+**Разделение данных:**
+
+```
+┌────────────────────┐      ┌────────────────────┐
+│   Resources        │      │     SaveFile       │
+│   (статика)        │      │    (динамика)      │
+├────────────────────┤      ├────────────────────┤
+│ Item.damage = 25   │      │ inventory = [...]  │
+│ Item.price = 100   │      │ gold = 5000        │
+│ Enemy.hp = 50      │      │ equipped = "sword" │
+│ Enemy.loot = [...] │      │ quest_progress = {}│
+└────────────────────┘      └────────────────────┘
+     Не меняется                 Сохраняется
+```
+
+---
+
+## Компоненты
 
 ### 1. Resource класс
 
@@ -41,6 +129,7 @@ extends Resource
 @export var price: int = 100
 @export var icon: Texture2D
 
+# Методы для вычислений
 func get_value() -> int:
     return price + damage * 10
 ```
@@ -60,7 +149,9 @@ price = 150
 icon = null
 ```
 
-### 3. Централизованная загрузка
+Редактируется в инспекторе Godot — без кода.
+
+### 3. Централизованная загрузка (autoload)
 
 ```gdscript
 # global/autoload/resources.gd
@@ -97,26 +188,55 @@ func _load_from_dir(path: String) -> Dictionary:
 # global/const/constants.gd
 class_name Constants
 
+# Items
 const SWORD: String = "sword"
 const AXE: String = "axe"
 const POTION: String = "potion"
+
+# Enemies
 const GOBLIN: String = "goblin"
+const DRAGON: String = "dragon"
+
+# Workers
+const WORKER: String = "worker"
+const SWORDSMAN: String = "swordsman"
+
+# Группировка
+const WEAPON_IDS: Array[String] = [SWORD, AXE]
+const CONSUMABLE_IDS: Array[String] = [POTION]
 ```
 
-### 5. Использование
+**Почему class_name, а не autoload:**
+- Константы — статические данные, не нужен Node
+- `Constants.SWORD` работает везде без инстанцирования
+
+---
+
+## Использование
+
+### Прямой доступ (известный ID)
 
 ```gdscript
-# Прямой доступ
+# Безопасно — константа гарантирует существование
 var sword: Item = Resources.items[Constants.SWORD]
 print(sword.damage)  # 25
+```
 
-# Безопасный доступ (для динамических ID из SaveFile)
-var item_id = SaveFile.equipped_weapon_id
+### Безопасный доступ (динамический ID)
+
+```gdscript
+# ID из SaveFile — может быть невалидным
+var item_id: String = SaveFile.equipped_weapon_id
 var item: Item = Resources.items.get(item_id, null)
 if item == null:
+    push_error("Item not found: %s" % item_id)
     return
+```
 
-# Хранение только ID в SaveFile
+### Работа с SaveFile
+
+```gdscript
+# SaveFile хранит только ID, не сами ресурсы
 var inventory: Array[String] = [Constants.SWORD, Constants.AXE, Constants.POTION]
 
 func get_total_damage() -> int:
@@ -124,11 +244,19 @@ func get_total_damage() -> int:
     for item_id in inventory:
         total += Resources.items[item_id].damage
     return total
+
+func get_inventory_items() -> Array[Item]:
+    var result: Array[Item] = []
+    for item_id in inventory:
+        result.append(Resources.items[item_id])
+    return result
 ```
 
 ---
 
 ## Связи между ресурсами
+
+### Через String ID (рекомендуется)
 
 ```gdscript
 class_name Enemy
@@ -136,7 +264,7 @@ extends Resource
 
 @export var id: String
 @export var hp: int
-@export var loot_ids: Array[String] = []  # Только ID
+@export var loot_ids: Array[String] = []  # Только ID!
 
 func get_loot() -> Array[Item]:
     var result: Array[Item] = []
@@ -149,38 +277,33 @@ func get_loot() -> Array[Item]:
 [resource]
 id = "goblin"
 hp = 50
-loot_ids = ["sword", "gold", "potion"]  # В .tres всё равно строки
+loot_ids = ["sword", "gold", "potion"]
 ```
 
-**В коде используем константы:**
+### Почему НЕ через ExtResource
 
 ```gdscript
-# При создании врага в коде
-var enemy = Enemy.new()
-enemy.loot_ids = [Constants.SWORD, Constants.GOLD, Constants.POTION]
-
-# При получении лута
-func get_loot() -> Array[Item]:
-    var result: Array[Item] = []
-    for loot_id in loot_ids:
-        result.append(Resources.items[loot_id])
-    return result
+# Плохо: прямая ссылка
+@export var loot: Array[Item] = []  # ExtResource в .tres
 ```
 
-**Почему String ID, а не ExtResource:**
-
-- Нет циклических зависимостей между .tres файлами
-- Lazy loading (не грузим всю цепочку сразу)
-- Легко сериализовать в JSON (для SaveFile)
+| Проблема | String ID | ExtResource |
+|----------|-----------|-------------|
+| Циклические зависимости | Нет | Возможны |
+| Lazy loading | Да | Нет (грузит всю цепочку) |
+| Сериализация в JSON | Просто | Сложно |
+| Читаемость .tres | Понятные строки | UUID ссылки |
 
 ---
 
 ## Strategy Pattern через Resources
 
-**Пример: функции стоимости (cost scaling)**
+Выбор алгоритма без изменения кода — через .tres в инспекторе.
+
+### Базовый класс
 
 ```gdscript
-# cost_function.gd (базовый класс)
+# cost_function.gd
 class_name CostFunction
 extends Resource
 
@@ -188,23 +311,27 @@ func get_cost(base_cost: int, level: int) -> int:
     return base_cost  # По умолчанию константа
 ```
 
-**Реализации:**
+### Реализации
 
 ```gdscript
-# linear.gd
+# linear_cost.gd
+class_name LinearCost
 extends CostFunction
 
 func get_cost(base_cost: int, level: int) -> int:
-    return base_cost * level  # Линейный рост
+    return base_cost * level
 
-# exponential.gd
+# exponential_cost.gd
+class_name ExponentialCost
 extends CostFunction
 
+@export var exponent: float = 1.5
+
 func get_cost(base_cost: int, level: int) -> int:
-    return int(pow(base_cost, level))  # Экспоненциальный рост
+    return int(base_cost * pow(level, exponent))
 ```
 
-**Использование в ресурсе:**
+### Использование
 
 ```gdscript
 class_name Building
@@ -212,7 +339,7 @@ extends Resource
 
 @export var id: String
 @export var base_cost: int = 100
-@export var cost_function: CostFunction  # Ссылка на .tres
+@export var cost_function: CostFunction  # Выбор в инспекторе!
 
 func get_cost_at_level(level: int) -> int:
     if cost_function:
@@ -220,44 +347,37 @@ func get_cost_at_level(level: int) -> int:
     return base_cost
 ```
 
-**В .tres файле:**
-
 ```tres
+# house.tres
 [resource]
 id = "house"
 base_cost = 50
-cost_function = ExtResource("res://.../exponential.tres")
+cost_function = ExtResource("res://resources/cost_functions/exponential.tres")
 ```
 
-**Результат:**
-
-- Level 1: 50
-- Level 2: 2500
-- Level 3: 125000
-
-**Зачем:** Меняешь формулу роста цены выбором .tres в инспекторе, без кода.
+**Результат:** Меняешь формулу стоимости выбором .tres в инспекторе, без кода.
 
 ---
 
-## Статика vs динамика
+## Статика vs Динамика
 
-### ❌ Неправильно
+### Неправильно — состояние в Resource
 
 ```gdscript
 class_name Item
 extends Resource
 
-@export var damage: int
-var current_durability: int = 100  # Динамика в Resource!
+@export var max_durability: int = 100
+var current_durability: int = 100  # ОШИБКА!
 
-# Проблема: Resources общие для всех экземпляров
-# Изменение durability одного меча влияет на ВСЕ мечи
+# Resources shared между экземплярами
+# Изменение durability одного меча → изменение ВСЕХ мечей
 ```
 
-### ✅ Правильно
+### Правильно — разделение
 
 ```gdscript
-# item_data.gd (Resource - template)
+# item_data.gd — Resource (template)
 class_name ItemData
 extends Resource
 
@@ -265,7 +385,7 @@ extends Resource
 @export var base_damage: int
 @export var max_durability: int
 
-# item_instance.gd (Node - state)
+# item_instance.gd — обычный класс (state)
 class_name ItemInstance
 
 var data: ItemData              # Ссылка на template
@@ -280,66 +400,67 @@ func get_damage() -> int:
     return data.base_damage + _calculate_enchantment_bonus()
 ```
 
-**Правило:** Resource = неизменяемый template, экземпляры хранят state.
+**Схема:**
+
+```
+ItemData (.tres)              ItemInstance (runtime)
+┌─────────────────┐           ┌─────────────────┐
+│ id = "sword"    │◄──────────│ data: ItemData  │
+│ base_damage = 25│           │ durability = 87 │
+│ max_durability  │           │ enchantments    │
+│ = 100           │           └─────────────────┘
+└─────────────────┘                   │
+        ▲                             │
+        │                     ┌───────┴───────┐
+        │                     │               │
+┌───────┴───────┐     ┌───────┴───┐   ┌───────┴───┐
+│ Все мечи      │     │ sword_1   │   │ sword_2   │
+│ используют    │     │ dur = 87  │   │ dur = 100 │
+│ одни данные   │     │ +fire     │   │ (новый)   │
+└───────────────┘     └───────────┘   └───────────┘
+```
 
 ---
 
-## Проблема String ID
+## Структура файлов
 
-**Без констант:**
-
-```gdscript
-# Опечатка в ID → краш
-var item = Resources.items["swrod"]  # KeyError! Опечатка в "sword"
-
-# Нет compile-time проверки
-var item_id: String = "invalid_id"
-var item = Resources.items[item_id]  # Упадет в runtime
 ```
+resources/
+├── game_data/
+│   ├── item/
+│   │   ├── item.gd           # Resource класс
+│   │   └── tres/
+│   │       ├── sword.tres
+│   │       ├── axe.tres
+│   │       └── potion.tres
+│   │
+│   ├── enemy/
+│   │   ├── enemy.gd
+│   │   └── tres/
+│   │       ├── goblin.tres
+│   │       └── dragon.tres
+│   │
+│   └── cost_functions/
+│       ├── cost_function.gd  # Базовый класс
+│       ├── linear.tres
+│       └── exponential.tres
 
-**С константами:**
-
-```gdscript
-# Опечатка невозможна (autocomplete)
-var item = Resources.items[Constants.SOWRD]  # Compile error! Константы нет
-
-# Константа гарантирует существование ID
-var item = Resources.items[Constants.SWORD]  # ✅ Безопасно
+global/
+├── autoload/
+│   └── resources.gd          # Загрузчик
+└── const/
+    └── constants.gd          # ID константы
 ```
-
-### Решение: Константы ID
-
-```gdscript
-# global/const/constants.gd (не autoload, просто class_name)
-class_name Constants
-
-const WORKER: String = "worker"
-const SWORD: String = "sword"
-const AXE: String = "axe"
-const GOBLIN: String = "goblin"
-const FIREBALL: String = "fireball"
-
-# Можно группировать
-const WEAPON_IDS: Array[String] = [SWORD, AXE, "dagger"]
-const CONSUMABLE_IDS: Array[String] = ["potion", "scroll"]
-```
-
-**Использование:**
-
-```gdscript
-# В любом месте игры
-var worker_count = SaveFile.resources.get(Constants.WORKER, 0)
-var sword = Resources.items[Constants.SWORD]
-var enemy = Resources.enemies[Constants.GOBLIN]
-
-# Autocomplete работает, опечатки невозможны
-```
-
-**Плюсы:**
-
-- Все ID в одном месте
-- Autocomplete + compile-time проверка
-- Легко найти все использования (Find Usages)
-- Рефакторинг безопасен (переименование константы обновит все места)
 
 ---
+
+## Резюме
+
+| Проблема | Решение |
+|----------|---------|
+| Данные в коде | .tres файлы + инспектор Godot |
+| Опечатки в ID | Константы (Constants.SWORD) |
+| Циклические зависимости | String ID вместо ExtResource |
+| Состояние в Resource | Разделение: Resource = template, класс = instance |
+| Выбор алгоритма в коде | Strategy Pattern через .tres |
+| Сериализация в JSON | Хранить только ID, резолвить через Resources |

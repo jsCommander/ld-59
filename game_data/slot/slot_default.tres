@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SlotStat" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game_data/slot/slot_stat.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://game_kit/assets/props/prop_coin_@0.5x.png" id="2_texture"]
+[ext_resource type="Texture2D" path="res://game_kit/assets/props/prop_star_@0.5x.png" id="3_occupied"]
+
+[resource]
+script = ExtResource("1_script")
+texture = ExtResource("2_texture")
+occupied_texture = ExtResource("3_occupied")

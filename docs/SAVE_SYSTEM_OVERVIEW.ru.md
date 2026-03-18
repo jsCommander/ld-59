@@ -1,66 +1,153 @@
-# Система сохранения (JSON + Singleton + Автосохранение)
+# Система сохранения (Save System) в Godot
 
-Описание конкретного подхода к реализации save/load системы.
+## TL;DR
 
----
-
-## Архитектура
-
-```
-┌──────────────────────────────────────────────────────┐
-│              SaveFile (Autoload Singleton)            │
-│  Хранит всё состояние игры в Dictionary переменных   │
-│                                                       │
-│  var resources: Dictionary = {}                       │
-│  var inventory: Dictionary = {}                       │
-│  var settings: Dictionary = {}                        │
-│  var metadata: Dictionary = {}                        │
-└───────────────────┬──────────────────────────────────┘
-                    │
-                    ▼
-         ┌──────────────────────┐
-         │   JSON Serialization  │
-         └──────────┬────────────┘
-                    │
-                    ▼
-         ┌──────────────────────┐
-         │  user://save.json     │
-         │  {"resources": {...}} │
-         └──────────────────────┘
-```
-
-**Паттерн:** Singleton (Autoload) + JSON файлы + Автосохранение
+Централизованная система сохранения через autoload singleton с ключевыми фичами:
+- **JSON формат** — человекочитаемый, легко дебажить
+- **Автосохранение** — игрок не потеряет прогресс
+- **Множественные слоты** — неограниченное количество save файлов
+- **Import/Export** — обмен save через Base64 строки
 
 ---
 
-## Компоненты системы
+## Какую задачу решает
 
-### 1. SaveFile — центральное хранилище
+### Проблема 1: Потеря прогресса
 
 ```gdscript
-# global/save_file.gd (autoload)
+# Плохо: игрок должен вручную сохранять
+func _on_save_button_pressed():
+    save_game()
+# Забыл нажать → 2 часа прогресса потеряно
+```
+
+**Решение:** Автосохранение каждые N секунд + при закрытии игры.
+
+### Проблема 2: Повреждённые save файлы
+
+```json
+// Файл повреждён при крэше (неполная запись)
+{"resources":{"gold":1000},"invent
+```
+
+**Решение:** Сигнатура `$$$` в конце файла — если нет, файл повреждён.
+
+### Проблема 3: Несовместимость версий
+
+```gdscript
+# Плохо: старый save не работает с новой версией
+# v1: {"health": 100}
+# v2: {"hp": 100}  # Переименовали поле → старые save сломаны
+```
+
+**Решение:** Версионирование + миграции при загрузке.
+
+### Проблема 4: Один слот = один игрок
+
+```gdscript
+# Плохо: перезапись save при новой игре
+# Хочу дать другу попробовать → мой прогресс потерян
+```
+
+**Решение:** Множественные слоты — каждый save в отдельном файле.
+
+### Проблема 5: Нет обмена save между игроками
+
+```
+# Плохо: надо искать файл на диске, копировать вручную
+# Где вообще user:// на этой ОС?
+```
+
+**Решение:** Export в Base64 строку → копируется в clipboard → отправляется другу.
+
+---
+
+## Верхнеуровневая архитектура
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                SaveFile (autoload singleton)            │
+│                                                         │
+│  resources: Dictionary    settings: Dictionary          │
+│  inventory: Dictionary    metadata: Dictionary          │
+│                                                         │
+│  save_datas: Dictionary   # Все загруженные слоты       │
+│  active_file_name: String # Текущий активный слот       │
+└─────────────────────────────────────────────────────────┘
+        │                           │
+        │ _export_save_data()       │ _import_save_data()
+        ▼                           ▼
+┌─────────────────┐         ┌─────────────────┐
+│ JSON.stringify  │         │   JSON.parse    │
+└────────┬────────┘         └────────┬────────┘
+         │                           │
+         ▼                           ▼
+┌─────────────────────────────────────────────────────────┐
+│                    user://saves/                        │
+│  ├── slot1.json                                         │
+│  ├── slot2.json                                         │
+│  └── autosave.json                                      │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Поток данных:**
+
+```
+ЗАПУСК ИГРЫ
+      │
+      ▼
+SaveFile._ready() → _load_save_files()
+      │
+      ▼
+Сканирует user://, загружает все .json в save_datas
+      │
+      ▼
+UI: SavePicker → игрок выбирает слот
+      │
+      ▼
+SaveFile.initialize("slot1") → _import_save_data()
+      │
+      ▼
+resources = {...}, inventory = {...}
+      │
+      ▼
+ИГРА РАБОТАЕТ (системы читают/пишут в SaveFile)
+      │
+      ▼ каждые 60 сек
+АВТОСОХРАНЕНИЕ → _export_save_data() → JSON → файл
+```
+
+---
+
+## Компоненты
+
+### 1. SaveFile (центральное хранилище)
+
+```gdscript
+# global/autoload/save_file.gd
 extends Node
 
 # === Игровое состояние ===
-var resources: Dictionary = {}      # Все ресурсы игрока
-var inventory: Dictionary = {}      # Инвентарь
-var progress: Dictionary = {}       # Флаги прогресса
-var settings: Dictionary = {}       # Настройки игры
-var metadata: Dictionary = {}       # Мета (timestamps, версия)
+var resources: Dictionary = {}
+var inventory: Dictionary = {}
+var progress: Dictionary = {}
+var settings: Dictionary = {}
+var metadata: Dictionary = {}
 
-# === Управление save файлами ===
-var save_datas: Dictionary = {}     # Все загруженные save файлы
-var active_file_name: String = ""   # Текущий активный save
+# === Управление слотами ===
+var save_datas: Dictionary = {}     # Все загруженные save
+var active_file_name: String = ""   # Текущий активный
 
 const SAVE_FILE_EXTENSION = ".json"
-const SIGNATURE = "$$$"              # Защита от повреждения
+const SIGNATURE = "$$$"
+const AUTOSAVE_SECONDS: int = 60
 
 @onready var autosave_timer: Timer = $AutosaveTimer
 ```
 
-**Все системы читают и пишут напрямую:**
+**Доступ из любого места:**
+
 ```gdscript
-# В любом месте игры
 SaveFile.resources["gold"] += 100
 SaveFile.progress["level_complete"] = true
 var hp = SaveFile.resources.get("hp", 100)
@@ -68,176 +155,182 @@ var hp = SaveFile.resources.get("hp", 100)
 
 ---
 
-## Сохранение
-
-### Шаг 1: Экспорт данных (RAM → Dictionary)
+### 2. Сохранение (RAM → Файл)
 
 ```gdscript
 func _export_save_data() -> Dictionary:
-    var save_data: Dictionary = {}
+    return {
+        "resources": resources,
+        "inventory": inventory,
+        "progress": progress,
+        "settings": settings,
+        "metadata": metadata
+    }
 
-    # Копируем все активные данные
-    save_data["resources"] = resources
-    save_data["inventory"] = inventory
-    save_data["progress"] = progress
-    save_data["settings"] = settings
-    save_data["metadata"] = metadata
-
-    return save_data
-```
-
-### Шаг 2: Запись на диск (Dictionary → JSON → Файл)
-
-```gdscript
 func _write(file_name: String, data: Dictionary) -> void:
-    # 1. Dictionary → JSON String
+    # Dictionary → JSON String
     var content: String = JSON.stringify(data)
 
-    # 2. Добавить сигнатуру (защита от повреждения)
+    # Добавить сигнатуру
     content += SIGNATURE  # "$$$"
 
-    # 3. Записать в файл
+    # Записать в файл
     var path: String = "user://" + file_name
-    var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+    var file = FileAccess.open(path, FileAccess.WRITE)
     file.store_line(content)
     file.close()
 ```
 
 **Результат на диске:**
+
 ```
-user://save.json:
+user://slot1.json:
 {"resources":{"gold":1000},"inventory":{"sword":1},...}$$$
-```
-
-### Шаг 3: Автосохранение
-
-```gdscript
-const AUTOSAVE_SECONDS: int = 60  # Интервал автосохранения
-
-func _ready() -> void:
-    autosave_timer.wait_time = 0.1  # Проверка каждые 0.1 сек
-    autosave_timer.timeout.connect(_on_autosave_timer_timeout)
-    autosave_timer.start()
-
-func _on_autosave_timer_timeout() -> void:
-    _autosave()
-
-func _autosave(force: bool = false) -> void:
-    # 1. Проверка времени
-    var seconds_since_save = _get_seconds_since_last_save()
-    if not force and seconds_since_save < AUTOSAVE_SECONDS:
-        return  # Ещё рано
-
-    # 2. Проверка: находимся ли в игре?
-    if not _is_gameplay_scene():
-        return  # Не сохраняем в меню
-
-    # 3. Обновить metadata
-    _update_metadata()
-
-    # 4. Сохранить
-    var save_data = _export_save_data()
-    _write(active_file_name, save_data)
-
-func _update_metadata() -> void:
-    metadata["last_save_time"] = Time.get_datetime_dict_from_system(true)
-    metadata["version"] = "1.0"
 ```
 
 ---
 
-## Загрузка
-
-### Шаг 1: Сканирование всех save файлов при старте
-
-```gdscript
-func _load_save_files() -> void:
-    # 1. Получить все файлы из user://
-    var dir = DirAccess.open("user://")
-    dir.list_dir_begin()
-    var file_name = dir.get_next()
-
-    while file_name != "":
-        # 2. Пропустить не-.json файлы
-        if not file_name.ends_with(SAVE_FILE_EXTENSION):
-            file_name = dir.get_next()
-            continue
-
-        # 3. Прочитать файл
-        var save_data: Dictionary = _read(file_name)
-
-        # 4. Применить миграции
-        _migrate_if_needed(save_data)
-
-        # 5. Сохранить в памяти
-        var save_name = file_name.trim_suffix(SAVE_FILE_EXTENSION)
-        save_datas[save_name] = save_data
-
-        file_name = dir.get_next()
-
-# Результат:
-# save_datas = {
-#   "save_slot_1": {...},
-#   "save_slot_2": {...},
-#   "autosave": {...}
-# }
-```
-
-### Шаг 2: Чтение файла с диска
+### 3. Загрузка (Файл → RAM)
 
 ```gdscript
 func _read(file_name: String) -> Dictionary:
     var path = "user://" + file_name
-
-    # 1. Открыть файл
     var file = FileAccess.open(path, FileAccess.READ)
     if file == null:
         return {}
 
-    # 2. Прочитать содержимое
     var content = file.get_as_text()
     file.close()
 
-    # 3. Проверить и удалить мусор после сигнатуры
+    # Защита от повреждения
     content = _handle_corrupt_end_of_file(content)
-
-    # 4. Удалить сигнатуру
     content = content.replace(SIGNATURE, "")
 
-    # 5. Парсинг JSON
+    # Парсинг JSON
     var json = JSON.new()
-    var error = json.parse(content)
-    if error != OK:
+    if json.parse(content) != OK:
         push_error("Failed to parse save file")
         return {}
 
     return json.get_data()
 
 func _handle_corrupt_end_of_file(content: String) -> String:
-    # Защита: удалить всё после сигнатуры
     var signature_index = content.find(SIGNATURE)
     if signature_index == -1:
-        return content
+        return content  # Нет сигнатуры — возможно повреждён
     return content.substr(0, signature_index + SIGNATURE.length())
 ```
 
-### Шаг 3: Импорт данных (Dictionary → RAM)
+---
+
+### 4. Автосохранение
+
+```gdscript
+func _ready() -> void:
+    autosave_timer.wait_time = 0.1  # Проверка часто, сохранение редко
+    autosave_timer.timeout.connect(_on_autosave_timeout)
+    autosave_timer.start()
+
+func _on_autosave_timeout() -> void:
+    _autosave()
+
+func _autosave(force: bool = false) -> void:
+    var seconds_since = _get_seconds_since_last_save()
+    if not force and seconds_since < AUTOSAVE_SECONDS:
+        return  # Ещё рано
+
+    if not _is_gameplay_scene():
+        return  # Не сохраняем в меню
+
+    _update_metadata()
+    var save_data = _export_save_data()
+    _write(active_file_name, save_data)
+
+func _update_metadata() -> void:
+    metadata["last_save_time"] = Time.get_datetime_dict_from_system(true)
+    metadata["version"] = CURRENT_VERSION
+```
+
+---
+
+### 5. Версионирование и миграции
+
+```gdscript
+const CURRENT_VERSION = 3
+
+func _migrate_if_needed(save_data: Dictionary) -> void:
+    var version = save_data.get("metadata", {}).get("version", 1)
+    if version < CURRENT_VERSION:
+        _migrate(save_data, version, CURRENT_VERSION)
+
+func _migrate(data: Dictionary, from: int, to: int) -> void:
+    for v in range(from, to):
+        match v:
+            1:  # v1 → v2: переименовали поле
+                if data.has("health"):
+                    data["hp"] = data["health"]
+                    data.erase("health")
+            2:  # v2 → v3: добавили категорию
+                if not data.has("achievements"):
+                    data["achievements"] = {}
+
+    data["metadata"]["version"] = to
+```
+
+**Схема:**
+
+```
+Старый save (v1)          Миграция              Новый формат (v3)
+┌─────────────────┐                           ┌─────────────────┐
+│ health: 100     │ ──► v1→v2: health→hp ──► │ hp: 100         │
+│ gold: 500       │ ──► v2→v3: +achievements │ gold: 500       │
+│                 │                           │ achievements: {}│
+└─────────────────┘                           └─────────────────┘
+```
+
+---
+
+## Множественные слоты
+
+### Сканирование при старте
+
+```gdscript
+func _load_save_files() -> void:
+    var dir = DirAccess.open("user://")
+    dir.list_dir_begin()
+    var file_name = dir.get_next()
+
+    while file_name != "":
+        if file_name.ends_with(SAVE_FILE_EXTENSION):
+            var save_data = _read(file_name)
+            _migrate_if_needed(save_data)
+
+            var save_name = file_name.trim_suffix(SAVE_FILE_EXTENSION)
+            save_datas[save_name] = save_data
+
+        file_name = dir.get_next()
+
+# Результат:
+# save_datas = {
+#   "slot1": {...},
+#   "slot2": {...},
+#   "autosave": {...}
+# }
+```
+
+### Выбор слота
 
 ```gdscript
 func initialize(save_file_name: String) -> void:
     active_file_name = save_file_name + SAVE_FILE_EXTENSION
 
-    # Проверка: существует ли save?
     if save_datas.has(save_file_name):
-        # Загрузка существующего save
         var save_data = save_datas[save_file_name].duplicate(true)
         _import_save_data(save_data)
     else:
-        # Создание нового save
-        _import_save_data({})
+        _import_save_data({})  # Новый save
 
 func _import_save_data(save_data: Dictionary) -> void:
-    # Копируем данные с fallback значениями
     resources = save_data.get("resources", {})
     inventory = save_data.get("inventory", {})
     progress = save_data.get("progress", {})
@@ -245,88 +338,13 @@ func _import_save_data(save_data: Dictionary) -> void:
     metadata = save_data.get("metadata", {})
 ```
 
----
-
-## Защита данных
-
-### 1. Сигнатура (проверка целостности)
-
-```gdscript
-const SIGNATURE = "$$$"
-
-# При записи добавляем в конец
-content += SIGNATURE
-
-# При чтении проверяем наличие
-if not content.find(SIGNATURE):
-    push_warning("Save file may be corrupted")
-```
-
-**Зачем:** Защита от повреждения файла (неполная запись при крэше)
-
-### 2. Резервные копии
-
-```gdscript
-func save_game() -> void:
-    # Создать backup перед перезаписью
-    if FileAccess.file_exists("user://save.json"):
-        var backup_path = "user://save.json.backup"
-        DirAccess.copy_absolute("user://save.json", backup_path)
-
-    # Сохранить новые данные
-    _write("save.json", _export_save_data())
-
-func restore_backup() -> void:
-    if FileAccess.file_exists("user://save.json.backup"):
-        DirAccess.copy_absolute("user://save.json.backup", "user://save.json")
-```
-
-### 3. Версионирование и миграции
-
-```gdscript
-const CURRENT_VERSION = 3
-
-func _migrate_if_needed(save_data: Dictionary) -> void:
-    var version = save_data.get("metadata", {}).get("version", 1)
-
-    if version < CURRENT_VERSION:
-        _migrate(save_data, version, CURRENT_VERSION)
-
-func _migrate(data: Dictionary, from: int, to: int) -> void:
-    for v in range(from, to):
-        match v:
-            1:  # v1 → v2
-                # Переименовали поле "health" → "hp"
-                if data.has("health"):
-                    data["hp"] = data["health"]
-                    data.erase("health")
-            2:  # v2 → v3
-                # Добавили новую категорию
-                if not data.has("achievements"):
-                    data["achievements"] = {}
-
-    data["metadata"]["version"] = to
-```
-
----
-
-## Множественные слоты
-
 ### UI выбора слота
 
 ```gdscript
-# scenes/ui/save_picker.gd
-
-func _ready() -> void:
-    # SaveFile уже загрузил все .json файлы в save_datas
-    _display_save_slots()
-
 func _display_save_slots() -> void:
     for save_name in SaveFile.save_datas.keys():
-        var save_data = SaveFile.save_datas[save_name]
-        var metadata = save_data.get("metadata", {})
+        var metadata = SaveFile.save_datas[save_name].get("metadata", {})
 
-        # Создать UI элемент
         var slot_button = Button.new()
         slot_button.text = metadata.get("player_name", save_name)
         slot_button.pressed.connect(_on_slot_selected.bind(save_name))
@@ -334,216 +352,200 @@ func _display_save_slots() -> void:
 
 func _on_slot_selected(save_name: String) -> void:
     SaveFile.initialize(save_name)
-    get_tree().change_scene_to_file("res://scenes/main.tscn")
-```
-
-### Создание нового слота
-
-```gdscript
-func create_new_slot(slot_name: String) -> void:
-    # Убедиться что имя уникально
-    while SaveFile.save_datas.has(slot_name):
-        slot_name = _increment_name(slot_name)  # "Save 1" → "Save 2"
-
-    # Создать пустой save
-    var new_save = {
-        "metadata": {"player_name": slot_name, "version": CURRENT_VERSION}
-    }
-    SaveFile.save_datas[slot_name] = new_save
-
-    # Активировать
-    SaveFile.initialize(slot_name)
+    Scene.change_scene("main_scene")
 ```
 
 ---
 
-## Импорт/Экспорт (Base64)
+## Import/Export (Base64)
 
-### Экспорт save в строку
+### Экспорт
 
 ```gdscript
 func export_save_as_string(save_name: String) -> String:
-    # 1. Получить данные
     var save_data = save_datas[save_name]
-
-    # 2. JSON
     var json_string = JSON.stringify(save_data)
-
-    # 3. Base64 кодирование
-    var encoded = Marshalls.utf8_to_base64(json_string)
-
-    return encoded
+    return Marshalls.utf8_to_base64(json_string)
     # → "eyJyZXNvdXJjZXMiOnsiZ29sZCI6MTAwMH19"
 
-# Использование: скопировать в clipboard
 func copy_save_to_clipboard(save_name: String) -> void:
     var export_string = export_save_as_string(save_name)
     DisplayServer.clipboard_set(export_string)
 ```
 
-### Импорт save из строки
+### Импорт
 
 ```gdscript
-func import_save_from_string(encoded_string: String) -> bool:
-    # 1. Декодировать Base64
-    var json_string = Marshalls.base64_to_utf8(encoded_string)
+func import_save_from_string(encoded: String) -> bool:
+    # Декодировать Base64
+    var json_string = Marshalls.base64_to_utf8(encoded)
     if json_string == "":
         return false
 
-    # 2. Парсить JSON
+    # Парсить JSON
     var json = JSON.new()
     if json.parse(json_string) != OK:
         return false
 
     var save_data = json.get_data()
 
-    # 3. Получить имя слота
+    # Уникальное имя слота
     var slot_name = save_data.get("metadata", {}).get("player_name", "Imported")
-
-    # 4. Сделать имя уникальным
     while save_datas.has(slot_name):
         slot_name = _increment_name(slot_name)
 
-    # 5. Добавить в список
     save_datas[slot_name] = save_data
-
     return true
 
-# Использование: вставить из clipboard
 func paste_save_from_clipboard() -> bool:
-    var clipboard_text = DisplayServer.clipboard_get()
-    return import_save_from_string(clipboard_text)
+    return import_save_from_string(DisplayServer.clipboard_get())
 ```
 
-**Зачем:** Обмен save файлами между игроками или платформами
+**Сценарий:**
+
+```
+Игрок A                              Игрок B
+────────                             ────────
+Export → Base64 строка
+         │
+         │ (Discord, email, etc.)
+         ▼
+                                     Import ← Base64 строка
+                                     Новый слот создан
+```
 
 ---
 
-## Специальные функции
+## Защита данных
+
+### Сигнатура
+
+```gdscript
+const SIGNATURE = "$$$"
+
+# При записи
+content += SIGNATURE
+
+# При чтении
+if not content.contains(SIGNATURE):
+    push_warning("Save file may be corrupted")
+```
+
+### Backup перед перезаписью
+
+```gdscript
+func save_game() -> void:
+    if FileAccess.file_exists("user://save.json"):
+        DirAccess.copy_absolute(
+            "user://save.json",
+            "user://save.json.backup"
+        )
+    _write("save.json", _export_save_data())
+
+func restore_backup() -> void:
+    if FileAccess.file_exists("user://save.json.backup"):
+        DirAccess.copy_absolute(
+            "user://save.json.backup",
+            "user://save.json"
+        )
+```
+
+---
+
+## Специальные механики
 
 ### Удаление save
 
 ```gdscript
 func delete_save(save_name: String) -> void:
-    var file_name = save_name + SAVE_FILE_EXTENSION
-
-    # Удалить файл с диска
-    DirAccess.remove_absolute("user://" + file_name)
-
-    # Удалить из памяти
+    DirAccess.remove_absolute("user://" + save_name + SAVE_FILE_EXTENSION)
     save_datas.erase(save_name)
 ```
 
-### Переименование save
-
-```gdscript
-func rename_save(save_name: String, new_name: String) -> void:
-    # Обновить metadata
-    save_datas[save_name]["metadata"]["player_name"] = new_name
-
-    # Перезаписать файл
-    var save_data = save_datas[save_name]
-    _write(save_name + SAVE_FILE_EXTENSION, save_data)
-```
-
-### Специальная механика: Престиж с бэкапами
+### Престиж (partial reset)
 
 ```gdscript
 func prestige() -> void:
-    # 1. Создать backup текущего состояния
-    var backup_name = active_file_name + ".backup_prestige"
-    var save_data = _export_save_data()
-    _write(backup_name, save_data)
+    # Backup
+    _write(active_file_name + ".backup_prestige", _export_save_data())
 
-    # 2. Сбросить прогресс (но сохранить настройки и престиж валюту)
+    # Сохранить то что нужно
     var keep_settings = settings
-    var keep_prestige_currency = resources.get("prestige_points", 0) + 1
+    var keep_prestige = resources.get("prestige_points", 0) + 1
 
-    resources = {"prestige_points": keep_prestige_currency}
+    # Сбросить
+    resources = {"prestige_points": keep_prestige}
     inventory = {}
     progress = {}
     settings = keep_settings
 
-    # 3. Сохранить новое состояние
+    # Обновить счётчик
     metadata["prestige_count"] = metadata.get("prestige_count", 0) + 1
+
     _autosave(true)
 ```
 
 ---
 
-## Поток данных
+## Структура файлов
 
 ```
-ЗАПУСК ИГРЫ
-    ↓
-SaveFile._ready()
-    ↓
-_load_save_files() → сканирует user://, загружает все .json
-    ↓
-save_datas = {"slot1": {...}, "slot2": {...}}
-    ↓
-UI: SavePicker → пользователь выбирает слот
-    ↓
-SaveFile.initialize("slot1")
-    ↓
-_import_save_data() → копирует данные в активные переменные
-    ↓
-resources = {...}, inventory = {...}, etc.
-    ↓
-ИГРА РАБОТАЕТ
-    ↓
-Игровые системы читают/пишут в SaveFile напрямую
-    ↓
-АВТОСОХРАНЕНИЕ (каждые 60 сек)
-    ↓
-_export_save_data() → Dictionary
-    ↓
-_write() → JSON → файл
-    ↓
-user://slot1.json обновлён
+global/autoload/
+└── save_file/
+    ├── save_file.gd      # Логика
+    └── save_file.tscn    # Нода с Timer
+
+user://                   # Runtime директория
+├── slot1.json
+├── slot2.json
+├── slot1.json.backup
+└── config.cfg            # Отдельно от save (ConfigStorage)
 ```
 
 ---
 
-## Плюсы и минусы подхода
+## Плюсы и минусы
 
-### ✅ Плюсы
+### Плюсы
 
-1. **Простота** — один singleton, все данные в одном месте
-2. **Глобальный доступ** — `SaveFile.resources["gold"]` из любого места
-3. **JSON** — человекочитаемый, легко дебажить
-4. **Автосохранение** — игрок не потеряет прогресс
-5. **Множественные слоты** — неограниченное количество save файлов
-6. **Импорт/Экспорт** — обмен save через Base64 строки
+| Фича | Польза |
+|------|--------|
+| JSON формат | Человекочитаемый, легко дебажить |
+| Singleton | Простой доступ из любого места |
+| Автосохранение | Игрок не потеряет прогресс |
+| Множественные слоты | Несколько игроков на одном ПК |
+| Import/Export | Обмен save между игроками |
 
-### ❌ Минусы
+### Минусы
 
-1. **Глобальное состояние** — сложнее тестировать, всё связано
-2. **Размер файла** — JSON больше бинарного формата
-3. **Читерство** — легко редактировать JSON вручную
-4. **Прямой доступ** — любая система может сломать данные
-5. **Нет типов** — Dictionary без type safety
+| Проблема | Когда критично |
+|----------|----------------|
+| Легко редактировать JSON | Competitive/online игры |
+| Глобальное состояние | Сложное тестирование |
+| Нет типизации | Большие проекты |
+| Размер файла | Огромные save (используй binary) |
 
 ---
 
-## Альтернативные решения
+## Альтернативы
 
-Если нужна защита от читов → используй бинарный формат или шифрование:
+### Бинарный формат (защита от читов)
+
 ```gdscript
-# Вместо JSON.stringify()
 var bytes = var_to_bytes(save_data)
 file.store_buffer(bytes)
 ```
 
-Если нужна модульность → используй component-based подход:
+### Component-based (модульность)
+
 ```gdscript
-# Каждый объект сам сохраняет свои данные
 class Player:
     func save() -> Dictionary:
         return {"hp": hp, "position": position}
 ```
 
-Если нужна типизация → используй Godot Resources:
+### Godot Resources (типизация)
+
 ```gdscript
 class_name SaveData extends Resource
 @export var hp: int
@@ -554,41 +556,11 @@ class_name SaveData extends Resource
 
 ## Резюме
 
-**Этот подход:**
-- Singleton (SaveFile autoload) хранит всё состояние
-- JSON формат для простоты и читаемости
-- Автосохранение по таймеру
-- Сигнатура `$$$` для проверки целостности
-- Backup файлы перед перезаписью
-- Миграции для backward compatibility
-- Импорт/Экспорт через Base64
-- Множественные слоты сохранения
-
-**Когда использовать:**
-- Single-player игры
-- Где не критично редактирование save файлов
-- Нужна простота и скорость разработки
-- Нужен обмен save между игроками
-
-**Минимальный код:**
-```gdscript
-# save_file.gd (autoload)
-extends Node
-
-var game_data: Dictionary = {}
-const SAVE_PATH = "user://save.json"
-
-func save() -> void:
-    var json = JSON.stringify(game_data)
-    var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-    file.store_string(json)
-    file.close()
-
-func load() -> void:
-    if FileAccess.file_exists(SAVE_PATH):
-        var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
-        var json = JSON.new()
-        json.parse(file.get_as_text())
-        game_data = json.get_data()
-        file.close()
-```
+| Проблема | Решение |
+|----------|---------|
+| Потеря прогресса | Автосохранение по таймеру |
+| Повреждённые файлы | Сигнатура + backup |
+| Несовместимость версий | Версионирование + миграции |
+| Один слот | Множественные .json файлы |
+| Нет обмена save | Import/Export через Base64 |
+| Сложный доступ к данным | Singleton autoload |

@@ -10,14 +10,16 @@
 
 ```
 game_kit/
-  scenes/base_game/     # Scene manager with fade transitions
-  scenes/base_rig/      # Character animation rig (walk, hit flash, sprites)
+  components/base_game/ # Scene manager with fade transitions
+  components/base_rig/  # Character animation rig (walk, hit flash, sprites)
   camera/               # Smooth follow camera with zoom and shake
   dialogs/              # Full dialog system (JSON-driven conversations)
   ui/                   # UI components (health bars, action bars, todo lists, upgrade dialogs)
   effects/              # VFX (hurt effect, slash effect, damage numbers)
   shaders/              # Reusable shaders (color overlay, masks)
-  utils/                # Animations (tween factories), Logger, Utils
+  globals/              # Logger
+  autoloads/            # BaseSignalBus, BaseConstants
+  utils/                # Animations (tween factories), Utils
 ```
 
 ### Rule
@@ -31,19 +33,18 @@ The kit never imports from game-specific code. Dependencies flow one way: game c
 Game-specific code is organized by role, not by type. Each folder has a clear purpose.
 
 ```
-scenes/       # Game entities — player, enemies, bullets, interactive objects
+components/   # Game entities — player, enemies, bullets, interactive objects
 levels/       # Level scenes and level-specific scripts
-scripts/      # Data type definitions — Resource classes (stats, parts, bullet configs)
-resources/    # .tres instances of those data types — the actual values
+game_data/    # Resource classes (.gd) and their instances (.tres) together
 assets/       # Art, music, sound effects
 data/         # External data files (dialog JSON, configs)
 ```
 
 ### Rule
 
-- `scripts/` = shape (class definitions). `resources/` = values (.tres files)
-- `scenes/` = autonomous entities you drop on a level. Each works independently
-- `levels/` = specific maps that assemble entities from `scenes/` and configure them via `resources/`
+- `game_data/` = Resource class definitions (.gd) and instances (.tres) live together
+- `components/` = autonomous entities you drop on a level. Each works independently
+- `levels/` = specific maps that assemble entities from `components/` and configure them via `game_data/`
 
 ---
 

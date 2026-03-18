@@ -1,26 +1,21 @@
-# RTS Unit Architecture Guide
+# Unit-Trait-Action Architecture for RTS Games in Godot
 
-A pattern for building units in RTS games using composition over inheritance.
+## TL;DR
 
-## Core Concept
+Composition-based unit architecture with three key principles:
+- **Unit** — identity and core data (hp, damage, ownership)
+- **Traits** — permanent capabilities as child nodes (Movement, Production, HealthBar)
+- **Actions** — temporary behavior, single active at a time (MoveAction, AttackAction)
+- **SignalBus** — decouples input detection from action assignment
 
-Units are assembled from reusable components instead of deep class hierarchies:
+---
 
-```
-Unit (identity + data)
-├── Traits (permanent capabilities)
-└── Action (temporary behavior)
-```
+## What Problems It Solves
 
-**Unit** — who am I (stats, ownership)
-**Traits** — what I can do (movement, production, visuals)
-**Action** — what I'm doing right now (moving, attacking, gathering)
-
-## Why This Pattern?
-
-### Problem: Inheritance Explosion
+### Problem 1: Inheritance Explosion
 
 ```
+# Bad: deep hierarchy with diamond problem
 Unit
 ├── MovableUnit
 │   ├── AttackingMovableUnit
@@ -34,12 +29,12 @@ Unit
     └── ProducingStaticUnit
         └── Factory
 
-# Need a MovableProducingUnit?
+# Need MovableProducingUnit?
 # AttackingGatheringUnit?
 # → Class explosion, diamond problem
 ```
 
-### Solution: Composition
+**Solution:** Composition — mix traits freely:
 
 ```
 Tank       = Unit + Movement + Attack traits
@@ -52,9 +47,151 @@ MobileFactory = Unit + Movement + Production traits
 HarvesterTank = Unit + Movement + Attack + Gathering traits
 ```
 
-## The Three Layers
+### Problem 2: Mixed Behavior Logic
 
-### Layer 1: Unit (Identity)
+```gdscript
+# Bad: all logic in one giant class
+class_name Unit
+
+func _process(delta):
+    if is_moving:
+        _do_movement(delta)
+    if is_attacking:
+        _do_attack(delta)
+    if is_gathering:
+        _do_gathering(delta)
+    if is_building:
+        _do_building(delta)
+    # ... grows endlessly
+
+# Problems:
+# - Can't have "move while gathering" without complex state
+# - Hard to add new behaviors
+# - Single file becomes huge
+```
+
+**Solution:** Actions — one active behavior at a time, actions can have sub-actions for complex flows.
+
+### Problem 3: Tight Coupling Between Input and Logic
+
+```gdscript
+# Bad: input handler knows all action types
+func _on_right_click(position):
+    if selected_unit.has_trait("movement"):
+        selected_unit.move_to(position)  # Direct call
+    elif selected_unit.has_trait("attack"):
+        selected_unit.attack(position)   # Direct call
+
+# Problems:
+# - Input handler coupled to unit implementation
+# - Hard to add new actions
+# - No priority system
+```
+
+**Solution:** Event Bus + Controller pattern — distributed detection, centralized decision making.
+
+### Problem 4: State Synchronization
+
+```gdscript
+# Bad: multiple places track same state
+class Unit:
+    var is_moving = false
+    var is_attacking = false
+    var current_target = null
+
+class MovementSystem:
+    var units_moving = {}  # Duplicate!
+
+class UI:
+    var unit_states = {}   # Another duplicate!
+
+# Problems:
+# - State gets out of sync
+# - Which one is correct?
+```
+
+**Solution:** Single action reference — `unit.action` is the only source of truth for current behavior.
+
+---
+
+## High-Level Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Unit (identity + data)                   │
+│  hp, damage, range, player ownership                        │
+│  action: Node = null (0 or 1 active action)                 │
+└──────────────────────────┬──────────────────────────────────┘
+                           │ children
+           ┌───────────────┼───────────────┐
+           ▼               ▼               ▼
+    ┌──────────┐    ┌──────────┐    ┌──────────────┐
+    │  Traits  │    │  Traits  │    │    Action    │
+    │(permanent)│    │ (visual) │    │ (temporary)  │
+    ├──────────┤    ├──────────┤    ├──────────────┤
+    │ Movement │    │HealthBar │    │ MoveAction   │
+    │Production│    │Selection │    │ AttackAction │
+    │ Attack   │    │Highlight │    │ GatherAction │
+    └──────────┘    └──────────┘    └──────────────┘
+```
+
+**Data Flow (user input to action):**
+
+```
+User right-clicks on terrain
+        │
+        ▼
+Terrain (StaticBody3D): detects input_event
+        │
+        ▼
+MatchSignals.terrain_targeted.emit(position)
+        │
+        ▼
+UnitActionsController: listens to signal
+        │
+        ├── MoveAction.is_applicable(unit)? → Yes
+        │
+        ▼
+unit.action = MoveAction.new(position)
+        │
+        ▼
+MoveAction finds Movement trait
+        │
+        ▼
+movement.move(position)
+        │
+        ▼
+movement.movement_finished.emit()
+        │
+        ▼
+MoveAction.queue_free()
+```
+
+**Runtime Node Structure:**
+
+```
+Tank (Unit)
+├── Movement (Trait)              ← permanent
+├── Selection (Trait)             ← permanent
+├── HealthBar (Trait)             ← permanent
+├── Geometry                      ← 3D model
+└── AutoAttackAction              ← temporary
+    └── AttackWhileInRangeAction  ← sub-action
+
+Worker (Unit)
+├── Movement (Trait)
+├── Selection (Trait)
+├── HealthBar (Trait)
+├── Geometry
+└── GatherResourcesAction
+    └── MoveToUnitAction          ← sub-action
+```
+
+---
+
+## Components
+
+### 1. Unit (Identity Layer)
 
 Base entity holding core data. All units inherit from this.
 
@@ -68,7 +205,6 @@ var hp_max: float
 var attack_damage: float
 var attack_range: float
 var attack_interval: float
-var sight_range: float
 
 # Ownership
 var player:
@@ -77,6 +213,8 @@ var player:
 # Current behavior (0 or 1 action)
 var action: Node = null:
     set = _set_action
+
+signal action_changed(action)
 
 func _set_action(new_action: Node):
     # Remove old action
@@ -98,21 +236,20 @@ func _on_action_finished(finished_action: Node):
 ```
 
 **Key points:**
-
 - Simple data stays here (hp, damage, range)
 - Player ownership via parent node
 - Single action at a time, managed as child node
 
-### Layer 2: Traits (Permanent Capabilities)
+---
+
+### 2. Traits (Permanent Capabilities)
 
 Child nodes providing abilities. Always present on the unit.
 
-**Two types:**
-
-| Type    | Base Class | Examples                        |
-| ------- | ---------- | ------------------------------- |
-| Logical | Node       | Movement, ProductionQueue       |
-| Visual  | Node3D     | HealthBar, Selection, Highlight |
+| Type | Base Class | Examples |
+|------|------------|----------|
+| Logical | Node | Movement, ProductionQueue |
+| Visual | Node3D | HealthBar, Selection, Highlight |
 
 #### Movement Trait
 
@@ -131,7 +268,7 @@ func _physics_process(delta):
         return
 
     var next_pos = get_next_path_position()
-    var direction = (_unit.global_position.direction_to(next_pos))
+    var direction = _unit.global_position.direction_to(next_pos)
     var velocity = direction * speed * delta
 
     _unit.global_position += velocity
@@ -169,7 +306,7 @@ func _process(delta):
     if _queue[0].time_left <= 0:
         _finish_production(_queue.pop_front())
 
-func produce(unit_scene: PackedScene, build_time: float, cost: Dictionary):
+func produce(unit_scene: PackedScene, build_time: float, cost: Dictionary) -> bool:
     if _queue.size() >= queue_limit:
         return false
     if not _has_resources(cost):
@@ -187,7 +324,7 @@ func _finish_production(item: Dictionary):
     unit_produced.emit(item.scene)
 ```
 
-#### Visual Trait (HealthBar)
+#### HealthBar Trait (Visual)
 
 ```gdscript
 extends Node3D
@@ -205,7 +342,9 @@ func _update_bar():
     _bar.scale.x = ratio
 ```
 
-### Layer 3: Actions (Temporary Behavior)
+---
+
+### 3. Actions (Temporary Behavior)
 
 Single child node controlling current behavior. Only one active at a time.
 
@@ -215,7 +354,6 @@ Single child node controlling current behavior. Only one active at a time.
 extends Node
 class_name Action
 
-# Find parent unit
 @onready var _unit: Unit = _find_parent_unit()
 
 func _find_parent_unit() -> Unit:
@@ -231,7 +369,7 @@ static func is_applicable(source: Unit, target) -> bool:
     return false
 ```
 
-#### Simple Action: Move to Position
+#### Simple Action: Move
 
 ```gdscript
 extends Action
@@ -348,7 +486,79 @@ func _on_sub_action_finished():
             _change_state(State.MOVING_TO_RESOURCE)
 ```
 
-## Interaction Pattern
+---
+
+### 4. SignalBus (Event Decoupling)
+
+Global signals for system-wide events, local signals for direct communication.
+
+```gdscript
+# match_signals.gd — autoload singleton
+extends Node
+
+# Input events
+signal terrain_targeted(position: Vector3)
+signal unit_targeted(unit: Unit)
+
+# Unit lifecycle
+signal unit_spawned(unit: Unit)
+signal unit_died(unit: Unit)
+
+# Selection
+signal unit_selected(unit: Unit)
+signal unit_deselected(unit: Unit)
+signal deselect_all_units
+
+# Production
+signal unit_production_started(unit_prototype, producer)
+signal unit_production_finished(unit, producer)
+```
+
+**When to use what:**
+
+| Scenario | Use | Why |
+|----------|-----|-----|
+| Unit dies | Event Bus | Many listeners: AI, HUD, sounds |
+| Unit HP changes | Local signal | Few listeners: HealthBar only |
+| Movement finished | Local signal | Only parent Action listens |
+| Unit spawned | Event Bus | Minimap, FogOfWar need to know |
+
+---
+
+### 5. Input Controller (Centralized Logic)
+
+```gdscript
+# unit_actions_controller.gd
+extends Node
+
+func _ready():
+    MatchSignals.terrain_targeted.connect(_on_terrain_targeted)
+    MatchSignals.unit_targeted.connect(_on_unit_targeted)
+
+func _on_terrain_targeted(position: Vector3):
+    for unit in get_tree().get_nodes_in_group("selected_units"):
+        if MoveAction.is_applicable(unit, position):
+            unit.action = MoveAction.new(position)
+
+func _on_unit_targeted(target_unit: Unit):
+    for unit in get_tree().get_nodes_in_group("selected_units"):
+        _assign_appropriate_action(unit, target_unit)
+
+func _assign_appropriate_action(unit: Unit, target: Unit):
+    # Priority order — first applicable wins
+    if GatherAction.is_applicable(unit, target):
+        unit.action = GatherAction.new(target)
+    elif AutoAttackAction.is_applicable(unit, target):
+        unit.action = AutoAttackAction.new(target)
+    elif FollowAction.is_applicable(unit, target):
+        unit.action = FollowAction.new(target)
+```
+
+---
+
+## Usage
+
+### Interaction Pattern
 
 Actions command traits. Never manipulate unit directly.
 
@@ -374,62 +584,66 @@ GatherResourcesAction (what to do)
     queue_free() or change state
 ```
 
-## Runtime Node Structure
+### Adding New Unit Type
+
+**1. Create scene with traits as children:**
 
 ```
-Tank (Unit)
-├── Movement (Trait)              ← permanent
-├── Selection (Trait)             ← permanent
-├── HealthBar (Trait)             ← permanent
-├── Geometry                      ← 3D model
-└── AutoAttackAction              ← temporary
-    └── AttackWhileInRangeAction  ← sub-action
-
-Worker (Unit)
-├── Movement (Trait)
-├── Selection (Trait)
-├── HealthBar (Trait)
-├── Geometry
-└── GatherResourcesAction
-    └── MoveToUnitAction
+MobileFactory.tscn
+├── MobileFactory (Unit script)
+├── Movement (MovementTrait)
+├── ProductionQueue (ProductionQueueTrait)
+├── HealthBar (HealthBarTrait)
+├── Selection (SelectionTrait)
+└── Geometry (3D model)
 ```
 
-## Assigning Actions
+**2. No code changes needed.** Controller checks `is_applicable()` for each action.
 
-Controller decides which action to assign based on context:
+### Adding New Action
+
+**1. Create action script:**
 
 ```gdscript
-# In player input controller
-func _on_right_click(unit: Unit, target):
-    if target is ResourceNode:
-        if GatherResourcesAction.is_applicable(unit, target):
-            unit.action = GatherResourcesAction.new(target)
-            return
+extends Action
+class_name RepairAction
 
-    if target is Unit:
-        if AutoAttackAction.is_applicable(unit, target):
-            unit.action = AutoAttackAction.new(target)
-            return
-        if FollowAction.is_applicable(unit, target):
-            unit.action = FollowAction.new(target)
-            return
+var _target_building: Unit
 
-    if target is Vector3:
-        if MoveAction.is_applicable(unit, target):
-            unit.action = MoveAction.new(target)
+func _init(building: Unit):
+    _target_building = building
+
+static func is_applicable(source: Unit, target) -> bool:
+    return (
+        source.find_child("Repair") != null
+        and target.has_trait("Repairable")
+    )
+
+func _ready():
+    # ... implementation
 ```
+
+**2. Add to controller priority list:**
+
+```gdscript
+func _assign_appropriate_action(unit: Unit, target: Unit):
+    if RepairAction.is_applicable(unit, target):  # NEW
+        unit.action = RepairAction.new(target)
+    elif GatherAction.is_applicable(unit, target):
+        # ...
+```
+
+---
 
 ## Best Practices
 
 ### DO: Cache trait references
 
 ```gdscript
-# Once at ready
 @onready var _movement = _unit.find_child("Movement")
 
 func _ready():
     _movement.move(target)
-    _movement.movement_finished.connect(_on_finished)
 ```
 
 ### DON'T: Search every frame
@@ -451,30 +665,7 @@ movement_finished.emit()
 _movement.movement_finished.connect(_on_finished)
 ```
 
-### DON'T: Tight coupling between actions
-
-```gdscript
-# Bad: action knows about specific other action
-var other = OtherAction.new()
-other.some_internal_method()
-
-# Good: use sub-actions as children
-var sub = OtherAction.new(params)
-sub.tree_exited.connect(_on_sub_finished)
-add_child(sub)
-```
-
-### DO: Check applicability before creating
-
-```gdscript
-static func is_applicable(source: Unit, target) -> bool:
-    return (
-        source.find_child("Movement") != null
-        and target is ResourceNode
-    )
-```
-
-### DON'T: Action manipulating unit position directly
+### DON'T: Action manipulating unit directly
 
 ```gdscript
 # Bad
@@ -505,450 +696,7 @@ unit.action = AttackAction.new(enemy)  # MoveAction gone
 unit.action = MoveAndShootAction.new(pos, enemy)
 ```
 
-## Data Management
-
-### Option A: Centralized Dictionary
-
-```gdscript
-# All stats in one file
-const UNIT_STATS = {
-    "tank": {
-        "hp": 100,
-        "damage": 25,
-        "range": 8.0,
-    },
-    "worker": {
-        "hp": 50,
-        "gather_speed": 1.0,
-    },
-}
-
-# Unit loads its stats
-func _ready():
-    var stats = UNIT_STATS[unit_type]
-    for key in stats:
-        set(key, stats[key])
-```
-
-**Pros:** One file, easy to compare, git-friendly
-**Cons:** No type checking, no editor support
-
-### Option B: Resource Files
-
-```gdscript
-class_name UnitStats extends Resource
-
-@export var hp: int = 100
-@export var hp_max: int = 100
-@export var damage: float = 10.0
-@export_range(1.0, 20.0) var attack_range: float = 5.0
-```
-
-```gdscript
-# Unit scene has exported resource
-@export var stats: UnitStats
-
-func _ready():
-    hp = stats.hp
-    attack_damage = stats.damage
-```
-
-**Pros:** Type safety, editor support, inheritance
-**Cons:** Multiple files, harder to compare
-
-### Recommendation
-
-- Small project (< 20 units): Dictionary
-- Large project / team: Resources
-
-## Event Bus vs Local Signals
-
-Use **Event Bus** (global singleton) for system-wide events.
-Use **local signals** for direct object-to-object communication.
-
-### Event Bus (Global Signals)
-
-Autoload singleton that decouples systems:
-
-```gdscript
-# match_signals.gd — autoload
-extends Node
-
-# Requests (commands)
-signal deselect_all_units
-signal setup_and_spawn_unit(unit, transform, player)
-signal place_structure(structure_prototype)
-signal navigate_unit_to_rally_point(unit, rally_point)
-
-# Notifications (events)
-signal match_started
-signal match_finished_with_victory
-signal match_finished_with_defeat
-signal unit_spawned(unit)
-signal unit_died(unit)
-signal unit_damaged(unit)
-signal unit_selected(unit)
-signal unit_deselected(unit)
-signal terrain_targeted(position)
-signal unit_targeted(unit)
-signal unit_production_started(unit_prototype, producer)
-signal unit_production_finished(unit, producer)
-signal not_enough_resources_for_production(player)
-```
-
-### Local Signals
-
-Defined on objects, for direct 1-to-1 or 1-to-few relationships:
-
-```gdscript
-# Unit.gd
-signal selected
-signal deselected
-signal hp_changed
-signal action_changed(new_action)
-
-# Player.gd
-signal changed  # resources changed
-
-# Movement trait
-signal movement_finished
-
-# ProductionQueue trait
-signal element_enqueued(element)
-signal element_removed(element)
-```
-
-### When to Use What
-
-| Scenario                | Use          | Why                                              |
-| ----------------------- | ------------ | ------------------------------------------------ |
-| Unit dies               | Event Bus    | Many listeners: AI, HUD, sounds, match end check |
-| Unit HP changes         | Local signal | Few listeners: HealthBar, DamageFlash            |
-| Unit selected           | Both         | Local for Selection trait, global for HUD        |
-| Player resources change | Local signal | Only ResourcesBar listens                        |
-| Unit spawned            | Event Bus    | Minimap, FogOfWar, handlers need to know         |
-| Movement finished       | Local signal | Only parent Action listens                       |
-| Production finished     | Event Bus    | Rally point, sounds, AI need to know             |
-
-### Decision Flowchart
-
-```
-Does the event affect multiple unrelated systems?
-    │
-    ├── YES → Event Bus
-    │         (unit_died, unit_spawned, match_started)
-    │
-    └── NO → Does the listener have direct reference to emitter?
-              │
-              ├── YES → Local signal
-              │         (hp_changed → HealthBar, movement_finished → Action)
-              │
-              └── NO → Event Bus
-                        (need to find emitter by searching = use event bus)
-```
-
-### Event Bus Patterns
-
-**Request pattern** — asking a system to do something:
-
-```gdscript
-# Anyone can request
-MatchSignals.setup_and_spawn_unit.emit(unit, transform, player)
-
-# Match system handles
-func _ready():
-    MatchSignals.setup_and_spawn_unit.connect(_on_setup_and_spawn_unit)
-
-func _on_setup_and_spawn_unit(unit, transform, player):
-    # actual spawning logic
-```
-
-**Notification pattern** — informing about something that happened:
-
-```gdscript
-# Unit notifies when it dies
-func _handle_unit_death():
-    MatchSignals.unit_died.emit(self)
-    queue_free()
-
-# Multiple systems react
-# AI:
-MatchSignals.unit_died.connect(_on_unit_died)
-# Sound:
-MatchSignals.unit_died.connect(_play_death_sound)
-# Match end checker:
-MatchSignals.unit_died.connect(_check_victory_condition)
-```
-
-### Local Signal Patterns
-
-**Direct subscription** — listener knows the source:
-
-```gdscript
-# HealthBar knows its unit
-@onready var _unit = get_parent()
-
-func _ready():
-    _unit.hp_changed.connect(_update_bar)
-```
-
-**Passed reference** — listener receives source:
-
-```gdscript
-# Action receives trait reference
-@onready var _movement = _unit.find_child("Movement")
-
-func _ready():
-    _movement.movement_finished.connect(_on_movement_finished)
-```
-
-### Multiple Event Buses
-
-For large projects, split by scope:
-
-```gdscript
-# Global (always exists) — e.g. global_signals.gd
-GlobalSignals
-├── settings_changed
-└── debug_mode_toggled
-
-# Match-scoped (exists during gameplay) — e.g. match_signals.gd
-MatchSignals
-├── unit_died
-├── unit_spawned
-└── terrain_targeted
-
-# UI-scoped (optional) — e.g. ui_signals.gd
-UISignals
-├── menu_opened
-└── tooltip_requested
-```
-
-### Anti-patterns
-
-**DON'T: Event bus for direct communication**
-
-```gdscript
-# Bad: HealthBar subscribes to global signal, filters by unit
-MatchSignals.unit_hp_changed.connect(func(unit):
-    if unit == _my_unit:
-        _update_bar()
-)
-
-# Good: Direct subscription
-_unit.hp_changed.connect(_update_bar)
-```
-
-**DON'T: Local signal when many unrelated listeners**
-
-```gdscript
-# Bad: Everyone needs reference to unit to listen
-unit.died.connect(...)  # AI needs reference
-unit.died.connect(...)  # Sound needs reference
-unit.died.connect(...)  # HUD needs reference
-
-# Good: Event bus, no references needed
-MatchSignals.unit_died.connect(...)  # anyone can listen
-```
-
-**DON'T: Circular event chains**
-
-```gdscript
-# Bad: A emits → B reacts → B emits → A reacts → loop
-MatchSignals.foo.connect(func(): MatchSignals.bar.emit())
-MatchSignals.bar.connect(func(): MatchSignals.foo.emit())
-```
-
-## User Input Handling
-
-Input is handled using **distributed detection + centralized control** pattern.
-
-### Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    INPUT DETECTION                          │
-│                                                             │
-│  Clickable nodes detect interactions via Godot signals      │
-│  and emit global events                                     │
-│                                                             │
-│  Terrain (StaticBody3D)  ──► terrain_targeted(position)     │
-│  Unit (Area3D)           ──► unit_targeted(unit)            │
-│  Minimap (Control)       ──► terrain_targeted(position)     │
-│                                                             │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    EVENT BUS                                │
-│                                                             │
-│  Global signals decouple input from logic                   │
-│                                                             │
-│  MatchSignals.terrain_targeted(position)                    │
-│  MatchSignals.unit_targeted(unit)                           │
-│                                                             │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    CONTROLLER                               │
-│                                                             │
-│  Listens to events, decides which action to assign          │
-│                                                             │
-│  UnitActionsController:                                     │
-│    - Checks is_applicable() for each action type            │
-│    - Assigns: unit.action = AppropriateAction.new(target)   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Input Detection (distributed)
-
-Use Godot's built-in `input_event` signal on physics bodies:
-
-```gdscript
-# Terrain.gd — detects clicks on ground
-extends StaticBody3D
-
-func _ready():
-    input_event.connect(_on_input_event)
-
-func _on_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
-    if (
-        event is InputEventMouseButton
-        and event.button_index == MOUSE_BUTTON_RIGHT
-        and event.pressed
-    ):
-        var target = get_viewport().get_camera_3d().get_ray_intersection(event.position)
-        MatchSignals.terrain_targeted.emit(target)
-```
-
-```gdscript
-# Targetability.gd — trait that detects clicks on units
-extends Node3D
-
-@onready var _unit: Unit = get_parent()
-
-func _ready():
-    _unit.input_event.connect(_on_input_event)
-
-func _on_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
-    if (
-        event is InputEventMouseButton
-        and event.button_index == MOUSE_BUTTON_RIGHT
-        and event.pressed
-    ):
-        MatchSignals.unit_targeted.emit(_unit)
-```
-
-### Event Bus (global signals)
-
-```gdscript
-# match_signals.gd — autoload singleton
-extends Node
-
-signal terrain_targeted(position: Vector3)
-signal unit_targeted(unit: Unit)
-signal unit_selected(unit: Unit)
-signal unit_deselected(unit: Unit)
-signal deselect_all_units
-```
-
-### Controller (centralized logic)
-
-```gdscript
-# unit_actions_controller.gd — child of Human player
-extends Node
-
-func _ready():
-    MatchSignals.terrain_targeted.connect(_on_terrain_targeted)
-    MatchSignals.unit_targeted.connect(_on_unit_targeted)
-
-
-func _on_terrain_targeted(position: Vector3):
-    for unit in get_tree().get_nodes_in_group("selected_units"):
-        if MoveAction.is_applicable(unit):
-            unit.action = MoveAction.new(position)
-
-
-func _on_unit_targeted(target_unit: Unit):
-    for unit in get_tree().get_nodes_in_group("selected_units"):
-        _assign_appropriate_action(unit, target_unit)
-
-
-func _assign_appropriate_action(unit: Unit, target: Unit):
-    # Priority order — first applicable wins
-    if GatherAction.is_applicable(unit, target):
-        unit.action = GatherAction.new(target)
-    elif AutoAttackAction.is_applicable(unit, target):
-        unit.action = AutoAttackAction.new(target)
-    elif FollowAction.is_applicable(unit, target):
-        unit.action = FollowAction.new(target)
-```
-
-### Why This Pattern?
-
-| Approach                  | Pros                                  | Cons                              |
-| ------------------------- | ------------------------------------- | --------------------------------- |
-| **Distributed detection** | Uses Godot physics, no manual raycast | Logic spread across files         |
-| **Centralized control**   | All decision logic in one place       | Controller knows all action types |
-| **Event bus**             | Decouples input from logic            | Extra indirection                 |
-
-### Adding New Input Types
-
-**1. New clickable object:**
-
-```gdscript
-# building_site.gd
-extends Area3D
-
-func _ready():
-    input_event.connect(_on_input_event)
-
-func _on_input_event(_camera, event, ...):
-    if right_click(event):
-        MatchSignals.building_site_targeted.emit(self)
-```
-
-**2. Add signal to event bus:**
-
-```gdscript
-# match_signals.gd
-signal building_site_targeted(site)
-```
-
-**3. Handle in controller:**
-
-```gdscript
-# unit_actions_controller.gd
-func _ready():
-    MatchSignals.building_site_targeted.connect(_on_building_site_targeted)
-
-func _on_building_site_targeted(site):
-    for unit in selected_units:
-        if BuildAction.is_applicable(unit, site):
-            unit.action = BuildAction.new(site)
-```
-
-### Keyboard Input
-
-For hotkeys, use `_unhandled_input` in a dedicated handler:
-
-```gdscript
-# hotkey_handler.gd
-extends Node
-
-func _unhandled_input(event: InputEvent):
-    if event.is_action_pressed("stop"):
-        _stop_selected_units()
-    elif event.is_action_pressed("attack_move"):
-        _enable_attack_move_mode()
-
-
-func _stop_selected_units():
-    for unit in get_tree().get_nodes_in_group("selected_units"):
-        unit.action = null  # clear action
-```
+---
 
 ## File Structure
 
@@ -963,34 +711,74 @@ units/
 ├── actions/
 │   ├── action.gd           # Base Action class
 │   ├── move.gd
-│   ├── move_to_unit.gd
 │   ├── auto_attack.gd
-│   ├── attack_while_in_range.gd
 │   ├── gather_resources.gd
-│   └── gather_while_in_range.gd
+│   └── ...
 ├── tank/
-│   ├── tank.tscn           # Scene with traits as children
-│   └── tank.gd             # Optional unit-specific code
+│   ├── tank.tscn           # Scene with traits
+│   └── tank.gd             # Optional unit-specific
 └── worker/
     ├── worker.tscn
     └── worker.gd
+
+signals/
+└── match_signals.gd        # Event bus autoload
+
+controllers/
+└── unit_actions_controller.gd
 ```
+
+---
+
+## Pros and Cons
+
+### Pros
+
+| Feature | Benefit |
+|---------|---------|
+| Composition | Mix traits freely, no diamond problem |
+| Single action | Clear current behavior, no state sync |
+| Sub-actions | Complex flows via composition |
+| is_applicable() | Self-documenting requirements |
+| Event bus | Decoupled input from logic |
+
+### Cons
+
+| Issue | When Critical |
+|-------|---------------|
+| find_child() overhead | Cache references to mitigate |
+| Many small files | Use folders to organize |
+| Action priority in controller | Can grow large |
+| No parallel actions | Need composite action pattern |
+
+---
 
 ## Summary
 
-| Layer  | Lifetime  | Count per Unit | Responsibility                       |
-| ------ | --------- | -------------- | ------------------------------------ |
-| Unit   | Permanent | 1              | Identity, stats, ownership           |
-| Trait  | Permanent | 0-N            | Capability (movement, production)    |
-| Action | Temporary | 0-1            | Current behavior (moving, attacking) |
+| Layer | Lifetime | Count per Unit | Responsibility |
+|-------|----------|----------------|----------------|
+| Unit | Permanent | 1 | Identity, stats, ownership |
+| Trait | Permanent | 0-N | Capability (movement, production) |
+| Action | Temporary | 0-1 | Current behavior (moving, attacking) |
 
-**Flow:**
+| Problem | Solution |
+|---------|----------|
+| Inheritance explosion | Composition via traits |
+| Mixed behavior logic | Single action, sub-actions |
+| Tight input coupling | Event bus + controller |
+| State synchronization | unit.action is source of truth |
+| Adding new unit types | Just combine traits in scene |
+| Adding new behaviors | Create action + add to controller |
 
-1. Controller assigns action to unit
-2. Action finds required traits
-3. Action commands traits via methods
-4. Traits signal completion
-5. Action transitions or finishes
-6. Unit.action becomes null or new action
+**Key Flow:**
+```
+Input → EventBus → Controller → unit.action = Action.new()
+Action → finds Trait → commands Trait → Trait signals → Action reacts
+```
 
-This pattern scales from simple RTS to complex games with many unit types and behaviors.
+**Golden Rules:**
+1. Unit = **who** (identity, stats)
+2. Traits = **can do** (permanent capabilities)
+3. Actions = **doing** (temporary behavior)
+4. Actions command Traits, never Unit directly
+5. One action at a time, use sub-actions for complexity
