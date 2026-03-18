@@ -1,30 +1,49 @@
 [gd_scene format=3 uid="uid://d3ytykmb1ciyv"]
 
 [ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://slot0001" path="res://components/slot/slot.tscn" id="2_slot"]
-[ext_resource type="PackedScene" uid="uid://building001" path="res://components/building/building.tscn" id="3_building"]
-[ext_resource type="Resource" path="res://game_data/slot/slot_default.tres" id="3_ly3hx"]
-[ext_resource type="PackedScene" uid="uid://plant00001" path="res://components/plant/plant.tscn" id="4_plant"]
-[ext_resource type="Resource" path="res://game_data/building/building_drill.tres" id="5_4n8tn"]
-[ext_resource type="PackedScene" uid="uid://unit000001" path="res://components/unit/unit.tscn" id="5_unit"]
-[ext_resource type="Resource" path="res://game_data/unit/unit_worker.tres" id="6_e7anx"]
-[ext_resource type="Resource" path="res://game_data/plant/plant_basic.tres" id="7_wkb0e"]
+[ext_resource type="PackedScene" uid="uid://plant00001" path="res://components/plant/plant.tscn" id="2_plant"]
+[ext_resource type="Resource" path="res://game_data/plant/plant_basic.tres" id="3_plant_stat"]
+[ext_resource type="PackedScene" uid="uid://unit000001" path="res://components/unit/unit.tscn" id="4_unit"]
+[ext_resource type="Resource" path="res://game_data/unit/unit_worker.tres" id="5_unit_stat"]
+[ext_resource type="PackedScene" uid="uid://building001" path="res://components/building/building.tscn" id="6_building"]
+[ext_resource type="Resource" path="res://game_data/building/building_drill.tres" id="7_factory_stat"]
+[ext_resource type="PackedScene" path="res://levels/test_level_hud.tscn" id="8_hud"]
+[ext_resource type="Resource" path="res://game_data/product/product_battery.tres" id="9_paa45"]
+[ext_resource type="Script" uid="uid://dxmqrms5lc26q" path="res://components/traits/storage_trait.gd" id="10_storage_trait"]
+[ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="11_produce_trait"]
+[ext_resource type="Script" uid="uid://dm6yyuiyo8w83" path="res://components/actions/convert_action.gd" id="12_convert_action"]
 
-[node name="TestLevel" type="Node2D" unique_id=2046311676]
+[node name="TestLevel" type="Node2D" unique_id=1921248261]
 script = ExtResource("1_script")
 
-[node name="Slot" parent="." unique_id=1804107804 instance=ExtResource("2_slot")]
-position = Vector2(200, 400)
-stat = ExtResource("3_ly3hx")
+[node name="HUD" parent="." unique_id=1936582063 instance=ExtResource("8_hud")]
 
-[node name="Building" parent="." unique_id=1656435310 instance=ExtResource("3_building")]
-position = Vector2(400, 400)
-stat = ExtResource("5_4n8tn")
+[node name="Plant1" parent="." unique_id=2079132199 instance=ExtResource("2_plant")]
+position = Vector2(100, 300)
+stat = ExtResource("3_plant_stat")
 
-[node name="Plant" parent="." unique_id=377825284 instance=ExtResource("4_plant")]
-position = Vector2(600, 400)
-stat = ExtResource("7_wkb0e")
+[node name="Factory" parent="." unique_id=496621708 groups=["factory"] instance=ExtResource("6_building")]
+position = Vector2(600, 450)
+stat = ExtResource("7_factory_stat")
 
-[node name="Unit" parent="." unique_id=1019318389 instance=ExtResource("5_unit")]
-position = Vector2(800, 400)
-stat = ExtResource("6_e7anx")
+[node name="StorageTrait" type="Node" parent="Factory" unique_id=31744239]
+script = ExtResource("10_storage_trait")
+
+[node name="ProduceTrait" type="Node2D" parent="Factory" unique_id=331872745]
+script = ExtResource("11_produce_trait")
+product_stat = ExtResource("9_paa45")
+produce_time = 3.0
+
+[node name="ConvertAction" type="Node" parent="Factory" unique_id=1807617370]
+script = ExtResource("12_convert_action")
+
+[node name="Storage" parent="." unique_id=1710378331 instance=ExtResource("6_building")]
+position = Vector2(800, 450)
+stat = ExtResource("7_factory_stat")
+
+[node name="StorageTrait" type="Node" parent="Storage" unique_id=296389144]
+script = ExtResource("10_storage_trait")
+
+[node name="Worker" parent="." unique_id=482803144 instance=ExtResource("4_unit")]
+position = Vector2(350, 450)
+stat = ExtResource("5_unit_stat")

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://unit000001"]
+[gd_scene load_steps=5 format=3 uid="uid://unit000001"]
 
 [ext_resource type="Script" path="res://components/unit/unit.gd" id="1_script"]
+[ext_resource type="Script" path="res://components/traits/movement_trait.gd" id="2_movement"]
+[ext_resource type="PackedScene" path="res://components/traits/collect_trait.tscn" id="3_collect"]
+[ext_resource type="Script" path="res://components/actions/collect_and_deliver_action.gd" id="4_action"]
 
 [node name="Unit" type="CharacterBody2D" groups=["unit"]]
 script = ExtResource("1_script")
@@ -9,3 +12,11 @@ script = ExtResource("1_script")
 unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="MovementTrait" type="Node" parent="."]
+script = ExtResource("2_movement")
+
+[node name="CollectTrait" parent="." instance=ExtResource("3_collect")]
+
+[node name="CollectAndDeliverAction" type="Node" parent="."]
+script = ExtResource("4_action")

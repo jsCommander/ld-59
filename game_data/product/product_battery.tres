@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ProductStat" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/product/product_stat.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://game_kit/assets/icons/icn_fire.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+texture = ExtResource("2_texture")
+product_name = "Battery"
+group = "battery"

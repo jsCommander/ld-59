@@ -7,3 +7,4 @@
 script = ExtResource("1_script")
 texture = ExtResource("2_texture")
 plant_name = "Basic Plant"
+produce_time = 5.0

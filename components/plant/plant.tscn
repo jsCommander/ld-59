@@ -1,9 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://plant00001"]
+[gd_scene format=3 uid="uid://plant00001"]
 
-[ext_resource type="Script" path="res://components/plant/plant.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://vos5wyw6fdif" path="res://components/plant/plant.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="2_produce_trait"]
+[ext_resource type="Resource" path="res://game_data/product/product_fruit.tres" id="3_ab858"]
+[ext_resource type="Script" uid="uid://bybx6aeq6khri" path="res://components/actions/produce_action.gd" id="3_action"]
 
-[node name="Plant" type="Node2D" groups=["plant"]]
+[node name="Plant" type="Node2D" unique_id=295281884 groups=["plant"]]
 script = ExtResource("1_script")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=969521668]
 unique_name_in_owner = true
+
+[node name="ProduceTrait" type="Node2D" parent="." unique_id=101658015]
+script = ExtResource("2_produce_trait")
+product_stat = ExtResource("3_ab858")
+
+[node name="ProduceAction" type="Node" parent="." unique_id=1312160349]
+script = ExtResource("3_action")
