@@ -12,7 +12,13 @@ config_version=5
 
 config/name="LD-59"
 config/features=PackedStringArray("4.6", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
+
+[autoload]
+
+C="*uid://css8o1j0l4bws"
+SB="*uid://im1hpuaks3nm"
 
 [physics]
 
