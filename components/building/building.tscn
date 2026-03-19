@@ -1,9 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://building001"]
+[gd_scene load_steps=5 format=3 uid="uid://building001"]
 
 [ext_resource type="Script" path="res://components/building/building.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dxmqrms5lc26q" path="res://components/traits/storage_trait.gd" id="2_storage_trait"]
+[ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="3_produce_trait"]
+[ext_resource type="Script" uid="uid://dm6yyuiyo8w83" path="res://components/actions/convert_action.gd" id="4_convert_action"]
 
 [node name="Building" type="Node2D" groups=["building"]]
 script = ExtResource("1_script")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
+
+[node name="StorageTrait" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_storage_trait")
+
+[node name="ProduceTrait" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_produce_trait")
+
+[node name="ConvertAction" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_convert_action")

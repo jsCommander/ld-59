@@ -1,4 +1,4 @@
-class_name UnitStat
+class_name UnitData
 extends Resource
 
 @export var texture: Texture2D

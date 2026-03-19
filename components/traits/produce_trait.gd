@@ -5,8 +5,9 @@ const PRODUCT_SCENE: PackedScene = preload("res://components/product/product.tsc
 
 signal produced(product: Product)
 
-@export var product_stat: ProductStat
-@export var produce_time: float = 5.0
+var product_data: ProductData
+var produce_time: float = 5.0
+
 @export var bar_offset: Vector2 = Vector2(0, -40)
 @export var bar_size: Vector2 = Vector2(32, 4)
 @export var bar_color: Color = Color.GREEN
@@ -14,6 +15,12 @@ signal produced(product: Product)
 
 var _elapsed: float = 0.0
 var _is_producing: bool = false
+
+
+func setup(product: ProductData, time: float) -> void:
+	product_data = product
+	produce_time = time
+	Log.log_debug(name, "Setup: %s (%.1fs)" % [product.product_name, time])
 
 
 func start() -> void:
@@ -57,8 +64,8 @@ func _draw() -> void:
 
 
 func _spawn_product() -> void:
-	if not product_stat:
-		Log.log_warn(name, "No product_stat set")
+	if not product_data:
+		Log.log_warn(name, "No product_data set")
 		produced.emit(null)
 		return
 
@@ -69,8 +76,8 @@ func _spawn_product() -> void:
 		return
 
 	var product: Product = PRODUCT_SCENE.instantiate() as Product
-	product.stat = product_stat
+	product.data = product_data
 	level.add_child(product)
 	product.global_position = get_parent().global_position
-	Log.log_debug(name, "Produced %s at %s" % [product_stat.product_name, str(product.global_position)])
+	Log.log_debug(name, "Produced %s at %s" % [product_data.product_name, str(product.global_position)])
 	produced.emit(product)

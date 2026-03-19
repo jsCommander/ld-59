@@ -1,12 +1,13 @@
 extends CanvasLayer
 
-@onready var battery_counter: UiResourceCount = %BatteryCounter
+@onready var dna_counter: UiResourceCount = %DnaCounter
 
 
 func _ready() -> void:
-	SB.battery_produced.connect(_on_battery_produced)
-	battery_counter.count = 0
+	SB.product_produced.connect(_on_product_produced)
+	dna_counter.count = 0
 
 
-func _on_battery_produced() -> void:
-	battery_counter.count += 1
+func _on_product_produced(product: ProductData) -> void:
+	if product.group == "dna":
+		dna_counter.count += 1

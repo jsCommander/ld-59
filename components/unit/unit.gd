@@ -1,29 +1,29 @@
 class_name Unit
 extends CharacterBody2D
 
-@export var stat: UnitStat
+@export var data: UnitData
 
 @onready var sprite: Sprite2D = %Sprite
 
 
 func _ready() -> void:
-	_apply_stat()
+	_apply_data()
 	_setup_traits()
 
 
-func _apply_stat() -> void:
-	if not stat or not is_instance_valid(sprite):
+func _apply_data() -> void:
+	if not data or not is_instance_valid(sprite):
 		return
-	if stat.texture:
-		sprite.texture = stat.texture
+	if data.texture:
+		sprite.texture = data.texture
 
 
 func _setup_traits() -> void:
-	if not stat:
+	if not data:
 		return
 	var movement: MovementTrait = _find_child_trait(MovementTrait)
 	if movement:
-		movement.setup(stat.speed)
+		movement.setup(data.speed)
 
 
 func _find_child_trait(type: Variant) -> Node:

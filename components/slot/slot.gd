@@ -1,7 +1,7 @@
 class_name Slot
 extends Node2D
 
-@export var stat: SlotStat
+@export var data: SlotData
 
 var is_occupied: bool = false:
 	set(value):
@@ -14,9 +14,9 @@ func _ready() -> void:
 	_update_texture()
 
 func _update_texture() -> void:
-	if not stat or not is_instance_valid(sprite):
+	if not data or not is_instance_valid(sprite):
 		return
-	if is_occupied and stat.occupied_texture:
-		sprite.texture = stat.occupied_texture
-	elif stat.texture:
-		sprite.texture = stat.texture
+	if is_occupied and data.occupied_texture:
+		sprite.texture = data.occupied_texture
+	elif data.texture:
+		sprite.texture = data.texture

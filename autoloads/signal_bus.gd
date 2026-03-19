@@ -1,3 +1,3 @@
 class_name SignalBus extends BaseSignalBus
 
-signal battery_produced
+signal product_produced(product: ProductData)

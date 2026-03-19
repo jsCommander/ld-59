@@ -1,6 +1,8 @@
-class_name BuildingStat
+class_name BuildingData
 extends Resource
 
 @export var texture: Texture2D
 @export var building_name: String
 @export var icon: Texture2D
+@export var output: ProductData
+@export var crafting_speed: float = 1.0

@@ -1,15 +1,16 @@
 class_name CollectAndDeliverAction
 extends Node
 
-enum State { IDLE, FIND_FRUIT, MOVE_TO_FRUIT, COLLECT, MOVE_TO_FACTORY, DELIVER }
+enum State { IDLE, FIND_JOB, MOVE_TO_PRODUCT, COLLECT, MOVE_TO_BUILDING, DELIVER }
 
 const RETRY_DELAY: float = 1.0
 
-var _state: State = State.FIND_FRUIT
+var _state: State = State.FIND_JOB
 var _movement_trait: MovementTrait
 var _collect_trait: CollectTrait
-var _target_fruit: Node2D
-var _target_factory: Node2D
+var _target_product: Node2D
+var _target_product_data: ProductData
+var _target_building: Building
 var _retry_timer: float = 0.0
 
 
@@ -20,7 +21,7 @@ func _ready() -> void:
 		Log.log_error(name, "Missing required traits (MovementTrait, CollectTrait)")
 		return
 	_movement_trait.movement_finished.connect(_on_movement_finished)
-	_change_state(State.FIND_FRUIT)
+	_change_state(State.FIND_JOB)
 
 
 func _process(delta: float) -> void:
@@ -28,10 +29,10 @@ func _process(delta: float) -> void:
 		State.IDLE:
 			_retry_timer -= delta
 			if _retry_timer <= 0.0:
-				_change_state(State.FIND_FRUIT)
-		State.MOVE_TO_FRUIT:
-			if not is_instance_valid(_target_fruit):
-				_change_state(State.FIND_FRUIT)
+				_change_state(State.FIND_JOB)
+		State.MOVE_TO_PRODUCT:
+			if not is_instance_valid(_target_product):
+				_change_state(State.FIND_JOB)
 
 
 func _change_state(new_state: State) -> void:
@@ -39,69 +40,72 @@ func _change_state(new_state: State) -> void:
 	_state = new_state
 
 	match _state:
-		State.FIND_FRUIT:
-			_find_fruit()
+		State.FIND_JOB:
+			_find_job()
 
 
-func _find_fruit() -> void:
+func _find_job() -> void:
 	var parent: Node2D = get_parent() as Node2D
 	if not parent:
 		return
-	_target_fruit = Utils.find_closest_target_in_group("fruit", parent)
-	if not _target_fruit:
-		_retry_timer = RETRY_DELAY
-		_change_state(State.IDLE)
-		return
-	_movement_trait.move_to(_target_fruit.global_position)
-	_state = State.MOVE_TO_FRUIT
+
+	var buildings: Array[Node] = get_tree().get_nodes_in_group("building")
+	for node: Node in buildings:
+		var building: Building = node as Building
+		if not building or not building.data or not building.data.output:
+			continue
+		for ingredient: RecipeIngredient in building.data.output.ingredients:
+			if building.storage_trait.get_count(ingredient.product) >= ingredient.count:
+				continue
+			var product: Node2D = Utils.find_closest_target_in_group(ingredient.product.group, parent)
+			if product:
+				_target_product = product
+				_target_product_data = ingredient.product
+				_target_building = building
+				_movement_trait.move_to(_target_product.global_position)
+				_state = State.MOVE_TO_PRODUCT
+				Log.log_debug(name, "Job found: deliver %s to %s" % [ingredient.product.product_name, building.data.building_name])
+				return
+
+	_retry_timer = RETRY_DELAY
+	_change_state(State.IDLE)
 
 
 func _on_movement_finished() -> void:
 	match _state:
-		State.MOVE_TO_FRUIT:
+		State.MOVE_TO_PRODUCT:
 			_do_collect()
-		State.MOVE_TO_FACTORY:
+		State.MOVE_TO_BUILDING:
 			_do_deliver()
 
 
 func _do_collect() -> void:
 	var texture: Texture2D = null
-	if is_instance_valid(_target_fruit):
-		var product: Product = _target_fruit as Product
-		if product and product.stat:
-			texture = product.stat.texture
-		_target_fruit.queue_free()
-	_target_fruit = null
+	if is_instance_valid(_target_product):
+		var product: Product = _target_product as Product
+		if product and product.data:
+			texture = product.data.texture
+		_target_product.queue_free()
+	_target_product = null
 	_collect_trait.collect(texture)
 
-	var parent: Node2D = get_parent() as Node2D
-	if not parent:
-		return
-	_target_factory = Utils.find_closest_target_in_group("factory", parent)
-	if not _target_factory:
-		Log.log_warn(name, "No factory found")
+	if not is_instance_valid(_target_building):
+		Log.log_warn(name, "Target building gone")
+		_collect_trait.deliver()
 		_retry_timer = RETRY_DELAY
 		_change_state(State.IDLE)
 		return
-	_movement_trait.move_to(_target_factory.global_position)
-	_state = State.MOVE_TO_FACTORY
+	_movement_trait.move_to(_target_building.global_position)
+	_state = State.MOVE_TO_BUILDING
 
 
 func _do_deliver() -> void:
-	if is_instance_valid(_target_factory):
-		var storage: StorageTrait = _find_trait_on(_target_factory, StorageTrait)
-		if storage:
-			storage.receive()
+	if is_instance_valid(_target_building):
+		_target_building.storage_trait.receive(_target_product_data)
 	_collect_trait.deliver()
-	_target_factory = null
-	_change_state(State.FIND_FRUIT)
-
-
-func _find_trait_on(node: Node, type: Variant) -> Node:
-	for child: Node in node.get_children():
-		if is_instance_of(child, type):
-			return child
-	return null
+	_target_building = null
+	_target_product_data = null
+	_change_state(State.FIND_JOB)
 
 
 func _find_sibling(type: Variant) -> Node:

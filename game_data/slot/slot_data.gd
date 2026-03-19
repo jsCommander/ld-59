@@ -1,4 +1,4 @@
-class_name SlotStat
+class_name SlotData
 extends Resource
 
 @export var texture: Texture2D
