@@ -1,5 +1,5 @@
 class_name UnitData
-extends Resource
+extends BaseGameData
 
 @export var texture: Texture2D
 @export var unit_name: String

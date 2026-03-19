@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("1_script")
+id = "building_plant"
 texture = ExtResource("2_texture")
 building_name = "Plant"
 output = ExtResource("3_output")

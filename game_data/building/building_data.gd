@@ -1,5 +1,5 @@
 class_name BuildingData
-extends Resource
+extends BaseGameData
 
 @export var texture: Texture2D
 @export var building_name: String

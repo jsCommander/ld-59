@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_script")
+id = "unit_worker"
 texture = ExtResource("2_texture")
 unit_name = "Worker"
 speed = 100.0

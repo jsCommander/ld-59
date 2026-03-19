@@ -11,6 +11,7 @@ product = ExtResource("4_fruit")
 
 [resource]
 script = ExtResource("1_script")
+id = "product_battery"
 texture = ExtResource("2_texture")
 product_name = "Battery"
 group = "battery"

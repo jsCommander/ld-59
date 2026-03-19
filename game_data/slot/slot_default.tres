@@ -6,5 +6,6 @@
 
 [resource]
 script = ExtResource("1_script")
+id = "slot_default"
 texture = ExtResource("2_texture")
 occupied_texture = ExtResource("3_occupied")

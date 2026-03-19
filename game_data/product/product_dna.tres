@@ -18,6 +18,7 @@ count = 1
 
 [resource]
 script = ExtResource("1_script")
+id = "product_dna"
 texture = ExtResource("2_texture")
 product_name = "DNA"
 group = "dna"

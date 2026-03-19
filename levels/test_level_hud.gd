@@ -9,5 +9,5 @@ func _ready() -> void:
 
 
 func _on_product_produced(product: ProductData) -> void:
-	if product.group == "dna":
+	if product.id == C.PRODUCT_DNA:
 		dna_counter.count += 1

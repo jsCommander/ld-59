@@ -1,5 +1,5 @@
 class_name ProductData
-extends Resource
+extends BaseGameData
 
 @export var texture: Texture2D
 @export var product_name: String
