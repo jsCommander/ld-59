@@ -12,9 +12,13 @@
 [ext_resource type="Script" uid="uid://dxmqrms5lc26q" path="res://components/traits/storage_trait.gd" id="10_storage_trait"]
 [ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="11_produce_trait"]
 [ext_resource type="Script" uid="uid://dm6yyuiyo8w83" path="res://components/actions/convert_action.gd" id="12_convert_action"]
+[ext_resource type="PackedScene" path="res://components/pan_camera/pan_camera.tscn" id="13_pan_camera"]
 
 [node name="TestLevel" type="Node2D" unique_id=1921248261]
 script = ExtResource("1_script")
+
+[node name="PanCamera" parent="." unique_id=1900383678 instance=ExtResource("13_pan_camera")]
+position = Vector2(574, 330)
 
 [node name="HUD" parent="." unique_id=1936582063 instance=ExtResource("8_hud")]
 
