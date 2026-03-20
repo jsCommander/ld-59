@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="UiTheme" load_steps=14 format=3 uid="uid://f3gbxjll107l"]
+[gd_resource type="Theme" script_class="UiTheme" format=3 uid="uid://f3gbxjll107l"]
 
 [ext_resource type="FontFile" uid="uid://bgsxvmv337dvf" path="res://game_kit/assets/fonts/Roboto-Bold.ttf" id="1_3k03w"]
 [ext_resource type="Script" uid="uid://bp1wc6jgtosqm" path="res://game_kit/resources/themes/ui_theme_resource.gd" id="2_s7c6p"]

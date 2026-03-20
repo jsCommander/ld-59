@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="BuildingData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://bj070ojkwsanx"]
 
-[ext_resource type="Script" path="res://game_data/building/building_data.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://game_kit/assets/props/prop_coin_@0.5x.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://bqvm1g3s1xls4" path="res://game_data/building/building_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d2c1i06aeu60" path="res://assets/exports/factory.png" id="2_wcomc"]
 
 [resource]
 script = ExtResource("1_script")
-id = "building_warehouse"
-texture = ExtResource("2_texture")
+texture = ExtResource("2_wcomc")
 building_name = "Warehouse"
+id = "building_warehouse"

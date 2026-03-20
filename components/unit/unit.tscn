@@ -1,22 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://unit000001"]
+[gd_scene format=3 uid="uid://unit000001"]
 
-[ext_resource type="Script" path="res://components/unit/unit.gd" id="1_script"]
-[ext_resource type="Script" path="res://components/traits/movement_trait.gd" id="2_movement"]
+[ext_resource type="Script" uid="uid://iwiltswqcnhb" path="res://components/unit/unit.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://b85jm8buvq3c7" path="res://components/traits/movement_trait.gd" id="2_movement"]
+[ext_resource type="Texture2D" uid="uid://ca5pa181y472o" path="res://assets/exports/robot.png" id="2_pv0ku"]
 [ext_resource type="PackedScene" path="res://components/traits/collect_trait.tscn" id="3_collect"]
-[ext_resource type="Script" path="res://components/actions/collect_and_deliver_action.gd" id="4_action"]
+[ext_resource type="Script" uid="uid://74t6dketjn76" path="res://components/actions/collect_and_deliver_action.gd" id="4_action"]
+[ext_resource type="Script" uid="uid://4tivtptqy8ix" path="res://components/traits/gravity_trait.gd" id="5_whekp"]
 
-[node name="Unit" type="CharacterBody2D" groups=["unit"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cidfr"]
+size = Vector2(112, 112)
+
+[node name="Unit" type="CharacterBody2D" unique_id=1327606516 groups=["unit"]]
+collision_layer = 8
 script = ExtResource("1_script")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=89653327]
 unique_name_in_owner = true
+position = Vector2(0, -60)
+texture = ExtResource("2_pv0ku")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2127658813]
+position = Vector2(0, -56)
+shape = SubResource("RectangleShape2D_cidfr")
 
-[node name="MovementTrait" type="Node" parent="."]
+[node name="MovementTrait" type="Node" parent="." unique_id=2017902771]
 script = ExtResource("2_movement")
 
-[node name="CollectTrait" parent="." instance=ExtResource("3_collect")]
+[node name="CollectTrait" parent="." unique_id=767013748 instance=ExtResource("3_collect")]
 
-[node name="CollectAndDeliverAction" type="Node" parent="."]
+[node name="CollectAndDeliverAction" type="Node" parent="." unique_id=1133880755]
 script = ExtResource("4_action")
+
+[node name="GravityTrait" type="Node" parent="." unique_id=1778138802]
+script = ExtResource("5_whekp")

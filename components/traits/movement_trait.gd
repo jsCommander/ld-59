@@ -23,7 +23,7 @@ func stop() -> void:
 	_is_moving = false
 	var body: CharacterBody2D = get_parent() as CharacterBody2D
 	if body:
-		body.velocity = Vector2.ZERO
+		body.velocity.x = 0.0
 
 
 func _physics_process(_delta: float) -> void:
@@ -36,14 +36,13 @@ func _physics_process(_delta: float) -> void:
 
 	var distance: float = body.global_position.distance_to(_target_position)
 	if distance < ARRIVAL_DISTANCE:
-		body.velocity = Vector2.ZERO
+		body.velocity.x = 0.0
 		_is_moving = false
 		movement_finished.emit()
 		return
 
 	var direction: Vector2 = body.global_position.direction_to(_target_position)
-	body.velocity = direction * _speed
-	body.move_and_slide()
+	body.velocity.x = direction.x * _speed
 
 	var sprite: Sprite2D = body.get_node_or_null("%Sprite")
 	if sprite:

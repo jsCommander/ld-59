@@ -57,10 +57,27 @@ Side-scrolling view. The camera looks at the world from the side — like a terr
 **Resolution:** 1920×1080 (16:9).
 
 **Screen split:**
-- **Top ~60%** — the game world. Scrollable horizontally. Shows the frozen surface, thawed slots with plants and buildings, robots moving between them, the drill below. The storm visual effects play here
-- **Bottom ~40%** — persistent UI panel. Building cards (showing stats, upgrade costs, production), resource bar (biofuel amount, drain rate), DNA counter, storm intensity indicator. Does not scroll with the world
+- **Top ~70%** (~756px) — the game world. Scrollable horizontally. Shows the frozen surface, thawed slots with plants and buildings, robots moving between them, the drill below. The storm visual effects play here
+- **Bottom ~30%** (~324px) — persistent UI panel. Building cards (showing stats, upgrade costs, production), resource bar (biofuel amount, drain rate), DNA counter, storm intensity indicator. Does not scroll with the world
 
 The player sees everything from the side: drill punches up through ice at the bottom of the game area, slots open left and right along the surface, plants grow upward, robots walk along the ground carrying fruits.
+
+### Dimensions
+
+Base tile: 64px. All entity sizes are multiples of the tile.
+
+| Element | Size | Tiles | Notes |
+|---------|------|-------|-------|
+| Tile | 64px | 1×1 | Base grid unit |
+| Fruit | 48px | — | Slightly smaller than a tile to reduce visual noise when many lie on the ground |
+| Unit (robot) | 128px | 2×2 | Standard character size — 2 tiles tall, reads well at 1080p |
+| Building | 192px | 3×3 | ~25% of game area height. Large enough to feel significant, small enough to leave breathing room |
+
+**Screen budget (game area = ~756px tall):**
+- Building (192px) = ~25% of game area height — fits ~3.9 buildings vertically
+- Unit (128px) = ~17% — fits ~5.9 robots vertically
+- Fruit (48px) = ~6% — unobtrusive, easy to distinguish from buildings and units
+- Horizontally: 1920/64 = 30 tiles visible, ~10 buildings or ~15 robots side by side
 
 ## Art Style
 

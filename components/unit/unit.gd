@@ -24,6 +24,12 @@ func _apply_data() -> void:
 		sprite.texture = data.texture
 
 
+func _physics_process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	move_and_slide()
+
+
 func _setup_traits() -> void:
 	if not data:
 		return

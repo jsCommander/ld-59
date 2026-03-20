@@ -21,6 +21,12 @@ C="*uid://css8o1j0l4bws"
 SB="*uid://im1hpuaks3nm"
 DR="*res://autoloads/data_registry.gd"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+
 [input]
 
 cam_left={
@@ -48,3 +54,4 @@ cam_drag={
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
