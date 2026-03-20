@@ -2,34 +2,34 @@
 
 [ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://building001" path="res://components/building/building.tscn" id="2_building"]
-[ext_resource type="Resource" path="res://game_data/building/building_plant.tres" id="3_plant_stat"]
-[ext_resource type="Resource" path="res://game_data/building/building_factory.tres" id="4_factory_stat"]
-[ext_resource type="Resource" path="res://game_data/building/building_lab.tres" id="5_lab_data"]
+[ext_resource type="Resource" uid="uid://dylouy80alifb" path="res://game_data/building/building_plant.tres" id="3_plant_stat"]
+[ext_resource type="Resource" uid="uid://diti2uwfyabkt" path="res://game_data/building/building_factory.tres" id="4_factory_stat"]
+[ext_resource type="Resource" uid="uid://bip1jisluxrnh" path="res://game_data/building/building_lab.tres" id="5_lab_data"]
 [ext_resource type="PackedScene" uid="uid://unit000001" path="res://components/unit/unit.tscn" id="6_unit"]
-[ext_resource type="Resource" path="res://game_data/unit/unit_worker.tres" id="7_unit_stat"]
+[ext_resource type="Resource" uid="uid://hf5gvu7ug36s" path="res://game_data/unit/unit_worker.tres" id="7_unit_stat"]
 [ext_resource type="PackedScene" path="res://levels/test_level_hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" path="res://components/pan_camera/pan_camera.tscn" id="9_pan_camera"]
 
-[node name="TestLevel" type="Node2D"]
+[node name="TestLevel" type="Node2D" unique_id=928072462]
 script = ExtResource("1_script")
 
-[node name="PanCamera" parent="." instance=ExtResource("9_pan_camera")]
+[node name="PanCamera" parent="." unique_id=1198606300 instance=ExtResource("9_pan_camera")]
 position = Vector2(574, 330)
 
-[node name="HUD" parent="." instance=ExtResource("8_hud")]
+[node name="HUD" parent="." unique_id=1041247837 instance=ExtResource("8_hud")]
 
-[node name="Plant1" parent="." instance=ExtResource("2_building")]
-position = Vector2(100, 300)
+[node name="Plant1" parent="." unique_id=1815334421 instance=ExtResource("2_building")]
+position = Vector2(-150, 439)
 data = ExtResource("3_plant_stat")
 
-[node name="Factory" parent="." instance=ExtResource("2_building")]
-position = Vector2(600, 450)
+[node name="Factory" parent="." unique_id=1137585473 instance=ExtResource("2_building")]
+position = Vector2(1309, 484)
 data = ExtResource("4_factory_stat")
 
-[node name="Lab" parent="." instance=ExtResource("2_building")]
-position = Vector2(800, 450)
+[node name="Lab" parent="." unique_id=1375695616 instance=ExtResource("2_building")]
+position = Vector2(781, 454)
 data = ExtResource("5_lab_data")
 
-[node name="Worker" parent="." instance=ExtResource("6_unit")]
-position = Vector2(350, 450)
+[node name="Worker" parent="." unique_id=1602668161 instance=ExtResource("6_unit")]
+position = Vector2(281, 450)
 data = ExtResource("7_unit_stat")

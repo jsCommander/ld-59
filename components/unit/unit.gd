@@ -1,13 +1,19 @@
+@tool
 class_name Unit
 extends CharacterBody2D
 
-@export var data: UnitData
+@export var data: UnitData:
+	set(value):
+		data = value
+		_apply_data()
 
 @onready var sprite: Sprite2D = %Sprite
 
 
 func _ready() -> void:
 	_apply_data()
+	if Engine.is_editor_hint():
+		return
 	_setup_traits()
 
 

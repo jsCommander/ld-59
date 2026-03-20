@@ -1,7 +1,11 @@
+@tool
 class_name Building
 extends Node2D
 
-@export var data: BuildingData
+@export var data: BuildingData:
+	set(value):
+		data = value
+		_apply_data()
 
 @onready var sprite: Sprite2D = %Sprite
 @onready var storage_trait: StorageTrait = %StorageTrait
@@ -11,6 +15,8 @@ extends Node2D
 
 func _ready() -> void:
 	_apply_data()
+	if Engine.is_editor_hint():
+		return
 	_configure_traits()
 
 

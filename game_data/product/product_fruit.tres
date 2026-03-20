@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="ProductData" format=3 uid="uid://blfm3elstrmu2"]
 
-[ext_resource type="Script" path="res://game_data/product/product_data.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://yecq628df0ge" path="res://game_data/product/product_data.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://cnd8i3fcw3tek" path="res://game_data/product/recipe_ingredient.gd" id="1_suwrn"]
 [ext_resource type="Texture2D" uid="uid://cndjqyruh8nm6" path="res://game_kit/assets/props/prop_star_@0.5x.png" id="2_texture"]
 
 [resource]
 script = ExtResource("1_script")
-id = "product_fruit"
 texture = ExtResource("2_texture")
 product_name = "Fruit"
 group = "fruit"
+id = "product_fruit"

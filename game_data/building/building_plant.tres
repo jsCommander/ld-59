@@ -1,13 +1,12 @@
-[gd_resource type="Resource" script_class="BuildingData" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://dylouy80alifb"]
 
-[ext_resource type="Script" path="res://game_data/building/building_data.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://game_kit/assets/props/prop_cake_@0.5x.png" id="2_texture"]
-[ext_resource type="Resource" path="res://game_data/product/product_fruit.tres" id="3_output"]
+[ext_resource type="Script" uid="uid://bqvm1g3s1xls4" path="res://game_data/building/building_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cmpu4v3uprydv" path="res://game_kit/assets/props/prop_cake_@0.5x.png" id="2_texture"]
+[ext_resource type="Resource" uid="uid://blfm3elstrmu2" path="res://game_data/product/product_fruit.tres" id="3_output"]
 
 [resource]
 script = ExtResource("1_script")
-id = "building_plant"
 texture = ExtResource("2_texture")
 building_name = "Plant"
 output = ExtResource("3_output")
-crafting_speed = 1.0
+id = "building_plant"

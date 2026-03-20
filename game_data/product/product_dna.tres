@@ -1,26 +1,23 @@
-[gd_resource type="Resource" script_class="ProductData" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ProductData" format=3 uid="uid://2f1c1a02y0pm"]
 
-[ext_resource type="Script" path="res://game_data/product/product_data.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://game_kit/assets/icons/icn_pollen.png" id="2_texture"]
-[ext_resource type="Script" path="res://game_data/product/recipe_ingredient.gd" id="3_recipe_script"]
-[ext_resource type="Resource" path="res://game_data/product/product_battery.tres" id="4_battery"]
-[ext_resource type="Resource" path="res://game_data/product/product_fruit.tres" id="5_fruit"]
+[ext_resource type="Script" uid="uid://yecq628df0ge" path="res://game_data/product/product_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ciy6k5rl4u27y" path="res://game_kit/assets/icons/icn_pollen.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://cnd8i3fcw3tek" path="res://game_data/product/recipe_ingredient.gd" id="3_recipe_script"]
+[ext_resource type="Resource" uid="uid://b8tya23gqulqy" path="res://game_data/product/product_battery.tres" id="4_battery"]
+[ext_resource type="Resource" uid="uid://blfm3elstrmu2" path="res://game_data/product/product_fruit.tres" id="5_fruit"]
 
 [sub_resource type="Resource" id="RecipeIngredient_battery"]
 script = ExtResource("3_recipe_script")
 product = ExtResource("4_battery")
-count = 1
 
 [sub_resource type="Resource" id="RecipeIngredient_fruit"]
 script = ExtResource("3_recipe_script")
 product = ExtResource("5_fruit")
-count = 1
 
 [resource]
 script = ExtResource("1_script")
-id = "product_dna"
 texture = ExtResource("2_texture")
 product_name = "DNA"
 group = "dna"
-ingredients = [SubResource("RecipeIngredient_battery"), SubResource("RecipeIngredient_fruit")]
-produce_time = 5.0
+ingredients = Array[ExtResource("3_recipe_script")]([SubResource("RecipeIngredient_battery"), SubResource("RecipeIngredient_fruit")])
+id = "product_dna"

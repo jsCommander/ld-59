@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="UnitData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://hf5gvu7ug36s"]
 
-[ext_resource type="Script" path="res://game_data/unit/unit_data.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://game_kit/assets/char/char_robot_smile_@0.5x.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://csup3depd4io3" path="res://game_data/unit/unit_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b2i3sw0uqe3j2" path="res://game_kit/assets/char/char_robot_smile_@0.5x.png" id="2_texture"]
 
 [resource]
 script = ExtResource("1_script")
-id = "unit_worker"
 texture = ExtResource("2_texture")
 unit_name = "Worker"
-speed = 100.0
+speed = 400.0
+id = "unit_worker"

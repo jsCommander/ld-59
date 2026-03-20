@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ProductData" format=3 uid="uid://b8tya23gqulqy"]
 
-[ext_resource type="Script" path="res://game_data/product/product_data.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://yecq628df0ge" path="res://game_data/product/product_data.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bpr48nmueiirx" path="res://game_kit/assets/icons/icn_fire.png" id="2_texture"]
 [ext_resource type="Script" uid="uid://cnd8i3fcw3tek" path="res://game_data/product/recipe_ingredient.gd" id="3_recipe_script"]
 [ext_resource type="Resource" uid="uid://blfm3elstrmu2" path="res://game_data/product/product_fruit.tres" id="4_fruit"]
@@ -11,9 +11,9 @@ product = ExtResource("4_fruit")
 
 [resource]
 script = ExtResource("1_script")
-id = "product_battery"
 texture = ExtResource("2_texture")
 product_name = "Battery"
 group = "battery"
 ingredients = Array[ExtResource("3_recipe_script")]([SubResource("RecipeIngredient_fruit")])
 produce_time = 3.0
+id = "product_battery"
