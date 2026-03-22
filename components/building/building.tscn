@@ -3,9 +3,12 @@
 [ext_resource type="Script" uid="uid://k4uvdergp2xc" path="res://components/building/building.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://d2c1i06aeu60" path="res://assets/exports/factory.png" id="2_f2m36"]
 [ext_resource type="Script" uid="uid://dxmqrms5lc26q" path="res://components/traits/storage_trait.gd" id="2_storage_trait"]
+[ext_resource type="Resource" uid="uid://diti2uwfyabkt" path="res://game_data/building/building_factory.tres" id="2_tfx30"]
 [ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="3_produce_trait"]
 [ext_resource type="Script" uid="uid://dm6yyuiyo8w83" path="res://components/actions/convert_action.gd" id="4_convert_action"]
 [ext_resource type="Script" uid="uid://4tivtptqy8ix" path="res://components/traits/gravity_trait.gd" id="6_eooop"]
+[ext_resource type="Theme" uid="uid://bgr0gs6v3nglf" path="res://resources/new_theme.tres" id="7_xgvi6"]
+[ext_resource type="PackedScene" path="res://components/traits/produce_progress_bar.tscn" id="8_progress"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f2m36"]
 size = Vector2(232, 199)
@@ -13,6 +16,7 @@ size = Vector2(232, 199)
 [node name="Building" type="CharacterBody2D" unique_id=821227983 groups=["building"]]
 collision_layer = 4
 script = ExtResource("1_script")
+data = ExtResource("2_tfx30")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1494206133]
 unique_name_in_owner = true
@@ -23,7 +27,7 @@ texture = ExtResource("2_f2m36")
 unique_name_in_owner = true
 script = ExtResource("2_storage_trait")
 
-[node name="ProduceTrait" type="Node2D" parent="." unique_id=1025391196]
+[node name="ProduceTrait" type="Node" parent="." unique_id=1025391196]
 unique_name_in_owner = true
 script = ExtResource("3_produce_trait")
 
@@ -37,3 +41,10 @@ shape = SubResource("RectangleShape2D_f2m36")
 
 [node name="GravityTrait" type="Node" parent="." unique_id=991656866]
 script = ExtResource("6_eooop")
+
+[node name="ProduceProgressBar" parent="." unique_id=1676954773 instance=ExtResource("8_progress")]
+offset_left = -112.0
+offset_top = -292.0
+offset_right = 112.0
+offset_bottom = -269.0
+theme = ExtResource("7_xgvi6")

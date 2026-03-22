@@ -1,17 +1,14 @@
 class_name ProduceTrait
-extends Node2D
+extends Node
 
 const PRODUCT_SCENE: PackedScene = preload("res://components/product/product.tscn")
 
 signal produced(product: Product)
+signal started
+signal stopped
 
 var product_data: ProductData
 var produce_time: float = 5.0
-
-@export var bar_offset: Vector2 = Vector2(0, -40)
-@export var bar_size: Vector2 = Vector2(32, 4)
-@export var bar_color: Color = Color.GREEN
-@export var bar_bg_color: Color = Color(0.2, 0.2, 0.2, 0.8)
 
 var _elapsed: float = 0.0
 var _is_producing: bool = false
@@ -26,41 +23,25 @@ func setup(product: ProductData, time: float) -> void:
 func start() -> void:
 	_elapsed = 0.0
 	_is_producing = true
-	visible = true
+	started.emit()
 	Log.log_debug(name, "Production started (%.1fs)" % produce_time)
 
 
 func stop() -> void:
 	_is_producing = false
 	_elapsed = 0.0
-	visible = false
-
-
-func _ready() -> void:
-	visible = false
-	position = bar_offset
+	stopped.emit()
 
 
 func _process(delta: float) -> void:
 	if not _is_producing:
 		return
 	_elapsed += delta
-	queue_redraw()
 	if _elapsed >= produce_time:
 		_is_producing = false
 		_elapsed = 0.0
-		visible = false
+		stopped.emit()
 		_spawn_product()
-
-
-func _draw() -> void:
-	if not _is_producing:
-		return
-	var bg_rect := Rect2(-bar_size.x / 2.0, 0, bar_size.x, bar_size.y)
-	draw_rect(bg_rect, bar_bg_color)
-	var progress: float = _elapsed / produce_time
-	var fill_rect := Rect2(-bar_size.x / 2.0, 0, bar_size.x * progress, bar_size.y)
-	draw_rect(fill_rect, bar_color)
 
 
 func _spawn_product() -> void:

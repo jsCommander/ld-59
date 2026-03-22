@@ -3,15 +3,20 @@
 [ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://building001" path="res://components/building/building.tscn" id="2_building"]
 [ext_resource type="Resource" uid="uid://dylouy80alifb" path="res://game_data/building/building_plant.tres" id="3_plant_stat"]
-[ext_resource type="Resource" uid="uid://diti2uwfyabkt" path="res://game_data/building/building_factory.tres" id="4_factory_stat"]
 [ext_resource type="Resource" uid="uid://bip1jisluxrnh" path="res://game_data/building/building_lab.tres" id="5_lab_data"]
 [ext_resource type="PackedScene" uid="uid://unit000001" path="res://components/unit/unit.tscn" id="6_unit"]
 [ext_resource type="Resource" uid="uid://hf5gvu7ug36s" path="res://game_data/unit/unit_worker.tres" id="7_unit_stat"]
 [ext_resource type="PackedScene" path="res://levels/test_level_hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" path="res://components/pan_camera/pan_camera.tscn" id="9_pan_camera"]
-[ext_resource type="TileSet" uid="uid://q1lpasm4ld64" path="res://tiles/snow.tres" id="10_wkb0e"]
+[ext_resource type="TileSet" uid="uid://q1lpasm4ld64" path="res://resources/snow.tres" id="10_wkb0e"]
 [ext_resource type="Texture2D" uid="uid://bvvci4k6bekct" path="res://components/plant/Screenshot_20260320_145038.png" id="11_wkb0e"]
+[ext_resource type="Shader" uid="uid://dclnyndh5iby0" path="res://game_kit/shaders/neon_glow.gdshader" id="12_axl34"]
 [ext_resource type="Texture2D" uid="uid://cvwmr250jhr2n" path="res://assets/exports/planet.png" id="12_paa45"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8hjdj"]
+shader = ExtResource("12_axl34")
+shader_parameter/size = 1.0
+shader_parameter/intensity = 2.8190001339025
 
 [node name="TestLevel" type="Node2D" unique_id=928072462]
 script = ExtResource("1_script")
@@ -27,14 +32,13 @@ data = ExtResource("3_plant_stat")
 
 [node name="Factory" parent="." unique_id=1137585473 instance=ExtResource("2_building")]
 position = Vector2(1792, 768)
-data = ExtResource("4_factory_stat")
 
 [node name="Lab" parent="." unique_id=1375695616 instance=ExtResource("2_building")]
 position = Vector2(832, 832)
 data = ExtResource("5_lab_data")
 
 [node name="Worker" parent="." unique_id=1602668161 instance=ExtResource("6_unit")]
-position = Vector2(256, 768)
+position = Vector2(832, 832)
 data = ExtResource("7_unit_stat")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=423254864]
@@ -47,6 +51,7 @@ position = Vector2(960, 549)
 texture = ExtResource("11_wkb0e")
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1630613575]
+material = SubResource("ShaderMaterial_8hjdj")
 position = Vector2(1344, 128)
 texture = ExtResource("12_paa45")
 

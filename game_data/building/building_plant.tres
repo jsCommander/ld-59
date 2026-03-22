@@ -1,12 +1,10 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://dylouy80alifb"]
 
 [ext_resource type="Script" uid="uid://bqvm1g3s1xls4" path="res://game_data/building/building_data.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://d2c1i06aeu60" path="res://assets/exports/factory.png" id="3_2av31"]
 [ext_resource type="Resource" uid="uid://blfm3elstrmu2" path="res://game_data/product/product_fruit.tres" id="3_output"]
 
 [resource]
 script = ExtResource("1_script")
-texture = ExtResource("3_2av31")
 building_name = "Plant"
 output = ExtResource("3_output")
 id = "building_plant"

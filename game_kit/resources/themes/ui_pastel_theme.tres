@@ -1,6 +1,5 @@
 [gd_resource type="Theme" script_class="UiTheme" format=3 uid="uid://f3gbxjll107l"]
 
-[ext_resource type="FontFile" uid="uid://bgsxvmv337dvf" path="res://game_kit/assets/fonts/Roboto-Bold.ttf" id="1_3k03w"]
 [ext_resource type="Script" uid="uid://bp1wc6jgtosqm" path="res://game_kit/resources/themes/ui_theme_resource.gd" id="2_s7c6p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nt2f"]
@@ -102,7 +101,6 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [resource]
-default_font = ExtResource("1_3k03w")
 default_font_size = 24
 Button/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_focus_color = Color(0.470588, 0.301961, 0.196078, 1)
