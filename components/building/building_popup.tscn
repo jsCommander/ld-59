@@ -14,3 +14,8 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Building Name"
 horizontal_alignment = 1
+
+[node name="DemolishButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=2]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Demolish"

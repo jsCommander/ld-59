@@ -38,7 +38,7 @@ func _on_mouse_exited() -> void:
 func _on_input_event(viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		viewport.set_input_as_handled()
-		SB.building_selected.emit(get_parent(), popup_anchor.global_position)
+		SB.entity_selected.emit(get_parent(), popup_anchor.global_position)
 
 
 func set_selected(value: bool) -> void:
