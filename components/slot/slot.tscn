@@ -1,13 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://slot0001"]
+[gd_scene format=3 uid="uid://slot0001"]
 
-[ext_resource type="Script" path="res://components/slot/slot.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://wpq2ori2wo5r" path="res://components/slot/slot.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bkvpxpqufylw1" path="res://assets/exports/slot.png" id="2_lo62m"]
+[ext_resource type="PackedScene" uid="uid://vvybwt83icjc" path="res://components/traits/highlight_trait.tscn" id="3_lo62m"]
 
-[node name="Slot" type="Node2D" groups=["slot"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lo62m"]
+size = Vector2(229, 174)
+
+[node name="Slot" type="Node2D" unique_id=1820048385 groups=["slot"]]
 script = ExtResource("1_script")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1642377402]
 unique_name_in_owner = true
+position = Vector2(0, -15)
+texture = ExtResource("2_lo62m")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="HighlightTrait" parent="." unique_id=1947576478 node_paths=PackedStringArray("target_sprite") instance=ExtResource("3_lo62m")]
+target_sprite = NodePath("../Sprite")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighlightTrait" unique_id=1736093627]
+position = Vector2(-0.5, -88)
+shape = SubResource("RectangleShape2D_lo62m")
