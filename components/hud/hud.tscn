@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://byq0wrqpptk7l"]
 
-[ext_resource type="Script" path="res://levels/test_level_hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://components/hud/hud.gd" id="1_hud"]
 [ext_resource type="PackedScene" uid="uid://d4edfn4bv30s6" path="res://game_kit/ui/components/ui_resource_count/ui_resource_count.tscn" id="2_resource_count"]
 [ext_resource type="Texture2D" uid="uid://upabxmitiqmf" path="res://assets/exports/battery.png" id="3_eq6e8"]
+[ext_resource type="PackedScene" uid="uid://popup_manager_001" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="4_popup_manager"]
+[ext_resource type="Script" path="res://components/hud/popup_manager.gd" id="5_popup_manager_script"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1097246371]
 script = ExtResource("1_hud")
@@ -17,3 +19,7 @@ theme_override_constants/margin_top = 16
 unique_name_in_owner = true
 layout_mode = 2
 icon = ExtResource("3_eq6e8")
+
+[node name="UiPopupManager" parent="." unique_id=2097246371 instance=ExtResource("4_popup_manager")]
+unique_name_in_owner = true
+script = ExtResource("5_popup_manager_script")

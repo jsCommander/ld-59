@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wpq2ori2wo5r" path="res://components/slot/slot.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bkvpxpqufylw1" path="res://assets/exports/slot.png" id="2_lo62m"]
-[ext_resource type="PackedScene" uid="uid://vvybwt83icjc" path="res://components/traits/highlight_trait.tscn" id="3_lo62m"]
+[ext_resource type="PackedScene" uid="uid://vvybwt83icjc" path="res://components/traits/selectable_trait.tscn" id="3_lo62m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lo62m"]
 size = Vector2(229, 174)
@@ -15,9 +15,12 @@ unique_name_in_owner = true
 position = Vector2(0, -15)
 texture = ExtResource("2_lo62m")
 
-[node name="HighlightTrait" parent="." unique_id=1947576478 node_paths=PackedStringArray("target_sprite") instance=ExtResource("3_lo62m")]
+[node name="SelectableTrait" parent="." unique_id=1947576478 node_paths=PackedStringArray("target_sprite") instance=ExtResource("3_lo62m")]
 target_sprite = NodePath("../Sprite")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HighlightTrait" unique_id=1736093627]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableTrait" unique_id=1736093627]
 position = Vector2(-0.5, -88)
 shape = SubResource("RectangleShape2D_lo62m")
+
+[node name="PopupAnchor" type="Marker2D" parent="SelectableTrait"]
+position = Vector2(0, -180)

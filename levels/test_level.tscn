@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://bip1jisluxrnh" path="res://game_data/building/building_lab.tres" id="5_lab_data"]
 [ext_resource type="PackedScene" uid="uid://unit000001" path="res://components/unit/unit.tscn" id="6_unit"]
 [ext_resource type="Resource" uid="uid://hf5gvu7ug36s" path="res://game_data/unit/unit_worker.tres" id="7_unit_stat"]
-[ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://levels/test_level_hud.tscn" id="8_hud"]
+[ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://components/hud/hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" path="res://components/pan_camera/pan_camera.tscn" id="9_pan_camera"]
 [ext_resource type="TileSet" uid="uid://q1lpasm4ld64" path="res://resources/snow.tres" id="10_wkb0e"]
 [ext_resource type="Texture2D" uid="uid://bvvci4k6bekct" path="res://components/plant/Screenshot_20260320_145038.png" id="11_wkb0e"]
