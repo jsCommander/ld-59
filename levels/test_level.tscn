@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" path="res://components/pan_camera/pan_camera.tscn" id="9_pan_camera"]
 [ext_resource type="TileSet" uid="uid://q1lpasm4ld64" path="res://resources/snow.tres" id="10_wkb0e"]
 [ext_resource type="Texture2D" uid="uid://bvvci4k6bekct" path="res://components/plant/Screenshot_20260320_145038.png" id="11_wkb0e"]
-[ext_resource type="Shader" uid="uid://dclnyndh5iby0" path="res://game_kit/shaders/neon_glow.gdshader" id="12_axl34"]
+[ext_resource type="Shader" path="res://game_kit/shaders/neon_glow.gdshader" id="12_axl34"]
 [ext_resource type="Texture2D" uid="uid://cvwmr250jhr2n" path="res://assets/exports/planet.png" id="12_paa45"]
 [ext_resource type="PackedScene" uid="uid://slot0001" path="res://components/slot/slot.tscn" id="13_axl34"]
 [ext_resource type="Script" uid="uid://dgf4x68entef" path="res://components/building/build_manager.gd" id="14_build_mgr"]

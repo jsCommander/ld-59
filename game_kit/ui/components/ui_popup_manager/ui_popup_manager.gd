@@ -2,6 +2,7 @@ class_name UiPopupManager
 extends Control
 
 var _current_popup: Control
+var _current_target: Node2D
 var _anchor_position: Vector2
 
 
@@ -21,8 +22,9 @@ func _process(_delta: float) -> void:
 	_update_popup_position()
 
 
-func show_popup(popup: Control, anchor_position: Vector2) -> void:
+func show_popup(target: Node2D, popup: Control, anchor_position: Vector2) -> void:
 	close_popup()
+	_current_target = target
 	_anchor_position = anchor_position
 	_current_popup = popup
 	add_child(popup)
@@ -36,6 +38,12 @@ func close_popup() -> void:
 	if _current_popup:
 		_current_popup.queue_free()
 		_current_popup = null
+		_current_target = null
+		_after_popup_closed()
+
+
+func _after_popup_closed() -> void:
+	pass
 
 
 func _update_popup_position() -> void:

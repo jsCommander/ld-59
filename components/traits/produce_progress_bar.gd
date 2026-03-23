@@ -19,7 +19,6 @@ func _ready() -> void:
 
 	_produce_trait.started.connect(_on_started)
 	_produce_trait.stopped.connect(_on_stopped)
-	_produce_trait.produced.connect(_on_produced)
 
 
 func _on_started() -> void:
@@ -28,12 +27,6 @@ func _on_started() -> void:
 
 
 func _on_stopped() -> void:
-	visible = false
-	value = 0
-	set_process(false)
-
-
-func _on_produced(_product: Product) -> void:
 	visible = false
 	value = 0
 	set_process(false)

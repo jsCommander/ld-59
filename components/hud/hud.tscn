@@ -1,24 +1,15 @@
 [gd_scene format=3 uid="uid://byq0wrqpptk7l"]
 
 [ext_resource type="Script" path="res://components/hud/hud.gd" id="1_hud"]
-[ext_resource type="PackedScene" uid="uid://d4edfn4bv30s6" path="res://game_kit/ui/components/ui_resource_count/ui_resource_count.tscn" id="2_resource_count"]
-[ext_resource type="Texture2D" uid="uid://upabxmitiqmf" path="res://assets/exports/battery.png" id="3_eq6e8"]
-[ext_resource type="PackedScene" uid="uid://popup_manager_001" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="4_popup_manager"]
+[ext_resource type="PackedScene" path="res://components/hud/hud_products_bar.tscn" id="2_products_bar"]
+[ext_resource type="PackedScene" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="4_popup_manager"]
 [ext_resource type="Script" path="res://components/hud/popup_manager.gd" id="5_popup_manager_script"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1097246371]
 script = ExtResource("1_hud")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=393069588]
-offset_right = 120.0
-offset_bottom = 120.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-
-[node name="DnaCounter" parent="MarginContainer" unique_id=382100180 instance=ExtResource("2_resource_count")]
+[node name="HudProductsBar" parent="." instance=ExtResource("2_products_bar")]
 unique_name_in_owner = true
-layout_mode = 2
-icon = ExtResource("3_eq6e8")
 
 [node name="UiPopupManager" parent="." unique_id=2097246371 instance=ExtResource("4_popup_manager")]
 unique_name_in_owner = true

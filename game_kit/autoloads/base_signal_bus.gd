@@ -14,16 +14,17 @@ func _subscribe_to_all_signals() -> void:
 		if _is_builtin_signal(sig_name):
 			continue
 		var arg_count: int = sig_info.args.size()
-		connect(sig_name, _log_signal.bind(arg_count, sig_name))
+		connect(sig_name, _make_logger(sig_name, arg_count))
 		Log.log_debug(name, "Subscribed to signal: %s (args: %d)" % [sig_name, arg_count])
 
 
-func _log_signal(
-	a1 = null, a2 = null, a3 = null, a4 = null, a5 = null,
-	arg_count: int = 0, sig_name: String = ""
-) -> void:
-	var args: Array = [a1, a2, a3, a4, a5].slice(0, arg_count)
-	Log.log_info(name, "Emitted '%s' with args: %s" % [sig_name, args])
+func _make_logger(sig_name: String, arg_count: int) -> Callable:
+	match arg_count:
+		0: return func() -> void: Log.log_info(name, "Emitted '%s' with args: []" % sig_name)
+		1: return func(a1: Variant) -> void: Log.log_info(name, "Emitted '%s' with args: %s" % [sig_name, [a1]])
+		2: return func(a1: Variant, a2: Variant) -> void: Log.log_info(name, "Emitted '%s' with args: %s" % [sig_name, [a1, a2]])
+		3: return func(a1: Variant, a2: Variant, a3: Variant) -> void: Log.log_info(name, "Emitted '%s' with args: %s" % [sig_name, [a1, a2, a3]])
+		_: return func(a1: Variant, a2: Variant, a3: Variant, a4: Variant) -> void: Log.log_info(name, "Emitted '%s' with args: %s" % [sig_name, [a1, a2, a3, a4]])
 
 
 func _is_builtin_signal(sig_name: String) -> bool:

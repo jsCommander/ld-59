@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://vvybwt83icjc"]
 
-[ext_resource type="Script" uid="uid://dy2sc8amebpfv" path="res://components/traits/selectable_trait.gd" id="1_script"]
+[ext_resource type="Script" path="res://components/traits/selectable_trait.gd" id="1_script"]
 [ext_resource type="Shader" uid="uid://ccfppe65jus2b" path="res://game_kit/shaders/highlight.gdshader" id="2_ruw0g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_highlight"]

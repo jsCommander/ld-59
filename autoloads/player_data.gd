@@ -2,6 +2,10 @@ class_name PlayerData extends Node
 
 signal data_changed
 
+var products: Dictionary[String, int]:
+	get:
+		return _products
+
 var _products: Dictionary[String, int] = {
 	C.PRODUCT_FRUIT: 0,
 	C.PRODUCT_BATTERY: 0,
