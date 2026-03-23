@@ -1,13 +1,13 @@
 extends CanvasLayer
 
-@onready var dna_counter: UiResourceCount = %DnaCounter
+@onready var fruit_counter: UiResourceCount = %FruitCounter
+@onready var battery_counter: UiResourceCount = %BatteryCounter
 
 
 func _ready() -> void:
-	SB.product_produced.connect(_on_product_produced)
-	dna_counter.count = 0
+	PD.data_changed.connect(_on_data_changed)
 
 
-func _on_product_produced(product: ProductData) -> void:
-	if product.id == C.PRODUCT_DNA:
-		dna_counter.count += 1
+func _on_data_changed() -> void:
+	fruit_counter.count = PD.get_product(C.PRODUCT_FRUIT)
+	battery_counter.count = PD.get_product(C.PRODUCT_BATTERY)

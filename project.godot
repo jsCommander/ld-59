@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 C="*uid://css8o1j0l4bws"
 SB="*uid://im1hpuaks3nm"
 DR="*res://autoloads/data_registry.gd"
+PD="*res://autoloads/player_data.gd"
 
 [display]
 

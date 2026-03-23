@@ -75,4 +75,4 @@ func _on_auto_produced(_product: Product) -> void:
 
 
 func _on_product_converted(product: ProductData) -> void:
-	SB.product_produced.emit(product)
+	SB.product_produced.emit(product.id, 1)
