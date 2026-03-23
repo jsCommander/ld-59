@@ -6,3 +6,4 @@ extends BaseGameData
 @export var icon: Texture2D
 @export var output: ProductData
 @export var crafting_speed: float = 1.0
+@export var upgrades: Array[BuildingUpgrade] = []

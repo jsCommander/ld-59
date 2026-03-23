@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bqvm1g3s1xls4" path="res://game_data/building/building_data.gd" id="1_script"]
 [ext_resource type="Resource" uid="uid://blfm3elstrmu2" path="res://game_data/product/product_fruit.tres" id="3_output"]
+[ext_resource type="Resource" path="res://game_data/upgrade/building_upgrade_speed.tres" id="4_upgrade"]
+[ext_resource type="Resource" path="res://game_data/upgrade/building_upgrade_produce.tres" id="5_upgrade"]
 
 [resource]
 script = ExtResource("1_script")
 building_name = "Plant"
 output = ExtResource("3_output")
+upgrades = [ExtResource("4_upgrade"), ExtResource("5_upgrade")]
 id = "building_plant"

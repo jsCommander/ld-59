@@ -1,0 +1,6 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://game_data/cost_function/cost_function_linear.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")

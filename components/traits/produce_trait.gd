@@ -6,6 +6,7 @@ signal stopped
 
 var product_data: ProductData
 var produce_time: float = 5.0
+var produce_count: int = 1
 
 var _elapsed: float = 0.0
 var _is_producing: bool = false
@@ -46,4 +47,4 @@ func _produce() -> void:
 		Log.log_warn(name, "No product_data set")
 		return
 	Log.log_debug(name, "Produced %s" % product_data.product_name)
-	SB.product_produced.emit(product_data.id, 1)
+	SB.product_produced.emit(product_data.id, produce_count)
