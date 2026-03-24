@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Recipe" format=3]
+
+[ext_resource type="Script" path="res://game_data/recipe/recipe.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://2f1c1a02y0pm" path="res://game_data/product/product_dna.tres" id="2_output"]
+[ext_resource type="Script" uid="uid://cnd8i3fcw3tek" path="res://game_data/product/recipe_ingredient.gd" id="3_recipe_script"]
+[ext_resource type="Resource" uid="uid://b8tya23gqulqy" path="res://game_data/product/product_battery.tres" id="4_battery"]
+[ext_resource type="Resource" uid="uid://blfm3elstrmu2" path="res://game_data/product/product_fruit.tres" id="5_fruit"]
+
+[sub_resource type="Resource" id="RecipeIngredient_battery"]
+script = ExtResource("3_recipe_script")
+product = ExtResource("4_battery")
+
+[sub_resource type="Resource" id="RecipeIngredient_fruit"]
+script = ExtResource("3_recipe_script")
+product = ExtResource("5_fruit")
+
+[resource]
+script = ExtResource("1_script")
+output = ExtResource("2_output")
+ingredients = Array[ExtResource("3_recipe_script")]([SubResource("RecipeIngredient_battery"), SubResource("RecipeIngredient_fruit")])

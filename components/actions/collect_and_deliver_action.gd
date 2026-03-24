@@ -49,24 +49,7 @@ func _find_job() -> void:
 	if not parent:
 		return
 
-	var buildings: Array[Node] = get_tree().get_nodes_in_group("building")
-	for node: Node in buildings:
-		var building: Building = node as Building
-		if not building or not building.data or not building.data.output:
-			continue
-		for ingredient: RecipeIngredient in building.data.output.ingredients:
-			if building.storage_trait.get_count(ingredient.product) >= ingredient.count:
-				continue
-			var product: Node2D = Utils.find_closest_target_in_group(ingredient.product.group, parent)
-			if product:
-				_target_product = product
-				_target_product_data = ingredient.product
-				_target_building = building
-				_movement_trait.move_to(_target_product.global_position)
-				_state = State.MOVE_TO_PRODUCT
-				Log.log_debug(name, "Job found: deliver %s to %s" % [ingredient.product.product_name, building.data.building_name])
-				return
-
+	# TODO: юниты пока без работы — storage выпилен, доставка отключена
 	_retry_timer = RETRY_DELAY
 	_change_state(State.IDLE)
 
@@ -100,8 +83,6 @@ func _do_collect() -> void:
 
 
 func _do_deliver() -> void:
-	if is_instance_valid(_target_building):
-		_target_building.storage_trait.receive(_target_product_data)
 	_collect_trait.deliver()
 	_target_building = null
 	_target_product_data = null

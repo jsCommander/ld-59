@@ -50,7 +50,7 @@ func _update_upgrade_buttons() -> void:
 
 
 func _update_stats() -> void:
-	if not _building.data.output:
+	if not _building.data.recipe:
 		stats_label.visible = false
 		return
 	var time: float = _building.produce_trait.produce_time

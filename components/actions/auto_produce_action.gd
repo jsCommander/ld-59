@@ -2,6 +2,7 @@ class_name AutoProduceAction
 extends Node
 
 var _produce_trait: ProduceTrait
+var _cost: Dictionary = {}
 
 
 func _ready() -> void:
@@ -15,11 +16,29 @@ func _ready() -> void:
 
 func _deferred_start() -> void:
 	await get_tree().process_frame
-	_produce_trait.start()
+	if _produce_trait.recipe:
+		_cost = _produce_trait.recipe.get_cost()
+	_try_start()
+
+
+func _try_start() -> void:
+	if _cost.is_empty() or PD.can_afford(_cost):
+		if not _cost.is_empty():
+			PD.spend(_cost)
+		_produce_trait.start()
+	else:
+		PD.data_changed.connect(_on_data_changed)
+
+
+func _on_data_changed() -> void:
+	if PD.can_afford(_cost):
+		PD.data_changed.disconnect(_on_data_changed)
+		PD.spend(_cost)
+		_produce_trait.start()
 
 
 func _on_stopped() -> void:
-	_produce_trait.call_deferred("start")
+	call_deferred("_try_start")
 
 
 func _find_sibling(type: Variant) -> Node:

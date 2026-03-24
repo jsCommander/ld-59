@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://k4uvdergp2xc" path="res://components/building/building.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://d2c1i06aeu60" path="res://assets/exports/factory.png" id="2_f2m36"]
-[ext_resource type="Script" uid="uid://dxmqrms5lc26q" path="res://components/traits/storage_trait.gd" id="2_storage_trait"]
 [ext_resource type="Resource" uid="uid://diti2uwfyabkt" path="res://game_data/building/building_factory.tres" id="2_tfx30"]
 [ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="3_produce_trait"]
 [ext_resource type="Script" path="res://components/actions/auto_produce_action.gd" id="4_auto_produce"]
@@ -33,10 +32,6 @@ data = ExtResource("2_tfx30")
 unique_name_in_owner = true
 position = Vector2(0, -123)
 texture = ExtResource("2_f2m36")
-
-[node name="StorageTrait" type="Node" parent="." unique_id=1193840689]
-unique_name_in_owner = true
-script = ExtResource("2_storage_trait")
 
 [node name="ProduceTrait" type="Node" parent="." unique_id=1025391196]
 unique_name_in_owner = true

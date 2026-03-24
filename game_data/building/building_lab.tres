@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bqvm1g3s1xls4" path="res://game_data/building/building_data.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://d2c1i06aeu60" path="res://assets/exports/factory.png" id="3_6uysd"]
-[ext_resource type="Resource" uid="uid://2f1c1a02y0pm" path="res://game_data/product/product_dna.tres" id="3_output"]
+[ext_resource type="Resource" path="res://game_data/recipe/recipe_dna.tres" id="3_recipe"]
 [ext_resource type="Resource" path="res://game_data/upgrade/building_upgrade_speed.tres" id="4_upgrade"]
 [ext_resource type="Resource" path="res://game_data/upgrade/building_upgrade_produce.tres" id="5_upgrade"]
 
@@ -10,6 +10,6 @@
 script = ExtResource("1_script")
 texture = ExtResource("3_6uysd")
 building_name = "Lab"
-output = ExtResource("3_output")
+recipe = ExtResource("3_recipe")
 upgrades = [ExtResource("4_upgrade"), ExtResource("5_upgrade")]
 id = "building_lab"

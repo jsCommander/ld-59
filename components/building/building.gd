@@ -10,7 +10,6 @@ signal upgrade_applied(upgrade: BuildingUpgrade)
 		_apply_data()
 
 @onready var sprite: Sprite2D = %Sprite
-@onready var storage_trait: StorageTrait = %StorageTrait
 @onready var produce_trait: ProduceTrait = %ProduceTrait
 
 var purchased_upgrades: Dictionary = {}
@@ -33,36 +32,19 @@ func _apply_data() -> void:
 func _configure_traits() -> void:
 	if not data:
 		return
+	_configure_produce_trait()
 
-	if not data.output:
-		_configure_storage_only()
-	elif data.output.ingredients.is_empty():
-		_configure_auto_producer()
+
+func _configure_produce_trait() -> void:
+	if not data.recipe:
+		Log.log_info(name, "No recipe, produce disabled")
+		return
+	produce_trait.setup(data.recipe)
+	if data.recipe.ingredients.is_empty():
+		Log.log_info(name, "Configured as auto-producer: %s" % data.recipe.output.product_name)
 	else:
-		_configure_factory()
+		Log.log_info(name, "Configured as factory: %s" % data.recipe.output.product_name)
 
-
-func _configure_storage_only() -> void:
-	storage_trait.setup([])
-	produce_trait.process_mode = PROCESS_MODE_DISABLED
-	Log.log_info(name, "Configured as storage")
-
-
-func _configure_auto_producer() -> void:
-	storage_trait.process_mode = PROCESS_MODE_DISABLED
-	var effective_time: float = data.output.produce_time / data.crafting_speed
-	produce_trait.setup(data.output, effective_time)
-	Log.log_info(name, "Configured as auto-producer: %s" % data.output.product_name)
-
-
-func _configure_factory() -> void:
-	var accepted: Array[ProductData] = []
-	for ingredient: RecipeIngredient in data.output.ingredients:
-		accepted.append(ingredient.product)
-	storage_trait.setup(accepted)
-	var effective_time: float = data.output.produce_time / data.crafting_speed
-	produce_trait.setup(data.output, effective_time)
-	Log.log_info(name, "Configured as factory: %s" % data.output.product_name)
 
 
 func get_upgrade_level(upgrade: BuildingUpgrade) -> int:
@@ -86,7 +68,7 @@ func get_available_upgrades() -> Array[BuildingUpgrade]:
 
 
 func _recalculate_stats() -> void:
-	if not data or not data.output:
+	if not data or not data.recipe:
 		return
 	var total_speed_bonus: float = 0.0
 	var total_extra_produce: int = 0
@@ -94,7 +76,5 @@ func _recalculate_stats() -> void:
 		var level: int = purchased_upgrades[upgrade]
 		total_speed_bonus += upgrade.speed_bonus * level
 		total_extra_produce += upgrade.extra_produce * level
-	var effective_speed: float = data.crafting_speed * (1.0 + total_speed_bonus)
-	var effective_time: float = data.output.produce_time / effective_speed
-	produce_trait.setup(data.output, effective_time)
-	produce_trait.produce_count = 1 + total_extra_produce
+	var effective_time: float = data.recipe.produce_time / (1.0 + total_speed_bonus)
+	produce_trait.setup(data.recipe, effective_time, 1 + total_extra_produce)
