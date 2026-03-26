@@ -4,7 +4,7 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	PD.data_changed.connect(_on_data_changed)
+	SB.player_data_changed.connect(_on_data_changed)
 	_on_data_changed()
 
 

@@ -21,7 +21,7 @@ func _ready() -> void:
 	demolish_button.pressed.connect(_on_demolish_pressed)
 	_update_stats()
 	_show_upgrades()
-	PD.data_changed.connect(_update_upgrade_buttons)
+	SB.player_data_changed.connect(_update_upgrade_buttons)
 
 
 func _show_upgrades() -> void:

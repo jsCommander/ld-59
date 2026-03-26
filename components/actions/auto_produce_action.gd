@@ -27,12 +27,12 @@ func _try_start() -> void:
 			PD.spend(_cost)
 		_produce_trait.start()
 	else:
-		PD.data_changed.connect(_on_data_changed)
+		SB.player_data_changed.connect(_on_data_changed)
 
 
 func _on_data_changed() -> void:
 	if PD.can_afford(_cost):
-		PD.data_changed.disconnect(_on_data_changed)
+		SB.player_data_changed.disconnect(_on_data_changed)
 		PD.spend(_cost)
 		_produce_trait.start()
 
