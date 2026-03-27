@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://dnfgvwc8qcvgq"]
+
+[ext_resource type="Script" uid="uid://bnmswbxhwq0fw" path="res://components/developer/developer.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://ca5pa181y472o" path="res://assets/exports/robot.png" id="2"]
+[ext_resource type="PackedScene" uid="uid://vvybwt83icjc" path="res://components/traits/selectable_trait.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/traits/produce_progress_bar.tscn" id="4"]
+[ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="5"]
+[ext_resource type="Shader" uid="uid://ccfppe65jus2b" path="res://game_kit/shaders/highlight.gdshader" id="6_nuffs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygj1c"]
+resource_local_to_scene = true
+shader = ExtResource("6_nuffs")
+shader_parameter/enabled = true
+shader_parameter/highlight_color = Color(0.020061519, 1.010103, 0, 0.7647059)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(229, 174)
+
+[node name="Developer" type="Node2D" unique_id=1391907512 groups=["developer"]]
+script = ExtResource("1")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1]
+unique_name_in_owner = true
+position = Vector2(0, -59)
+texture = ExtResource("2")
+
+[node name="NameLabel" type="Label" parent="." unique_id=2]
+unique_name_in_owner = true
+offset_left = -60.0
+offset_top = -195.0
+offset_right = 60.0
+offset_bottom = -175.0
+horizontal_alignment = 1
+
+[node name="ProduceTrait" type="Node" parent="." unique_id=3]
+unique_name_in_owner = true
+script = ExtResource("5")
+
+[node name="ProduceProgressBar" parent="." unique_id=1458091897 instance=ExtResource("4")]
+offset_left = -112.0
+offset_top = -240.0
+offset_right = 112.0
+offset_bottom = -217.0
+
+[node name="SelectableTrait" parent="." unique_id=509410693 node_paths=PackedStringArray("target_sprite") instance=ExtResource("3")]
+target_sprite = NodePath("../Sprite")
+highlight_material = SubResource("ShaderMaterial_ygj1c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectableTrait" unique_id=773635628]
+position = Vector2(-0.5, -88)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="PopupAnchor" type="Marker2D" parent="SelectableTrait" unique_id=1017217365]
+position = Vector2(0, -180)

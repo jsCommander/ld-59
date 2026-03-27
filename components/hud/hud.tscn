@@ -1,15 +1,48 @@
 [gd_scene format=3 uid="uid://byq0wrqpptk7l"]
 
 [ext_resource type="Script" path="res://components/hud/hud.gd" id="1_hud"]
-[ext_resource type="PackedScene" path="res://components/hud/hud_products_bar.tscn" id="2_products_bar"]
 [ext_resource type="PackedScene" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="4_popup_manager"]
 [ext_resource type="Script" path="res://components/hud/popup_manager.gd" id="5_popup_manager_script"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1097246371]
+layer = 5
 script = ExtResource("1_hud")
 
-[node name="HudProductsBar" parent="." instance=ExtResource("2_products_bar")]
+[node name="StatsPanel" type="PanelContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -220.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 70.0
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="MoneyLabel" type="Label" parent="StatsPanel/MarginContainer/VBoxContainer" unique_id=1]
 unique_name_in_owner = true
+layout_mode = 2
+text = "$0"
+
+[node name="TechDebtLabel" type="Label" parent="StatsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Tech Debt"
+
+[node name="TechDebtBar" type="ProgressBar" parent="StatsPanel/MarginContainer/VBoxContainer" unique_id=2]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+show_percentage = false
 
 [node name="UiPopupManager" parent="." unique_id=2097246371 instance=ExtResource("4_popup_manager")]
 unique_name_in_owner = true

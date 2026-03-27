@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DeveloperData" format=3]
+
+[ext_resource type="Script" path="res://game_data/developer/developer_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "developer_vibecoder"
+dev_name = "Вайбкодер"
+speed = 3.0
+quality = 0.3

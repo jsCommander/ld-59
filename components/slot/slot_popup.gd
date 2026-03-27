@@ -14,14 +14,12 @@ func _ready() -> void:
 	if not _slot:
 		Log.log_warn(name, "No slot target")
 		return
-	for building_data: BuildingData in DR.buildings.values():
+	for dev_data: DeveloperData in DR.developers.values():
 		var button: Button = Button.new()
-		button.text = building_data.building_name
-		if building_data.icon:
-			button.icon = building_data.icon
-		button.pressed.connect(_on_building_selected.bind(building_data))
+		button.text = dev_data.dev_name
+		button.pressed.connect(_on_developer_selected.bind(dev_data))
 		button_container.add_child(button)
 
 
-func _on_building_selected(building_data: BuildingData) -> void:
-	SB.build_requested.emit(_slot, building_data)
+func _on_developer_selected(dev_data: DeveloperData) -> void:
+	SB.hire_requested.emit(_slot, dev_data)
