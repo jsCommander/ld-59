@@ -10,15 +10,29 @@ const TASK_CARD: PackedScene = preload("res://components/task_queue/task_card.ts
 func _ready() -> void:
 	drag_layer.add_to_group("drag_layer")
 	SB.task_spawned.connect(_on_task_spawned)
-	SB.bug_generated.connect(_on_bug_generated)
+	SB.sprint_ended.connect(_on_sprint_ended)
 
 
 func _on_task_spawned(task_data: TaskData) -> void:
 	_add_card(task_data)
 
 
-func _on_bug_generated(task_data: TaskData) -> void:
-	_add_card(task_data)
+func _on_sprint_ended(_sprint_number: int) -> void:
+	# Penalize unfixed bugs, then clear all remaining cards
+	var remaining: int = 0
+	for card: TaskCard in card_container.get_children():
+		remaining += 1
+		if card.task_data.task_type == TaskData.TaskType.BUG:
+			SB.task_expired.emit(card.task_data)
+		card.queue_free()
+	# Also check drag layer for cards mid-drag
+	for node: Node in drag_layer.get_children():
+		if node is TaskCard:
+			remaining += 1
+			if node.task_data.task_type == TaskData.TaskType.BUG:
+				SB.task_expired.emit(node.task_data)
+			node.queue_free()
+	Log.log_info(name, "Sprint ended, cleared %d remaining cards" % remaining)
 
 
 func _add_card(task_data: TaskData) -> void:

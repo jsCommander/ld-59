@@ -25,23 +25,28 @@ func increase_tech_debt(delta: float) -> void:
 
 
 func _on_task_completed(developer: Developer, task: TaskData) -> void:
-	earn(task.reward)
-	increase_tech_debt((1.0 - developer.data.quality) * 0.05)
-	var bugs: int = roundi(task.complexity * (1.0 - developer.data.quality) * (1.0 + tech_debt))
-	Log.log_info(name, "Task completed: %s, earned %d, bugs: %d" % [task.task_name, task.reward, bugs])
-	for i: int in bugs:
-		var bug: TaskData = TaskData.new()
-		bug.task_name = "Bug in %s" % task.task_name
-		bug.complexity = task.complexity
-		bug.reward = 0
-		bug.penalty = task.penalty
-		bug.deadline = 20.0 + task.complexity * 5.0
-		bug.task_type = TaskData.TaskType.BUG
-		SB.bug_generated.emit(bug)
+	var quality: float = developer.data.quality
+
+	match task.task_type:
+		TaskData.TaskType.FEATURE:
+			var earned: int = roundi(task.reward * quality)
+			earn(earned)
+			increase_tech_debt(task.debt_delta * (1.0 - quality))
+			Log.log_info(name, "Feature completed: %s, earned %d" % [task.task_name, earned])
+
+		TaskData.TaskType.BUG:
+			Log.log_info(name, "Bug fixed: %s" % task.task_name)
+
+		TaskData.TaskType.REFACTOR:
+			increase_tech_debt(-task.debt_delta * quality)
+			Log.log_info(name, "Refactor completed: %s" % task.task_name)
 
 
 func _on_task_expired(task: TaskData) -> void:
-	if task.task_type == TaskData.TaskType.BUG:
-		spend(task.penalty)
-		increase_tech_debt(0.1)
-		Log.log_warn(name, "Bug expired! Penalty: %d" % task.penalty)
+	match task.task_type:
+		TaskData.TaskType.BUG:
+			spend(task.penalty)
+			increase_tech_debt(0.1)
+			Log.log_warn(name, "Bug expired! Penalty: %d" % task.penalty)
+		TaskData.TaskType.REFACTOR:
+			Log.log_info(name, "Refactor expired: %s" % task.task_name)

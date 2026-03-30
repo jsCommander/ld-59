@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://components/traits/produce_progress_bar.tscn" id="4"]
 [ext_resource type="Script" uid="uid://bd8srdm1w782q" path="res://components/traits/produce_trait.gd" id="5"]
 [ext_resource type="Shader" uid="uid://ccfppe65jus2b" path="res://game_kit/shaders/highlight.gdshader" id="6_nuffs"]
+[ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="7_dmgnum"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ygj1c"]
 resource_local_to_scene = true
@@ -52,3 +53,6 @@ shape = SubResource("RectangleShape2D_1")
 
 [node name="PopupAnchor" type="Marker2D" parent="SelectableTrait" unique_id=1017217365]
 position = Vector2(0, -180)
+
+[node name="DamageNumber" parent="." instance=ExtResource("7_dmgnum")]
+position = Vector2(0, -120)

@@ -1,15 +1,11 @@
 class_name TaskCard
 extends PanelContainer
 
-signal expired(task_data: TaskData)
-
 var task_data: TaskData
 
 @onready var title_label: Label = %TitleLabel
 @onready var complexity_label: Label = %ComplexityLabel
-@onready var deadline_bar: ProgressBar = %DeadlineBar
 
-var _elapsed: float = 0.0
 var _is_dragging: bool = false
 var _original_parent: Node
 var _original_index: int = 0
@@ -22,26 +18,22 @@ func setup(data: TaskData) -> void:
 func _ready() -> void:
 	if not task_data:
 		return
-	var type_str: String = "BUG" if task_data.task_type == TaskData.TaskType.BUG else "TASK"
+	var type_str: String
+	match task_data.task_type:
+		TaskData.TaskType.FEATURE: type_str = "FEATURE"
+		TaskData.TaskType.BUG: type_str = "BUG"
+		TaskData.TaskType.REFACTOR: type_str = "REFACTOR"
 	title_label.text = "[%s] %s" % [type_str, task_data.task_name]
 	complexity_label.text = "x%d" % task_data.complexity
-	deadline_bar.max_value = task_data.deadline
-	deadline_bar.value = task_data.deadline
-	if task_data.task_type == TaskData.TaskType.BUG:
-		add_theme_color_override("font_color", Color.RED)
+	match task_data.task_type:
+		TaskData.TaskType.BUG:
+			add_theme_color_override("font_color", Color.RED)
+		TaskData.TaskType.REFACTOR:
+			add_theme_color_override("font_color", Color.CORNFLOWER_BLUE)
 	SB.task_drop_consumed.connect(_on_drop_consumed)
 
 
-func _process(delta: float) -> void:
-	_elapsed += delta
-	deadline_bar.value = task_data.deadline - _elapsed
-
-	if _elapsed >= task_data.deadline:
-		SB.task_expired.emit(task_data)
-		expired.emit(task_data)
-		queue_free()
-		return
-
+func _process(_delta: float) -> void:
 	if _is_dragging:
 		global_position = get_viewport().get_mouse_position() - size / 2
 

@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://slot0001" path="res://components/slot/slot.tscn" id="13_axl34"]
 [ext_resource type="Script" uid="uid://dgf4x68entef" path="res://components/building/build_manager.gd" id="14_build_mgr"]
 [ext_resource type="PackedScene" path="res://components/task_queue/task_queue.tscn" id="15_task_queue"]
-[ext_resource type="Script" path="res://components/task_queue/task_spawner.gd" id="16_task_spawner"]
+[ext_resource type="Script" path="res://components/sprint/sprint_manager.gd" id="16_sprint_mgr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8hjdj"]
 shader = ExtResource("12_axl34")
@@ -53,8 +53,8 @@ position = Vector2(1920, 832)
 
 [node name="TaskQueue" parent="." instance=ExtResource("15_task_queue")]
 
-[node name="TaskSpawner" type="Node" parent="." unique_id=999999999]
-script = ExtResource("16_task_spawner")
+[node name="SprintManager" type="Node" parent="." unique_id=999999999]
+script = ExtResource("16_sprint_mgr")
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1630613575]
 material = SubResource("ShaderMaterial_8hjdj")
