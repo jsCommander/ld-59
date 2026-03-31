@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bslewguntq8n4"]
+
+[ext_resource type="Script" uid="uid://cnvsbljouchj7" path="res://game_kit/ui/components/ui_select_upgrade_dialog/ui_select_upgrade_dialog.gd" id="1_mjqpf"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+script = ExtResource("1_mjqpf")

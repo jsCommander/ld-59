@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeTree" format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_script"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/upgrade_tree_factory.tres" id="2_prereq_factory"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/upgrade_tree_barracks.tres" id="3_prereq_barracks"]
+
+[resource]
+script = ExtResource("1_script")
+id = "upgrade_tree_lab"
+display_name = "Lab"
+description = "Unlock DNA laboratory"
+prerequisites = Array[ExtResource("1_script")]([ExtResource("2_prereq_factory"), ExtResource("3_prereq_barracks")])

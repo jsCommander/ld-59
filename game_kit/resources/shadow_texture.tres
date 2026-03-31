@@ -1,0 +1,14 @@
+[gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://cwjkm8c300266"]
+
+[sub_resource type="Gradient" id="Gradient_jibcc"]
+offsets = PackedFloat32Array(0.746753, 0.993506)
+colors = PackedColorArray(0, 0, 0, 0.639216, 0, 0, 0, 0)
+
+[resource]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_jibcc")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.50641, 0.510684)
+fill_to = Vector2(0.645299, 0.119658)

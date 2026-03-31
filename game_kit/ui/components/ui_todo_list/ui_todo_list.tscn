@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://du1aac5evtmi1"]
+
+[ext_resource type="Script" uid="uid://c53elmllmdrl0" path="res://game_kit/ui/components/ui_todo_list/ui_todo_list.gd" id="1_7fywm"]
+[ext_resource type="Theme" uid="uid://f3gbxjll107l" path="res://game_kit/resources/themes/ui_pastel_theme.tres" id="1_j2btc"]
+[ext_resource type="Script" uid="uid://dls3o6pwb1y46" path="res://game_kit/ui/components/ui_todo_list/ui_todo_list_item_resource.gd" id="3_j2btc"]
+
+[sub_resource type="Resource" id="Resource_b0mt8"]
+script = ExtResource("3_j2btc")
+text = "some long long long text"
+is_done = true
+metadata/_custom_type_script = "uid://dls3o6pwb1y46"
+
+[sub_resource type="Resource" id="Resource_j2btc"]
+script = ExtResource("3_j2btc")
+text = "why not done!!!"
+is_done = false
+metadata/_custom_type_script = "uid://dls3o6pwb1y46"
+
+[node name="HudTodoList" type="VBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+theme = ExtResource("1_j2btc")
+script = ExtResource("1_7fywm")
+items = Array[ExtResource("3_j2btc")]([SubResource("Resource_b0mt8"), SubResource("Resource_j2btc")])

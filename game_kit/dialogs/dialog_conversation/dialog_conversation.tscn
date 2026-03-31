@@ -1,0 +1,87 @@
+[gd_scene load_steps=3 format=3 uid="uid://delavb4qooerr"]
+
+[ext_resource type="Script" uid="uid://djds133f6dfbn" path="res://game_kit/dialogs/dialog_conversation/dialog_conversation.gd" id="1_mgx3p"]
+[ext_resource type="Texture2D" uid="uid://beplhvlaukcbb" path="res://game_kit/assets/char/char_bee_smile_@0.5x.png" id="2_ihtup"]
+
+[node name="DialogConversation" type="Control"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_mgx3p")
+
+[node name="Сonversation" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -400.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"MarginContainerLarge"
+
+[node name="PanelContainer" type="PanelContainer" parent="Сonversation"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Сonversation/PanelContainer"]
+layout_mode = 2
+theme_type_variation = &"MarginContainerLarge"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Сonversation/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Сonversation/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"MarginContainerLarge"
+
+[node name="SpeakerTexture" type="TextureRect" parent="Сonversation/PanelContainer/MarginContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(224, 224)
+layout_mode = 2
+texture = ExtResource("2_ihtup")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MarginContainer3" type="MarginContainer" parent="Сonversation/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Text" type="Label" parent="Сonversation/PanelContainer/MarginContainer/HBoxContainer/MarginContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"LabelLarge"
+text = "Но честно? Для инди-проекта часто достаточно одного звука с рандомным pitch. Главное — не играть звук на КАЖДЫЙ символ, а то будет адская какофония. Лучше через символ или с небольшой случайностью. 
+
+одного звука с рандомным pitch. Главное — не играть звук на КАЖДЫЙ символ, а то будет адская какофония. Лучше через символ или с небольшой случайностью. 
+
+одного звука с рандомным pitch. Главное — не играть звук на КАЖДЫЙ символ, а то будет адская какофония. Лучше через символ или с небольшой случайностью. "
+autowrap_mode = 2
+text_overrun_behavior = 3
+
+[node name="Speaker" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(232, 0)
+layout_mode = 1
+offset_left = 48.0
+offset_top = -16.0
+offset_right = 320.0
+offset_bottom = 57.0
+theme_type_variation = &"PanelContainerAccent"
+
+[node name="MarginContainer" type="MarginContainer" parent="Speaker"]
+layout_mode = 2
+
+[node name="SpeakerName" type="Label" parent="Speaker/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"LabelLarge"
+text = "МУЖИК"
+horizontal_alignment = 1

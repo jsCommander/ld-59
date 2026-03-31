@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dka3qulcb55mg"]
+
+[sub_resource type="Curve" id="Curve_n1ebl"]
+_data = [Vector2(0.0125261, 0.313074), 0.0, 0.0, 0, 0, Vector2(0.286013, 1), 0.0, 0.0, 0, 0, Vector2(0.989562, 0.267923), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_nvukd"]
+curve = SubResource("Curve_n1ebl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n1ebl"]
+resource_local_to_scene = true
+particle_flag_disable_z = true
+direction = Vector3(0.2, -1, 0)
+spread = 60.0
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 250, 0)
+damping_min = 10.0
+damping_max = 10.0
+scale_min = 5.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_nvukd")
+
+[node name="HurtEffect" type="GPUParticles2D"]
+lifetime = 0.4
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_n1ebl")

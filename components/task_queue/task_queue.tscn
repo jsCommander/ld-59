@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/task_queue/task_queue.gd" id="1"]
+
+[node name="TaskQueue" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1")
+
+[node name="QueuePanel" type="PanelContainer" parent="."]
+anchors_preset = 5
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = -230.0
+offset_bottom = 100.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="QueuePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QueuePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="QueueLabel" type="Label" parent="QueuePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "ЗАДАЧИ"
+
+[node name="CardContainer" type="HBoxContainer" parent="QueuePanel/MarginContainer/VBoxContainer" unique_id=1]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DragLayer" type="Control" parent="." unique_id=2]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci3n20a6fbfvs"]
+
+[ext_resource type="Script" uid="uid://oklok28gh663" path="res://game_kit/dialogs/dialog_pause.gd" id="1_15lov"]
+
+[node name="PauseDialog" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_15lov")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_type_variation = &"MarginContainerLarge"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"VBoxContainerLarge"
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 128
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ButtonLarge"
+text = "Resume game"
+
+[node name="ExitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"ButtonLarge"
+text = "Exit
+"
+
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_button_down"]
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_button_down"]
