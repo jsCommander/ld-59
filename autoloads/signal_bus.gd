@@ -13,6 +13,7 @@ signal task_expired(task_data: TaskData)
 signal task_drop_requested(task_data: TaskData, screen_pos: Vector2)
 signal task_drop_consumed(task_data: TaskData)
 
+signal queue_empty
 signal sprint_started(sprint_number: int, duration: float)
 signal sprint_ended(sprint_number: int)
 signal sprint_tick(time_remaining: float)
