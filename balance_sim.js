@@ -1,12 +1,12 @@
-// Balance Simulator — Баговый Офис
+// Balance Simulator v2 — Баговый Офис
 // node balance_sim.js
 
 const BASE = 100;
 
 const ARCHETYPES = {
-  dev: { name: "Разработчик", capacity: 5, bugs_per_tasks: 8, salary_mult: 2.5 },
-  vibe: { name: "Вайбкодер", capacity: 8, bugs_per_tasks: 5, salary_mult: 1 },
-  senior: { name: "Сеньор", capacity: 5, bugs_per_tasks: -12, salary_mult: 5 },
+  vibe: { name: "Вайбкодер", speed: 80, quality: 30, refactoring: 10, salary_mult: 1 },
+  dev: { name: "Разработчик", speed: 50, quality: 70, refactoring: 50, salary_mult: 2.5 },
+  senior: { name: "Сеньор", speed: 50, quality: 100, refactoring: 90, salary_mult: 5 },
 };
 
 const PHASES = [
@@ -16,49 +16,88 @@ const PHASES = [
   { name: "Релиз", sprints: [10, 12], desks: 9, bug_multiplier: 1.2 },
 ];
 
-const STARTING_BUDGET = BASE * 20; // 2000$
-const BANKRUPT_THRESHOLD = BASE * -30; // -3000$ = банкрот
+const STARTING_BUDGET = BASE * 25; // 2500$
+const DEBT_PER_TASK = 0.6;
+const REFACTOR_TASK_VALUE = 5;
 
 const SCENARIOS = [
   {
-    name: "Полный вайбкод",
+    name: "Вайбкод (игнорит баги)",
     hires: { 1: ["vibe", "vibe", "vibe"], 4: ["vibe", "vibe"], 7: ["vibe", "vibe"], 10: ["vibe", "vibe"] },
     strategy: "ignore_bugs",
+    refactor_sprints: [],
   },
   {
-    name: "Полный вайбкод (чинит баги)",
+    name: "Вайбкод (чинит баги)",
     hires: { 1: ["vibe", "vibe", "vibe"], 4: ["vibe", "vibe"], 7: ["vibe", "vibe"], 10: ["vibe", "vibe"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [],
+  },
+  {
+    name: "Вайбкод + рефакторинг",
+    hires: { 1: ["vibe", "vibe", "vibe"], 4: ["vibe", "vibe"], 7: ["vibe", "vibe"], 10: ["vibe", "vibe"] },
+    strategy: "fix_bugs_first",
+    refactor_sprints: [3, 6, 9],
   },
   {
     name: "Все разрабы",
     hires: { 1: ["dev", "dev", "dev"], 4: ["dev", "dev"], 7: ["dev", "dev"], 10: ["dev", "dev"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [],
+  },
+  {
+    name: "Все разрабы + рефакторинг",
+    hires: { 1: ["dev", "dev", "dev"], 4: ["dev", "dev"], 7: ["dev", "dev"], 10: ["dev", "dev"] },
+    strategy: "fix_bugs_first",
+    refactor_sprints: [3, 6, 9],
   },
   {
     name: "Разрабы + сеньоры",
     hires: { 1: ["dev", "dev", "senior"], 4: ["dev", "senior"], 7: ["dev", "senior"], 10: ["dev", "senior"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [],
   },
   {
-    name: "Вайбкод → сеньоры на спасение",
+    name: "Разрабы + сеньоры + рефакт",
+    hires: { 1: ["dev", "dev", "senior"], 4: ["dev", "senior"], 7: ["dev", "senior"], 10: ["dev", "senior"] },
+    strategy: "fix_bugs_first",
+    refactor_sprints: [6, 9],
+  },
+  {
+    name: "Вайбкод → сеньоры + рефакт",
     hires: { 1: ["vibe", "vibe", "vibe"], 4: ["senior", "senior"], 7: ["senior", "senior"], 10: ["senior", "senior"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [5, 8],
   },
   {
-    name: "Микс (разраб + вайб + сеньор)",
+    name: "Микс (D+V+S)",
     hires: { 1: ["dev", "vibe", "senior"], 4: ["dev", "vibe"], 7: ["dev", "senior"], 10: ["dev", "vibe"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [6, 9],
   },
   {
     name: "Все сеньоры",
     hires: { 1: ["senior", "senior", "senior"], 4: ["senior", "senior"], 7: ["senior", "senior"], 10: ["senior", "senior"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [],
   },
   {
-    name: "Разрабы → вайбкод",
-    hires: { 1: ["dev", "dev", "dev"], 4: ["vibe", "vibe"], 7: ["vibe", "vibe"], 10: ["vibe", "vibe"] },
+    name: "Микс: никогда не рефакторить",
+    hires: { 1: ["dev", "vibe", "senior"], 4: ["vibe", "vibe"], 7: ["dev", "vibe"], 10: ["vibe", "vibe"] },
     strategy: "fix_bugs_first",
+    refactor_sprints: [],
+  },
+  {
+    name: "Микс: рефакт каждые 3",
+    hires: { 1: ["dev", "vibe", "senior"], 4: ["vibe", "vibe"], 7: ["dev", "vibe"], 10: ["vibe", "vibe"] },
+    strategy: "fix_bugs_first",
+    refactor_sprints: [3, 6, 9, 12],
+  },
+  {
+    name: "Микс: рефакт в конце фаз",
+    hires: { 1: ["dev", "vibe", "senior"], 4: ["vibe", "vibe"], 7: ["dev", "vibe"], 10: ["vibe", "vibe"] },
+    strategy: "fix_bugs_first",
+    refactor_sprints: [3, 6, 9],
   },
   ...generateRandomScenarios(10),
 ];
@@ -74,25 +113,34 @@ function generateRandomScenarios(count) {
     const pick = (n) => Array.from({ length: n }, () => archs[Math.floor(Math.random() * 3)]);
     const hires = { 1: pick(3), 4: pick(2), 7: pick(2), 10: pick(2) };
     const name = Object.values(hires).map(h => h.map(a => letter[a]).join("")).join("-");
-    scenarios.push({ name, hires, strategy: "fix_bugs_first" });
+    const refactor_count = Math.floor(Math.random() * 4);
+    const possible = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    const refactor_sprints = [];
+    for (let j = 0; j < refactor_count; j++) {
+      const idx = Math.floor(Math.random() * possible.length);
+      refactor_sprints.push(possible.splice(idx, 1)[0]);
+    }
+    refactor_sprints.sort((a, b) => a - b);
+    scenarios.push({ name, hires, strategy: "fix_bugs_first", refactor_sprints });
   }
   return scenarios;
 }
 
-// --- Спринт-генератор ---
+// --- Формулы ---
 
 function getPhase(sprint) {
   return PHASES.find(p => sprint >= p.sprints[0] && sprint <= p.sprints[1]);
 }
 
 function getAvgBugPriority(tech_debt) {
-  if (tech_debt >= 40) return 2.5;
-  if (tech_debt >= 15) return 2.0;
+  if (tech_debt >= 90) return 2.5;
+  if (tech_debt >= 60) return 2.0;
+  if (tech_debt >= 30) return 1.5;
   return 1.0;
 }
 
 function generateSprint(tech_debt, phase) {
-  const bugs_count = Math.floor(tech_debt * phase.bug_multiplier);
+  const bugs_count = Math.floor(tech_debt * 0.5 * phase.bug_multiplier);
   const avg_priority = getAvgBugPriority(tech_debt);
   const bugs = [];
   for (let i = 0; i < bugs_count; i++) {
@@ -101,20 +149,30 @@ function generateSprint(tech_debt, phase) {
   return { bugs };
 }
 
-function calculateTechDebt(team, tasks_done) {
-  let debt = 0;
+function getTeamCapacity(team) {
+  return team.reduce((s, d) => s + d.speed, 0) / 10;
+}
+
+function getTeamAvgQuality(team) {
+  if (team.length === 0) return 50;
+  return team.reduce((s, d) => s + d.quality, 0) / team.length;
+}
+
+function calculateDebtFromWork(work_done, avg_quality) {
+  return work_done * ((100 - avg_quality) / 100) * DEBT_PER_TASK;
+}
+
+function calculateRefactorReduction(team) {
+  let total = 0;
   for (const dev of team) {
-    if (dev.bugs_per_tasks > 0) {
-      debt += tasks_done[dev.id] / dev.bugs_per_tasks;
-    } else if (dev.bugs_per_tasks < 0) {
-      debt -= tasks_done[dev.id] / Math.abs(dev.bugs_per_tasks);
-    }
+    const tasks = dev.speed / 10;
+    total += tasks * REFACTOR_TASK_VALUE * (dev.refactoring / 100);
   }
-  return Math.max(0, debt);
+  return total;
 }
 
 function distributeTasks(team, bugs, strategy) {
-  const total_capacity = team.reduce((s, d) => s + d.capacity, 0);
+  const total_capacity = getTeamCapacity(team);
   let features_done = 0;
   let bugs_fixed = 0;
   let bugs_remaining;
@@ -123,7 +181,7 @@ function distributeTasks(team, bugs, strategy) {
     let capacity_left = total_capacity;
     bugs_fixed = Math.min(bugs.length, capacity_left);
     capacity_left -= bugs_fixed;
-    bugs_remaining = bugs.slice(bugs_fixed); // нерешённые баги с их priority
+    bugs_remaining = bugs.slice(bugs_fixed);
     features_done = capacity_left;
   } else {
     features_done = total_capacity;
@@ -131,13 +189,6 @@ function distributeTasks(team, bugs, strategy) {
   }
 
   return { features_done, bugs_fixed, bugs_remaining, total_capacity };
-}
-
-function updateTasksDone(team, total_capacity, total_tasks, tasks_done) {
-  for (const dev of team) {
-    const dev_tasks = Math.round((dev.capacity / total_capacity) * total_tasks);
-    tasks_done[dev.id] += dev_tasks;
-  }
 }
 
 function calculateFinances(features_done, bugs_remaining, team, phase) {
@@ -153,12 +204,11 @@ function calculateFinances(features_done, bugs_remaining, team, phase) {
 function simulate(scenario) {
   let budget = STARTING_BUDGET;
   let tech_debt = 0;
-  const tasks_done = {};
   const team = [];
-  let sprints_in_negative = 0;
   let dead = false;
   let dead_at = null;
   const log = [];
+  const refactor_set = new Set(scenario.refactor_sprints || []);
 
   for (let sprint = 1; sprint <= 12; sprint++) {
     const phase = getPhase(sprint);
@@ -169,22 +219,35 @@ function simulate(scenario) {
       for (const arch of new_hires) {
         const id = team.length;
         team.push({ ...ARCHETYPES[arch], id, archetype: arch });
-        tasks_done[id] = 0;
       }
     }
 
     // Генерация спринта
     const { bugs } = generateSprint(tech_debt, phase);
+    const is_refactor = refactor_set.has(sprint);
 
-    // Распределение задач
-    const { features_done, bugs_fixed, bugs_remaining, total_capacity } =
-      distributeTasks(team, bugs, scenario.strategy);
+    let features_done = 0;
+    let bugs_fixed = 0;
+    let bugs_remaining = bugs;
+    let total_capacity = getTeamCapacity(team);
 
-    // Обновление тасок по разрабам
-    updateTasksDone(team, total_capacity, features_done + bugs_fixed, tasks_done);
+    if (is_refactor) {
+      // Рефакторинг-спринт: 0 фич, 0 фиксов, снижаем долг
+      const debt_removed = calculateRefactorReduction(team);
+      tech_debt = Math.max(0, tech_debt - debt_removed);
+    } else {
+      // Обычный спринт
+      const result = distributeTasks(team, bugs, scenario.strategy);
+      features_done = result.features_done;
+      bugs_fixed = result.bugs_fixed;
+      bugs_remaining = result.bugs_remaining;
 
-    // Пересчёт техдолга
-    tech_debt = calculateTechDebt(team, tasks_done);
+      // Техдолг от работы
+      const work_done = features_done + bugs_fixed;
+      const avg_quality = getTeamAvgQuality(team);
+      const debt_added = calculateDebtFromWork(work_done, avg_quality);
+      tech_debt = Math.min(100, tech_debt + debt_added);
+    }
 
     // Финансы
     const { income, salaries, rent, penalty } = calculateFinances(
@@ -192,8 +255,9 @@ function simulate(scenario) {
     );
     budget += income - salaries - rent - penalty;
 
-    // Банкротство
-    if (budget <= BANKRUPT_THRESHOLD) {
+    // Банкротство на нуле
+    if (budget <= 0) {
+      budget = 0;
       dead = true;
       dead_at = sprint;
     }
@@ -205,6 +269,7 @@ function simulate(scenario) {
       phase: phase.name,
       team_comp,
       capacity: total_capacity,
+      is_refactor,
       bugs_in: bugs.length,
       bugs_fixed,
       bugs_ignored: bugs_remaining.length,
@@ -225,22 +290,23 @@ function simulate(scenario) {
 
 // --- Вывод ---
 
-console.log("=".repeat(120));
-console.log("BALANCE SIMULATOR");
-console.log("=".repeat(120));
+console.log("=".repeat(140));
+console.log("BALANCE SIMULATOR v2 — speed/quality/refactoring, bankrupt at 0");
+console.log("=".repeat(140));
 
 for (const scenario of SCENARIOS) {
   const result = simulate(scenario);
 
-  console.log(`\n${"─".repeat(120)}`);
+  console.log(`\n${"─".repeat(140)}`);
   console.log(`▶ ${result.scenario}${result.dead ? ` — БАНКРОТ на спринте ${result.dead_at}` : " — ВЫЖИЛ"}`);
-  console.log(`${"─".repeat(120)}`);
+  console.log(`${"─".repeat(140)}`);
 
   console.log(
     "Sprint".padEnd(8) +
     "Phase".padEnd(14) +
     "Team".padEnd(12) +
-    "Cap".padEnd(6) +
+    "Spd".padEnd(6) +
+    "Ref".padEnd(5) +
     "Bugs→".padEnd(7) +
     "Fixed".padEnd(7) +
     "Skip".padEnd(7) +
@@ -259,6 +325,7 @@ for (const scenario of SCENARIOS) {
       s.phase.padEnd(14) +
       s.team_comp.padEnd(12) +
       String(s.capacity).padEnd(6) +
+      (s.is_refactor ? "R" : "").padEnd(5) +
       String(s.bugs_in).padEnd(7) +
       String(s.bugs_fixed).padEnd(7) +
       String(s.bugs_ignored).padEnd(7) +
