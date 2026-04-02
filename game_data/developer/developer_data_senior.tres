@@ -4,7 +4,10 @@
 
 [resource]
 script = ExtResource("1_script")
-id = "developer_regular"
-dev_name = "Разработчик"
-speed = 1.0
-quality = 0.8
+id = "developer_senior"
+dev_name = "Бородатый сеньор"
+feature_speed = 30
+bug_speed = 70
+refactor_speed = 80
+tech_debt = 0
+salary_mult = 5.0

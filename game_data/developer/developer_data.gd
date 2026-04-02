@@ -2,5 +2,9 @@ class_name DeveloperData
 extends BaseGameData
 
 @export var dev_name: String
-@export var speed: float = 1.0
-@export var quality: float = 0.8
+@export var texture: Texture2D
+@export var feature_speed: int = 50
+@export var bug_speed: int = 50
+@export var refactor_speed: int = 50
+@export var tech_debt: int = 30
+@export var salary_mult: float = 2.5

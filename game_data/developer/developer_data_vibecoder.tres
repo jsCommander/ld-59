@@ -6,5 +6,8 @@
 script = ExtResource("1_script")
 id = "developer_vibecoder"
 dev_name = "Вайбкодер"
-speed = 3.0
-quality = 0.2
+feature_speed = 80
+bug_speed = 20
+refactor_speed = 10
+tech_debt = 70
+salary_mult = 1.0
