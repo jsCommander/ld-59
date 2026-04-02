@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="DeveloperData" format=3]
 
 [ext_resource type="Script" path="res://game_data/developer/developer_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/char/char_girl_happy_@0.5x.png" id="2_texture"]
 
 [resource]
 script = ExtResource("1_script")
 id = "developer_senior"
-dev_name = "Бородатый сеньор"
+texture = ExtResource("2_texture")
+dev_type = 2
 feature_speed = 30
 bug_speed = 70
 refactor_speed = 80

@@ -1,66 +1,39 @@
-[gd_scene format=4 uid="uid://d3ytykmb1ciyv"]
+[gd_scene format=3 uid="uid://d3ytykmb1ciyv"]
 
 [ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://components/hud/hud.tscn" id="8_hud"]
-[ext_resource type="TileSet" uid="uid://q1lpasm4ld64" path="res://resources/snow.tres" id="10_wkb0e"]
-[ext_resource type="Shader" uid="uid://dclnyndh5iby0" path="res://game_kit/shaders/neon_glow.gdshader" id="12_axl34"]
-[ext_resource type="Texture2D" uid="uid://cvwmr250jhr2n" path="res://assets/exports/planet.png" id="12_paa45"]
-[ext_resource type="PackedScene" uid="uid://slot0001" path="res://components/slot/slot.tscn" id="13_axl34"]
-[ext_resource type="Script" uid="uid://dgf4x68entef" path="res://components/building/build_manager.gd" id="14_build_mgr"]
-[ext_resource type="PackedScene" path="res://components/task_queue/task_queue.tscn" id="15_task_queue"]
-[ext_resource type="Script" path="res://components/sprint/sprint_manager.gd" id="16_sprint_mgr"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8hjdj"]
-shader = ExtResource("12_axl34")
-shader_parameter/size = 1.0
-shader_parameter/intensity = 2.8190001339025
+[ext_resource type="PackedScene" uid="uid://dnfgvwc8qcvgq" path="res://components/developer/developer.tscn" id="13_dev"]
+[ext_resource type="PackedScene" uid="uid://bn6l56wo7yx5w" path="res://components/background_office/background_office.tscn" id="17_bg_office"]
 
 [node name="TestLevel" type="Node2D" unique_id=928072462]
 script = ExtResource("1_script")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=423254864]
-tile_map_data = PackedByteArray("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")
-tile_set = ExtResource("10_wkb0e")
+[node name="BackgroundOffice" parent="." unique_id=339489224 instance=ExtResource("17_bg_office")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=111111111]
-position = Vector2(960, 832)
+anchor_mode = 0
 
-[node name="BuildManager" type="Node2D" parent="." unique_id=962911314]
-script = ExtResource("14_build_mgr")
+[node name="Desks" type="Node2D" parent="." unique_id=1954292481]
 
-[node name="Slot" parent="BuildManager" unique_id=1820048385 instance=ExtResource("13_axl34")]
-position = Vector2(0, 832)
+[node name="Developer" parent="Desks" unique_id=360852902 instance=ExtResource("13_dev")]
+position = Vector2(401, 559)
 
-[node name="Slot2" parent="BuildManager" unique_id=883512095 instance=ExtResource("13_axl34")]
-position = Vector2(320, 832)
+[node name="Developer2" parent="Desks" unique_id=1213580393 instance=ExtResource("13_dev")]
+position = Vector2(348, 782)
 
-[node name="Slot3" parent="BuildManager" unique_id=2032877527 instance=ExtResource("13_axl34")]
-position = Vector2(640, 832)
+[node name="Developer3" parent="Desks" unique_id=807932345 instance=ExtResource("13_dev")]
+position = Vector2(336, 1000)
 
-[node name="Slot4" parent="BuildManager" unique_id=1027175221 instance=ExtResource("13_axl34")]
-position = Vector2(960, 832)
+[node name="Developer4" parent="Desks" unique_id=1045826849 instance=ExtResource("13_dev")]
+position = Vector2(1010, 584)
 
-[node name="Slot5" parent="BuildManager" unique_id=941211026 instance=ExtResource("13_axl34")]
-position = Vector2(1280, 832)
+[node name="Developer5" parent="Desks" unique_id=1104712818 instance=ExtResource("13_dev")]
+position = Vector2(936, 776)
 
-[node name="Slot6" parent="BuildManager" unique_id=1720803001 instance=ExtResource("13_axl34")]
-position = Vector2(1600, 832)
+[node name="Developer6" parent="Desks" unique_id=1002405979 instance=ExtResource("13_dev")]
+position = Vector2(901, 1005)
 
-[node name="Slot7" parent="BuildManager" unique_id=278178740 instance=ExtResource("13_axl34")]
-position = Vector2(1920, 832)
+[node name="Developer7" parent="Desks" unique_id=823470063 instance=ExtResource("13_dev")]
+position = Vector2(1590, 586)
 
 [node name="HUD" parent="." unique_id=1041247837 instance=ExtResource("8_hud")]
-
-[node name="TaskQueue" parent="." instance=ExtResource("15_task_queue")]
-
-[node name="SprintManager" type="Node" parent="." unique_id=999999999]
-script = ExtResource("16_sprint_mgr")
-
-[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1630613575]
-material = SubResource("ShaderMaterial_8hjdj")
-position = Vector2(1344, 128)
-texture = ExtResource("12_paa45")
-
-[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=571343138]
-position = Vector2(-320, 256)
-texture = ExtResource("12_paa45")

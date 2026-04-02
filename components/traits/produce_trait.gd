@@ -33,6 +33,11 @@ func stop() -> void:
 	stopped.emit()
 
 
+func cancel() -> void:
+	_is_producing = false
+	_elapsed = 0.0
+
+
 func _process(delta: float) -> void:
 	if not _is_producing:
 		return

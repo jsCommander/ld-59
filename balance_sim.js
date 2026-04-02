@@ -6,14 +6,14 @@ const BASE = 100;
 const ARCHETYPES = {
   V: { name: "Вайбкодер", feature: 80, bug: 20, refactor: 10, tech_debt: 70, salary_mult: 1 },
   D: { name: "Разработчик", feature: 50, bug: 50, refactor: 50, tech_debt: 30, salary_mult: 2.5 },
-  S: { name: "Сеньор", feature: 30, bug: 70, refactor: 80, tech_debt: 0, salary_mult: 4 },
+  S: { name: "Сеньор", feature: 30, bug: 70, refactor: 80, tech_debt: 0, salary_mult: 5 },
 };
 
 const PHASES = [
-  { name: "MVP", sprints: [1, 3], desks: 3, bug_multiplier: 1.0 },
+  { name: "MVP", sprints: [1, 3], desks: 3, bug_multiplier: 0.5 },
   { name: "Демо", sprints: [4, 6], desks: 5, bug_multiplier: 1.0 },
-  { name: "Инвестиции", sprints: [7, 9], desks: 7, bug_multiplier: 1.0 },
-  { name: "Релиз", sprints: [10, 12], desks: 9, bug_multiplier: 1.0 },
+  { name: "Инвестиции", sprints: [7, 9], desks: 7, bug_multiplier: 0.8 },
+  { name: "Релиз", sprints: [10, 12], desks: 9, bug_multiplier: 1.2 },
 ];
 
 const STARTING_BUDGET = BASE * 25;

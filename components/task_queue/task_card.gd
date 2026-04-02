@@ -3,8 +3,7 @@ extends PanelContainer
 
 var task_data: TaskData
 
-@onready var title_label: Label = %TitleLabel
-@onready var complexity_label: Label = %ComplexityLabel
+@onready var icon: TextureRect = %Icon
 
 var _is_dragging: bool = false
 var _original_parent: Node
@@ -18,18 +17,7 @@ func setup(data: TaskData) -> void:
 func _ready() -> void:
 	if not task_data:
 		return
-	var type_str: String
-	match task_data.task_type:
-		TaskData.TaskType.FEATURE: type_str = "FEATURE"
-		TaskData.TaskType.BUG: type_str = "BUG"
-		TaskData.TaskType.REFACTOR: type_str = "REFACTOR"
-	title_label.text = "[%s] %s" % [type_str, task_data.task_name]
-	complexity_label.text = "x%d" % task_data.complexity
-	match task_data.task_type:
-		TaskData.TaskType.BUG:
-			add_theme_color_override("font_color", Color.RED)
-		TaskData.TaskType.REFACTOR:
-			add_theme_color_override("font_color", Color.CORNFLOWER_BLUE)
+	icon.texture = task_data.texture
 	SB.task_drop_consumed.connect(_on_drop_consumed)
 
 
@@ -43,7 +31,12 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	if event.pressed:
 		_start_drag()
-	elif _is_dragging:
+
+
+func _input(event: InputEvent) -> void:
+	if not _is_dragging:
+		return
+	if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_end_drag()
 
 
@@ -68,5 +61,5 @@ func _end_drag() -> void:
 
 
 func _on_drop_consumed(consumed_task: TaskData) -> void:
-	if consumed_task == task_data:
+	if consumed_task == task_data and task_data.task_type == Constants.TaskType.BUG:
 		queue_free()
