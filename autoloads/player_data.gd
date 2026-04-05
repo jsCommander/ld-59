@@ -8,45 +8,66 @@ var money: int = 0
 var tech_debt: float = 0.0
 var valuation: int = 0
 var task_queue: Array[TaskData] = []
+var backlog: Array[TaskData] = []
 var developers: Array[Developer] = []
+var game_state: Constants.GameState = Constants.GameState.PLANNING
 var _elapsed: float = 0.0
 
 
 func _ready() -> void:
 	SB.task_finished.connect(_on_task_finished)
+	fill_backlog()
 
 
 func _process(delta: float) -> void:
-	_elapsed += delta
-	_refill_queue()
+	if game_state == Constants.GameState.WORKING:
+		_elapsed += delta
+		_check_sprint_complete()
 
 
 func get_time_scale() -> float:
 	return 1.0 + _elapsed / 60.0
 
 
-func _refill_queue() -> void:
-	if task_queue.size() >= Constants.MIN_QUEUE_SIZE:
-		return
-	var changed: bool = false
-	while task_queue.size() < Constants.MIN_QUEUE_SIZE:
+func fill_backlog() -> void:
+	while backlog.size() < Constants.BACKLOG_SIZE:
 		var bug_chance: float = tech_debt * Constants.BUG_SPAWN_MULTIPLIER
 		var refactor_chance: float = tech_debt * Constants.REFACTOR_SPAWN_MULTIPLIER
 		var roll: float = randf()
 		if roll < bug_chance:
-			_spawn_task(TASK_DATA_BUG)
+			backlog.append(TASK_DATA_BUG.duplicate())
 		elif roll < bug_chance + refactor_chance:
-			_spawn_task(TASK_DATA_REFACTOR)
+			backlog.append(TASK_DATA_REFACTOR.duplicate())
 		else:
-			_spawn_task(TASK_DATA_FEATURE)
-		changed = true
-	if changed:
-		SB.task_queue_changed.emit(task_queue)
+			backlog.append(TASK_DATA_FEATURE.duplicate())
 
 
-func _spawn_task(template: TaskData) -> void:
-	var task: TaskData = template.duplicate()
-	task_queue.append(task)
+func start_sprint(sprint_tasks: Array[TaskData]) -> void:
+	for task: TaskData in sprint_tasks:
+		backlog.erase(task)
+	task_queue = sprint_tasks.duplicate()
+	game_state = Constants.GameState.WORKING
+	SB.game_state_changed.emit(game_state)
+	SB.sprint_started.emit()
+	SB.task_queue_changed.emit(task_queue)
+	Log.log_info(name, "Sprint started with %d tasks" % task_queue.size())
+
+
+func end_sprint() -> void:
+	game_state = Constants.GameState.PLANNING
+	fill_backlog()
+	SB.sprint_ended.emit()
+	SB.game_state_changed.emit(game_state)
+	Log.log_info(name, "Sprint ended, entering planning")
+
+
+func _check_sprint_complete() -> void:
+	if task_queue.size() > 0:
+		return
+	for dev: Developer in developers:
+		if not dev.is_idle():
+			return
+	end_sprint()
 
 
 func _on_task_finished(developer: Developer, task: TaskData) -> void:

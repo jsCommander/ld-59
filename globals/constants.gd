@@ -16,5 +16,9 @@ const PRIORITY_TIERS: Array[Dictionary] = [
 const MAX_PRIORITY: float = 2.5
 
 const MIN_QUEUE_SIZE: int = 10
+const BACKLOG_SIZE: int = 15
+const SPRINT_SIZE: int = 10
 const BUG_SPAWN_MULTIPLIER: float = 0.01
 const REFACTOR_SPAWN_MULTIPLIER: float = 0.005
+
+enum GameState { PLANNING, WORKING }

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://components/hud/hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" uid="uid://dnfgvwc8qcvgq" path="res://components/developer/developer.tscn" id="13_dev"]
 [ext_resource type="PackedScene" uid="uid://bn6l56wo7yx5w" path="res://components/background_office/background_office.tscn" id="17_bg_office"]
+[ext_resource type="PackedScene" path="res://components/sprint_planning/sprint_planning.tscn" id="18_sprint_planning"]
 
 [node name="TestLevel" type="Node2D" unique_id=928072462]
 script = ExtResource("1_script")
@@ -37,3 +38,5 @@ position = Vector2(901, 1005)
 position = Vector2(1590, 586)
 
 [node name="HUD" parent="." unique_id=1041247837 instance=ExtResource("8_hud")]
+
+[node name="SprintPlanning" parent="." instance=ExtResource("18_sprint_planning")]

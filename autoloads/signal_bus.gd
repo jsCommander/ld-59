@@ -12,3 +12,7 @@ signal developer_fired(dev_data: DeveloperData)
 signal resource_money_changed
 signal resource_tech_debt_changed
 signal valuation_changed
+
+signal game_state_changed(state: Constants.GameState)
+signal sprint_started
+signal sprint_ended

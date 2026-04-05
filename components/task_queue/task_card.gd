@@ -2,6 +2,7 @@ class_name TaskCard
 extends PanelContainer
 
 var task_data: TaskData
+var draggable: bool = true
 
 @onready var icon: TextureRect = %Icon
 
@@ -25,6 +26,8 @@ func _process(_delta: float) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+	if not draggable:
+		return
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT:
 		return
 	if event.pressed:
