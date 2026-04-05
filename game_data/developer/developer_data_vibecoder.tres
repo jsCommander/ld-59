@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://game_data/developer/developer_data.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/char/char_robot_smile_@0.5x.png" id="2_texture"]
+[ext_resource type="Resource" path="res://game_data/upgrade/developer_upgrade_damage.tres" id="3_dmg"]
+[ext_resource type="Resource" path="res://game_data/upgrade/developer_upgrade_speed.tres" id="4_spd"]
 
 [resource]
 script = ExtResource("1_script")
@@ -13,3 +15,4 @@ bug_speed = 20
 refactor_speed = 10
 tech_debt = 70
 salary_mult = 1.0
+upgrades = [ExtResource("3_dmg"), ExtResource("4_spd")]

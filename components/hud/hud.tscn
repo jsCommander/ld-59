@@ -36,6 +36,11 @@ theme_override_constants/margin_bottom = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopBar/StatsPanel/MarginContainer"]
 layout_mode = 2
 
+[node name="ValuationLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=5]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Оценка: $0"
+
 [node name="MoneyLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=1]
 unique_name_in_owner = true
 layout_mode = 2
@@ -65,33 +70,11 @@ theme_override_constants/margin_bottom = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopBar/QueuePanel/MarginContainer"]
 layout_mode = 2
 
-[node name="QueueLabel" type="Label" parent="MainLayout/TopBar/QueuePanel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Sprint 0"
-
 [node name="CardContainer" type="HBoxContainer" parent="MainLayout/TopBar/QueuePanel/MarginContainer/VBoxContainer" unique_id=100]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 8
-
-[node name="ButtonContainer" type="CenterContainer" parent="MainLayout"]
-layout_mode = 2
-size_flags_vertical = 8
-
-[node name="StartSprintButton" type="Button" parent="MainLayout/ButtonContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(200, 60)
-text = "Next Sprint"
-
-[node name="DragLayer" type="Control" parent="." unique_id=200]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
 
 [node name="UiPopupManager" parent="." unique_id=2097246371 instance=ExtResource("4_popup_manager")]
 unique_name_in_owner = true

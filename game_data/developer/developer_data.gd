@@ -8,4 +8,4 @@ extends BaseGameData
 @export var refactor_speed: int = 50
 @export var tech_debt: int = 30
 @export var salary_mult: float = 2.5
-@export var max_capacity: float = Constants.MAX_CAPACITY
+@export var upgrades: Array[DeveloperUpgrade] = []

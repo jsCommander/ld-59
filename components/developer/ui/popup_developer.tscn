@@ -22,3 +22,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Свободен"
+
+[node name="UpgradesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=4]
+unique_name_in_owner = true
+layout_mode = 2

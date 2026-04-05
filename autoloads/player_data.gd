@@ -1,33 +1,85 @@
 class_name PlayerData extends Node
 
+const TASK_DATA_FEATURE: TaskData = preload("res://game_data/task/task_data_feature.tres")
 const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres")
+const TASK_DATA_REFACTOR: TaskData = preload("res://game_data/task/task_data_refactor.tres")
 
-var money: int = Constants.STARTING_BUDGET
+var money: int = 0
 var tech_debt: float = 0.0
-var sprint_number: int = 0
-var bug_multiplier: float = 0.5
+var valuation: int = 0
 var task_queue: Array[TaskData] = []
 var developers: Array[Developer] = []
-var _sprint_active: bool = false
+var _elapsed: float = 0.0
 
 
 func _ready() -> void:
-	SB.sprint_execute_requested.connect(start_sprint)
 	SB.task_finished.connect(_on_task_finished)
 
 
-func start_sprint() -> void:
-	sprint_number += 1
-	var bug_count: int = roundi(tech_debt * bug_multiplier)
-	for i: int in bug_count:
-		var bug: TaskData = TASK_DATA_BUG.duplicate()
-		task_queue.append(bug)
-	SB.task_queue_changed.emit(task_queue)
-	_sprint_active = true
-	SB.sprint_started.emit()
-	Log.log_info(name, "Sprint %d started (%d bugs, debt=%.0f)" % [
-		sprint_number, bug_count, tech_debt
-	])
+func _process(delta: float) -> void:
+	_elapsed += delta
+	_refill_queue()
+
+
+func get_time_scale() -> float:
+	return 1.0 + _elapsed / 60.0
+
+
+func _refill_queue() -> void:
+	if task_queue.size() >= Constants.MIN_QUEUE_SIZE:
+		return
+	var changed: bool = false
+	while task_queue.size() < Constants.MIN_QUEUE_SIZE:
+		var bug_chance: float = tech_debt * Constants.BUG_SPAWN_MULTIPLIER
+		var refactor_chance: float = tech_debt * Constants.REFACTOR_SPAWN_MULTIPLIER
+		var roll: float = randf()
+		if roll < bug_chance:
+			_spawn_task(TASK_DATA_BUG)
+		elif roll < bug_chance + refactor_chance:
+			_spawn_task(TASK_DATA_REFACTOR)
+		else:
+			_spawn_task(TASK_DATA_FEATURE)
+		changed = true
+	if changed:
+		SB.task_queue_changed.emit(task_queue)
+
+
+func _spawn_task(template: TaskData) -> void:
+	var task: TaskData = template.duplicate()
+	task_queue.append(task)
+
+
+func _on_task_finished(developer: Developer, task: TaskData) -> void:
+	_apply_task_rewards(task)
+	_apply_tech_debt(developer, task)
+
+
+func _apply_task_rewards(task: TaskData) -> void:
+	match task.task_type:
+		Constants.TaskType.FEATURE:
+			var earned: int = Constants.BASE
+			earn(earned)
+			valuation += earned
+			SB.valuation_changed.emit()
+			Log.log_info(name, "Feature done: +$%d, valuation=%d" % [earned, valuation])
+		Constants.TaskType.BUG:
+			Log.log_info(name, "Bug fixed")
+		Constants.TaskType.REFACTOR:
+			Log.log_info(name, "Refactor done")
+
+
+func _apply_tech_debt(developer: Developer, task: TaskData) -> void:
+	if not developer.data:
+		return
+	match task.task_type:
+		Constants.TaskType.FEATURE:
+			var debt_gain: float = float(developer.data.tech_debt) / 100.0 * Constants.DEBT_PER_TASK
+			if debt_gain > 0.0:
+				increase_tech_debt(debt_gain)
+		Constants.TaskType.REFACTOR:
+			var debt_reduction: float = float(developer.data.refactor_speed) / 100.0
+			if debt_reduction > 0.0:
+				increase_tech_debt(-debt_reduction)
 
 
 func hire_developer(developer: Developer) -> void:
@@ -40,6 +92,10 @@ func fire_developer(developer: Developer) -> void:
 	developers.erase(developer)
 	SB.developer_fired.emit(developer.data)
 	Log.log_info(name, "Fired %s" % Constants.DevType.keys()[developer.data.dev_type])
+
+
+func can_afford(amount: int) -> bool:
+	return money >= amount
 
 
 func earn(amount: int) -> void:
@@ -62,49 +118,3 @@ func get_bug_priority() -> float:
 		if tech_debt < tier["max_debt"]:
 			return tier["priority"]
 	return Constants.MAX_PRIORITY
-
-
-func _on_task_finished(developer: Developer, task: TaskData) -> void:
-	var dev_data: DeveloperData = developer.data
-
-	match task.task_type:
-		Constants.TaskType.FEATURE:
-			var earned: int = Constants.BASE
-			earn(earned)
-			var debt_gain: float = float(dev_data.tech_debt) / 100.0 * Constants.DEBT_PER_TASK
-			increase_tech_debt(debt_gain)
-			Log.log_info(name, "Feature done: +$%d, +%.1f debt" % [earned, debt_gain])
-
-		Constants.TaskType.BUG:
-			Log.log_info(name, "Bug fixed")
-
-		Constants.TaskType.REFACTOR:
-			var debt_reduction: float = float(dev_data.refactor_speed) / 100.0
-			increase_tech_debt(-debt_reduction)
-			Log.log_info(name, "Refactor done: -%.1f debt" % debt_reduction)
-
-	_check_sprint_end()
-
-
-func _check_sprint_end() -> void:
-	if not _sprint_active:
-		return
-	for dev: Developer in developers:
-		if dev.has_tasks():
-			return
-	_sprint_active = false
-	SB.sprint_ended.emit()
-	Log.log_info(name, "Sprint %d ended" % sprint_number)
-
-
-func expire_task(task: TaskData) -> void:
-	task_queue.erase(task)
-	match task.task_type:
-		Constants.TaskType.BUG:
-			var penalty: int = Constants.BASE * roundi(get_bug_priority())
-			spend(penalty)
-			increase_tech_debt(10.0)
-			Log.log_warn(name, "Bug expired! Penalty: $%d" % penalty)
-		_:
-			Log.log_info(name, "Task expired")
-	SB.task_queue_changed.emit(task_queue)

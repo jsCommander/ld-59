@@ -6,7 +6,6 @@ var task_data: TaskData
 @onready var icon: TextureRect = %Icon
 
 var _is_dragging: bool = false
-var _original_parent: Node
 var _original_index: int = 0
 
 
@@ -18,7 +17,6 @@ func _ready() -> void:
 	if not task_data:
 		return
 	icon.texture = task_data.texture
-	SB.task_drop_consumed.connect(_on_drop_consumed)
 
 
 func _process(_delta: float) -> void:
@@ -42,24 +40,28 @@ func _input(event: InputEvent) -> void:
 
 func _start_drag() -> void:
 	_is_dragging = true
-	_original_parent = get_parent()
-	_original_index = get_index()
-	var saved_pos: Vector2 = global_position
-	reparent(get_tree().get_first_node_in_group("drag_layer"))
-	global_position = saved_pos
-	move_to_front()
+	_original_index = PD.task_queue.find(task_data)
+	z_index = 10
 
 
 func _end_drag() -> void:
 	_is_dragging = false
-	var drop_pos: Vector2 = get_viewport().get_mouse_position()
-	SB.task_drop_requested.emit(task_data, drop_pos)
-	await get_tree().process_frame
-	if is_inside_tree() and not is_queued_for_deletion():
-		reparent(_original_parent)
-		_original_parent.move_child(self, _original_index)
+	z_index = 0
+	var container: HBoxContainer = get_parent()
+	if not container:
+		return
+	var drop_x: float = get_viewport().get_mouse_position().x
+	var new_index: int = _find_drop_index(container, drop_x)
+	if new_index != _original_index and _original_index >= 0:
+		PD.task_queue.erase(task_data)
+		new_index = mini(new_index, PD.task_queue.size())
+		PD.task_queue.insert(new_index, task_data)
+		SB.task_queue_changed.emit(PD.task_queue)
 
 
-func _on_drop_consumed(consumed_task: TaskData) -> void:
-	if consumed_task == task_data and task_data.task_type == Constants.TaskType.BUG:
-		queue_free()
+func _find_drop_index(container: HBoxContainer, drop_x: float) -> int:
+	for i: int in container.get_child_count():
+		var child: Control = container.get_child(i)
+		if drop_x < child.global_position.x + child.size.x / 2:
+			return i
+	return container.get_child_count()

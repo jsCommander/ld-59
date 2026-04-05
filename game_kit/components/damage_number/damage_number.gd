@@ -13,9 +13,10 @@ func test_spawn() -> void:
 		spawn(str(randi_range(-100, -1)), Vector2.RIGHT)
 		await get_tree().create_timer(1).timeout
 
-func spawn(damage: String, direction: Vector2) -> void:
+func spawn(damage: String, direction: Vector2, color: Color = Color.WHITE) -> void:
 	var new_label = label_to_clone.duplicate()
 	new_label.text = damage
+	new_label.modulate = color
 	new_label.visible = true
 
 	get_tree().root.add_child(new_label)
