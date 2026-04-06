@@ -143,15 +143,10 @@ func _grid_to_pixel(placement: SkillTreeNodePlacement) -> Vector2:
 	return Vector2(placement.grid_x * layout.cell_size, placement.grid_y * layout.cell_size)
 
 
-# --- Interaction ---
+# --- Input handling ---
 
-func _on_palette_item_selected(index: int) -> void:
-	if index >= 0 and index < _available_upgrades.size():
-		_selected_upgrade = _available_upgrades[index]
-
-
-func _on_grid_gui_input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() or not layout:
+func _input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint() or not layout or not grid_panel:
 		return
 
 	if event is InputEventMouseButton:
@@ -159,13 +154,21 @@ func _on_grid_gui_input(event: InputEvent) -> void:
 		if not mb.pressed:
 			return
 
-		var grid_pos: Vector2i = _pixel_to_grid(mb.position)
+		# Convert to grid_panel local coordinates
+		var local_pos: Vector2 = grid_panel.get_local_mouse_position()
+		var grid_rect: Rect2 = grid_panel.get_global_rect()
+
+		# Check if click is inside grid panel
+		if not grid_rect.has_point(mb.global_position):
+			return
+
+		Log.log_debug("SkillTreeEditor", "Grid click at %s" % str(local_pos))
+		var grid_pos: Vector2i = _pixel_to_grid(local_pos)
 
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			var existing: SkillTreeNodePlacement = _find_placement_at(grid_pos)
 
 			if existing:
-				# If we're in connection mode, create/toggle connection
 				if _connecting_from:
 					_toggle_connection(_connecting_from, existing)
 					_connecting_from = null
@@ -173,33 +176,33 @@ func _on_grid_gui_input(event: InputEvent) -> void:
 					_selected_node = existing
 					_connecting_from = null
 			elif _selected_upgrade:
-				# Place new node
 				_place_node(_selected_upgrade, grid_pos)
 				_selected_upgrade = null
 				if palette_list:
 					palette_list.deselect_all()
 
 		elif mb.button_index == MOUSE_BUTTON_RIGHT:
-			# Start connection mode
 			var existing: SkillTreeNodePlacement = _find_placement_at(grid_pos)
 			if existing:
 				if _connecting_from:
-					_connecting_from = null  # cancel
+					_connecting_from = null
 				else:
 					_connecting_from = existing
 
 		_rebuild()
 
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint():
-		return
-	if event is InputEventKey:
+	elif event is InputEventKey:
 		var key: InputEventKey = event
 		if key.pressed and key.keycode == KEY_DELETE and _selected_node:
 			_remove_node(_selected_node)
 			_selected_node = null
 			_rebuild()
+
+
+func _on_palette_item_selected(index: int) -> void:
+	if index >= 0 and index < _available_upgrades.size():
+		_selected_upgrade = _available_upgrades[index]
+		Log.log_debug("SkillTreeEditor", "Selected upgrade: %s" % _selected_upgrade.display_name)
 
 
 # --- Layout operations ---
@@ -220,7 +223,6 @@ func _place_node(upgrade: BaseUpgrade, grid_pos: Vector2i) -> void:
 
 func _remove_node(placement: SkillTreeNodePlacement) -> void:
 	var node_name: String = placement.upgrade.display_name if placement.upgrade else "unknown"
-	# Remove from all children arrays
 	for node: SkillTreeNodePlacement in layout.nodes:
 		node.children.erase(placement)
 	layout.nodes.erase(placement)
@@ -263,7 +265,6 @@ func _validate_layout() -> Array[String]:
 	if not layout:
 		return warnings
 
-	# Check for duplicate positions
 	var positions: Dictionary = {}
 	for placement: SkillTreeNodePlacement in layout.nodes:
 		var key: String = "%d,%d" % [placement.grid_x, placement.grid_y]
@@ -271,7 +272,6 @@ func _validate_layout() -> Array[String]:
 			warnings.append("Duplicate position: %s" % key)
 		positions[key] = true
 
-	# Check all nodes reachable from root
 	if layout.root:
 		var visited: Array[SkillTreeNodePlacement] = []
 		_visit(layout.root, visited)
