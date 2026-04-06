@@ -23,12 +23,16 @@ var _needs_save: bool = false
 # UI references
 @onready var palette_list: ItemList = %PaletteList
 @onready var grid_panel: Control = %GridPanel
+@onready var save_button: Button = %SaveButton
+@onready var status_label: Label = %StatusLabel
 
 
 func _ready() -> void:
 	_setup_save_timer()
 	_scan_upgrades()
 	_rebuild()
+	if save_button:
+		save_button.pressed.connect(_on_save_pressed)
 
 
 func _setup_save_timer() -> void:
@@ -290,9 +294,15 @@ func _schedule_save() -> void:
 		_save_timer.start()
 
 
+func _on_save_pressed() -> void:
+	_do_save()
+
+
 func _do_save() -> void:
-	if not _needs_save or not layout:
+	if not layout:
 		return
 	ResourceSaver.save(layout)
 	_needs_save = false
 	Log.log_info("SkillTreeEditor", "Layout saved: %d nodes" % layout.nodes.size())
+	if status_label:
+		status_label.text = "Saved! (%d nodes)" % layout.nodes.size()

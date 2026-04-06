@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,16 +19,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PaletteList" type="ItemList" parent="HSplitContainer"]
+[node name="Toolbar" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save Layout"
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = ""
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PaletteList" type="ItemList" parent="VBoxContainer/HSplitContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="GridPanel" type="Control" parent="HSplitContainer"]
+[node name="GridPanel" type="Control" parent="VBoxContainer/HSplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="item_selected" from="HSplitContainer/PaletteList" to="." method="_on_palette_item_selected"]
-[connection signal="draw" from="HSplitContainer/GridPanel" to="." method="_on_grid_draw"]
-[connection signal="gui_input" from="HSplitContainer/GridPanel" to="." method="_on_grid_gui_input"]
+[connection signal="item_selected" from="VBoxContainer/HSplitContainer/PaletteList" to="." method="_on_palette_item_selected"]
+[connection signal="draw" from="VBoxContainer/HSplitContainer/GridPanel" to="." method="_on_grid_draw"]
+[connection signal="gui_input" from="VBoxContainer/HSplitContainer/GridPanel" to="." method="_on_grid_gui_input"]
