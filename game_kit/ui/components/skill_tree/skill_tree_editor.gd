@@ -1,4 +1,3 @@
-@tool
 class_name SkillTreeEditor extends Control
 
 @export var layout: SkillTreeLayout:
@@ -27,8 +26,6 @@ var _needs_save: bool = false
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		return
 	_setup_save_timer()
 	_scan_upgrades()
 	_rebuild()
@@ -145,8 +142,8 @@ func _grid_to_pixel(placement: SkillTreeNodePlacement) -> Vector2:
 
 # --- Input handling ---
 
-func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() or not layout or not grid_panel:
+func _on_grid_gui_input(event: InputEvent) -> void:
+	if not layout:
 		return
 
 	if event is InputEventMouseButton:
@@ -154,16 +151,8 @@ func _input(event: InputEvent) -> void:
 		if not mb.pressed:
 			return
 
-		# Convert to grid_panel local coordinates
-		var local_pos: Vector2 = grid_panel.get_local_mouse_position()
-		var grid_rect: Rect2 = grid_panel.get_global_rect()
-
-		# Check if click is inside grid panel
-		if not grid_rect.has_point(mb.global_position):
-			return
-
-		Log.log_debug("SkillTreeEditor", "Grid click at %s" % str(local_pos))
-		var grid_pos: Vector2i = _pixel_to_grid(local_pos)
+		var grid_pos: Vector2i = _pixel_to_grid(mb.position)
+		Log.log_debug("SkillTreeEditor", "Grid click at %s -> grid %s" % [str(mb.position), str(grid_pos)])
 
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			var existing: SkillTreeNodePlacement = _find_placement_at(grid_pos)
@@ -191,7 +180,9 @@ func _input(event: InputEvent) -> void:
 
 		_rebuild()
 
-	elif event is InputEventKey:
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
 		var key: InputEventKey = event
 		if key.pressed and key.keycode == KEY_DELETE and _selected_node:
 			_remove_node(_selected_node)
