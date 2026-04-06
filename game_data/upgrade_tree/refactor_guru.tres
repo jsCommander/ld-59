@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeTree" format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/icn_heart.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+id = "refactor_guru"
+display_name = "Refactor Guru"
+description = "Reduce tech debt with each refactor"
+icon = ExtResource("2_icon")

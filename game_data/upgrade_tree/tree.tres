@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="SkillTreeLayout" format=3 uid="uid://bj4mi8vpyaxkc"]
+
+[ext_resource type="Script" uid="uid://cu5rntyba58u0" path="res://game_kit/ui/components/skill_tree/skill_tree_node_placement.gd" id="1_njl5p"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/budget_boost.tres" id="2_857x0"]
+[ext_resource type="Script" uid="uid://ddbtf4ck5o4r" path="res://game_kit/ui/components/skill_tree/skill_tree_layout.gd" id="2_ci458"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/refactor_guru.tres" id="3_857x0"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/fast_features.tres" id="4_u00u2"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/bug_hunter.tres" id="5_74gya"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/leadership.tres" id="6_jn4u6"]
+
+[sub_resource type="Resource" id="Resource_u00u2"]
+script = ExtResource("1_njl5p")
+upgrade = ExtResource("2_857x0")
+grid_x = 7
+grid_y = 4
+
+[sub_resource type="Resource" id="Resource_74gya"]
+script = ExtResource("1_njl5p")
+upgrade = ExtResource("3_857x0")
+grid_x = 5
+grid_y = 4
+
+[sub_resource type="Resource" id="Resource_jn4u6"]
+script = ExtResource("1_njl5p")
+upgrade = ExtResource("4_u00u2")
+grid_x = 7
+grid_y = 6
+
+[sub_resource type="Resource" id="Resource_4cit8"]
+script = ExtResource("1_njl5p")
+upgrade = ExtResource("5_74gya")
+grid_x = 10
+grid_y = 4
+
+[sub_resource type="Resource" id="Resource_r3ln8"]
+script = ExtResource("1_njl5p")
+upgrade = ExtResource("6_jn4u6")
+grid_x = 8
+grid_y = 1
+
+[resource]
+script = ExtResource("2_ci458")
+nodes = Array[ExtResource("1_njl5p")]([SubResource("Resource_u00u2"), SubResource("Resource_74gya"), SubResource("Resource_jn4u6"), SubResource("Resource_4cit8"), SubResource("Resource_r3ln8")])
+root = SubResource("Resource_u00u2")
+metadata/_custom_type_script = "uid://ddbtf4ck5o4r"

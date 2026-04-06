@@ -1,13 +1,15 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://b6o731dh7eusb"]
 
-[ext_resource type="Script" path="res://game_kit/ui/components/skill_tree/skill_tree_view.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cwiau7kh3o600" path="res://game_kit/ui/components/skill_tree/skill_tree_view.gd" id="1_script"]
+[ext_resource type="Resource" path="res://game_data/upgrade_tree/tree.tres" id="2_i6jwg"]
 
-[node name="SkillTreeView" type="Control"]
+[node name="SkillTreeView" type="Control" unique_id=711570083]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-clip_contents = true
 script = ExtResource("1_script")
+layout = ExtResource("2_i6jwg")

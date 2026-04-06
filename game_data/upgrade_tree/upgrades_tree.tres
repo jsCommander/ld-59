@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="UpgradeTree" format=3 uid="uid://bpi5c5yx28f1f"]
+
+[ext_resource type="Script" uid="uid://b1prvmqk8tjhg" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_mdrvt"]
+
+[resource]
+script = ExtResource("1_mdrvt")
+metadata/_custom_type_script = "uid://b1prvmqk8tjhg"

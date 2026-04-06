@@ -7,6 +7,7 @@ custom_minimum_size = Vector2(64, 64)
 script = ExtResource("1_script")
 
 [node name="Diamond" type="Control" parent="."]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -21,6 +22,7 @@ rotation = 0.785398
 pivot_offset = Vector2(24, 24)
 
 [node name="Background" type="ColorRect" parent="Diamond"]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,6 +31,7 @@ color = Color(0.15, 0.15, 0.2, 1)
 
 [node name="IconRect" type="TextureRect" parent="Diamond"]
 unique_name_in_owner = true
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
