@@ -7,7 +7,7 @@ class_name SkillTreeEditor extends Control
 		if is_inside_tree():
 			_rebuild()
 
-@export var upgrades_path: String = "":
+@export_dir var upgrades_path: String = "":
 	set(value):
 		upgrades_path = value
 		if is_inside_tree():
