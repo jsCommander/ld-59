@@ -83,9 +83,7 @@ func set_node_state(upgrade_id: String, state: SkillTreeNode.NodeState) -> void:
 
 func set_all_states(states: Dictionary) -> void:
 	for upgrade_id: String in states:
-		if _nodes.has(upgrade_id):
-			_nodes[upgrade_id].set_state(states[upgrade_id])
-	queue_redraw()
+		set_node_state(upgrade_id, states[upgrade_id])
 
 
 # --- Drawing ---
