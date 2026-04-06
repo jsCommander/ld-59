@@ -156,7 +156,7 @@ func _on_grid_gui_input(event: InputEvent) -> void:
 			return
 
 		var grid_pos: Vector2i = _pixel_to_grid(mb.position)
-		Log.log_debug("SkillTreeEditor", "Grid click at %s -> grid %s" % [str(mb.position), str(grid_pos)])
+		Log.log_debug("SkillTreeEditor", "Button %d at grid %s, connecting_from=%s" % [mb.button_index, str(grid_pos), _connecting_from.upgrade.display_name if _connecting_from and _connecting_from.upgrade else "none"])
 
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			_connecting_from = null  # cancel connection mode on left click
@@ -177,8 +177,10 @@ func _on_grid_gui_input(event: InputEvent) -> void:
 					_connecting_from = null
 				else:
 					_connecting_from = existing
+					Log.log_debug("SkillTreeEditor", "Connection mode: from %s" % existing.upgrade.display_name)
 			else:
 				_connecting_from = null
+			accept_event()
 
 		_rebuild()
 
