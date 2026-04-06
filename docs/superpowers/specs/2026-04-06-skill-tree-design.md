@@ -39,7 +39,7 @@ class_name UpgradeTree extends BaseUpgrade
 
 ### SkillTreeNodePlacement (новый, game_kit)
 
-Позиция одной ноды на сетке + связи.
+Позиция одной ноды на сетке + визуальные связи (линии).
 
 ```gdscript
 # game_kit/ui/components/skill_tree/skill_tree_node_placement.gd
@@ -48,11 +48,13 @@ class_name SkillTreeNodePlacement extends Resource
 @export var upgrade: BaseUpgrade
 @export var grid_x: int = 0
 @export var grid_y: int = 0
-@export var connections: Array[SkillTreeNodePlacement] = []
+@export var children: Array[SkillTreeNodePlacement] = []
 ```
 
-- `connections` — список нод, с которыми эта нода связана линией. Связи двусторонние визуально, но хранятся только в одном направлении (от parent к child) чтобы избежать дублирования.
+- `children` — ноды, к которым от этой ноды идут линии вниз по дереву. Это **чисто визуальные связи** для отрисовки линий. Направление: от parent к children. Каждая нода хранит ссылки на своих потомков.
 - Позиция `(grid_x, grid_y)` — целочисленные координаты на сетке. `(0, 0)` — центр дерева.
+
+> **Два графа:** `SkillTreeNodePlacement.children` — визуальный граф (какие линии рисовать). `UpgradeTree.prerequisites` — логический граф (что нужно для разблокировки). Компонент в `game_kit/` знает только про визуальный граф. Логический граф — ответственность игрового кода. Редактор может опционально auto-populate `children` из `prerequisites` при размещении нод, чтобы уменьшить ручную работу.
 
 ### SkillTreeLayout (новый, game_kit)
 
@@ -64,9 +66,23 @@ class_name SkillTreeLayout extends Resource
 
 @export var nodes: Array[SkillTreeNodePlacement] = []
 @export var root: SkillTreeNodePlacement
+@export var cell_size: int = 80
 ```
 
-- `root` — стартовая нода, центр дерева. Рантайм-компонент центрирует камеру/скролл на ней.
+- `root` — стартовая нода, центр дерева. Рантайм-компонент центрирует скролл на ней.
+- `cell_size` — размер ячейки сетки в пикселях. Единый источник правды для редактора и рантайма.
+
+### NodeState (enum, game_kit)
+
+Определён в `skill_tree_view.gd`, используется и нодами, и игровым кодом.
+
+```gdscript
+enum NodeState {
+    LOCKED,
+    AVAILABLE,
+    PURCHASED,
+}
+```
 
 ## Компонент 1: Редактор (SkillTreeEditor)
 
@@ -88,7 +104,6 @@ class_name SkillTreeEditor extends Control
 
 @export var layout: SkillTreeLayout              # ресурс, который редактируем
 @export var upgrades_path: String = ""           # путь к папке с .tres ресурсами
-@export var cell_size: int = 80                  # размер ячейки сетки в пикселях
 ```
 
 ### Загрузка апгрейдов
@@ -116,12 +131,17 @@ func _scan_upgrades() -> Array[BaseUpgrade]:
 - Размещённые ноды показываются как иконки апгрейдов
 - Drag & drop: перетащить из палитры на ячейку = разместить
 - Drag по сетке = переместить (snap to grid)
-- Клик по ноде → клик по другой ноде = создать/удалить connection
+- Клик по ноде → клик по другой ноде = создать/удалить connection (child link)
 - Delete/Backspace на выбранной ноде = удалить с сетки
 
+**Валидация:**
+- Запрещает размещение двух нод в одну ячейку
+- Предупреждает о нодах, не достижимых из root
+- Предупреждает о циклах в connections
+
 **Сохранение:**
-- Все изменения записываются в `layout` ресурс немедленно
-- `ResourceSaver.save(layout)` после каждого действия
+- Debounced auto-save: запись в ресурс через 1 секунду после последнего изменения
+- `ResourceSaver.save(layout)` после debounce
 
 ## Компонент 2: Рантайм (SkillTreeView)
 
@@ -135,6 +155,8 @@ game_kit/ui/components/skill_tree/
   skill_tree_view.tscn
   skill_tree_node.gd
   skill_tree_node.tscn
+  skill_tree_tooltip.gd
+  skill_tree_tooltip.tscn
 ```
 
 ### Входные данные
@@ -143,20 +165,20 @@ game_kit/ui/components/skill_tree/
 class_name SkillTreeView extends Control
 
 @export var layout: SkillTreeLayout
-@export var cell_size: int = 80
 ```
 
 ### Построение дерева
 
 ```
-1. Итерирует layout.nodes
-2. Для каждой SkillTreeNodePlacement:
+1. Берёт cell_size из layout.cell_size
+2. Итерирует layout.nodes
+3. Для каждой SkillTreeNodePlacement:
    - Создаёт SkillTreeNode (instantiate сцены)
    - Позиция: Vector2(placement.grid_x * cell_size, placement.grid_y * cell_size)
    - Передаёт placement.upgrade для отображения (иконка, имя)
-3. Линии рисуются в _draw():
-   - Итерирует все ноды, для каждой — её connections
-   - Рисует горизонтальные/вертикальные линии между центрами нод
+4. Линии рисуются в _draw():
+   - Итерирует все ноды, для каждой — её children
+   - L-образная маршрутизация: горизонтальный сегмент, затем вертикальный
    - Цвет линии зависит от состояния нод (locked/unlocked)
 ```
 
@@ -167,9 +189,10 @@ class_name SkillTreeNode extends Control
 
 signal clicked(upgrade: BaseUpgrade)
 signal hovered(upgrade: BaseUpgrade)
+signal unhovered(upgrade: BaseUpgrade)
 
 var upgrade: BaseUpgrade
-var state: NodeState = NodeState.LOCKED
+var state: SkillTreeView.NodeState = SkillTreeView.NodeState.LOCKED
 ```
 
 **Визуал:**
@@ -181,27 +204,20 @@ var state: NodeState = NodeState.LOCKED
 
 **Взаимодействие:**
 - Клик → эмитит `clicked(upgrade)`
-- Hover → эмитит `hovered(upgrade)`
-
-### Состояния нод (enum)
-
-```gdscript
-enum NodeState {
-    LOCKED,
-    AVAILABLE,
-    PURCHASED,
-}
-```
+- Mouse enter → эмитит `hovered(upgrade)`
+- Mouse exit → эмитит `unhovered(upgrade)`
 
 ### API для игрового кода
 
 ```gdscript
-# Установить состояние конкретной ноды
-func set_node_state(upgrade: BaseUpgrade, state: NodeState) -> void:
+# Установить состояние конкретной ноды (поиск по id)
+func set_node_state(upgrade_id: String, state: NodeState) -> void:
 
 # Установить состояния всех нод разом
-func set_all_states(states: Dictionary[BaseUpgrade, NodeState]) -> void:
+func set_all_states(states: Dictionary[String, NodeState]) -> void:
 ```
+
+> **Поиск по id, не по ссылке:** API принимает `upgrade_id: String` вместо `BaseUpgrade` ссылки. Это надёжнее — не зависит от того, один ли и тот же Resource instance используется в разных местах.
 
 Игровой код подписывается на сигналы и управляет состояниями:
 
@@ -211,10 +227,10 @@ func _ready() -> void:
     skill_tree_view.node_clicked.connect(_on_upgrade_clicked)
 
 func _on_upgrade_clicked(upgrade: BaseUpgrade) -> void:
-    # Проверить можно ли купить, списать деньги, и т.д.
-    if can_afford(upgrade) and prerequisites_met(upgrade):
-        purchase(upgrade)
-        skill_tree_view.set_node_state(upgrade, SkillTreeView.NodeState.PURCHASED)
+    var ut: UpgradeTree = upgrade as UpgradeTree
+    if can_afford(ut) and prerequisites_met(ut):
+        purchase(ut)
+        skill_tree_view.set_node_state(ut.id, SkillTreeView.NodeState.PURCHASED)
 ```
 
 ### Сигналы
@@ -222,23 +238,44 @@ func _on_upgrade_clicked(upgrade: BaseUpgrade) -> void:
 ```gdscript
 signal node_clicked(upgrade: BaseUpgrade)
 signal node_hovered(upgrade: BaseUpgrade)
+signal node_unhovered(upgrade: BaseUpgrade)
 ```
 
 ### Тултип
 
-При клике на ноду — попап рядом с нодой. Используем `UiPopupManager` из game_kit для позиционирования.
+Встроенный `SkillTreeTooltip` — `PanelContainer`, позиционируется рядом с нодой внутри компонента (без `UiPopupManager`, т.к. он принимает `Node2D`, а наши ноды — `Control`).
 
 Содержимое тултипа:
 - **Название** (`display_name`)
 - **Описание** (`description`)
 - **Иконка**
-- Дополнительный контент (стоимость, кнопка "Upgrade") — ответственность игрового кода через кастомизацию тултипа или отдельный UI
+
+Для кастомного контента (стоимость, кнопка "Upgrade") — игровой код подписывается на `node_clicked` / `node_hovered` и показывает свой UI.
+
+При клике на пустую область или другую ноду — тултип закрывается.
 
 ### Pan (перемещение камеры)
 
 - Правая кнопка мыши зажата + drag = перемещение всего дерева
-- Реализация: смещение `offset: Vector2`, применяется ко всем дочерним нодам
+- Реализация: смещение `_pan_offset: Vector2`, применяется ко всем дочерним нодам
 - Центрируется на `layout.root` при открытии
+- Правый клик перехватывается компонентом (stop propagation)
+
+### Линии между нодами
+
+- Только горизонтальные и вертикальные сегменты, без диагоналей
+- Если parent и child не на одной оси — L-образная маршрутизация: горизонтальный сегмент от parent, затем вертикальный до child
+- Цвета линий:
+  - Оба конца `PURCHASED` → яркий цвет (unlocked)
+  - Иначе → приглушённый цвет (locked)
+
+### Логирование
+
+```gdscript
+Log.log_info(self.name, "Skill tree built: %d nodes" % layout.nodes.size())
+Log.log_debug(self.name, "Node state changed: %s -> %s" % [upgrade_id, state])
+Log.log_debug(self.name, "Node clicked: %s" % upgrade.display_name)
+```
 
 ## Структура файлов — итог
 
@@ -247,12 +284,14 @@ game_kit/
   ui/components/
     skill_tree/
       base_upgrade.gd              # Resource — контракт данных (id, name, desc, icon)
-      skill_tree_layout.gd         # Resource — раскладка дерева (массив нод)
-      skill_tree_node_placement.gd # Resource — позиция одной ноды + связи
-      skill_tree_view.gd           # Control — рантайм отображение дерева
+      skill_tree_layout.gd         # Resource — раскладка дерева (массив нод + cell_size)
+      skill_tree_node_placement.gd # Resource — позиция одной ноды + children (визуальные связи)
+      skill_tree_view.gd           # Control — рантайм отображение + NodeState enum
       skill_tree_view.tscn
       skill_tree_node.gd           # Control — одна нода (ромбик с иконкой)
       skill_tree_node.tscn
+      skill_tree_tooltip.gd        # PanelContainer — тултип при клике
+      skill_tree_tooltip.tscn
       skill_tree_editor.gd         # @tool Control — редактор для Godot Editor
       skill_tree_editor.tscn
 
