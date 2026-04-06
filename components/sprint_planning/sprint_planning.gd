@@ -45,6 +45,7 @@ func _move_to_sprint(task: TaskData) -> void:
 		return
 	PD.backlog.erase(task)
 	sprint_tasks.append(task)
+	SB.task_clicked.emit(task)
 	_rebuild_grids()
 
 

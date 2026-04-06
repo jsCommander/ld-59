@@ -4,6 +4,7 @@ signal entity_selected(target: Node2D, popup_position: Vector2)
 signal selection_cleared
 
 signal task_queue_changed(tasks: Array[TaskData])
+signal task_clicked(task: TaskData)
 signal task_finished(developer: Developer, task: TaskData)
 
 signal developer_hired(dev_data: DeveloperData)

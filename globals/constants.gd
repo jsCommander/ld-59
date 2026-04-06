@@ -22,3 +22,6 @@ const BUG_SPAWN_MULTIPLIER: float = 0.01
 const REFACTOR_SPAWN_MULTIPLIER: float = 0.005
 
 enum GameState { PLANNING, WORKING }
+
+enum Music { FR, FR3, SG, SPB }
+enum Sfx { PICKUP, HIT_HURT }
