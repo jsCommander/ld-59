@@ -159,15 +159,10 @@ func _on_grid_gui_input(event: InputEvent) -> void:
 		Log.log_debug("SkillTreeEditor", "Grid click at %s -> grid %s" % [str(mb.position), str(grid_pos)])
 
 		if mb.button_index == MOUSE_BUTTON_LEFT:
+			_connecting_from = null  # cancel connection mode on left click
 			var existing: SkillTreeNodePlacement = _find_placement_at(grid_pos)
-
 			if existing:
-				if _connecting_from:
-					_toggle_connection(_connecting_from, existing)
-					_connecting_from = null
-				else:
-					_selected_node = existing
-					_connecting_from = null
+				_selected_node = existing
 			elif _selected_upgrade:
 				_place_node(_selected_upgrade, grid_pos)
 				_selected_upgrade = null
@@ -177,10 +172,13 @@ func _on_grid_gui_input(event: InputEvent) -> void:
 		elif mb.button_index == MOUSE_BUTTON_RIGHT:
 			var existing: SkillTreeNodePlacement = _find_placement_at(grid_pos)
 			if existing:
-				if _connecting_from:
+				if _connecting_from and _connecting_from != existing:
+					_toggle_connection(_connecting_from, existing)
 					_connecting_from = null
 				else:
 					_connecting_from = existing
+			else:
+				_connecting_from = null
 
 		_rebuild()
 
