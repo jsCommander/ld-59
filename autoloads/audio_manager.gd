@@ -22,12 +22,12 @@ func _register_sfx() -> void:
 
 func _connect_signals() -> void:
 	SB.task_clicked.connect(_on_task_clicked)
-	SB.task_finished.connect(_on_task_finished)
+	SB.task_destroyed.connect(_on_task_destroyed)
 
 
 func _on_task_clicked(_task: TaskData) -> void:
 	play_sfx(Constants.Sfx.PICKUP, 0.2)
 
 
-func _on_task_finished(_developer: Developer, _task: TaskData) -> void:
+func _on_task_destroyed(_task: TaskData) -> void:
 	play_sfx(Constants.Sfx.HIT_HURT, 0.3)

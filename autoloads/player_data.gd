@@ -10,23 +10,11 @@ var valuation: int = 0
 var task_queue: Array[TaskData] = []
 var backlog: Array[TaskData] = []
 var developers: Array[Developer] = []
-var game_state: Constants.GameState = Constants.GameState.PLANNING
-var _elapsed: float = 0.0
 
 
 func _ready() -> void:
-	SB.task_finished.connect(_on_task_finished)
+	SB.developer_attack.connect(_on_developer_attack)
 	fill_backlog()
-
-
-func _process(delta: float) -> void:
-	if game_state == Constants.GameState.WORKING:
-		_elapsed += delta
-		_check_sprint_complete()
-
-
-func get_time_scale() -> float:
-	return 1.0 + _elapsed / 60.0
 
 
 func fill_backlog() -> void:
@@ -42,37 +30,43 @@ func fill_backlog() -> void:
 			backlog.append(TASK_DATA_FEATURE.duplicate())
 
 
-func start_sprint(sprint_tasks: Array[TaskData]) -> void:
-	for task: TaskData in sprint_tasks:
+func add_tasks_to_queue(tasks: Array[TaskData]) -> void:
+	for task: TaskData in tasks:
 		backlog.erase(task)
-	task_queue = sprint_tasks.duplicate()
-	game_state = Constants.GameState.WORKING
-	SB.game_state_changed.emit(game_state)
-	SB.sprint_started.emit()
+		task.current_hp = task.base_hp
+		task.max_hp = task.base_hp
+		task_queue.append(task)
 	SB.task_queue_changed.emit(task_queue)
-	Log.log_info(name, "Sprint started with %d tasks" % task_queue.size())
-
-
-func end_sprint() -> void:
-	game_state = Constants.GameState.PLANNING
 	fill_backlog()
-	SB.sprint_ended.emit()
-	SB.game_state_changed.emit(game_state)
-	Log.log_info(name, "Sprint ended, entering planning")
+	Log.log_info(name, "Added %d tasks to queue (total: %d)" % [tasks.size(), task_queue.size()])
 
 
-func _check_sprint_complete() -> void:
-	if task_queue.size() > 0:
+func _on_developer_attack(dev_data: DeveloperData) -> void:
+	if task_queue.is_empty():
 		return
-	for dev: Developer in developers:
-		if not dev.is_idle():
-			return
-	end_sprint()
+	var task: TaskData = task_queue[0]
+	var damage: int = _get_damage_for_task(dev_data, task.task_type)
+	task.current_hp -= damage
+	increase_tech_debt(Constants.TECH_DEBT_PER_HIT)
+	SB.task_hp_changed.emit(task, task.current_hp, task.max_hp)
+	if task.current_hp <= 0.0:
+		task_queue.pop_front()
+		_on_task_destroyed(task)
 
 
-func _on_task_finished(developer: Developer, task: TaskData) -> void:
+func _get_damage_for_task(dev_data: DeveloperData, task_type: Constants.TaskType) -> int:
+	match task_type:
+		Constants.TaskType.FEATURE: return dev_data.feature_damage
+		Constants.TaskType.BUG: return dev_data.bug_damage
+		Constants.TaskType.REFACTOR: return dev_data.refactor_damage
+	return 0
+
+
+func _on_task_destroyed(task: TaskData) -> void:
 	_apply_task_rewards(task)
-	_apply_tech_debt(developer, task)
+	SB.task_destroyed.emit(task)
+	SB.task_queue_changed.emit(task_queue)
+	Log.log_info(name, "Task destroyed: %s" % Constants.TaskType.keys()[task.task_type])
 
 
 func _apply_task_rewards(task: TaskData) -> void:
@@ -86,21 +80,9 @@ func _apply_task_rewards(task: TaskData) -> void:
 		Constants.TaskType.BUG:
 			Log.log_info(name, "Bug fixed")
 		Constants.TaskType.REFACTOR:
-			Log.log_info(name, "Refactor done")
-
-
-func _apply_tech_debt(developer: Developer, task: TaskData) -> void:
-	if not developer.data:
-		return
-	match task.task_type:
-		Constants.TaskType.FEATURE:
-			var debt_gain: float = float(developer.data.tech_debt) / 100.0 * Constants.DEBT_PER_TASK
-			if debt_gain > 0.0:
-				increase_tech_debt(debt_gain)
-		Constants.TaskType.REFACTOR:
-			var debt_reduction: float = float(developer.data.refactor_speed) / 100.0
-			if debt_reduction > 0.0:
-				increase_tech_debt(-debt_reduction)
+			var debt_reduction: float = Constants.DEBT_PER_TASK
+			increase_tech_debt(-debt_reduction)
+			Log.log_info(name, "Refactor done: -%.1f debt" % debt_reduction)
 
 
 func hire_developer(developer: Developer) -> void:

@@ -9,5 +9,4 @@ upgrade_name = "Энергетики"
 base_cost = 150
 cost_function = ExtResource("2")
 max_level = 0
-damage_multiplier = 0.0
-speed_bonus = 0.3
+damage_bonus = 0.3

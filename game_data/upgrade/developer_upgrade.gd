@@ -5,7 +5,7 @@ extends Resource
 @export var base_cost: int = 100
 @export var cost_function: CostFunction
 @export var max_level: int = 0
-@export var speed_bonus: float = 0.0
+@export var damage_bonus: float = 0.0
 
 
 func get_scaled_cost(level: int) -> int:

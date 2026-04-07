@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1")
 task_type = 2
+base_hp = 60.0
 texture = ExtResource("2_texture")

@@ -9,4 +9,4 @@ upgrade_name = "Курсы"
 base_cost = 100
 cost_function = ExtResource("2")
 max_level = 0
-speed_bonus = 0.5
+damage_bonus = 0.5

@@ -1,63 +1,51 @@
-class_name SprintPlanning
+class_name UiTaskBacklog
 extends CanvasLayer
 
 const TASK_CARD: PackedScene = preload("res://components/task_queue/task_card.tscn")
 
 @onready var backlog_grid: GridContainer = %BacklogGrid
-@onready var sprint_grid: GridContainer = %SprintGrid
-@onready var sprint_label: Label = %SprintLabel
-@onready var start_button: Button = %StartButton
+@onready var queue_grid: GridContainer = %QueueGrid
+@onready var queue_label: Label = %QueueLabel
+@onready var close_button: Button = %CloseButton
 
-var sprint_tasks: Array[TaskData] = []
+var selected_tasks: Array[TaskData] = []
 
 
 func _ready() -> void:
-	SB.game_state_changed.connect(_on_game_state_changed)
-	start_button.pressed.connect(_on_start_pressed)
-	_on_game_state_changed(PD.game_state)
-
-
-func _on_game_state_changed(state: Constants.GameState) -> void:
-	if state == Constants.GameState.PLANNING:
-		_open()
-	else:
-		_close()
-
-
-func _open() -> void:
-	visible = true
-	sprint_tasks.clear()
-	_rebuild_grids()
-
-
-func _close() -> void:
+	add_to_group("task_backlog")
+	close_button.pressed.connect(close)
 	visible = false
 
 
-func _on_start_pressed() -> void:
-	if sprint_tasks.is_empty():
-		return
-	PD.start_sprint(sprint_tasks)
+func open() -> void:
+	selected_tasks.clear()
+	visible = true
+	_rebuild_grids()
 
 
-func _move_to_sprint(task: TaskData) -> void:
-	if sprint_tasks.size() >= Constants.SPRINT_SIZE:
-		return
+func close() -> void:
+	if not selected_tasks.is_empty():
+		PD.add_tasks_to_queue(selected_tasks)
+		selected_tasks.clear()
+	visible = false
+
+
+func _move_to_selected(task: TaskData) -> void:
 	PD.backlog.erase(task)
-	sprint_tasks.append(task)
+	selected_tasks.append(task)
 	SB.task_clicked.emit(task)
 	_rebuild_grids()
 
 
 func _move_to_backlog(task: TaskData) -> void:
-	sprint_tasks.erase(task)
+	selected_tasks.erase(task)
 	PD.backlog.append(task)
 	_rebuild_grids()
 
 
 func _rebuild_grids() -> void:
 	_clear_grid(backlog_grid)
-	_clear_grid(sprint_grid)
+	_clear_grid(queue_grid)
 
 	for task: TaskData in PD.backlog:
 		var card: TaskCard = _make_card(task)
@@ -67,24 +55,20 @@ func _rebuild_grids() -> void:
 	for i: int in range(PD.backlog.size(), Constants.BACKLOG_SIZE):
 		backlog_grid.add_child(_make_empty_slot())
 
-	for task: TaskData in sprint_tasks:
+	for task: TaskData in selected_tasks:
 		var card: TaskCard = _make_card(task)
-		card.gui_input.connect(_on_sprint_card_input.bind(task))
-		sprint_grid.add_child(card)
+		card.gui_input.connect(_on_selected_card_input.bind(task))
+		queue_grid.add_child(card)
 
-	for i: int in range(sprint_tasks.size(), Constants.SPRINT_SIZE):
-		sprint_grid.add_child(_make_empty_slot())
-
-	sprint_label.text = "Спринт (%d/%d)" % [sprint_tasks.size(), Constants.SPRINT_SIZE]
-	start_button.disabled = sprint_tasks.is_empty()
+	queue_label.text = "Очередь (%d)" % selected_tasks.size()
 
 
 func _on_backlog_card_input(event: InputEvent, task: TaskData) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_move_to_sprint(task)
+		_move_to_selected(task)
 
 
-func _on_sprint_card_input(event: InputEvent, task: TaskData) -> void:
+func _on_selected_card_input(event: InputEvent, task: TaskData) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_move_to_backlog(task)
 

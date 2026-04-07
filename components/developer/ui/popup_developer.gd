@@ -23,13 +23,13 @@ func _ready() -> void:
 
 
 func _update_stats() -> void:
-	var spd_mult: float = _developer.get_speed_multiplier()
+	var dmg_mult: float = _developer.get_damage_multiplier()
 	stats_label.text = "Фичи: %d  Баги: %d  Рефактор: %d" % [
-		_developer.data.feature_speed,
-		_developer.data.bug_speed,
-		_developer.data.refactor_speed,
+		_developer.data.feature_damage,
+		_developer.data.bug_damage,
+		_developer.data.refactor_damage,
 	]
-	task_label.text = "Скорость: x%.1f" % spd_mult
+	task_label.text = "Урон: x%.1f" % dmg_mult
 
 
 func _build_upgrade_buttons() -> void:

@@ -80,3 +80,16 @@ theme_override_constants/separation = 8
 [node name="UiPopupManager" parent="." unique_id=2097246371 instance=ExtResource("4_popup_manager")]
 unique_name_in_owner = true
 script = ExtResource("5_popup_manager_script")
+
+[node name="BacklogButton" type="Button" parent="."]
+unique_name_in_owner = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -48.0
+offset_right = 60.0
+offset_bottom = -12.0
+text = "Бэклог"
