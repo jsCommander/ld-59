@@ -3,8 +3,10 @@ extends PanelContainer
 
 var task_data: TaskData
 var draggable: bool = true
+var show_hp: bool = false
 
 @onready var icon: TextureRect = %Icon
+@onready var hp_bar: ProgressBar = %HpBar
 
 var _is_dragging: bool = false
 var _original_index: int = 0
@@ -18,6 +20,16 @@ func _ready() -> void:
 	if not task_data:
 		return
 	icon.texture = task_data.texture
+	if show_hp and task_data.max_hp > 0.0:
+		hp_bar.visible = true
+		hp_bar.value = task_data.current_hp / task_data.max_hp
+
+
+func update_hp(current: float, max_hp: float) -> void:
+	if not is_instance_valid(hp_bar) or max_hp <= 0.0:
+		return
+	hp_bar.visible = true
+	hp_bar.value = maxf(current / max_hp, 0.0)
 
 
 func _process(_delta: float) -> void:
