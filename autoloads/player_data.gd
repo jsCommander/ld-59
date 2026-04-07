@@ -41,12 +41,13 @@ func add_tasks_to_queue(tasks: Array[TaskData]) -> void:
 	Log.log_info(name, "Added %d tasks to queue (total: %d)" % [tasks.size(), task_queue.size()])
 
 
-func _on_developer_attack(dev_data: DeveloperData) -> void:
+func _on_developer_attack(developer: Developer) -> void:
 	if task_queue.is_empty():
 		return
 	var task: TaskData = task_queue[0]
-	var damage: int = _get_damage_for_task(dev_data, task.task_type)
+	var damage: int = _get_damage_for_task(developer.data, task.task_type)
 	task.current_hp -= damage
+	developer.show_damage(damage)
 	increase_tech_debt(Constants.TECH_DEBT_PER_HIT)
 	SB.task_hp_changed.emit(task, task.current_hp, task.max_hp)
 	if task.current_hp <= 0.0:

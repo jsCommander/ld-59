@@ -6,7 +6,7 @@ signal selection_cleared
 signal task_queue_changed(tasks: Array[TaskData])
 signal task_clicked(task: TaskData)
 
-signal developer_attack(dev_data: DeveloperData)
+signal developer_attack(developer: Developer)
 signal task_hp_changed(task: TaskData, hp: float, max_hp: float)
 signal task_destroyed(task: TaskData)
 

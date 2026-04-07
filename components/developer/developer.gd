@@ -65,8 +65,20 @@ func apply_upgrade(upgrade: DeveloperUpgrade) -> void:
 
 
 func _perform_attack() -> void:
-	SB.developer_attack.emit(data)
+	SB.developer_attack.emit(self)
+	_shake_sprite()
 	Log.log_debug(name, "Attack tick")
+
+
+func show_damage(damage: int) -> void:
+	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
+
+
+func _shake_sprite() -> void:
+	var tween: Tween = create_tween()
+	tween.tween_property(dev_sprite, "rotation_degrees", 5.0, 0.05)
+	tween.tween_property(dev_sprite, "rotation_degrees", -5.0, 0.05)
+	tween.tween_property(dev_sprite, "rotation_degrees", 0.0, 0.1)
 
 
 func _apply_data() -> void:
