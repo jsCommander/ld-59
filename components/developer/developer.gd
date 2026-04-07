@@ -12,7 +12,6 @@ extends Node2D
 @onready var damage_number: DamageNumber = $DamageNumber
 @onready var attack_progress_bar: ProgressBar = %AttackProgressBar
 
-var purchased_upgrades: Dictionary = {}
 var _attack_timer: float = 0.0
 var _idle_tween: Tween = null
 
@@ -54,30 +53,6 @@ func hire(developer_data: DeveloperData) -> void:
 	PD.hire_developer(self)
 
 
-
-func get_damage_multiplier() -> float:
-	var mult: float = 1.0
-	for upgrade: DeveloperUpgrade in purchased_upgrades:
-		mult += upgrade.damage_bonus * purchased_upgrades[upgrade]
-	return mult
-
-
-func get_upgrade_level(upgrade: DeveloperUpgrade) -> int:
-	return purchased_upgrades.get(upgrade, 0)
-
-
-func get_available_upgrades() -> Array[DeveloperUpgrade]:
-	if not data:
-		return []
-	return data.upgrades.filter(
-		func(u: DeveloperUpgrade) -> bool:
-			return u.max_level == 0 or get_upgrade_level(u) < u.max_level
-	)
-
-
-func apply_upgrade(upgrade: DeveloperUpgrade) -> void:
-	purchased_upgrades[upgrade] = get_upgrade_level(upgrade) + 1
-	Log.log_info(name, "Upgraded %s to Lv.%d" % [upgrade.upgrade_name, purchased_upgrades[upgrade]])
 
 
 func _perform_attack() -> void:

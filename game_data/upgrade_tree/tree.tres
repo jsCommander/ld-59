@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="SkillTreeLayout" format=3]
+[gd_resource type="Resource" script_class="SkillTreeLayout" format=3 uid="uid://bwx3om2478mbg"]
 
-[ext_resource type="Script" path="res://game_kit/ui/components/skill_tree/skill_tree_node_placement.gd" id="1_njl5p"]
-[ext_resource type="Resource" path="res://game_data/upgrade_tree/budget_boost.tres" id="2_857x0"]
-[ext_resource type="Script" path="res://game_kit/ui/components/skill_tree/skill_tree_layout.gd" id="2_ci458"]
-[ext_resource type="Resource" path="res://game_data/upgrade_tree/refactor_guru.tres" id="3_857x0"]
-[ext_resource type="Resource" path="res://game_data/upgrade_tree/fast_features.tres" id="4_u00u2"]
-[ext_resource type="Resource" path="res://game_data/upgrade_tree/bug_hunter.tres" id="5_74gya"]
-[ext_resource type="Resource" path="res://game_data/upgrade_tree/leadership.tres" id="6_jn4u6"]
+[ext_resource type="Script" uid="uid://cu5rntyba58u0" path="res://game_kit/ui/components/skill_tree/skill_tree_node_placement.gd" id="1_njl5p"]
+[ext_resource type="Resource" uid="uid://bh6rscwxwsmgq" path="res://game_data/upgrade_tree/budget_boost.tres" id="2_857x0"]
+[ext_resource type="Script" uid="uid://ddbtf4ck5o4r" path="res://game_kit/ui/components/skill_tree/skill_tree_layout.gd" id="2_ci458"]
+[ext_resource type="Resource" uid="uid://brqjx4oeggug3" path="res://game_data/upgrade_tree/refactor_guru.tres" id="3_857x0"]
+[ext_resource type="Resource" uid="uid://btayni77cia8o" path="res://game_data/upgrade_tree/fast_features.tres" id="4_u00u2"]
+[ext_resource type="Resource" uid="uid://b7xd1227q3wok" path="res://game_data/upgrade_tree/bug_hunter.tres" id="5_74gya"]
+[ext_resource type="Resource" uid="uid://ca5ygjmc7muu2" path="res://game_data/upgrade_tree/leadership.tres" id="6_jn4u6"]
 
 [sub_resource type="Resource" id="Resource_74gya"]
 script = ExtResource("1_njl5p")

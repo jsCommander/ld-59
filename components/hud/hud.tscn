@@ -81,16 +81,28 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 script = ExtResource("5_popup_manager_script")
 
-[node name="BacklogButton" type="Button" parent="."]
-unique_name_in_owner = true
+[node name="BottomBar" type="HBoxContainer" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
+offset_left = -200.0
 offset_top = -60.0
-offset_right = 100.0
+offset_right = 200.0
 offset_bottom = -12.0
+theme_override_constants/separation = 12
+
+[node name="BacklogButton" type="Button" parent="BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(160, 0)
 text = "Бэклог"
 theme_override_font_sizes/font_size = 22
+
+[node name="UpgradeButton" type="Button" parent="BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(200, 0)
+text = "Апгрейды"
+theme_override_font_sizes/font_size = 24

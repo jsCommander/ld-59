@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="UpgradeTree" format=3]
+[gd_resource type="Resource" script_class="UpgradeTree" format=3 uid="uid://btayni77cia8o"]
 
-[ext_resource type="Script" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/icons/icn_check.png" id="2_icon"]
+[ext_resource type="Script" uid="uid://b1prvmqk8tjhg" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://mowjtib4rqg" path="res://assets/icons/icn_check.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_script")
+cost = 250
 id = "fast_features"
 display_name = "Fast Features"
 description = "Developers complete features faster"

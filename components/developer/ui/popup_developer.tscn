@@ -9,20 +9,71 @@ script = ExtResource("2")
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1]
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="StatsLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2]
-unique_name_in_owner = true
+[node name="FeatureRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="TaskLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=3]
-unique_name_in_owner = true
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FeatureRow"]
 layout_mode = 2
-text = "Свободен"
+custom_minimum_size = Vector2(80, 0)
+text = "Фичи"
 
-[node name="UpgradesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=4]
+[node name="FeatureBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/FeatureRow"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+modulate = Color(0.3, 0.7, 0.3, 1)
+max_value = 100.0
+show_percentage = false
+
+[node name="BugRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BugRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+text = "Баги"
+
+[node name="BugBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/BugRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+modulate = Color(0.95, 0.25, 0.2, 1)
+max_value = 100.0
+show_percentage = false
+
+[node name="RefactorRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RefactorRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+text = "Рефактор"
+
+[node name="RefactorBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/RefactorRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+modulate = Color(0.13, 0.59, 0.95, 1)
+max_value = 100.0
+show_percentage = false
+
+[node name="SpeedRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SpeedRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+text = "Скорость"
+
+[node name="SpeedBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/SpeedRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+modulate = Color(1.0, 0.92, 0.23, 1)
+max_value = 100.0
+show_percentage = false

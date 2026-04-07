@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d3ytykmb1ciyv"]
 
 [ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://components/ui/ui_upgrade_tree/ui_upgrade_tree.tscn" id="6_e7anx"]
 [ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://components/hud/hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" uid="uid://dnfgvwc8qcvgq" path="res://components/developer/developer.tscn" id="13_dev"]
 [ext_resource type="PackedScene" uid="uid://bn6l56wo7yx5w" path="res://components/background_office/background_office.tscn" id="17_bg_office"]
@@ -40,3 +41,5 @@ position = Vector2(1590, 586)
 [node name="HUD" parent="." unique_id=1041247837 instance=ExtResource("8_hud")]
 
 [node name="UiTaskBacklog" parent="." unique_id=702294197 instance=ExtResource("18_task_backlog")]
+
+[node name="UiUpgradeTree" parent="." unique_id=380832811 instance=ExtResource("6_e7anx")]

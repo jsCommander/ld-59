@@ -18,3 +18,5 @@ signal resource_tech_debt_changed
 signal valuation_changed
 
 signal backlog_refreshed
+
+signal upgrade_purchased(upgrade_id: String)

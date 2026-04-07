@@ -1,5 +1,4 @@
-# game_kit/ui/components/skill_tree/skill_tree_node.gd
-class_name SkillTreeNode extends Control
+class_name UpgradeTreeNode extends Control
 
 signal clicked(upgrade: BaseUpgrade)
 signal hovered(upgrade: BaseUpgrade)

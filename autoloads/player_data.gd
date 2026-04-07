@@ -5,6 +5,7 @@ const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres
 const TASK_DATA_REFACTOR: TaskData = preload("res://game_data/task/task_data_refactor.tres")
 
 var money: int = 0
+var purchased_upgrades: Dictionary = {}
 var tech_debt: float = 0.0
 var valuation: int = 0
 var task_queue: Array[TaskData] = []
@@ -145,6 +146,21 @@ func spend(amount: int) -> void:
 func increase_tech_debt(delta: float) -> void:
 	tech_debt = clampf(tech_debt + delta, 0.0, 100.0)
 	SB.resource_tech_debt_changed.emit()
+
+
+func purchase_upgrade(upgrade: UpgradeTree) -> void:
+	if not can_afford(upgrade.cost):
+		return
+	if is_upgrade_purchased(upgrade.id):
+		return
+	spend(upgrade.cost)
+	purchased_upgrades[upgrade.id] = true
+	SB.upgrade_purchased.emit(upgrade.id)
+	Log.log_info(name, "Purchased upgrade: %s" % upgrade.id)
+
+
+func is_upgrade_purchased(id: String) -> bool:
+	return id in purchased_upgrades
 
 
 func get_bug_priority() -> float:

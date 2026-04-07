@@ -1,24 +1,22 @@
-class_name SkillTreeView extends Control
+class_name UpgradeTreeView extends Control
 
-const SKILL_TREE_NODE_SCENE: PackedScene = preload("res://game_kit/ui/components/skill_tree/skill_tree_node.tscn")
-const SKILL_TREE_TOOLTIP_SCENE: PackedScene = preload("res://game_kit/ui/components/skill_tree/skill_tree_tooltip.tscn")
+const UPGRADE_TREE_NODE_SCENE: PackedScene = preload("res://components/ui/ui_upgrade_tree/upgrade_tree_node.tscn")
+const UPGRADE_TREE_TOOLTIP_SCENE: PackedScene = preload("res://components/ui/ui_upgrade_tree/upgrade_tree_tooltip.tscn")
 
 const LINE_COLOR_LOCKED: Color = Color(0.3, 0.3, 0.3)
 const LINE_COLOR_UNLOCKED: Color = Color(0.0, 0.9, 0.9)
 const LINE_WIDTH: float = 3.0
 
-signal node_clicked(upgrade: BaseUpgrade)
-signal node_hovered(upgrade: BaseUpgrade)
-signal node_unhovered(upgrade: BaseUpgrade)
+signal purchase_requested(upgrade: UpgradeTree)
 
 @export var layout: SkillTreeLayout
 
-var _nodes: Dictionary[String, SkillTreeNode] = {}  # upgrade.id -> node
-var _placements: Dictionary[String, SkillTreeNodePlacement] = {}  # upgrade.id -> placement
+var _nodes: Dictionary[String, UpgradeTreeNode] = {}
+var _placements: Dictionary[String, SkillTreeNodePlacement] = {}
 var _pan_offset: Vector2 = Vector2.ZERO
 var _is_panning: bool = false
 var _pan_start: Vector2 = Vector2.ZERO
-var _tooltip: SkillTreeTooltip
+var _tooltip: UpgradeTreeTooltip
 var _nodes_container: Control
 
 
@@ -27,8 +25,11 @@ func _ready() -> void:
 	_nodes_container = Control.new()
 	_nodes_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_nodes_container)
-	_tooltip = SKILL_TREE_TOOLTIP_SCENE.instantiate()
+	_tooltip = UPGRADE_TREE_TOOLTIP_SCENE.instantiate()
+	_tooltip.buy_pressed.connect(_on_tooltip_buy_pressed)
 	add_child(_tooltip)
+	SB.upgrade_purchased.connect(_on_upgrade_purchased)
+	SB.resource_money_changed.connect(_on_money_changed)
 	if layout:
 		_build_tree()
 
@@ -40,7 +41,7 @@ func _build_tree() -> void:
 	for placement: SkillTreeNodePlacement in layout.nodes:
 		if not placement.upgrade:
 			continue
-		var node: SkillTreeNode = SKILL_TREE_NODE_SCENE.instantiate()
+		var node: UpgradeTreeNode = UPGRADE_TREE_NODE_SCENE.instantiate()
 		node.setup(placement.upgrade)
 		_nodes_container.add_child(node)
 		node.position = Vector2(placement.grid_x * cell_size, placement.grid_y * cell_size)
@@ -51,12 +52,12 @@ func _build_tree() -> void:
 		_placements[placement.upgrade.id] = placement
 
 	_center_on_root()
-	Log.log_info(self.name, "Skill tree built: %d nodes" % _nodes.size())
+	Log.log_info(self.name, "Upgrade tree built: %d nodes" % _nodes.size())
 	queue_redraw()
 
 
 func _clear_tree() -> void:
-	for node: SkillTreeNode in _nodes.values():
+	for node: UpgradeTreeNode in _nodes.values():
 		node.queue_free()
 	_nodes.clear()
 	_placements.clear()
@@ -71,13 +72,35 @@ func _center_on_root() -> void:
 	_nodes_container.position = _pan_offset
 
 
-## Public API — game code uses these to control node states.
-## NodeState enum is SkillTreeNode.NodeState (LOCKED=0, AVAILABLE=1, PURCHASED=2).
+func refresh_states() -> void:
+	_center_on_root()
+	for id: String in _nodes:
+		var node: UpgradeTreeNode = _nodes[id]
+		var upgrade: BaseUpgrade = node.upgrade
+		if PD.is_upgrade_purchased(id):
+			node.set_state(UpgradeTreeNode.NodeState.PURCHASED)
+		elif _are_prerequisites_met(upgrade as UpgradeTree):
+			node.set_state(UpgradeTreeNode.NodeState.AVAILABLE)
+		else:
+			node.set_state(UpgradeTreeNode.NodeState.LOCKED)
+	queue_redraw()
 
-func set_node_state(upgrade_id: String, state: SkillTreeNode.NodeState) -> void:
+
+func _are_prerequisites_met(upgrade: UpgradeTree) -> bool:
+	if not upgrade:
+		return false
+	for prereq: UpgradeTree in upgrade.prerequisites:
+		if not PD.is_upgrade_purchased(prereq.id):
+			return false
+	return true
+
+
+## Public API
+
+func set_node_state(upgrade_id: String, state: UpgradeTreeNode.NodeState) -> void:
 	if _nodes.has(upgrade_id):
 		_nodes[upgrade_id].set_state(state)
-		Log.log_debug(self.name, "Node state changed: %s -> %s" % [upgrade_id, SkillTreeNode.NodeState.keys()[state]])
+		Log.log_debug(self.name, "Node state changed: %s -> %s" % [upgrade_id, UpgradeTreeNode.NodeState.keys()[state]])
 		queue_redraw()
 
 
@@ -101,17 +124,16 @@ func _draw() -> void:
 				continue
 			var to_pos: Vector2 = Vector2(child.grid_x * cell_size, child.grid_y * cell_size) + node_center_offset + _pan_offset
 			var color: Color = _get_line_color(placement, child)
-			# L-shaped routing: horizontal first, then vertical
 			var mid: Vector2 = Vector2(to_pos.x, from_pos.y)
 			draw_line(from_pos, mid, color, LINE_WIDTH, true)
 			draw_line(mid, to_pos, color, LINE_WIDTH, true)
 
 
 func _get_line_color(parent: SkillTreeNodePlacement, child: SkillTreeNodePlacement) -> Color:
-	var parent_node: SkillTreeNode = _nodes.get(parent.upgrade.id)
-	var child_node: SkillTreeNode = _nodes.get(child.upgrade.id)
+	var parent_node: UpgradeTreeNode = _nodes.get(parent.upgrade.id)
+	var child_node: UpgradeTreeNode = _nodes.get(child.upgrade.id)
 	if parent_node and child_node:
-		if parent_node.state == SkillTreeNode.NodeState.PURCHASED and child_node.state == SkillTreeNode.NodeState.PURCHASED:
+		if parent_node.state == UpgradeTreeNode.NodeState.PURCHASED and child_node.state == UpgradeTreeNode.NodeState.PURCHASED:
 			return LINE_COLOR_UNLOCKED
 	return LINE_COLOR_LOCKED
 
@@ -139,38 +161,53 @@ func _gui_input(event: InputEvent) -> void:
 # --- Tooltip ---
 
 func _on_node_clicked(upgrade: BaseUpgrade) -> void:
+	var node: UpgradeTreeNode = _nodes.get(upgrade.id)
+	if not node:
+		return
+	if node.state != UpgradeTreeNode.NodeState.AVAILABLE:
+		return
 	Log.log_debug(self.name, "Node clicked: %s" % upgrade.display_name)
 	_show_tooltip(upgrade)
-	node_clicked.emit(upgrade)
 
 
-func _on_node_hovered(upgrade: BaseUpgrade) -> void:
-	node_hovered.emit(upgrade)
+func _on_node_hovered(_upgrade: BaseUpgrade) -> void:
+	pass
 
 
-func _on_node_unhovered(upgrade: BaseUpgrade) -> void:
-	node_unhovered.emit(upgrade)
+func _on_node_unhovered(_upgrade: BaseUpgrade) -> void:
+	pass
 
 
 func _show_tooltip(upgrade: BaseUpgrade) -> void:
 	if not _nodes.has(upgrade.id):
 		return
-	var node: SkillTreeNode = _nodes[upgrade.id]
-	_tooltip.show_upgrade(upgrade)
+	var node: UpgradeTreeNode = _nodes[upgrade.id]
+	_tooltip.show_upgrade(upgrade as UpgradeTree)
 
-	# Position tooltip above the node
 	await get_tree().process_frame
 	var node_global_pos: Vector2 = node.global_position
 	var tooltip_pos: Vector2 = Vector2(
 		node_global_pos.x - _tooltip.size.x / 2.0 + node.size.x / 2.0,
 		node_global_pos.y - _tooltip.size.y - 8.0
 	)
-	# Clamp to viewport
 	var viewport_size: Vector2 = get_viewport_rect().size
 	tooltip_pos.x = clampf(tooltip_pos.x, 0.0, viewport_size.x - _tooltip.size.x)
 	if tooltip_pos.y < 0.0:
 		tooltip_pos.y = node_global_pos.y + node.size.y + 8.0
 	_tooltip.global_position = tooltip_pos
+
+
+func _on_tooltip_buy_pressed(upgrade: UpgradeTree) -> void:
+	purchase_requested.emit(upgrade)
+
+
+func _on_upgrade_purchased(_upgrade_id: String) -> void:
+	refresh_states()
+
+
+func _on_money_changed() -> void:
+	if _tooltip.visible and _tooltip._current_upgrade:
+		_tooltip.buy_button.disabled = not PD.can_afford(_tooltip._current_upgrade.cost)
 
 
 func _unhandled_input(event: InputEvent) -> void:

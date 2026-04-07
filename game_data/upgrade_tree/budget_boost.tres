@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="UpgradeTree" format=3]
+[gd_resource type="Resource" script_class="UpgradeTree" format=3 uid="uid://bh6rscwxwsmgq"]
 
-[ext_resource type="Script" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/icons/icn_pollen.png" id="2_icon"]
+[ext_resource type="Script" uid="uid://b1prvmqk8tjhg" path="res://game_data/upgrade_tree/upgrade_tree.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ciy6k5rl4u27y" path="res://assets/icons/icn_pollen.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_script")
+cost = 200
 id = "budget_boost"
 display_name = "Budget Boost"
 description = "Increase budget earned per sprint"

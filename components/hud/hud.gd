@@ -8,6 +8,7 @@ const TASK_CARD: PackedScene = preload("res://components/task_queue/task_card.ts
 @onready var card_container: HBoxContainer = %CardContainer
 @onready var main_layout: VBoxContainer = %MainLayout
 @onready var backlog_button: Button = %BacklogButton
+@onready var upgrade_button: Button = %UpgradeButton
 
 
 func _ready() -> void:
@@ -17,6 +18,7 @@ func _ready() -> void:
 	SB.task_queue_changed.connect(_rebuild_cards)
 	SB.task_hp_changed.connect(_on_task_hp_changed)
 	backlog_button.pressed.connect(_on_backlog_pressed)
+	upgrade_button.pressed.connect(_on_upgrade_pressed)
 	_update_money()
 	_update_tech_debt()
 	_update_valuation()
@@ -42,6 +44,15 @@ func _on_backlog_pressed() -> void:
 			backlog.close()
 		else:
 			backlog.open()
+
+
+func _on_upgrade_pressed() -> void:
+	var tree: UiUpgradeTree = get_tree().get_first_node_in_group("upgrade_tree")
+	if tree:
+		if tree.visible:
+			tree.close()
+		else:
+			tree.open()
 
 
 func _on_task_hp_changed(task: TaskData, hp: float, max_hp: float) -> void:

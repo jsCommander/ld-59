@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" path="res://game_data/developer/developer_data.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/char/char_man_mustache_@0.5x.png" id="2_texture"]
-[ext_resource type="Resource" path="res://game_data/upgrade/developer_upgrade_damage.tres" id="3_dmg"]
-[ext_resource type="Resource" path="res://game_data/upgrade/developer_upgrade_speed.tres" id="4_spd"]
 
 [resource]
 script = ExtResource("1_script")
@@ -16,4 +14,3 @@ refactor_damage = 10
 base_attack_speed = 2.0
 tech_debt = 30
 salary_mult = 2.5
-upgrades = [ExtResource("3_dmg"), ExtResource("4_spd")]

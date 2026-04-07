@@ -9,4 +9,3 @@ extends BaseGameData
 @export var tech_debt: int = 30
 @export var base_attack_speed: float = 2.0
 @export var salary_mult: float = 2.5
-@export var upgrades: Array[DeveloperUpgrade] = []
