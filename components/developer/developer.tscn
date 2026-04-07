@@ -42,3 +42,12 @@ position = Vector2(0, -180)
 
 [node name="DamageNumber" parent="." unique_id=411667833 instance=ExtResource("7_dmgnum")]
 position = Vector2(0, -120)
+
+[node name="AttackProgressBar" type="ProgressBar" parent="." unique_id=500]
+unique_name_in_owner = true
+offset_left = -80.0
+offset_top = -25.0
+offset_right = 80.0
+offset_bottom = -10.0
+max_value = 1.0
+show_percentage = false

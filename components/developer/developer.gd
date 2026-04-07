@@ -10,6 +10,7 @@ extends Node2D
 @onready var desk_sprite: Sprite2D = %DeskSprite
 @onready var dev_sprite: Sprite2D = %DevSprite
 @onready var damage_number: DamageNumber = $DamageNumber
+@onready var attack_progress_bar: ProgressBar = %AttackProgressBar
 
 var purchased_upgrades: Dictionary = {}
 var _attack_timer: float = 0.0
@@ -26,11 +27,23 @@ func _process(delta: float) -> void:
 		return
 	if PD.task_queue.is_empty():
 		_attack_timer = 0.0
+		_update_progress_bar()
 		return
 	_attack_timer += delta
 	if _attack_timer >= data.base_attack_speed:
 		_attack_timer -= data.base_attack_speed
 		_perform_attack()
+	_update_progress_bar()
+
+
+func _update_progress_bar() -> void:
+	if not is_instance_valid(attack_progress_bar):
+		return
+	if not data or PD.task_queue.is_empty():
+		attack_progress_bar.visible = false
+		return
+	attack_progress_bar.visible = true
+	attack_progress_bar.value = _attack_timer / data.base_attack_speed
 
 
 func hire(developer_data: DeveloperData) -> void:
@@ -94,6 +107,8 @@ func _apply_data() -> void:
 				remove_from_group("desk")
 	else:
 		dev_sprite.visible = false
+		if is_instance_valid(attack_progress_bar):
+			attack_progress_bar.visible = false
 		if not Engine.is_editor_hint():
 			add_to_group("desk")
 			if is_in_group("developer"):
