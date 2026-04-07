@@ -18,8 +18,9 @@ const MAX_PRIORITY: float = 2.5
 
 const MIN_QUEUE_SIZE: int = 10
 const BACKLOG_SIZE: int = 15
+const BACKLOG_REFRESH_INTERVAL: float = 10.0
 const BUG_SPAWN_MULTIPLIER: float = 0.01
 const REFACTOR_SPAWN_MULTIPLIER: float = 0.005
 
 enum Music { FR, FR3, SG, SPB }
-enum Sfx { PICKUP, HIT_HURT }
+enum Sfx { PICKUP, HIT_HURT, EXPLOSION }

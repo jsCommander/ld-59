@@ -7,45 +7,62 @@ const TASK_CARD: PackedScene = preload("res://components/task_queue/task_card.ts
 @onready var queue_grid: GridContainer = %QueueGrid
 @onready var queue_label: Label = %QueueLabel
 @onready var close_button: Button = %CloseButton
-
-var selected_tasks: Array[TaskData] = []
+@onready var refresh_bar: ProgressBar = %RefreshBar
 
 
 func _ready() -> void:
 	add_to_group("task_backlog")
 	close_button.pressed.connect(close)
+	SB.backlog_refreshed.connect(_on_backlog_refreshed)
 	visible = false
 
 
+func _process(_delta: float) -> void:
+	if is_instance_valid(refresh_bar):
+		refresh_bar.value = PD.get_backlog_refresh_progress()
+
+
+func _on_backlog_refreshed() -> void:
+	if visible:
+		_rebuild_grids()
+
+
 func open() -> void:
-	selected_tasks.clear()
 	visible = true
 	_rebuild_grids()
 
 
 func close() -> void:
-	if not selected_tasks.is_empty():
-		PD.add_tasks_to_queue(selected_tasks)
-		selected_tasks.clear()
 	visible = false
 
 
-func _move_to_selected(task: TaskData) -> void:
+func _add_to_queue(task: TaskData) -> void:
 	PD.backlog.erase(task)
-	selected_tasks.append(task)
+	task.current_hp = task.base_hp
+	task.max_hp = task.base_hp
+	PD.task_queue.append(task)
 	SB.task_clicked.emit(task)
+	SB.task_queue_changed.emit(PD.task_queue)
 	_rebuild_grids()
 
 
-func _move_to_backlog(task: TaskData) -> void:
-	selected_tasks.erase(task)
+func _remove_from_queue(task: TaskData) -> void:
+	PD.task_queue.erase(task)
 	PD.backlog.append(task)
+	SB.task_queue_changed.emit(PD.task_queue)
 	_rebuild_grids()
 
 
 func _rebuild_grids() -> void:
 	_clear_grid(backlog_grid)
 	_clear_grid(queue_grid)
+
+	for task: TaskData in PD.task_queue:
+		var card: TaskCard = _make_card(task)
+		card.gui_input.connect(_on_queue_card_input.bind(task))
+		queue_grid.add_child(card)
+
+	queue_label.text = "Очередь (%d)" % PD.task_queue.size()
 
 	for task: TaskData in PD.backlog:
 		var card: TaskCard = _make_card(task)
@@ -55,22 +72,15 @@ func _rebuild_grids() -> void:
 	for i: int in range(PD.backlog.size(), Constants.BACKLOG_SIZE):
 		backlog_grid.add_child(_make_empty_slot())
 
-	for task: TaskData in selected_tasks:
-		var card: TaskCard = _make_card(task)
-		card.gui_input.connect(_on_selected_card_input.bind(task))
-		queue_grid.add_child(card)
-
-	queue_label.text = "Очередь (%d)" % selected_tasks.size()
-
 
 func _on_backlog_card_input(event: InputEvent, task: TaskData) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_move_to_selected(task)
+		_add_to_queue(task)
 
 
-func _on_selected_card_input(event: InputEvent, task: TaskData) -> void:
+func _on_queue_card_input(event: InputEvent, task: TaskData) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_move_to_backlog(task)
+		_remove_from_queue(task)
 
 
 func _make_card(task: TaskData) -> TaskCard:
@@ -82,7 +92,7 @@ func _make_card(task: TaskData) -> TaskCard:
 
 func _make_empty_slot() -> PanelContainer:
 	var slot: PanelContainer = PanelContainer.new()
-	slot.custom_minimum_size = Vector2(80, 80)
+	slot.custom_minimum_size = Vector2(120, 120)
 	slot.modulate = Color(1, 1, 1, 0.3)
 	return slot
 

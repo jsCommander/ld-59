@@ -45,66 +45,66 @@ theme_override_font_sizes/font_size = 20
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ContentRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="QueuePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 24
 
-[node name="BacklogPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="BacklogMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentRow/BacklogPanel"]
+[node name="QueueMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/QueuePanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 10
 
-[node name="BacklogVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentRow/BacklogPanel/BacklogMargin"]
+[node name="QueueVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/QueuePanel/QueueMargin"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="BacklogLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentRow/BacklogPanel/BacklogMargin/BacklogVBox"]
-layout_mode = 2
-text = "Бэклог"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 20
-
-[node name="BacklogGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentRow/BacklogPanel/BacklogMargin/BacklogVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-columns = 5
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
-
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/ContentRow"]
-layout_mode = 2
-
-[node name="QueuePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/ContentRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="QueueMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentRow/QueuePanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 10
-
-[node name="QueueVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentRow/QueuePanel/QueueMargin"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="QueueLabel" type="Label" parent="MarginContainer/VBoxContainer/ContentRow/QueuePanel/QueueMargin/QueueVBox"]
+[node name="QueueLabel" type="Label" parent="MarginContainer/VBoxContainer/QueuePanel/QueueMargin/QueueVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Очередь (0)"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 20
 
-[node name="QueueGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/ContentRow/QueuePanel/QueueMargin/QueueVBox"]
+[node name="QueueGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/QueuePanel/QueueMargin/QueueVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 10
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BacklogPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BacklogMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/BacklogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="BacklogVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BacklogPanel/BacklogMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BacklogLabel" type="Label" parent="MarginContainer/VBoxContainer/BacklogPanel/BacklogMargin/BacklogVBox"]
+layout_mode = 2
+text = "Бэклог"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 20
+
+[node name="RefreshBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/BacklogPanel/BacklogMargin/BacklogVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+max_value = 1.0
+show_percentage = false
+
+[node name="BacklogGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/BacklogPanel/BacklogMargin/BacklogVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

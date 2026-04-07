@@ -14,6 +14,7 @@ extends Node2D
 
 var purchased_upgrades: Dictionary = {}
 var _attack_timer: float = 0.0
+var _idle_tween: Tween = null
 
 
 func _ready() -> void:
@@ -27,8 +28,10 @@ func _process(delta: float) -> void:
 		return
 	if PD.task_queue.is_empty():
 		_attack_timer = 0.0
+		_stop_idle_sway()
 		_update_progress_bar()
 		return
+	_start_idle_sway()
 	_attack_timer += delta
 	if _attack_timer >= data.base_attack_speed:
 		_attack_timer -= data.base_attack_speed
@@ -79,7 +82,6 @@ func apply_upgrade(upgrade: DeveloperUpgrade) -> void:
 
 func _perform_attack() -> void:
 	SB.developer_attack.emit(self)
-	_shake_sprite()
 	Log.log_debug(name, "Attack tick")
 
 
@@ -87,11 +89,20 @@ func show_damage(damage: int) -> void:
 	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
 
 
-func _shake_sprite() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(dev_sprite, "rotation_degrees", 5.0, 0.05)
-	tween.tween_property(dev_sprite, "rotation_degrees", -5.0, 0.05)
-	tween.tween_property(dev_sprite, "rotation_degrees", 0.0, 0.1)
+
+func _start_idle_sway() -> void:
+	if _idle_tween and _idle_tween.is_valid():
+		return
+	_idle_tween = create_tween().set_loops()
+	_idle_tween.tween_property(dev_sprite, "rotation_degrees", 3.0, 0.4).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	_idle_tween.tween_property(dev_sprite, "rotation_degrees", -3.0, 0.4).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+
+
+func _stop_idle_sway() -> void:
+	if _idle_tween and _idle_tween.is_valid():
+		_idle_tween.kill()
+		_idle_tween = null
+		dev_sprite.rotation_degrees = 0.0
 
 
 func _apply_data() -> void:

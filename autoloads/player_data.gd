@@ -10,11 +10,41 @@ var valuation: int = 0
 var task_queue: Array[TaskData] = []
 var backlog: Array[TaskData] = []
 var developers: Array[Developer] = []
+var _backlog_timer: float = 0.0
 
 
 func _ready() -> void:
 	SB.developer_attack.connect(_on_developer_attack)
 	fill_backlog()
+
+
+func _process(delta: float) -> void:
+	if backlog.size() >= Constants.BACKLOG_SIZE:
+		_backlog_timer = 0.0
+		return
+	_backlog_timer += delta
+	if _backlog_timer >= Constants.BACKLOG_REFRESH_INTERVAL:
+		_backlog_timer = 0.0
+		_spawn_backlog_task()
+		SB.backlog_refreshed.emit()
+
+
+func get_backlog_refresh_progress() -> float:
+	return _backlog_timer / Constants.BACKLOG_REFRESH_INTERVAL
+
+
+func _spawn_backlog_task() -> void:
+	if backlog.size() >= Constants.BACKLOG_SIZE:
+		return
+	var bug_chance: float = tech_debt * Constants.BUG_SPAWN_MULTIPLIER
+	var refactor_chance: float = tech_debt * Constants.REFACTOR_SPAWN_MULTIPLIER
+	var roll: float = randf()
+	if roll < bug_chance:
+		backlog.append(TASK_DATA_BUG.duplicate())
+	elif roll < bug_chance + refactor_chance:
+		backlog.append(TASK_DATA_REFACTOR.duplicate())
+	else:
+		backlog.append(TASK_DATA_FEATURE.duplicate())
 
 
 func fill_backlog() -> void:
