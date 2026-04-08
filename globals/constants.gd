@@ -11,8 +11,8 @@ enum UpgradeStat { DAMAGE, SPEED, DEBT, AUTO_CLICK, AUTO_CLICK_COUNT, AUTO_CLICK
 
 const BASE_HP: int = 100
 const BASE_DAMAGE: int = 10
-const BASE_DEBT_PER_HP: float = 0.01
-const DEBT_PER_TASK: float = 5.0
+const BASE_DEBT_PER_TASK: float = 1.0
+const DEBT_REDUCTION_PER_REFACTOR: float = 5.0
 const XP_BASE: int = int(BASE_HP * 0.3)
 const BASE_CLICKS_PER_TASK: int = 1
 const BASE_AUTO_CLICK_INTERVAL: float = 2.0
