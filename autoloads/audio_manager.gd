@@ -24,16 +24,11 @@ func _register_sfx() -> void:
 
 func _connect_signals() -> void:
 	SB.backlog_clicked.connect(_on_backlog_clicked)
-	SB.developer_attack.connect(_on_developer_attack)
 	SB.task_destroyed.connect(_on_task_destroyed)
 
 
 func _on_backlog_clicked(_count: int) -> void:
 	play_sfx(Constants.Sfx.CLICK, 0.3)
-
-
-func _on_developer_attack(_developer: Developer) -> void:
-	play_sfx(Constants.Sfx.HIT_HURT, 0.2)
 
 
 func _on_task_destroyed(_task: TaskData) -> void:

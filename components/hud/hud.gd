@@ -18,7 +18,6 @@ func _ready() -> void:
 	SB.valuation_changed.connect(_update_valuation)
 	SB.level_up.connect(_on_level_up)
 	SB.task_queue_changed.connect(_rebuild_cards)
-	SB.task_hp_changed.connect(_on_task_hp_changed)
 	SB.backlog_clicked.connect(_update_click_progress)
 	SB.backlog_task_spawned.connect(_on_task_spawned)
 	backlog_button.pressed.connect(_on_backlog_pressed)
@@ -84,30 +83,10 @@ func _on_level_up(_level: int) -> void:
 	_update_click_label()
 
 
-func _on_task_hp_changed(task: TaskData, hp: float, max_hp: float) -> void:
-	if card_container.get_child_count() == 0:
-		return
-	var first_card: TaskCard = card_container.get_child(0) as TaskCard
-	if not first_card:
-		return
-	first_card.update_hp(hp, max_hp)
-	_shake_card(first_card)
-
-
-func _shake_card(card: Control) -> void:
-	var tween: Tween = create_tween()
-	var original_x: float = card.position.x
-	tween.tween_property(card, "position:x", original_x + 5.0, 0.04)
-	tween.tween_property(card, "position:x", original_x - 5.0, 0.04)
-	tween.tween_property(card, "position:x", original_x, 0.07)
-
-
 func _rebuild_cards(queue: Array[TaskData]) -> void:
 	for child: Node in card_container.get_children():
 		child.queue_free()
 	for i: int in queue.size():
 		var card: TaskCard = TASK_CARD.instantiate()
 		card.setup(queue[i])
-		if i == 0:
-			card.show_hp = true
 		card_container.add_child(card)
