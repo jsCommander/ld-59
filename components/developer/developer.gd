@@ -11,9 +11,11 @@ extends Node2D
 @onready var dev_sprite: Sprite2D = %DevSprite
 @onready var damage_number: DamageNumber = $DamageNumber
 @onready var attack_progress_bar: ProgressBar = %AttackProgressBar
+@onready var task_display: TaskDisplay = %TaskDisplay
 
 var _attack_timer: float = 0.0
 var _idle_tween: Tween = null
+var _current_task: TaskData = null
 
 
 func _ready() -> void:
@@ -25,11 +27,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint() or not data:
 		return
-	if PD.task_queue.is_empty():
-		_attack_timer = 0.0
-		_stop_idle_sway()
-		_update_progress_bar()
-		return
+
+	if not _current_task:
+		_pick_task()
+		if not _current_task:
+			_attack_timer = 0.0
+			_stop_idle_sway()
+			_update_progress_bar()
+			return
+
 	_start_idle_sway()
 	var speed: float = _get_attack_speed()
 	_attack_timer += delta
@@ -39,21 +45,48 @@ func _process(delta: float) -> void:
 	_update_progress_bar()
 
 
+func _pick_task() -> void:
+	if PD.task_queue.is_empty():
+		return
+	var task: TaskData = data.task_select.select(data, PD.task_queue)
+	if task:
+		_current_task = PD.take_task(task)
+		if _current_task:
+			task_display.show_task(_current_task)
+
+
+func _perform_attack() -> void:
+	var dev_upgrades: Array[UpgradeData] = PD.dev_upgrades.get(data.dev_type, [])
+	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.global_upgrades, dev_upgrades)
+	_current_task.current_hp -= damage
+	show_damage(int(damage))
+	task_display.update_hp(_current_task.current_hp, _current_task.max_hp)
+	if _current_task.current_hp <= 0.0:
+		_on_task_killed()
+
+
+func _on_task_killed() -> void:
+	var dev_upgrades: Array[UpgradeData] = PD.dev_upgrades.get(data.dev_type, [])
+	var debt: float = Balance.calculate_debt(data, PD.global_upgrades, dev_upgrades)
+	SB.task_destroyed.emit(_current_task)
+	SB.tech_debt_produced.emit(debt)
+	task_display.hide_task()
+	_current_task = null
+
+
+func _get_attack_speed() -> float:
+	var dev_upgrades: Array[UpgradeData] = PD.dev_upgrades.get(data.dev_type, [])
+	return Balance.calculate_attack_speed(data, PD.global_upgrades, dev_upgrades)
+
+
 func _update_progress_bar() -> void:
 	if not is_instance_valid(attack_progress_bar):
 		return
-	if not data or PD.task_queue.is_empty():
+	if not data or not _current_task:
 		attack_progress_bar.visible = false
 		return
 	attack_progress_bar.visible = true
 	attack_progress_bar.value = _attack_timer / _get_attack_speed()
-
-
-func _get_attack_speed() -> float:
-	var base: float = data.base_attack_speed
-	var type_mult: float = PD.get_type_speed_mult(data.dev_type)
-	var global_mult: float = PD.global_speed_mult
-	return base / (type_mult * global_mult)
 
 
 func hire(developer_data: DeveloperData) -> void:
@@ -61,16 +94,8 @@ func hire(developer_data: DeveloperData) -> void:
 	PD.hire_developer(self)
 
 
-
-
-func _perform_attack() -> void:
-	SB.developer_attack.emit(self)
-	Log.log_debug(name, "Attack tick")
-
-
 func show_damage(damage: int) -> void:
 	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
-
 
 
 func _start_idle_sway() -> void:
