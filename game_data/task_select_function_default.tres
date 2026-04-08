@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="TaskSelectFunction" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/task_select_function.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
