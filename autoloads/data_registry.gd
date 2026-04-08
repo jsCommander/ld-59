@@ -1,40 +1,37 @@
 class_name DataRegistry extends BaseDataRegistry
 
 const DEVELOPER_PATH: String = "res://game_data/developer"
-const UPGRADE_TREE_PATH: String = "res://game_data/upgrade_tree"
-const PHASE_PATH: String = "res://game_data/phase"
+const UPGRADE_PATH: String = "res://game_data/upgrades"
 
 var developers: Dictionary[String, DeveloperData] = {}
-var upgrades: Dictionary[String, UpgradeTree] = {}
-var phases: Dictionary[String, PhaseData] = {}
+var upgrades: Dictionary[String, UpgradeData] = {}
 
 
 func _ready() -> void:
 	developers.merge(_find_game_data_in_path(DEVELOPER_PATH))
-	upgrades.merge(_find_upgrades_in_path(UPGRADE_TREE_PATH))
-	phases.merge(_find_game_data_in_path(PHASE_PATH))
+	upgrades.merge(_find_game_data_in_path(UPGRADE_PATH))
 
 
-func _find_upgrades_in_path(path: String) -> Dictionary[String, UpgradeTree]:
-	var result: Dictionary[String, UpgradeTree] = {}
-	var dir: DirAccess = DirAccess.open(path)
-	if not dir:
-		Log.log_warn(name, "Cannot open directory: %s" % path)
-		return result
-	Log.log_debug(name, "Scanning upgrades: %s" % path)
-	dir.list_dir_begin()
-	var file_name: String = dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			var res: Resource = load(path.path_join(file_name))
-			if res is UpgradeTree:
-				var id: String = res.id
-				if id.is_empty():
-					Log.log_warn(name, "Empty id in %s/%s" % [path, file_name])
-				elif id in result:
-					Log.log_warn(name, "Duplicate id '%s' in %s/%s" % [id, path, file_name])
-				else:
-					result[id] = res
-		file_name = dir.get_next()
-	Log.log_info(name, "Found %d upgrades in %s: %s" % [result.size(), path, ", ".join(result.keys())])
-	return result
+func get_random_upgrades(count: int) -> Array[UpgradeData]:
+	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in upgrades.values():
+		if _is_upgrade_available(upgrade):
+			pool.append(upgrade)
+	pool.shuffle()
+	return pool.slice(0, mini(count, pool.size()))
+
+
+func _is_upgrade_available(upgrade: UpgradeData) -> bool:
+	if upgrade.upgrade_type == Constants.UpgradeType.UNLOCK:
+		return not _is_taken(upgrade.id)
+	for req: UpgradeData in upgrade.prerequisites:
+		if not _is_taken(req.id):
+			return false
+	return true
+
+
+func _is_taken(upgrade_id: String) -> bool:
+	for taken: UpgradeData in PD.upgrades_taken:
+		if taken.id == upgrade_id:
+			return true
+	return false

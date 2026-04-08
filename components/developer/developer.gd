@@ -31,9 +31,10 @@ func _process(delta: float) -> void:
 		_update_progress_bar()
 		return
 	_start_idle_sway()
+	var speed: float = _get_attack_speed()
 	_attack_timer += delta
-	if _attack_timer >= data.base_attack_speed:
-		_attack_timer -= data.base_attack_speed
+	if _attack_timer >= speed:
+		_attack_timer -= speed
 		_perform_attack()
 	_update_progress_bar()
 
@@ -45,7 +46,14 @@ func _update_progress_bar() -> void:
 		attack_progress_bar.visible = false
 		return
 	attack_progress_bar.visible = true
-	attack_progress_bar.value = _attack_timer / data.base_attack_speed
+	attack_progress_bar.value = _attack_timer / _get_attack_speed()
+
+
+func _get_attack_speed() -> float:
+	var base: float = data.base_attack_speed
+	var type_mult: float = PD.get_type_speed_mult(data.dev_type)
+	var global_mult: float = PD.global_speed_mult
+	return base / (type_mult * global_mult)
 
 
 func hire(developer_data: DeveloperData) -> void:

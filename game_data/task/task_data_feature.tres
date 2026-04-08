@@ -5,5 +5,5 @@
 
 [resource]
 script = ExtResource("1")
-base_hp = 100.0
+base_hp_mult = 1.0
 texture = ExtResource("2_texture")

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "senior_damage_3x"
+display_name = "Архитектурный паттерн"
+description = "×3 урон сеньоров"
+upgrade_type = 1
+target_dev_type = 2
+stat = 0
+multiplier = 3.0

@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func _update_bars() -> void:
-	feature_bar.value = _developer.data.feature_damage
-	bug_bar.value = _developer.data.bug_damage
-	refactor_bar.value = _developer.data.refactor_damage
+	feature_bar.value = _developer.data.base_feature_mult * 50.0
+	bug_bar.value = _developer.data.base_bug_mult * 50.0
+	refactor_bar.value = _developer.data.base_refactor_mult * 50.0
 	speed_bar.value = 100.0 / _developer.data.base_attack_speed

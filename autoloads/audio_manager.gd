@@ -19,16 +19,17 @@ func _register_sfx() -> void:
 	register_sfx(Constants.Sfx.PICKUP, preload("res://assets/sfx/pickupCoin.wav"))
 	register_sfx(Constants.Sfx.HIT_HURT, preload("res://assets/sfx/hitHurt.wav"))
 	register_sfx(Constants.Sfx.EXPLOSION, preload("res://assets/sfx/explosion.wav"))
+	register_sfx(Constants.Sfx.CLICK, preload("res://assets/sfx/click.wav"))
 
 
 func _connect_signals() -> void:
-	SB.task_clicked.connect(_on_task_clicked)
+	SB.backlog_clicked.connect(_on_backlog_clicked)
 	SB.developer_attack.connect(_on_developer_attack)
 	SB.task_destroyed.connect(_on_task_destroyed)
 
 
-func _on_task_clicked(_task: TaskData) -> void:
-	play_sfx(Constants.Sfx.PICKUP, 0.2)
+func _on_backlog_clicked(_count: int) -> void:
+	play_sfx(Constants.Sfx.CLICK, 0.3)
 
 
 func _on_developer_attack(_developer: Developer) -> void:

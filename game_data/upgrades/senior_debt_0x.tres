@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "senior_debt_0x"
+display_name = "Clean Code"
+description = "×0 техдолг сеньоров"
+upgrade_type = 1
+target_dev_type = 2
+stat = 2
+multiplier = 0.0

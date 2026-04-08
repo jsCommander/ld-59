@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://d3ytykmb1ciyv"]
 
 [ext_resource type="Script" uid="uid://bsgiw0ih8j6jb" path="res://levels/test_level.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_upgrade_tree/ui_upgrade_tree.tscn" id="6_e7anx"]
 [ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://components/hud/hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" uid="uid://dnfgvwc8qcvgq" path="res://components/developer/developer.tscn" id="13_dev"]
 [ext_resource type="PackedScene" uid="uid://bn6l56wo7yx5w" path="res://components/background_office/background_office.tscn" id="17_bg_office"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_task_backlog/ui_task_backlog.tscn" id="18_task_backlog"]
+[ext_resource type="PackedScene" path="res://components/ui/ui_upgrade_choice/ui_upgrade_choice.tscn" id="20_upgrade_choice"]
+[ext_resource type="PackedScene" path="res://components/ui/ui_hire_choice/ui_hire_choice.tscn" id="21_hire_choice"]
+[ext_resource type="PackedScene" path="res://components/ui/ui_game_over/ui_game_over.tscn" id="22_game_over"]
 
 [node name="TestLevel" type="Node2D" unique_id=928072462]
 script = ExtResource("1_script")
@@ -40,6 +41,8 @@ position = Vector2(1590, 586)
 
 [node name="HUD" parent="." unique_id=1041247837 instance=ExtResource("8_hud")]
 
-[node name="UiTaskBacklog" parent="." unique_id=702294197 instance=ExtResource("18_task_backlog")]
+[node name="UiUpgradeChoice" parent="." instance=ExtResource("20_upgrade_choice")]
 
-[node name="UiUpgradeTree" parent="." unique_id=380832811 instance=ExtResource("6_e7anx")]
+[node name="UiHireChoice" parent="." instance=ExtResource("21_hire_choice")]
+
+[node name="UiGameOver" parent="." instance=ExtResource("22_game_over")]
