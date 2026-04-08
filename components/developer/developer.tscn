@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://vvybwt83icjc" path="res://components/traits/selectable_trait.tscn" id="3"]
 [ext_resource type="Shader" uid="uid://ccfppe65jus2b" path="res://game_kit/shaders/highlight.gdshader" id="6_nuffs"]
 [ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="7_dmgnum"]
+[ext_resource type="PackedScene" path="res://components/developer/task_display.tscn" id="8_task_display"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ygj1c"]
 resource_local_to_scene = true
@@ -51,3 +52,6 @@ offset_right = 80.0
 offset_bottom = -10.0
 max_value = 1.0
 show_percentage = false
+
+[node name="TaskDisplay" parent="." instance=ExtResource("8_task_display")]
+unique_name_in_owner = true
