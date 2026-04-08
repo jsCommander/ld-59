@@ -18,29 +18,19 @@ var task_queue: Array[TaskData] = []
 var developers: Array[Developer] = []
 
 var upgrades_taken: Array[UpgradeData] = []
+var global_upgrades: Array[UpgradeData] = []
+var dev_upgrades: Dictionary = {}
 
-# Cached multipliers
-var global_damage_mult: float = 1.0
-var global_speed_mult: float = 1.0
-var global_debt_mult: float = 1.0
-var vibecoder_damage_mult: float = 1.0
-var vibecoder_debt_mult: float = 1.0
-var regular_damage_mult: float = 1.0
-var regular_speed_mult: float = 1.0
-var senior_damage_mult: float = 1.0
-var senior_debt_mult: float = 1.0
 var auto_click_unlocked: bool = false
-var auto_click_count_mult: float = 1.0
-var auto_click_speed_mult: float = 1.0
 
 var _tick_timer: Timer
 var _auto_click_timer: Timer
 
 
 func _ready() -> void:
-	SB.developer_attack.connect(_on_developer_attack)
 	SB.upgrade_chosen.connect(_on_upgrade_chosen)
 	SB.backlog_clicked.connect(_on_backlog_clicked)
+	SB.tech_debt_produced.connect(_on_tech_debt_produced)
 	_tick_timer = _create_tick_timer()
 
 
@@ -70,18 +60,9 @@ func reset() -> void:
 	task_queue.clear()
 	developers.clear()
 	upgrades_taken.clear()
-	global_damage_mult = 1.0
-	global_speed_mult = 1.0
-	global_debt_mult = 1.0
-	vibecoder_damage_mult = 1.0
-	vibecoder_debt_mult = 1.0
-	regular_damage_mult = 1.0
-	regular_speed_mult = 1.0
-	senior_damage_mult = 1.0
-	senior_debt_mult = 1.0
+	global_upgrades.clear()
+	dev_upgrades.clear()
 	auto_click_unlocked = false
-	auto_click_count_mult = 1.0
-	auto_click_speed_mult = 1.0
 	_tick_timer.stop()
 	if _auto_click_timer:
 		_auto_click_timer.stop()
@@ -109,30 +90,7 @@ func _process(delta: float) -> void:
 
 
 func get_xp_for_level(lvl: int) -> int:
-	return Constants.XP_BASE * int(pow(2, lvl - 1))
-
-
-# --- Multiplier queries ---
-
-func get_type_damage_mult(dev_type: Constants.DevType) -> float:
-	match dev_type:
-		Constants.DevType.VIBECODER: return vibecoder_damage_mult
-		Constants.DevType.REGULAR: return regular_damage_mult
-		Constants.DevType.SENIOR: return senior_damage_mult
-	return 1.0
-
-
-func get_type_speed_mult(dev_type: Constants.DevType) -> float:
-	match dev_type:
-		Constants.DevType.REGULAR: return regular_speed_mult
-	return 1.0
-
-
-func get_type_debt_mult(dev_type: Constants.DevType) -> float:
-	match dev_type:
-		Constants.DevType.VIBECODER: return vibecoder_debt_mult
-		Constants.DevType.SENIOR: return senior_debt_mult
-	return 1.0
+	return Balance.get_xp_for_level(lvl)
 
 
 # --- Upgrade application ---
@@ -146,32 +104,16 @@ func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
 
 func _apply_upgrade(upgrade: UpgradeData) -> void:
 	if upgrade.upgrade_type == Constants.UpgradeType.GLOBAL:
-		match upgrade.stat:
-			Constants.UpgradeStat.DAMAGE: global_damage_mult *= upgrade.multiplier
-			Constants.UpgradeStat.SPEED: global_speed_mult *= upgrade.multiplier
-			Constants.UpgradeStat.DEBT: global_debt_mult *= upgrade.multiplier
-			Constants.UpgradeStat.AUTO_CLICK_COUNT: auto_click_count_mult *= upgrade.multiplier
-			Constants.UpgradeStat.AUTO_CLICK_SPEED:
-				auto_click_speed_mult *= upgrade.multiplier
-				_update_auto_click_timer()
+		global_upgrades.append(upgrade)
+		if upgrade.stat == Constants.UpgradeStat.AUTO_CLICK_SPEED:
+			_update_auto_click_timer()
+	elif upgrade.upgrade_type == Constants.UpgradeType.DEV:
+		if upgrade.target_dev_type not in dev_upgrades:
+			dev_upgrades[upgrade.target_dev_type] = []
+		dev_upgrades[upgrade.target_dev_type].append(upgrade)
 	elif upgrade.upgrade_type == Constants.UpgradeType.UNLOCK:
 		match upgrade.stat:
 			Constants.UpgradeStat.AUTO_CLICK: _unlock_auto_click()
-	elif upgrade.upgrade_type == Constants.UpgradeType.DEV:
-		var dt: Constants.DevType = upgrade.target_dev_type
-		match upgrade.stat:
-			Constants.UpgradeStat.DAMAGE:
-				match dt:
-					Constants.DevType.VIBECODER: vibecoder_damage_mult *= upgrade.multiplier
-					Constants.DevType.REGULAR: regular_damage_mult *= upgrade.multiplier
-					Constants.DevType.SENIOR: senior_damage_mult *= upgrade.multiplier
-			Constants.UpgradeStat.SPEED:
-				match dt:
-					Constants.DevType.REGULAR: regular_speed_mult *= upgrade.multiplier
-			Constants.UpgradeStat.DEBT:
-				match dt:
-					Constants.DevType.VIBECODER: vibecoder_debt_mult *= upgrade.multiplier
-					Constants.DevType.SENIOR: senior_debt_mult *= upgrade.multiplier
 	Log.log_info(name, "Applied upgrade: %s (×%.1f)" % [upgrade.id, upgrade.multiplier])
 
 
@@ -211,7 +153,7 @@ func _on_backlog_clicked(count: int) -> void:
 
 
 func _get_clicks_needed() -> int:
-	return Constants.BASE_CLICKS_PER_TASK
+	return Balance.get_clicks_needed()
 
 
 func _spawn_task_to_queue() -> void:
@@ -240,13 +182,15 @@ func _unlock_auto_click() -> void:
 
 
 func _on_auto_click_tick() -> void:
-	var count: int = int(Constants.BASE_AUTO_CLICK_COUNT * auto_click_count_mult)
+	var count_mult: float = Balance._calc_mult(Constants.UpgradeStat.AUTO_CLICK_COUNT, global_upgrades, [])
+	var count: int = int(Constants.BASE_AUTO_CLICK_COUNT * count_mult)
 	SB.backlog_clicked.emit(count)
 
 
 func _update_auto_click_timer() -> void:
 	if _auto_click_timer:
-		_auto_click_timer.wait_time = Constants.BASE_AUTO_CLICK_INTERVAL / auto_click_speed_mult
+		var speed_mult: float = Balance._calc_mult(Constants.UpgradeStat.AUTO_CLICK_SPEED, global_upgrades, [])
+		_auto_click_timer.wait_time = Constants.BASE_AUTO_CLICK_INTERVAL / speed_mult
 
 
 # --- Task spawning ---
@@ -269,53 +213,23 @@ func _fill_task_bag() -> void:
 
 func _scale_task_hp(task: TaskData) -> void:
 	var minutes_elapsed: float = (Constants.GAME_DURATION - timer_remaining) / 60.0
-	var hp: float = Constants.BASE_HP * task.base_hp_mult * pow(2.0, minutes_elapsed)
+	var hp: float = Balance.scale_task_hp(task.base_hp_mult, minutes_elapsed)
 	task.current_hp = hp
 	task.max_hp = hp
 
 
-# --- Combat ---
+# --- Task management ---
 
-func _on_developer_attack(developer: Developer) -> void:
-	if task_queue.is_empty():
-		return
-	var task: TaskData = task_queue[0]
-	var damage: float = _calculate_damage(developer, task.task_type)
-	var actual_damage: float = minf(damage, task.current_hp)
-	var debt_delta: float = _calculate_debt(developer, actual_damage)
-	task.current_hp -= damage
-	developer.show_damage(int(damage))
-	increase_tech_debt(debt_delta)
-	SB.task_hp_changed.emit(task, task.current_hp, task.max_hp)
-	if task.current_hp <= 0.0:
-		task_queue.pop_front()
-		_on_task_destroyed(task)
-
-
-func _calculate_damage(developer: Developer, task_type: Constants.TaskType) -> float:
-	var base: float = Constants.BASE_DAMAGE
-	var task_mult: float = _get_task_mult(developer.data, task_type)
-	var type_mult: float = get_type_damage_mult(developer.data.dev_type)
-	var global_mult: float = global_damage_mult
-	return base * task_mult * type_mult * global_mult
-
-
-func _get_task_mult(data: DeveloperData, task_type: Constants.TaskType) -> float:
-	match task_type:
-		Constants.TaskType.FEATURE: return data.base_feature_mult
-		Constants.TaskType.BUG: return data.base_bug_mult
-		Constants.TaskType.REFACTOR: return data.base_refactor_mult
-	return 1.0
-
-
-func _calculate_debt(developer: Developer, damage: float) -> float:
-	return Constants.BASE_DEBT_PER_HP * damage * developer.data.base_debt_mult * get_type_debt_mult(developer.data.dev_type) * global_debt_mult
+func take_task(task: TaskData) -> TaskData:
+	if task not in task_queue:
+		return null
+	task_queue.erase(task)
+	SB.task_queue_changed.emit(task_queue)
+	return task
 
 
 func _on_task_destroyed(task: TaskData) -> void:
 	_apply_task_rewards(task)
-	SB.task_destroyed.emit(task)
-	SB.task_queue_changed.emit(task_queue)
 	Log.log_info(name, "Task destroyed: %s" % Constants.TaskType.keys()[task.task_type])
 
 
@@ -329,8 +243,14 @@ func _apply_task_rewards(task: TaskData) -> void:
 		Constants.TaskType.BUG:
 			Log.log_info(name, "Bug fixed")
 		Constants.TaskType.REFACTOR:
-			increase_tech_debt(-Constants.DEBT_PER_TASK)
-			Log.log_info(name, "Refactor done: -%.1f debt" % Constants.DEBT_PER_TASK)
+			increase_tech_debt(-Constants.DEBT_REDUCTION_PER_REFACTOR)
+			Log.log_info(name, "Refactor done: -%.1f debt" % Constants.DEBT_REDUCTION_PER_REFACTOR)
+
+
+# --- Tech debt ---
+
+func _on_tech_debt_produced(delta: float) -> void:
+	increase_tech_debt(delta)
 
 
 # --- Developers ---
