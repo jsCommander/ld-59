@@ -10,7 +10,6 @@ dev_type = 0
 texture = ExtResource("2_texture")
 base_feature_mult = 1.6
 base_bug_mult = 0.4
-base_refactor_mult = 0.2
 base_debt_mult = 3.0
 id = "developer_vibecoder"
 task_select = ExtResource("3_task_select")

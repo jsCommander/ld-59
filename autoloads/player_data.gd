@@ -2,7 +2,6 @@ class_name PlayerData extends Node
 
 const TASK_DATA_FEATURE: TaskData = preload("res://game_data/task/task_data_feature.tres")
 const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres")
-const TASK_DATA_REFACTOR: TaskData = preload("res://game_data/task/task_data_refactor.tres")
 
 var valuation: int = 0
 var level: int = 0
@@ -20,6 +19,13 @@ var developers: Array[Developer] = []
 var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
 var dev_upgrades: Dictionary = {}
+var _empty_upgrades: Array[UpgradeData] = []
+
+
+func get_dev_upgrades(dev_type: Constants.DevType) -> Array[UpgradeData]:
+	if dev_type in dev_upgrades:
+		return dev_upgrades[dev_type] as Array[UpgradeData]
+	return _empty_upgrades
 
 var auto_click_unlocked: bool = false
 
@@ -30,6 +36,7 @@ var _auto_click_timer: Timer
 func _ready() -> void:
 	SB.upgrade_chosen.connect(_on_upgrade_chosen)
 	SB.backlog_clicked.connect(_on_backlog_clicked)
+	SB.task_destroyed.connect(_on_task_destroyed)
 	SB.tech_debt_produced.connect(_on_tech_debt_produced)
 	_tick_timer = _create_tick_timer()
 
@@ -109,7 +116,8 @@ func _apply_upgrade(upgrade: UpgradeData) -> void:
 			_update_auto_click_timer()
 	elif upgrade.upgrade_type == Constants.UpgradeType.DEV:
 		if upgrade.target_dev_type not in dev_upgrades:
-			dev_upgrades[upgrade.target_dev_type] = []
+			var arr: Array[UpgradeData] = []
+			dev_upgrades[upgrade.target_dev_type] = arr
 		dev_upgrades[upgrade.target_dev_type].append(upgrade)
 	elif upgrade.upgrade_type == Constants.UpgradeType.UNLOCK:
 		match upgrade.stat:
@@ -198,14 +206,10 @@ func _update_auto_click_timer() -> void:
 func _fill_task_bag() -> void:
 	var bag_size: int = Constants.BASE_QUEUE_SIZE
 	var bug_chance: float = tech_debt * Constants.BUG_SPAWN_MULTIPLIER
-	var refactor_chance: float = tech_debt * Constants.REFACTOR_SPAWN_MULTIPLIER
 	var bug_count: int = int(bag_size * bug_chance)
-	var refactor_count: int = int(bag_size * refactor_chance)
-	var feature_count: int = bag_size - bug_count - refactor_count
+	var feature_count: int = bag_size - bug_count
 	for i: int in bug_count:
 		_task_bag.append(TASK_DATA_BUG.duplicate())
-	for i: int in refactor_count:
-		_task_bag.append(TASK_DATA_REFACTOR.duplicate())
 	for i: int in feature_count:
 		_task_bag.append(TASK_DATA_FEATURE.duplicate())
 	_task_bag.shuffle()
@@ -234,17 +238,14 @@ func _on_task_destroyed(task: TaskData) -> void:
 
 
 func _apply_task_rewards(task: TaskData) -> void:
-	match task.task_type:
-		Constants.TaskType.FEATURE:
-			valuation += int(task.max_hp)
-			SB.valuation_changed.emit()
-			_check_level_up()
-			Log.log_info(name, "Feature done: +%d valuation (total: %d)" % [int(task.max_hp), valuation])
-		Constants.TaskType.BUG:
-			Log.log_info(name, "Bug fixed")
-		Constants.TaskType.REFACTOR:
-			increase_tech_debt(-Constants.DEBT_REDUCTION_PER_REFACTOR)
-			Log.log_info(name, "Refactor done: -%.1f debt" % Constants.DEBT_REDUCTION_PER_REFACTOR)
+	var reward: int = int(task.max_hp * task.base_reward_mult)
+	if reward > 0:
+		valuation += reward
+		SB.valuation_changed.emit()
+		_check_level_up()
+	if task.base_debt_reduction > 0.0:
+		increase_tech_debt(-task.base_debt_reduction)
+	Log.log_info(name, "Task done: +%d valuation, -%.1f debt" % [reward, task.base_debt_reduction])
 
 
 # --- Tech debt ---

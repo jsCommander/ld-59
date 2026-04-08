@@ -56,17 +56,18 @@ func _pick_task() -> void:
 
 
 func _perform_attack() -> void:
-	var dev_upgrades: Array[UpgradeData] = PD.dev_upgrades.get(data.dev_type, [])
+	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
 	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.global_upgrades, dev_upgrades)
 	_current_task.current_hp -= damage
 	show_damage(int(damage))
 	task_display.update_hp(_current_task.current_hp, _current_task.max_hp)
+	AM.play_sfx(Constants.Sfx.HIT_HURT, 0.15)
 	if _current_task.current_hp <= 0.0:
 		_on_task_killed()
 
 
 func _on_task_killed() -> void:
-	var dev_upgrades: Array[UpgradeData] = PD.dev_upgrades.get(data.dev_type, [])
+	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
 	var debt: float = Balance.calculate_debt(data, PD.global_upgrades, dev_upgrades)
 	SB.task_destroyed.emit(_current_task)
 	SB.tech_debt_produced.emit(debt)
@@ -75,7 +76,7 @@ func _on_task_killed() -> void:
 
 
 func _get_attack_speed() -> float:
-	var dev_upgrades: Array[UpgradeData] = PD.dev_upgrades.get(data.dev_type, [])
+	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
 	return Balance.calculate_attack_speed(data, PD.global_upgrades, dev_upgrades)
 
 

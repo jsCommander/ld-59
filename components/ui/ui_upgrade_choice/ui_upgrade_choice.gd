@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func _on_level_up(level: int) -> void:
 	title_label.text = "Уровень %d — выбери апгрейд" % level
-	var upgrades: Array[UpgradeData] = DR.get_random_upgrades(4)
+	var upgrades: Array[UpgradeData] = DR.get_level_up_upgrades()
 	_build_cards(upgrades)
 	visible = true
 

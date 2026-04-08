@@ -6,7 +6,6 @@ var _developer: Developer
 @onready var name_label: Label = %NameLabel
 @onready var feature_bar: ProgressBar = %FeatureBar
 @onready var bug_bar: ProgressBar = %BugBar
-@onready var refactor_bar: ProgressBar = %RefactorBar
 @onready var speed_bar: ProgressBar = %SpeedBar
 
 
@@ -25,5 +24,4 @@ func _ready() -> void:
 func _update_bars() -> void:
 	feature_bar.value = _developer.data.base_feature_mult * 50.0
 	bug_bar.value = _developer.data.base_bug_mult * 50.0
-	refactor_bar.value = _developer.data.base_refactor_mult * 50.0
 	speed_bar.value = 100.0 / _developer.data.base_attack_speed

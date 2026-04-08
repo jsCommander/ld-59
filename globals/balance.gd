@@ -20,15 +20,10 @@ static func calculate_debt(dev_data: DeveloperData, global_upgrades: Array[Upgra
 	return base * debt_mult
 
 
-static func calculate_refactor_reward() -> float:
-	return Constants.DEBT_REDUCTION_PER_REFACTOR
-
-
 static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType) -> float:
 	match task_type:
 		Constants.TaskType.FEATURE: return dev_data.base_feature_mult
 		Constants.TaskType.BUG: return dev_data.base_bug_mult
-		Constants.TaskType.REFACTOR: return dev_data.base_refactor_mult
 	return 1.0
 
 
@@ -37,7 +32,7 @@ static func scale_task_hp(base_hp_mult: float, minutes_elapsed: float) -> float:
 
 
 static func get_xp_for_level(level: int) -> int:
-	return Constants.XP_BASE * int(pow(2, level - 1))
+	return Constants.XP_BASE * int(pow(1.5, level - 1))
 
 
 static func get_clicks_needed() -> int:

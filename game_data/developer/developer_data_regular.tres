@@ -11,7 +11,6 @@ texture = ExtResource("2_texture")
 dev_type = 1
 base_feature_mult = 1.0
 base_bug_mult = 1.0
-base_refactor_mult = 1.0
 base_debt_mult = 1.0
 base_attack_speed = 2.0
 task_select = ExtResource("3_task_select")
