@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://byq0wrqpptk7l"]
 
-[ext_resource type="Script" path="res://components/hud/hud.gd" id="1_hud"]
-[ext_resource type="PackedScene" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="4_popup_manager"]
-[ext_resource type="Script" path="res://components/hud/popup_manager.gd" id="5_popup_manager_script"]
+[ext_resource type="Script" uid="uid://d2rhl7biv47hi" path="res://components/hud/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://wtw8w4usjubw" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="4_popup_manager"]
+[ext_resource type="Script" uid="uid://dolbua4r42pw5" path="res://components/hud/popup_manager.gd" id="5_popup_manager_script"]
+[ext_resource type="PackedScene" uid="uid://d3k7xmoaqp2v8" path="res://components/hud/ceo_commentator.tscn" id="6_ceo_commentator"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1097246371]
 layer = 5
 script = ExtResource("1_hud")
 
-[node name="MainLayout" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
+[node name="MainLayout" type="VBoxContainer" parent="." unique_id=1237133388]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,99 +19,90 @@ offset_right = -8.0
 offset_bottom = -8.0
 theme_override_constants/separation = 8
 
-[node name="TopBar" type="HBoxContainer" parent="MainLayout"]
+[node name="TopBar" type="HBoxContainer" parent="MainLayout" unique_id=513642551]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="StatsPanel" type="PanelContainer" parent="MainLayout/TopBar"]
+[node name="StatsPanel" type="PanelContainer" parent="MainLayout/TopBar" unique_id=1450883350]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopBar/StatsPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopBar/StatsPanel" unique_id=371344209]
 layout_mode = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 6
+theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 6
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopBar/StatsPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopBar/StatsPanel/MarginContainer" unique_id=1939132060]
 layout_mode = 2
 
-[node name="TimerLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer"]
+[node name="TimerLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=576291526]
 unique_name_in_owner = true
 layout_mode = 2
-text = "15:00"
+text = "10:00"
 
-[node name="ValuationLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=5]
+[node name="ValuationLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=1761062665]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Lv.0  $0 / $30"
+theme_override_font_sizes/font_size = 32
+text = "$0"
 
-[node name="TechDebtLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Tech Debt"
-
-[node name="TechDebtBar" type="ProgressBar" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=2]
+[node name="XpBar" type="ProgressBar" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=1285086720]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 100.0
+max_value = 1.0
 show_percentage = false
 
-[node name="QueuePanel" type="PanelContainer" parent="MainLayout/TopBar"]
+[node name="CompanyLabel" type="Label" parent="MainLayout/TopBar/StatsPanel/MarginContainer/VBoxContainer" unique_id=2072581757]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="QueuePanel" type="PanelContainer" parent="MainLayout/TopBar" unique_id=1322146161]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopBar/QueuePanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopBar/QueuePanel" unique_id=53391222]
 layout_mode = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 6
+theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 6
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopBar/QueuePanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopBar/QueuePanel/MarginContainer" unique_id=990694482]
 layout_mode = 2
 
-[node name="CardContainer" type="HBoxContainer" parent="MainLayout/TopBar/QueuePanel/MarginContainer/VBoxContainer" unique_id=100]
+[node name="CardContainer" type="HBoxContainer" parent="MainLayout/TopBar/QueuePanel/MarginContainer/VBoxContainer" unique_id=304842081]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
+[node name="BottomBar" type="HBoxContainer" parent="MainLayout" unique_id=398016632]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="SprintInfo" type="VBoxContainer" parent="MainLayout/BottomBar" unique_id=1201334768]
+layout_mode = 2
+
+[node name="SprintLabel" type="Label" parent="MainLayout/BottomBar/SprintInfo" unique_id=413112786]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Спринт 1"
+
+[node name="SprintTimerBar" type="ProgressBar" parent="MainLayout/BottomBar/SprintInfo" unique_id=1149083510]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 20)
+layout_mode = 2
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
 [node name="UiPopupManager" parent="." unique_id=2097246371 instance=ExtResource("4_popup_manager")]
 unique_name_in_owner = true
 script = ExtResource("5_popup_manager_script")
 
-[node name="BottomBar" type="VBoxContainer" parent="."]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -140.0
-offset_top = -100.0
-offset_right = 140.0
-offset_bottom = -12.0
-theme_override_constants/separation = 4
-
-[node name="ClickProgressBar" type="ProgressBar" parent="BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(250, 12)
-max_value = 1.0
-show_percentage = false
-
-[node name="BacklogButton" type="Button" parent="BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(250, 60)
-text = "Бэклог (0/3)"
-theme_override_font_sizes/font_size = 26
-
-[node name="AutoClickBar" type="ProgressBar" parent="BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(250, 8)
-max_value = 1.0
-show_percentage = false
-visible = false
-
+[node name="CeoCommentator" parent="." unique_id=590478448 instance=ExtResource("6_ceo_commentator")]
+layout_mode = 3
+anchors_preset = 3

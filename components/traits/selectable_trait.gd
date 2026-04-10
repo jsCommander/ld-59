@@ -39,6 +39,9 @@ func _on_input_event(viewport: Node, event: InputEvent, _shape_idx: int) -> void
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		viewport.set_input_as_handled()
 		SB.entity_selected.emit(get_parent(), popup_anchor.global_position)
+		var dev: Developer = get_parent() as Developer
+		if dev:
+			dev.on_clicked()
 
 
 func set_selected(value: bool) -> void:

@@ -1,29 +1,19 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://v2l5dlh6dgoc"]
 
-[ext_resource type="Script" path="res://components/developer/task_display.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_7xaqb"]
 
-[node name="TaskDisplay" type="Control"]
-script = ExtResource("1")
-visible = false
-offset_left = -40.0
-offset_top = -320.0
-offset_right = 40.0
-offset_bottom = -230.0
+[node name="VBoxContainer" type="VBoxContainer" unique_id=464981821]
+offset_right = 93.0
+offset_bottom = 101.0
 
-[node name="IconRect" type="TextureRect" parent="."]
+[node name="HpBar" type="ProgressBar" parent="." unique_id=205217893]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 80.0
-offset_bottom = 80.0
-expand_mode = 1
-stretch_mode = 5
-
-[node name="HpBar" type="ProgressBar" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_top = 82.0
-offset_right = 80.0
-offset_bottom = 92.0
-max_value = 1.0
-value = 1.0
+layout_mode = 2
+value = 50.0
 show_percentage = false
+
+[node name="IconRect" type="TextureRect" parent="." unique_id=1554776108]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_7xaqb")
+stretch_mode = 3

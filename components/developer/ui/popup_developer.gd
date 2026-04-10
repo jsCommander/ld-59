@@ -22,6 +22,6 @@ func _ready() -> void:
 
 
 func _update_bars() -> void:
-	feature_bar.value = _developer.data.base_feature_mult * 50.0
-	bug_bar.value = _developer.data.base_bug_mult * 50.0
+	feature_bar.value = _developer.data.task_mults.get(Constants.TaskType.FEATURE, 1.0) * 50.0
+	bug_bar.value = _developer.data.task_mults.get(Constants.TaskType.BUG, 1.0) * 50.0
 	speed_bar.value = 100.0 / _developer.data.base_attack_speed

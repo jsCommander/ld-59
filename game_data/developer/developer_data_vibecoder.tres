@@ -8,8 +8,7 @@
 script = ExtResource("1_script")
 dev_type = 0
 texture = ExtResource("2_texture")
-base_feature_mult = 1.6
-base_bug_mult = 0.4
-base_debt_mult = 3.0
+task_mults = {0: 1.6, 1: 0.4, 2: 0.4}
+base_attack_speed = 0.5
 id = "developer_vibecoder"
 task_select = ExtResource("3_task_select")
