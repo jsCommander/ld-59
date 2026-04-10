@@ -18,6 +18,7 @@ var _sprint_active: bool = false
 
 var task_queue: Array[TaskData] = []
 var developers: Array[Developer] = []
+var hired_data: Array[DeveloperData] = []
 
 var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
@@ -36,6 +37,7 @@ func get_dev_upgrades(dev_type: Constants.DevType) -> Array[UpgradeData]:
 func _ready() -> void:
 	SB.upgrade_chosen.connect(_on_upgrade_chosen)
 	SB.task_destroyed.connect(_on_task_destroyed)
+	SB.developer_chosen.connect(_on_developer_chosen)
 	_tick_timer = _create_tick_timer()
 
 
@@ -49,6 +51,7 @@ func _create_tick_timer() -> Timer:
 
 func start_game() -> void:
 	reset()
+	developers.assign(Groups.get_all_of_type(get_tree(), "developer", Developer))
 	_game_active = true
 	_tick_timer.start()
 	_start_sprint()
@@ -65,6 +68,7 @@ func reset() -> void:
 	_sprint_active = false
 	task_queue.clear()
 	developers.clear()
+	hired_data.clear()
 	upgrades_taken.clear()
 	global_upgrades.clear()
 	dev_upgrades.clear()
@@ -230,14 +234,24 @@ func _apply_task_rewards(task: TaskData) -> void:
 
 # --- Developers ---
 
-func hire_developer(developer: Developer) -> void:
-	developers.append(developer)
-	SB.developer_hired.emit(developer.data)
-	Log.log_info(name, "Hired %s" % Constants.DevType.keys()[developer.data.dev_type])
-	_awaiting_choice = false
-	_check_level_up()
+func hire_developer(dev_data: DeveloperData) -> void:
+	var desk: Developer = Groups.get_first_filtered(get_tree(), "developer", func(d: Developer) -> bool: return not d.data) as Developer
+	if not desk:
+		Log.log_warn(name, "No empty desks available")
+		return
+	desk.data = dev_data
+	developers.append(desk)
+	hired_data.append(dev_data)
+	Log.log_info(name, "Hired %s" % Constants.DevType.keys()[dev_data.dev_type])
 
 
 func fire_developer(developer: Developer) -> void:
 	developers.erase(developer)
-	SB.developer_fired.emit(developer.data)
+	hired_data.erase(developer.data)
+	Log.log_info(name, "Fired %s" % Constants.DevType.keys()[developer.data.dev_type])
+
+
+func _on_developer_chosen(dev_data: DeveloperData) -> void:
+	hire_developer(dev_data)
+	_awaiting_choice = false
+	_check_level_up()

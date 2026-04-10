@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="DeveloperData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://game_data/developer/developer_data.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/char/char_man_mustache_@0.5x.png" id="2_texture"]
+[ext_resource type="Texture2D" path="res://assets/exports/developer.png" id="2_texture"]
 [ext_resource type="Resource" path="res://game_data/task_select_function_default.tres" id="3_task_select"]
 
 [resource]

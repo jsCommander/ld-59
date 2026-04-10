@@ -6,9 +6,6 @@ signal selection_cleared
 signal task_queue_changed(tasks: Array[TaskData])
 signal task_destroyed(task: TaskData)
 
-signal developer_hired(dev_data: DeveloperData)
-signal developer_fired(dev_data: DeveloperData)
-
 signal valuation_changed
 
 signal sprint_started(sprint_number: int)
@@ -20,3 +17,4 @@ signal level_up(level: int)
 signal game_over(valuation: int)
 signal upgrade_chosen(upgrade: UpgradeData)
 signal developer_hire_requested
+signal developer_chosen(dev_data: DeveloperData)

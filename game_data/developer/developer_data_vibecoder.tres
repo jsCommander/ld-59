@@ -1,14 +1,17 @@
-[gd_resource type="Resource" script_class="DeveloperData" load_steps=3 format=3 uid="uid://crebiijpwolm8"]
+[gd_resource type="Resource" script_class="DeveloperData" format=3 uid="uid://crebiijpwolm8"]
 
 [ext_resource type="Script" uid="uid://bvh16nid7twav" path="res://game_data/developer/developer_data.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b2i3sw0uqe3j2" path="res://assets/char/char_robot_smile_@0.5x.png" id="2_texture"]
+[ext_resource type="Texture2D" uid="uid://bb0nd3wv702n3" path="res://assets/exports/developer.png" id="2_texture"]
 [ext_resource type="Resource" path="res://game_data/task_select_function_default.tres" id="3_task_select"]
 
 [resource]
 script = ExtResource("1_script")
 dev_type = 0
 texture = ExtResource("2_texture")
-task_mults = {0: 1.6, 1: 0.4, 2: 0.4}
-base_attack_speed = 0.5
-id = "developer_vibecoder"
+task_mults = {
+0: 1.6,
+1: 0.4,
+2: 0.4
+}
 task_select = ExtResource("3_task_select")
+id = "developer_vibecoder"

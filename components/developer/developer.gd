@@ -2,35 +2,42 @@
 class_name Developer
 extends Node2D
 
+# --- Enums ---
+
 enum State { IDLE, WORKING, YOUTUBE, BURNOUT }
+
+# --- Exports ---
 
 @export var data: DeveloperData:
 	set(value):
 		data = value
 		_apply_data()
 
+# --- @onready ---
+
 @onready var desk_sprite: Sprite2D = %DeskSprite
 @onready var dev_sprite: Sprite2D = %DevSprite
+@onready var laptop_sprite: Sprite2D = %LaptopSprite
 @onready var damage_number: DamageNumber = $DamageNumber
 @onready var task_display: TaskDisplay = %TaskDisplay
+
+# --- State ---
 
 var _state: State = State.IDLE
 var _attack_timer: float = 0.0
 var _idle_tween: Tween = null
 var _current_task: TaskData = null
-
-# Boost system
 var _boost_stacks: int = 0
 var _boost_decay_timer: float = 0.0
-
-# Burnout
 var _burnout_timer: float = 0.0
 
+# --- Lifecycle ---
 
 func _ready() -> void:
 	_apply_data()
 	if Engine.is_editor_hint():
 		return
+	add_to_group("developer")
 
 
 func _process(delta: float) -> void:
@@ -49,6 +56,29 @@ func _process(delta: float) -> void:
 
 	_process_boost_decay(delta)
 
+# --- Handlers ---
+
+func _on_task_killed() -> void:
+	SB.task_destroyed.emit(_current_task)
+	task_display.hide_task()
+	_current_task = null
+	_change_state(State.IDLE)
+
+# --- Public ---
+
+func on_clicked() -> void:
+	match _state:
+		State.YOUTUBE:
+			_change_state(State.IDLE)
+			Log.log_debug(name, "Snapped out of YouTube")
+		State.WORKING, State.IDLE:
+			_apply_boost()
+
+
+func show_damage(damage: int) -> void:
+	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
+
+# --- Private ---
 
 func _process_idle() -> void:
 	_stop_idle_sway()
@@ -137,27 +167,9 @@ func _perform_attack() -> void:
 		_on_task_killed()
 
 
-func _on_task_killed() -> void:
-	SB.task_destroyed.emit(_current_task)
-	task_display.hide_task()
-	_current_task = null
-	_change_state(State.IDLE)
-
-
 func _get_attack_speed() -> float:
 	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
 	return Balance.calculate_attack_speed(data, PD.global_upgrades, dev_upgrades, _boost_stacks)
-
-
-# --- Player interaction ---
-
-func on_clicked() -> void:
-	match _state:
-		State.YOUTUBE:
-			_change_state(State.IDLE)
-			Log.log_debug(name, "Snapped out of YouTube")
-		State.WORKING, State.IDLE:
-			_apply_boost()
 
 
 func _apply_boost() -> void:
@@ -168,17 +180,6 @@ func _apply_boost() -> void:
 	if _boost_stacks >= Constants.MAX_BOOST:
 		_change_state(State.BURNOUT)
 		Log.log_info(name, "Burned out from too much boost!")
-
-
-# --- Visual ---
-
-func hire(developer_data: DeveloperData) -> void:
-	data = developer_data
-	PD.hire_developer(self)
-
-
-func show_damage(damage: int) -> void:
-	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
 
 
 func _start_idle_sway() -> void:
@@ -200,16 +201,9 @@ func _apply_data() -> void:
 	if not is_instance_valid(dev_sprite):
 		return
 
-	if data:
+	var hired: bool = data != null
+	dev_sprite.visible = hired
+	laptop_sprite.visible = hired
+
+	if hired:
 		dev_sprite.texture = data.texture
-		dev_sprite.visible = true
-		if not Engine.is_editor_hint():
-			add_to_group("developer")
-			if is_in_group("desk"):
-				remove_from_group("desk")
-	else:
-		dev_sprite.visible = false
-		if not Engine.is_editor_hint():
-			add_to_group("desk")
-			if is_in_group("developer"):
-				remove_from_group("developer")

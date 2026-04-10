@@ -31,13 +31,5 @@ func _build_cards() -> void:
 
 
 func _on_dev_chosen(dev_data: DeveloperData) -> void:
-	var desks: Array[Node] = get_tree().get_nodes_in_group("desk")
-	if desks.is_empty():
-		Log.log_warn(name, "No empty desks available")
-		PD._awaiting_choice = false
-		get_tree().paused = false
-		visible = false
-		return
-	var desk: Developer = desks[0] as Developer
-	desk.hire(dev_data.duplicate())
+	SB.developer_chosen.emit(dev_data.duplicate())
 	visible = false

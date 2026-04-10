@@ -28,7 +28,32 @@ The kit never imports from game-specific code. Dependencies flow one way: game c
 
 ---
 
-## Principle 2: Project Structure
+## Principle 2: Script Section Order
+
+Every GDScript file follows a strict section order, separated by `# --- Section Name ---` comments:
+
+```gdscript
+# --- Enums ---
+# --- Constants ---
+# --- Signals ---
+# --- Exports ---
+# --- @onready ---
+# --- State ---          # private vars
+# --- Lifecycle ---      # _ready, _process, _physics_process, _enter_tree, _exit_tree
+# --- Handlers ---       # _on_* callbacks, signal handlers
+# --- Public ---         # methods callable from outside
+# --- Private ---        # internal methods
+```
+
+### Rules
+
+- Omit empty sections — don't add a `# --- Signals ---` block if there are no signals
+- Every section that exists must have the comment header
+- Within each section, order doesn't matter — use whatever grouping makes sense
+
+---
+
+## Principle 3: Project Structure
 
 Game-specific code is organized by role, not by type. Each folder has a clear purpose.
 
@@ -48,7 +73,7 @@ data/         # External data files (dialog JSON, configs)
 
 ---
 
-## Principle 3: Find Everything Through Groups
+## Principle 4: Find Everything Through Groups
 
 When one entity needs to know about another, it finds it by group. Not through an autoload, not through a reference passed from the level — it queries the group itself.
 
@@ -102,7 +127,7 @@ Run the enemy scene alone — it idles. Drop a player on the map — enemy finds
 
 ---
 
-## Principle 4: Autonomous Agents
+## Principle 5: Autonomous Agents
 
 Every entity is an autonomous agent that acts independently. It finds what it needs through the environment (groups, collision layers, component detection), not through explicit wiring from a parent. Drop an entity on the map — it works. No setup, no manual connections.
 
@@ -147,7 +172,7 @@ To give an entity a new capability, add the component node. To remove it, delete
 
 ---
 
-## Principle 4: Composition Over Inheritance
+## Principle 6: Composition Over Inheritance
 
 Build complex entities by assembling small, self-contained scenes as children — not by creating deep inheritance trees. Each child component does one thing and knows nothing about its host.
 
@@ -186,7 +211,7 @@ Boss needs melee AND ranged? It has both Hitbox and BulletSpawn. No inheritance 
 
 ---
 
-## Principle 5: Emit Up, Call Down
+## Principle 7: Emit Up, Call Down
 
 Children emit signals. Parents connect and react. Siblings never talk to each other directly — a common ancestor mediates.
 
@@ -252,7 +277,7 @@ func handle_scene_finished(_data: Dictionary):
 
 ---
 
-## Principle 6: Separate Logic from Data
+## Principle 8: Separate Logic from Data
 
 One scene, many variants. Don't create separate scenes for skeleton, orc, zombie — create one `enemy` scene and feed it different `.tres` Resource files with different textures, sounds, and stats.
 
@@ -307,7 +332,7 @@ func _ready():
 
 ---
 
-## Principle 7: Unique Names for Stable References
+## Principle 9: Unique Names for Stable References
 
 Use `%NodeName` instead of `$Path/To/Deep/Node` for intra-scene references.
 
@@ -338,7 +363,7 @@ Use `%NodeName` instead of `$Path/To/Deep/Node` for intra-scene references.
 
 ---
 
-## Principle 8: Physics Layers as a Contract
+## Principle 10: Physics Layers as a Contract
 
 Collision layers define who can interact with whom. Name them, assign them systematically. The layer setup IS the interaction rulebook.
 
@@ -376,7 +401,7 @@ Want ally projectiles? Add a new layer, set masks. Zero code changes.
 
 ---
 
-## Principle 9: Spawn to Level, Not to Self
+## Principle 11: Spawn to Level, Not to Self
 
 Dynamic objects (bullets, drops, effects) are added as children of the **level**, not the spawner. Find the level by group.
 
@@ -408,7 +433,7 @@ func _shoot(target_pos: Vector2):
 
 ---
 
-## Principle 10: Log Everything Important
+## Principle 12: Log Everything Important
 
 Use `Log` (from `game_kit/utils/logger.gd`) to log state changes, lifecycle events, and decisions. When something breaks, logs tell you what happened without attaching a debugger.
 
@@ -448,7 +473,7 @@ Output format: `[timestamp] [LEVEL] (NodeName) message`
 
 ---
 
-## Principle 11: Type Everything
+## Principle 13: Type Everything
 
 Use static typing everywhere in GDScript. Type all variables, function arguments, return values, and collections. The compiler catches bugs before runtime, and the editor gives autocomplete.
 
