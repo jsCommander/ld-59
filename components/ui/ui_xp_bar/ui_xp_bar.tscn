@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/ui_xp_bar/ui_xp_bar.gd" id="1_script"]
+
+[node name="UiXpBar" type="ProgressBar"]
+max_value = 1.0
+show_percentage = false
+script = ExtResource("1_script")
