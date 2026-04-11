@@ -3,23 +3,25 @@ extends CanvasLayer
 
 const UPGRADE_CARD: PackedScene = preload("res://components/ui/ui_upgrade_choice/upgrade_card.tscn")
 
+# --- @onready ---
+
 @onready var card_container: HBoxContainer = %CardContainer
 @onready var title_label: Label = %TitleLabel
 
+# --- Lifecycle ---
 
 func _ready() -> void:
-	add_to_group("upgrade_choice")
-	SB.level_up.connect(_on_level_up)
-	visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+# --- Public ---
 
-func _on_level_up(level: int) -> void:
+func show_for_level(level: int) -> void:
 	title_label.text = "Уровень %d — выбери апгрейд" % level
 	var upgrades: Array[UpgradeData] = DR.get_level_up_upgrades()
 	_build_cards(upgrades)
 	visible = true
 
+# --- Private ---
 
 func _build_cards(upgrades: Array[UpgradeData]) -> void:
 	for child: Node in card_container.get_children():
@@ -29,7 +31,6 @@ func _build_cards(upgrades: Array[UpgradeData]) -> void:
 		card.setup(upgrade)
 		card.chosen.connect(_on_upgrade_chosen)
 		card_container.add_child(card)
-
 
 func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
 	visible = false
