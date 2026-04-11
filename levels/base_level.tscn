@@ -3,10 +3,7 @@
 [ext_resource type="Script" uid="uid://bk2xbrobxb5me" path="res://levels/base_level.gd" id="1_maq6b"]
 [ext_resource type="PackedScene" uid="uid://bn6l56wo7yx5w" path="res://components/background_office/background_office.tscn" id="1_wevqg"]
 [ext_resource type="PackedScene" uid="uid://dnfgvwc8qcvgq" path="res://components/developer/developer.tscn" id="2_46036"]
-[ext_resource type="PackedScene" uid="uid://byq0wrqpptk7l" path="res://components/hud/hud.tscn" id="3_maq6b"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_upgrade_choice/ui_upgrade_choice.tscn" id="4_0rg8l"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_hire_choice/ui_hire_choice.tscn" id="5_6w4ab"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_game_over/ui_game_over.tscn" id="6_n8wy4"]
+[ext_resource type="PackedScene" path="res://components/ui/ui_hud/ui_hud.tscn" id="3_maq6b"]
 
 [node name="BaseLevel" type="Node2D" unique_id=49000895]
 script = ExtResource("1_maq6b")
@@ -45,13 +42,4 @@ position = Vector2(1600, 704)
 [node name="Developer9" parent="Desks" unique_id=111926583 instance=ExtResource("2_46036")]
 position = Vector2(1600, 896)
 
-[node name="HUD" parent="." unique_id=1097246371 instance=ExtResource("3_maq6b")]
-
-[node name="UiUpgradeChoice" parent="." unique_id=790981469 instance=ExtResource("4_0rg8l")]
-visible = false
-
-[node name="UiHireChoice" parent="." unique_id=175060393 instance=ExtResource("5_6w4ab")]
-visible = false
-
-[node name="UiGameOver" parent="." unique_id=313652734 instance=ExtResource("6_n8wy4")]
-visible = false
+[node name="UiHud" parent="." unique_id=1097246371 instance=ExtResource("3_maq6b")]
