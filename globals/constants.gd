@@ -25,3 +25,13 @@ const BOOST_DECAY_RATE: float = 1.0
 const BOOST_SPEED_MULT: float = 0.05
 const BURNOUT_DURATION: float = 5.0
 const YOUTUBE_CHANCE: float = 0.1
+
+const COMPANY_MILESTONES: Array[Dictionary] = [
+	{"valuation": 50, "name": "Zynga"},
+	{"valuation": 200, "name": "Niantic"},
+	{"valuation": 500, "name": "Ubisoft"},
+	{"valuation": 1500, "name": "EA"},
+	{"valuation": 5000, "name": "Valve"},
+	{"valuation": 15000, "name": "Epic Games"},
+	{"valuation": 50000, "name": "Apple"},
+]

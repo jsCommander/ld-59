@@ -10,17 +10,6 @@ const TASK_CARD: PackedScene = preload("res://components/task_queue/task_card.ts
 @onready var sprint_timer_bar: ProgressBar = %SprintTimerBar
 @onready var company_label: Label = %CompanyLabel
 
-const COMPANY_MILESTONES: Array[Dictionary] = [
-	{"valuation": 50, "name": "Zynga"},
-	{"valuation": 200, "name": "Niantic"},
-	{"valuation": 500, "name": "Ubisoft"},
-	{"valuation": 1500, "name": "EA"},
-	{"valuation": 5000, "name": "Valve"},
-	{"valuation": 15000, "name": "Epic Games"},
-	{"valuation": 50000, "name": "Apple"},
-]
-
-
 func _ready() -> void:
 	SB.game_timer_changed.connect(_update_timer)
 	SB.valuation_changed.connect(_update_valuation)
@@ -49,7 +38,7 @@ func _update_valuation() -> void:
 
 func _update_company_comparison() -> void:
 	var current_company: String = ""
-	for milestone: Dictionary in COMPANY_MILESTONES:
+	for milestone: Dictionary in Constants.COMPANY_MILESTONES:
 		if PD.valuation >= milestone["valuation"]:
 			current_company = milestone["name"]
 	if current_company:
