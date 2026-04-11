@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c24dprnvaigvb"
-path="res://.godot/imported/char_girl_happy_@0.5x.png-0abd0840ba6067fe4b038b6bf7907bf4.ctex"
+uid="uid://c5y54cv4grras"
+path="res://.godot/imported/developer_hand.png-d30ad71860c2449f1a65953242e987f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/char/char_girl_happy_@0.5x.png"
-dest_files=["res://.godot/imported/char_girl_happy_@0.5x.png-0abd0840ba6067fe4b038b6bf7907bf4.ctex"]
+source_file="res://assets/exports/developer_hand.png"
+dest_files=["res://.godot/imported/developer_hand.png-d30ad71860c2449f1a65953242e987f4.ctex"]
 
 [params]
 

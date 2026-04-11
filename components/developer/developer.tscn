@@ -4,15 +4,271 @@
 [ext_resource type="Texture2D" uid="uid://bufkyecmigo8g" path="res://assets/exports/Desk.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://8thuenh4bpge" path="res://assets/exports/chair.png" id="2_72ilg"]
 [ext_resource type="Texture2D" uid="uid://d06257gr8h1ge" path="res://assets/exports/laptop.png" id="4_ux65i"]
-[ext_resource type="Texture2D" uid="uid://bb0nd3wv702n3" path="res://assets/exports/developer.png" id="5_2k4jx"]
-[ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="7_dmgnum"]
-[ext_resource type="PackedScene" uid="uid://v2l5dlh6dgoc" path="res://components/developer/task_display.tscn" id="8_task_display"]
+[ext_resource type="Texture2D" uid="uid://c5y54cv4grras" path="res://assets/exports/developer_hand.png" id="5_72ilg"]
+[ext_resource type="Texture2D" uid="uid://fqk1ato08gf1" path="res://assets/exports/developer_body.png" id="6_ux65i"]
+[ext_resource type="Texture2D" uid="uid://b51wgb25nq66" path="res://assets/exports/developer_head.png" id="7_2k4jx"]
+[ext_resource type="PackedScene" uid="uid://v2l5dlh6dgoc" path="res://components/developer_task_card/developer_task_card.tscn" id="8_task_display"]
+
+[sub_resource type="Animation" id="Animation_72ilg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DevRig/DevLeftHandSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-13, -66)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DevRig/DevLeftHandSprite:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DevRig/DevBodySprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DevRig/DevBodySprite:rotation")
+tracks/3/interp = 4
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DevRig/DevHeadSprite:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-17, -126)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DevRig/DevHeadSprite:rotation")
+tracks/5/interp = 4
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DevRig/DevRightHandSprite:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-31, -58)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("DevRig/DevRightHandSprite:rotation")
+tracks/7/interp = 4
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("DevRig/LaptopSprite:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(90, -21)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("DevRig/LaptopSprite:rotation")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ux65i"]
+resource_name = "working"
+length = 0.4
+loop_mode = 1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DevRig/DevLeftHandSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-13, -66), Vector2(-13, -66), Vector2(-13, -66), Vector2(-13, -66), Vector2(-13, -66)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DevRig/DevLeftHandSprite:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-0.08283429, 0.0, 0.0, -0.08283429]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DevRig/DevBodySprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DevRig/DevBodySprite:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.0, 0.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DevRig/DevHeadSprite:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.2, 0.29999998, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-17, -126), Vector2(-17, -122), Vector2(-17, -126), Vector2(-17, -122), Vector2(-17, -126)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DevRig/DevHeadSprite:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.2, 0.29999998, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [-0.04485808, 0.0, -0.05710118, 0.0, 0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DevRig/DevRightHandSprite:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-31, -58), Vector2(-31, -58), Vector2(-31, -58), Vector2(-31, -58), Vector2(-31, -58)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("DevRig/DevRightHandSprite:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, -0.11520354, 0.0, 0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("DevRig/LaptopSprite:position")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.12, 0.14, 0.19999999, 0.29999998, 0.32, 0.34, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(90, -21), Vector2(90, -21), Vector2(90, -20), Vector2(90, -21), Vector2(90, -21), Vector2(90, -21), Vector2(90, -20), Vector2(90, -21), Vector2(90, -21)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("DevRig/LaptopSprite:rotation")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.12, 0.14, 0.19999999, 0.29999998, 0.32, 0.34, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, -0.043613594, 0.0, 0.0, 0.0, -0.043613594, 0.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2k4jx"]
+_data = {
+&"RESET": SubResource("Animation_72ilg"),
+&"working": SubResource("Animation_ux65i")
+}
 
 [node name="Developer" type="Node2D" unique_id=1391907512]
 script = ExtResource("1")
 
 [node name="ChairSprite" type="Sprite2D" parent="." unique_id=443780231]
-position = Vector2(-172, -83)
+position = Vector2(-176, -83)
 texture = ExtResource("2_72ilg")
 
 [node name="DeskSprite" type="Sprite2D" parent="." unique_id=1]
@@ -20,24 +276,45 @@ unique_name_in_owner = true
 position = Vector2(56, -95)
 texture = ExtResource("2")
 
-[node name="LaptopSprite" type="Sprite2D" parent="." unique_id=1978603851]
-position = Vector2(-49, -170)
+[node name="DevRig" type="Node2D" parent="." unique_id=998168427]
+unique_name_in_owner = true
+visible = false
+position = Vector2(-143, -102)
+
+[node name="LaptopSprite" type="Sprite2D" parent="DevRig" unique_id=1978603851]
+unique_name_in_owner = true
+position = Vector2(90, -21)
 texture = ExtResource("4_ux65i")
+offset = Vector2(4.3076096, -47.992027)
 
-[node name="DevSprite" type="Sprite2D" parent="." unique_id=100]
+[node name="DevLeftHandSprite" type="Sprite2D" parent="DevRig" unique_id=102846065]
 unique_name_in_owner = true
-position = Vector2(-125, -157)
-texture = ExtResource("5_2k4jx")
+position = Vector2(-13, -66)
+texture = ExtResource("5_72ilg")
+offset = Vector2(47, 1)
 
-[node name="DamageNumber" parent="." unique_id=411667833 instance=ExtResource("7_dmgnum")]
-position = Vector2(0, -120)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1260935456]
-offset_left = 40.0
-offset_top = -222.0
-offset_right = 133.0
-offset_bottom = -121.0
-
-[node name="TaskDisplay" parent="HBoxContainer" unique_id=1303202144 instance=ExtResource("8_task_display")]
+[node name="DevBodySprite" type="Sprite2D" parent="DevRig" unique_id=100]
 unique_name_in_owner = true
-layout_mode = 2
+texture = ExtResource("6_ux65i")
+
+[node name="DevHeadSprite" type="Sprite2D" parent="DevRig" unique_id=1700812408]
+unique_name_in_owner = true
+position = Vector2(-17, -126)
+texture = ExtResource("7_2k4jx")
+
+[node name="DevRightHandSprite" type="Sprite2D" parent="DevRig" unique_id=1343074361]
+unique_name_in_owner = true
+position = Vector2(-31, -58)
+texture = ExtResource("5_72ilg")
+offset = Vector2(51, 10)
+
+[node name="DeveloperTaskCard" parent="." unique_id=464981821 instance=ExtResource("8_task_display")]
+unique_name_in_owner = true
+visible = false
+offset_left = 30.0
+offset_top = -230.0
+offset_right = 123.0
+offset_bottom = -123.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1885175129]
+libraries/ = SubResource("AnimationLibrary_2k4jx")

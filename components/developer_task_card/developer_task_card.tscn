@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://v2l5dlh6dgoc"]
+
+[ext_resource type="Script" uid="uid://bwxdsfigggda3" path="res://components/developer_task_card/developer_task_card.gd" id="1_nhw1h"]
+[ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_7xaqb"]
+[ext_resource type="Resource" uid="uid://f3gw1s51yry0" path="res://game_data/task/task_data_feature.tres" id="2_d0wik"]
+[ext_resource type="Script" uid="uid://oeqgun0rje75" path="res://components/traits/flashable_trait.gd" id="3_jptog"]
+[ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="4_dmgnum"]
+
+[node name="DeveloperTaskCard" type="VBoxContainer" unique_id=464981821]
+offset_right = 93.0
+offset_bottom = 101.0
+script = ExtResource("1_nhw1h")
+task = ExtResource("2_d0wik")
+
+[node name="HpBar" type="ProgressBar" parent="." unique_id=205217893]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+max_value = 1.0
+show_percentage = false
+
+[node name="IconRect" type="TextureRect" parent="." unique_id=1554776108]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_7xaqb")
+stretch_mode = 5
+
+[node name="FlashableTrait" type="Node" parent="IconRect" unique_id=169306467]
+unique_name_in_owner = true
+script = ExtResource("3_jptog")
+
+[node name="DamageNumber" parent="." unique_id=251101799 instance=ExtResource("4_dmgnum")]
+unique_name_in_owner = true
+position = Vector2(99, 21)

@@ -1,14 +1,17 @@
-[gd_resource type="Resource" script_class="DeveloperData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="DeveloperData" format=3 uid="uid://b5vgcc07fel63"]
 
-[ext_resource type="Script" path="res://game_data/developer/developer_data.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/exports/developer.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://bvh16nid7twav" path="res://game_data/developer/developer_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="1_tnv43"]
 [ext_resource type="Resource" path="res://game_data/task_select_function_default.tres" id="3_task_select"]
 
 [resource]
 script = ExtResource("1_script")
-id = "developer_senior"
-texture = ExtResource("2_texture")
 dev_type = 2
-task_mults = {0: 0.4, 1: 1.6, 2: 1.6}
-base_attack_speed = 0.5
+head_texture = ExtResource("1_tnv43")
+task_mults = {
+0: 0.4,
+1: 1.6,
+2: 1.6
+}
 task_select = ExtResource("3_task_select")
+id = "developer_senior"

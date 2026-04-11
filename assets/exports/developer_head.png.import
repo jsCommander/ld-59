@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfps7v2dhx2wo"
-path="res://.godot/imported/char_man_mustache_@0.5x.png-5ee7515b5bd07668e5ad222a39b47ac7.ctex"
+uid="uid://b51wgb25nq66"
+path="res://.godot/imported/developer_head.png-5fa8c6c307636d0cb2f8d8e2f76fd6a9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/char/char_man_mustache_@0.5x.png"
-dest_files=["res://.godot/imported/char_man_mustache_@0.5x.png-5ee7515b5bd07668e5ad222a39b47ac7.ctex"]
+source_file="res://assets/exports/developer_head.png"
+dest_files=["res://.godot/imported/developer_head.png-5fa8c6c307636d0cb2f8d8e2f76fd6a9.ctex"]
 
 [params]
 

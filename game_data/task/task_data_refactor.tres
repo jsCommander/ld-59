@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="TaskData" format=3]
+[gd_resource type="Resource" script_class="TaskData" format=3 uid="uid://b1672ik7ky4ym"]
 
 [ext_resource type="Script" uid="uid://bx5tahpjxtx8y" path="res://game_data/task/task_data.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://bpr48nmueiirx" path="res://assets/icons/icn_fire.png" id="2_texture"]
+[ext_resource type="Texture2D" uid="uid://b1dqipykhm0sk" path="res://assets/exports/task_refactor.png" id="2_texture"]
 
 [resource]
 script = ExtResource("1")
 task_type = 2
 texture = ExtResource("2_texture")
-difficulty = 1

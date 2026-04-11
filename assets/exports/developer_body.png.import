@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2i3sw0uqe3j2"
-path="res://.godot/imported/char_robot_smile_@0.5x.png-170daba4a75d513e986b2c0deb0e2885.ctex"
+uid="uid://fqk1ato08gf1"
+path="res://.godot/imported/developer_body.png-2461418de4635d22e12cd3a353702e15.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/char/char_robot_smile_@0.5x.png"
-dest_files=["res://.godot/imported/char_robot_smile_@0.5x.png-170daba4a75d513e986b2c0deb0e2885.ctex"]
+source_file="res://assets/exports/developer_body.png"
+dest_files=["res://.godot/imported/developer_body.png-2461418de4635d22e12cd3a353702e15.ctex"]
 
 [params]
 

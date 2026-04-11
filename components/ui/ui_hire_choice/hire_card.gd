@@ -17,8 +17,8 @@ func setup(dev_data: DeveloperData) -> void:
 func _ready() -> void:
 	if not _dev_data:
 		return
-	if _dev_data.texture:
-		icon_rect.texture = _dev_data.texture
+	if _dev_data.head_texture:
+		icon_rect.texture = _dev_data.head_texture
 	name_label.text = Constants.DevType.keys()[_dev_data.dev_type]
 	stats_label.text = "Фичи: %.1f\nБаги: %.1f\nРефактор: %.1f\nСкорость: %.1f" % [
 		_dev_data.task_mults.get(Constants.TaskType.FEATURE, 1.0),

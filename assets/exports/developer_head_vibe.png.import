@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://beplhvlaukcbb"
-path="res://.godot/imported/char_bee_smile_@0.5x.png-b561d66e5889ffbf134b9c6d221a8f20.ctex"
+uid="uid://7shm7adg4vjr"
+path="res://.godot/imported/developer_head_vibe.png-926f2561336fb167e870eb3836fd5be4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/char/char_bee_smile_@0.5x.png"
-dest_files=["res://.godot/imported/char_bee_smile_@0.5x.png-b561d66e5889ffbf134b9c6d221a8f20.ctex"]
+source_file="res://assets/exports/developer_head_vibe.png"
+dest_files=["res://.godot/imported/developer_head_vibe.png-926f2561336fb167e870eb3836fd5be4.ctex"]
 
 [params]
 

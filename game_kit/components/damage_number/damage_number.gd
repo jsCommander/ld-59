@@ -32,8 +32,8 @@ func animate_damage_number(new_label: Label, direction: Vector2) -> void:
 	# var target_position = global_position + velocity
 	# var move_tween = Animations.spawn_arc(new_label, target_position, 200, 1)
 
-	var random_offset = 30.0
-	var force = 150.0
+	var random_offset = 10.0
+	var force = 50.0
 	var random_offset_vector = Vector2(randf_range(-random_offset, random_offset), randf_range(-random_offset, random_offset))
 	var target_position = global_position + direction.normalized() * force
 	
