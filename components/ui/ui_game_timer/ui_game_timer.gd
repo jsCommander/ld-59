@@ -1,0 +1,14 @@
+class_name UiGameTimer
+extends Label
+
+# --- Lifecycle ---
+
+func _ready() -> void:
+	SB.game_timer_changed.connect(_on_game_timer_changed)
+
+# --- Handlers ---
+
+func _on_game_timer_changed(remaining: float) -> void:
+	var minutes: int = int(remaining) / 60
+	var seconds: int = int(remaining) % 60
+	text = "%d:%02d" % [minutes, seconds]
