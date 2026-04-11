@@ -17,8 +17,12 @@ func _ready() -> void:
 	SB.level_up.connect(_on_level_up)
 	SB.developer_hire_requested.connect(_on_hire_requested)
 	SB.game_over.connect(_on_game_over)
+	popup_manager.popup_closed.connect(_on_popup_closed)
 
 # --- Handlers ---
+
+func _on_popup_closed() -> void:
+	SB.selection_cleared.emit()
 
 func _on_entity_selected(target: Node2D, popup_position: Vector2) -> void:
 	if target is Developer:

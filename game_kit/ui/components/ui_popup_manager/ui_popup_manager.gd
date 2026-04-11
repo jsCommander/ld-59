@@ -1,6 +1,12 @@
 class_name UiPopupManager
 extends Control
 
+# --- Signals ---
+
+signal popup_closed
+
+# --- State ---
+
 var _current_popup: Control
 var _current_target: Node2D
 var _anchor_position: Vector2
@@ -43,7 +49,7 @@ func close_popup() -> void:
 
 
 func _after_popup_closed() -> void:
-	pass
+	popup_closed.emit()
 
 
 func _update_popup_position() -> void:

@@ -1,62 +1,56 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dbl4ngexfuoxh"]
 
-[ext_resource type="Script" path="res://components/ui/ui_hud/ui_hud.gd" id="1_hud"]
-[ext_resource type="PackedScene" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="2_popup"]
-[ext_resource type="Script" path="res://components/ui/ui_hud/hud_popup_manager.gd" id="3_popup_script"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_ceo_commentator/ui_ceo_commentator.tscn" id="4_ceo"]
+[ext_resource type="Script" uid="uid://c5knfeuqf5a2a" path="res://components/ui/ui_hud/ui_hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://wtw8w4usjubw" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="2_popup"]
+[ext_resource type="PackedScene" uid="uid://d3k7xmoaqp2v8" path="res://components/ui/ui_ceo_commentator/ui_ceo_commentator.tscn" id="4_ceo"]
 [ext_resource type="PackedScene" path="res://components/ui/ui_xp_bar/ui_xp_bar.tscn" id="5_xp_bar"]
 [ext_resource type="PackedScene" path="res://components/ui/ui_capitalization/ui_capitalization.tscn" id="6_cap"]
 [ext_resource type="PackedScene" path="res://components/ui/ui_game_timer/ui_game_timer.tscn" id="7_timer"]
 [ext_resource type="PackedScene" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.tscn" id="8_sprint"]
 
-[node name="UiHud" type="CanvasLayer"]
+[node name="UiHud" type="CanvasLayer" unique_id=422278221]
 layer = 5
 script = ExtResource("1_hud")
 
-[node name="MainLayout" type="VBoxContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=39662736]
 offset_left = 8.0
 offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-
-[node name="TopBar" type="HBoxContainer" parent="MainLayout"]
-layout_mode = 2
+offset_right = 1912.0
+offset_bottom = 118.0
 theme_override_constants/separation = 8
 
-[node name="UiXpBar" parent="MainLayout/TopBar" instance=ExtResource("5_xp_bar")]
+[node name="UiXpBar" parent="TopBar" unique_id=2082447014 instance=ExtResource("5_xp_bar")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UiCapitalization" parent="MainLayout/TopBar" instance=ExtResource("6_cap")]
+[node name="UiCapitalization" parent="TopBar" unique_id=709801305 instance=ExtResource("6_cap")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UiGameTimer" parent="MainLayout/TopBar" instance=ExtResource("7_timer")]
+[node name="UiGameTimer" parent="TopBar" unique_id=705369341 instance=ExtResource("7_timer")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BottomBar" type="HBoxContainer" parent="MainLayout"]
-layout_mode = 2
+[node name="BottomBar" type="HBoxContainer" parent="." unique_id=947425971]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -952.0
+offset_top = -80.0
+offset_right = 952.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_vertical = 8
 
-[node name="UiSprintPanel" parent="MainLayout/BottomBar" instance=ExtResource("8_sprint")]
+[node name="UiSprintPanel" parent="BottomBar" unique_id=536258854 instance=ExtResource("8_sprint")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UiPopupManager" parent="." instance=ExtResource("2_popup")]
+[node name="UiPopupManager" parent="." unique_id=818041501 instance=ExtResource("2_popup")]
 unique_name_in_owner = true
-script = ExtResource("3_popup_script")
 
-[node name="UiCeoCommentator" parent="." instance=ExtResource("4_ceo")]
+[node name="UiCeoCommentator" parent="." unique_id=2052447669 instance=ExtResource("4_ceo")]
+layout_mode = 3
 anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -220.0
-offset_top = -80.0
-offset_right = -8.0
-offset_bottom = -8.0
