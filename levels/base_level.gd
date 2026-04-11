@@ -1,6 +1,6 @@
 extends Node2D
 
-const STARTER_DEV: DeveloperData = preload("res://game_data/developer/developer_data_vibecoder.tres")
+const STARTER_DEV: DeveloperData = preload("res://game_data/developer/developer_data_senior.tres")
 
 
 func _ready() -> void:

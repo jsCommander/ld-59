@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d06257gr8h1ge" path="res://assets/exports/laptop.png" id="4_ux65i"]
 [ext_resource type="Texture2D" uid="uid://c5y54cv4grras" path="res://assets/exports/developer_hand.png" id="5_72ilg"]
 [ext_resource type="Texture2D" uid="uid://fqk1ato08gf1" path="res://assets/exports/developer_body.png" id="6_ux65i"]
-[ext_resource type="Texture2D" uid="uid://b51wgb25nq66" path="res://assets/exports/developer_head.png" id="7_2k4jx"]
+[ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="8_2k4jx"]
 [ext_resource type="PackedScene" uid="uid://v2l5dlh6dgoc" path="res://components/developer_task_card/developer_task_card.tscn" id="8_task_display"]
 
 [sub_resource type="Animation" id="Animation_72ilg"]
@@ -300,7 +300,8 @@ texture = ExtResource("6_ux65i")
 [node name="DevHeadSprite" type="Sprite2D" parent="DevRig" unique_id=1700812408]
 unique_name_in_owner = true
 position = Vector2(-17, -126)
-texture = ExtResource("7_2k4jx")
+texture = ExtResource("8_2k4jx")
+offset = Vector2(0, 25)
 
 [node name="DevRightHandSprite" type="Sprite2D" parent="DevRig" unique_id=1343074361]
 unique_name_in_owner = true

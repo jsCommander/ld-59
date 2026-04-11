@@ -1,6 +1,6 @@
 class_name BaseAudioManager extends Node
 
-@export var sfx_pool_size: int = 8
+@export var sfx_pool_size: int = 20
 @export var crossfade_duration: float = 2.0
 
 var _music_registry: Dictionary[int, AudioStream]

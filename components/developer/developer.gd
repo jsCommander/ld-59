@@ -188,3 +188,4 @@ func _apply_data() -> void:
 
 	if hired:
 		dev_head_sprite.texture = data.head_texture
+		dev_head_sprite.offset = data.head_offset
