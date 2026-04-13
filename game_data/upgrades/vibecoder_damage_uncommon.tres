@@ -7,11 +7,11 @@
 script = ExtResource("1")
 id = "vibecoder_damage_uncommon"
 display_name = "Cursor Pro"
-description = "×5 урон vibecoder"
+description = "+100% урон"
 upgrade_type = 1
 target_dev_type = 0
 stat = 0
-multiplier = 5.0
+multiplier = 2.0
 rarity = 1
 min_game_level = 3
 prerequisites = [ExtResource("2_prereq")]

@@ -8,6 +8,7 @@ const TASK_DATA_REFACTOR: TaskData = preload("res://game_data/task/task_data_ref
 
 var valuation: int = 0
 var level: int = 0
+var game_level: int = 1
 var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
 var _awaiting_choice: bool = false
@@ -72,6 +73,7 @@ func start_game() -> void:
 func reset() -> void:
 	valuation = 0
 	level = 0
+	game_level = 1
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
 	_awaiting_choice = false
@@ -110,6 +112,7 @@ func _ready() -> void:
 	SB.upgrade_chosen.connect(_on_upgrade_chosen)
 	SB.task_destroyed.connect(_on_task_destroyed)
 	SB.developer_chosen.connect(_on_developer_chosen)
+	SB.task_requested.connect(_on_task_requested)
 	_tick_timer = _create_tick_timer()
 
 
@@ -128,7 +131,18 @@ func _process(delta: float) -> void:
 
 # --- Handlers ---
 
+func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
+	if task_queue.is_empty():
+		return
+	var task: TaskData = task_queue[0]
+	var taken: TaskData = take_task(task)
+	if taken:
+		SB.task_assigned.emit(taken, developer, task_position)
+
+
 func _on_tick() -> void:
+	var elapsed: float = Constants.BASE_TOTAL_GAME_TIME - timer_remaining
+	game_level = Balance.get_game_level(elapsed)
 	SB.game_timer_changed.emit(timer_remaining)
 
 
@@ -167,7 +181,7 @@ func _create_tick_timer() -> Timer:
 # --- Task bag system ---
 
 func _generate_task_bag() -> void:
-	var task_level: int = maxi(level, 1)
+	var task_level: int = game_level
 	var weights: Dictionary = Balance.get_task_type_weights(task_level)
 	_task_bag.clear()
 	for i: int in Constants.TASK_BAG_SIZE:
@@ -271,7 +285,7 @@ func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
 func _is_upgrade_available(upgrade: UpgradeData) -> bool:
 	if _is_taken(upgrade.id):
 		return false
-	if upgrade.min_game_level > 0 and level < upgrade.min_game_level:
+	if upgrade.min_game_level > 0 and game_level < upgrade.min_game_level:
 		return false
 	if upgrade.upgrade_type == Constants.UpgradeType.DEV:
 		if not _has_hired_dev_type(upgrade.target_dev_type):

@@ -6,10 +6,10 @@
 script = ExtResource("1")
 id = "senior_damage_common"
 display_name = "Lint правила"
-description = "×3 урон senior"
+description = "+50% урон"
 upgrade_type = 1
 target_dev_type = 2
 stat = 0
-multiplier = 3.0
+multiplier = 1.5
 rarity = 0
 prerequisites = []

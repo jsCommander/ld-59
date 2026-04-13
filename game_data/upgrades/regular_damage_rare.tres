@@ -7,11 +7,11 @@
 script = ExtResource("1")
 id = "regular_damage_rare"
 display_name = "Второй монитор"
-description = "×9 урон regular"
+description = "+200% урон"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0
-multiplier = 9.0
+multiplier = 3.0
 rarity = 2
 min_game_level = 5
 prerequisites = [ExtResource("2_prereq")]

@@ -6,6 +6,11 @@ signal selection_cleared
 signal task_queue_changed(tasks: Array[TaskData])
 signal task_destroyed(task: TaskData)
 
+signal task_requested(developer: Developer, task_position: Vector2)
+signal task_assigned(task: TaskData, developer: Developer, task_position: Vector2)
+signal task_fly_started(task: TaskData, developer: Developer)
+signal task_fly_ended(task: TaskData, developer: Developer)
+
 signal valuation_changed
 
 signal game_timer_changed(remaining: float)

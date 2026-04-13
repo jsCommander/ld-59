@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource("1")
-id = "regular_damage_common"
-display_name = "Код-ревью ботом"
-description = "+50% урон"
+id = "vibecoder_speed_common"
+display_name = "Быстрый промпт"
+description = "+10% скорость vibecoder"
 upgrade_type = 1
-target_dev_type = 1
-stat = 0
-multiplier = 1.5
+target_dev_type = 0
+stat = 1
+multiplier = 1.1
 rarity = 0
 prerequisites = []

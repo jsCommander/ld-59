@@ -1,53 +1,22 @@
 [gd_scene format=3 uid="uid://bjgkr1bhtatm4"]
 
 [ext_resource type="Script" uid="uid://b6s5bsjyh1htm" path="res://components/task_queue/task_card.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_xwu51"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_u2pmv"]
-line_spacing = 1.0
-font_size = 14
-font_color = Color(0, 0, 0, 1)
+font_size = 24
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
-[node name="TaskCard" type="PanelContainer" unique_id=2103215254]
-custom_minimum_size = Vector2(120, 120)
+[node name="MarginContainer" type="MarginContainer" unique_id=175095984]
+offset_right = 120.0
+offset_bottom = 120.0
 script = ExtResource("1")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=175095984]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2708197]
 layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 4
 
-[node name="Icon" type="TextureRect" parent="MarginContainer" unique_id=1]
-unique_name_in_owner = true
-layout_mode = 2
-expand_mode = 3
-stretch_mode = 5
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Icon" unique_id=810993914]
-layout_mode = 0
-offset_left = 92.0
-offset_top = 84.0
-offset_right = 107.0
-offset_bottom = 113.0
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Icon/PanelContainer" unique_id=325447309]
-layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="LevelLabel" type="Label" parent="MarginContainer/Icon/PanelContainer/MarginContainer" unique_id=647472031]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.7)
-theme_override_font_sizes/font_size = 10
-text = "5"
-label_settings = SubResource("LabelSettings_u2pmv")
-horizontal_alignment = 1
-
-[node name="HpBar" type="ProgressBar" parent="." unique_id=300]
+[node name="HpBar" type="ProgressBar" parent="VBoxContainer" unique_id=300]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 6)
@@ -55,3 +24,25 @@ layout_mode = 2
 size_flags_vertical = 8
 max_value = 1.0
 show_percentage = false
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer" unique_id=1]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+texture = ExtResource("2_xwu51")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LevelLabel" type="Label" parent="VBoxContainer/Icon" unique_id=647472031]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 82.0
+offset_top = 76.0
+offset_right = 112.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.7)
+theme_override_font_sizes/font_size = 10
+text = "5"
+label_settings = SubResource("LabelSettings_u2pmv")
+horizontal_alignment = 1
+vertical_alignment = 1

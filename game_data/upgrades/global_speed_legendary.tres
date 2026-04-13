@@ -7,10 +7,10 @@
 script = ExtResource("1")
 id = "global_speed_legendary"
 display_name = "Бесконечный стакан кофе"
-description = "×1.5 скорость всем"
+description = "+100% скорость всем"
 upgrade_type = 0
 stat = 1
-multiplier = 1.5
+multiplier = 2.0
 rarity = 4
 min_game_level = 9
 prerequisites = [ExtResource("2_prereq")]

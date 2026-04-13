@@ -7,10 +7,10 @@
 script = ExtResource("1")
 id = "global_speed_epic"
 display_name = "Автоматизация тестов"
-description = "×1.4 скорость всем"
+description = "+50% скорость всем"
 upgrade_type = 0
 stat = 1
-multiplier = 1.4
+multiplier = 1.5
 rarity = 3
 min_game_level = 7
 prerequisites = [ExtResource("2_prereq")]

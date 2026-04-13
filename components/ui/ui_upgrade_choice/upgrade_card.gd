@@ -22,7 +22,7 @@ func _ready() -> void:
 		icon_rect.texture = _upgrade.icon
 	name_label.text = _upgrade.display_name
 	description_label.text = _upgrade.description
-	multiplier_label.text = "×%.1f" % _upgrade.multiplier
+	multiplier_label.text = "+%d%%" % int((_upgrade.multiplier - 1.0) * 100)
 	if _upgrade.rarity in Constants.RARITY_COLORS:
 		var style: StyleBoxFlat = StyleBoxFlat.new()
 		style.border_color = Constants.RARITY_COLORS[_upgrade.rarity]

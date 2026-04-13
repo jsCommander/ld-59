@@ -4,7 +4,7 @@ extends Node2D
 
 # --- Enums ---
 
-enum State {IDLE, WORKING}
+enum State {IDLE, WAITING, WORKING}
 
 # --- Exports ---
 
@@ -18,6 +18,7 @@ enum State {IDLE, WORKING}
 @onready var dev_rig: Node2D = %DevRig
 @onready var dev_head_sprite: Sprite2D = %DevHeadSprite
 @onready var task_display: DeveloperTaskCard = %DeveloperTaskCard
+@onready var task_landing_point: Marker2D = %TaskLandingPoint
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 # --- State ---
@@ -35,6 +36,8 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	add_to_group("developer")
+	SB.task_assigned.connect(_on_task_assigned)
+	SB.task_fly_ended.connect(_on_task_fly_ended)
 
 
 func _process(delta: float) -> void:
@@ -44,6 +47,8 @@ func _process(delta: float) -> void:
 	match _state:
 		State.IDLE:
 			_process_idle()
+		State.WAITING:
+			pass
 		State.WORKING:
 			_process_working(delta)
 
@@ -57,16 +62,34 @@ func _on_task_killed() -> void:
 	_current_task = null
 	_change_state(State.IDLE)
 
+
+func _on_task_assigned(task: TaskData, developer: Developer, _task_position: Vector2) -> void:
+	if developer != self:
+		return
+	_current_task = task
+	_change_state(State.WAITING)
+
+
+func _on_task_fly_ended(task: TaskData, developer: Developer) -> void:
+	if developer != self:
+		return
+	task_display.task = _current_task
+	_change_state(State.WORKING)
+
 # --- Public ---
 
 func on_clicked() -> void:
 	_apply_boost()
 
 
+func get_task_position() -> Vector2:
+	return task_landing_point.global_position
+
+
 # --- Private ---
 
 func _process_idle() -> void:
-	_pick_task()
+	SB.task_requested.emit(self, get_task_position())
 
 
 func _process_working(delta: float) -> void:
@@ -106,18 +129,6 @@ func _change_state(new_state: State) -> void:
 		State.IDLE:
 			_attack_timer = 0.0
 			task_display.hide_task()
-
-
-func _pick_task() -> void:
-	if PD.task_queue.is_empty():
-		return
-
-	var task: TaskData = data.task_select.select(data, PD.task_queue)
-	if task:
-		_current_task = PD.take_task(task)
-		if _current_task:
-			task_display.task = _current_task
-			_change_state(State.WORKING)
 
 
 func _perform_attack() -> void:

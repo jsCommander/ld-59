@@ -7,11 +7,11 @@
 script = ExtResource("1")
 id = "regular_damage_legendary"
 display_name = "Полное погружение"
-description = "×25 урон regular"
+description = "+900% урон"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0
-multiplier = 25.0
+multiplier = 10.0
 rarity = 4
 min_game_level = 9
 prerequisites = [ExtResource("2_prereq")]

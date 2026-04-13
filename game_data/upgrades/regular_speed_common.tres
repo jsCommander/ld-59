@@ -6,7 +6,7 @@
 script = ExtResource("1")
 id = "regular_speed_common"
 display_name = "Тихий офис"
-description = "×1.1 скорость regular"
+description = "+10% скорость regular"
 upgrade_type = 1
 target_dev_type = 1
 stat = 1

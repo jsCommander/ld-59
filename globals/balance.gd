@@ -22,9 +22,17 @@ static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType
 	return 1.0
 
 
-static func get_task_hp(task_level: int) -> float:
-	var clamped: int = clampi(task_level, 1, Constants.TASK_LEVEL_THRESHOLDS.size())
-	return float(Constants.TASK_LEVEL_THRESHOLDS[clamped])
+static func get_game_level(elapsed_time: float) -> int:
+	var lvl: int = 1
+	for i: int in Constants.GAME_LEVEL_THRESHOLDS.size():
+		if elapsed_time >= Constants.GAME_LEVEL_THRESHOLDS[i]:
+			lvl = i + 1
+	return lvl
+
+
+static func get_task_hp(game_level: int) -> float:
+	var clamped: int = clampi(game_level, 1, Constants.TASK_HP_BY_LEVEL.size())
+	return float(Constants.TASK_HP_BY_LEVEL[clamped])
 
 
 static func get_xp_for_level(level: int) -> int:

@@ -1,5 +1,5 @@
 class_name TaskCard
-extends PanelContainer
+extends Control
 
 # --- State ---
 

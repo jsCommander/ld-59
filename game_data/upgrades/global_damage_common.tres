@@ -6,9 +6,9 @@
 script = ExtResource("1")
 id = "global_damage_common"
 display_name = "Мотивационная речь"
-description = "×3 урон всем"
+description = "+50% урон"
 upgrade_type = 0
 stat = 0
-multiplier = 3.0
+multiplier = 1.5
 rarity = 0
 prerequisites = []

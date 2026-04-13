@@ -7,11 +7,11 @@
 script = ExtResource("1")
 id = "senior_damage_epic"
 display_name = "Incident playbook"
-description = "×15 урон senior"
+description = "+400% урон"
 upgrade_type = 1
 target_dev_type = 2
 stat = 0
-multiplier = 15.0
+multiplier = 5.0
 rarity = 3
 min_game_level = 7
 prerequisites = [ExtResource("2_prereq")]

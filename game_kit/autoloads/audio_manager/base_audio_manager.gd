@@ -20,6 +20,7 @@ var _sfx_queue: Array[AudioManagerSfxItem]
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_create_music_players()
 	_create_sfx_pool()
 	Log.log_debug(name, "AudioManager ready. SFX pool size: %d" % sfx_pool_size)
