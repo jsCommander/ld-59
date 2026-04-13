@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func show_for_level(level: int) -> void:
 	title_label.text = "Уровень %d — выбери апгрейд" % level
-	var upgrades: Array[UpgradeData] = DR.get_level_up_upgrades()
+	var upgrades: Array[UpgradeData] = PD.get_level_up_upgrades()
 	_build_cards(upgrades)
 	visible = true
 

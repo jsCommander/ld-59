@@ -4,10 +4,12 @@
 
 [resource]
 script = ExtResource("1")
-id = "senior_damage_3x"
-display_name = "Архитектурный паттерн"
-description = "×3 урон сеньоров"
+id = "senior_damage_common"
+display_name = "Lint правила"
+description = "×3 урон senior"
 upgrade_type = 1
 target_dev_type = 2
 stat = 0
 multiplier = 3.0
+rarity = 0
+prerequisites = []

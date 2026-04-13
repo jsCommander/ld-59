@@ -4,10 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "regular_damage_3x"
-display_name = "IDE плагины"
-description = "×3 урон разработчиков"
-upgrade_type = 1
-target_dev_type = 1
+id = "global_damage_common"
+display_name = "Мотивационная речь"
+description = "×3 урон всем"
+upgrade_type = 0
 stat = 0
 multiplier = 3.0
+rarity = 0
+prerequisites = []

@@ -7,4 +7,6 @@ class_name UpgradeData extends BaseGameData
 @export var target_dev_type: Constants.DevType
 @export var stat: Constants.UpgradeStat
 @export var multiplier: float = 1.0
+@export var rarity: Constants.UpgradeRarity = Constants.UpgradeRarity.COMMON
+@export var min_game_level: int = 0
 @export var prerequisites: Array[UpgradeData] = []

@@ -12,7 +12,8 @@ static func calculate_attack_speed(dev_data: DeveloperData, global_upgrades: Arr
 	var base: float = dev_data.base_attack_speed
 	var speed_mult: float = _calc_mult(Constants.UpgradeStat.SPEED, global_upgrades, dev_upgrades)
 	var boost_mult: float = 1.0 + boost_stacks * Constants.BOOST_SPEED_MULT
-	return base / (speed_mult * boost_mult)
+	var interval: float = base / (speed_mult * boost_mult)
+	return maxf(interval, Constants.SPEED_CAP)
 
 
 static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType) -> float:
@@ -21,18 +22,27 @@ static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType
 	return 1.0
 
 
-static func scale_task_hp(difficulty: int, sprint_number: int) -> float:
-	var sprint_mult: float = 1.0 + sprint_number * 0.3
-	return Constants.BASE_HP * difficulty * sprint_mult
+static func get_task_hp(task_level: int) -> float:
+	var clamped: int = clampi(task_level, 1, Constants.TASK_LEVEL_THRESHOLDS.size())
+	return float(Constants.TASK_LEVEL_THRESHOLDS[clamped])
 
 
 static func get_xp_for_level(level: int) -> int:
-	return Constants.XP_BASE * int(pow(1.5, level - 1))
+	if level < 1 or level > Constants.LEVEL_THRESHOLDS.size():
+		return 0
+	return Constants.LEVEL_THRESHOLDS[level - 1]
 
 
-static func get_sprint_duration(global_upgrades: Array[UpgradeData]) -> float:
-	var mult: float = _calc_mult(Constants.UpgradeStat.SPRINT_DURATION, global_upgrades, [])
-	return Constants.SPRINT_DURATION * mult
+static func get_task_type_weights(game_level: int) -> Dictionary:
+	var best_key: int = 1
+	for key: int in Constants.TASK_TYPE_WEIGHTS:
+		if key <= game_level and key > best_key:
+			best_key = key
+	return Constants.TASK_TYPE_WEIGHTS[best_key]
+
+
+static func get_game_duration() -> float:
+	return Constants.BASE_TOTAL_GAME_TIME
 
 
 static func _calc_mult(stat: Constants.UpgradeStat, global_upgrades: Array[UpgradeData], dev_upgrades: Array[UpgradeData]) -> float:

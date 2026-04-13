@@ -10,6 +10,7 @@ var show_hp: bool = false
 
 @onready var icon: TextureRect = %Icon
 @onready var hp_bar: ProgressBar = %HpBar
+@onready var level_label: Label = %LevelLabel
 
 # --- Public ---
 
@@ -28,6 +29,7 @@ func _ready() -> void:
 	if not task_data:
 		return
 	icon.texture = task_data.texture
+	level_label.text = str(task_data.level)
 	if show_hp and task_data.max_hp > 0.0:
 		hp_bar.visible = true
 		hp_bar.value = task_data.current_hp / task_data.max_hp

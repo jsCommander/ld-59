@@ -30,7 +30,6 @@ const COMMENT_INTERVAL: float = 5.0
 
 
 func _ready() -> void:
-	SB.sprint_ended.connect(_on_sprint_ended)
 	speech_bubble.text = ""
 
 
@@ -38,21 +37,11 @@ func _process(delta: float) -> void:
 	_comment_timer += delta
 	if _comment_timer >= COMMENT_INTERVAL:
 		_comment_timer -= COMMENT_INTERVAL
-		_show_performance_comment()
+		_show_random_comment()
 
 
-func _show_performance_comment() -> void:
-	if not PD._sprint_active:
+func _show_random_comment() -> void:
+	if not PD._game_active:
 		return
-	var ratio: float = PD.sprint_timer / PD.sprint_duration
-	if ratio > 0.3:
-		speech_bubble.text = GOOD_COMMENTS[randi() % GOOD_COMMENTS.size()]
-	else:
-		speech_bubble.text = BAD_COMMENTS[randi() % BAD_COMMENTS.size()]
-
-
-func _on_sprint_ended(_sprint_number: int, bonus: int) -> void:
-	if bonus > 0:
-		speech_bubble.text = "Stonks! +$%d 📈" % bonus
-	else:
-		speech_bubble.text = "We need to talk..."
+	var comments: Array[String] = GOOD_COMMENTS + BAD_COMMENTS
+	speech_bubble.text = comments[randi() % comments.size()]

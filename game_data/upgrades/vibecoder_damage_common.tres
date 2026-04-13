@@ -4,10 +4,12 @@
 
 [resource]
 script = ExtResource("1")
-id = "regular_speed_2x"
-display_name = "Второй монитор"
-description = "×2 скорость разработчиков"
+id = "vibecoder_damage_common"
+display_name = "ChatGPT подписка"
+description = "×3 урон vibecoder"
 upgrade_type = 1
-target_dev_type = 1
-stat = 1
-multiplier = 2.0
+target_dev_type = 0
+stat = 0
+multiplier = 3.0
+rarity = 0
+prerequisites = []

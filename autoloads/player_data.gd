@@ -4,19 +4,17 @@ const TASK_DATA_FEATURE: TaskData = preload("res://game_data/task/task_data_feat
 const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres")
 const TASK_DATA_REFACTOR: TaskData = preload("res://game_data/task/task_data_refactor.tres")
 
+# --- State ---
+
 var valuation: int = 0
 var level: int = 0
-var timer_remaining: float = Constants.GAME_DURATION
+var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
 var _awaiting_choice: bool = false
 
-# Sprint state
-var sprint_number: int = 0
-var sprint_timer: float = 0.0
-var sprint_duration: float = Constants.SPRINT_DURATION
-var _sprint_active: bool = false
-
 var task_queue: Array[TaskData] = []
+var _task_bag: Array[TaskData] = []
+
 var developers: Array[Developer] = []
 var hired_data: Array[DeveloperData] = []
 
@@ -27,6 +25,7 @@ var _empty_upgrades: Array[UpgradeData] = []
 
 var _tick_timer: Timer
 
+# --- Public ---
 
 func get_dev_upgrades(dev_type: Constants.DevType) -> Array[UpgradeData]:
 	if dev_type in dev_upgrades:
@@ -34,19 +33,27 @@ func get_dev_upgrades(dev_type: Constants.DevType) -> Array[UpgradeData]:
 	return _empty_upgrades
 
 
-func _ready() -> void:
-	SB.upgrade_chosen.connect(_on_upgrade_chosen)
-	SB.task_destroyed.connect(_on_task_destroyed)
-	SB.developer_chosen.connect(_on_developer_chosen)
-	_tick_timer = _create_tick_timer()
+func get_xp_for_level(lvl: int) -> int:
+	return Balance.get_xp_for_level(lvl)
 
 
-func _create_tick_timer() -> Timer:
-	var timer: Timer = Timer.new()
-	timer.wait_time = 1.0
-	timer.timeout.connect(_on_tick)
-	add_child(timer)
-	return timer
+func get_level_up_upgrades() -> Array[UpgradeData]:
+	var result: Array[UpgradeData] = []
+	var global_pick: UpgradeData = _pick_random_from(_get_available_by_type(Constants.UpgradeType.GLOBAL))
+	if global_pick:
+		result.append(global_pick)
+	var dev_pick: UpgradeData = _pick_random_from(_get_available_by_type(Constants.UpgradeType.DEV))
+	if dev_pick:
+		result.append(dev_pick)
+	var all_available: Array[UpgradeData] = _get_all_available()
+	var remaining: Array[UpgradeData] = []
+	for u: UpgradeData in all_available:
+		if u not in result:
+			remaining.append(u)
+	var random_pick: UpgradeData = _pick_random_from(remaining)
+	if random_pick:
+		result.append(random_pick)
+	return result
 
 
 func start_game() -> void:
@@ -54,19 +61,22 @@ func start_game() -> void:
 	developers.assign(Groups.get_all_of_type(get_tree(), "developer", Developer))
 	_game_active = true
 	_tick_timer.start()
-	_start_sprint()
+	_generate_task_bag()
+	_fill_queue_from_bag()
+	# Hire first dev at game start
+	_awaiting_choice = true
+	get_tree().paused = true
+	SB.developer_hire_requested.emit()
 
 
 func reset() -> void:
 	valuation = 0
 	level = 0
-	timer_remaining = Constants.GAME_DURATION
+	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
 	_awaiting_choice = false
-	sprint_number = 0
-	sprint_timer = 0.0
-	_sprint_active = false
 	task_queue.clear()
+	_task_bag.clear()
 	developers.clear()
 	hired_data.clear()
 	upgrades_taken.clear()
@@ -75,164 +85,14 @@ func reset() -> void:
 	_tick_timer.stop()
 
 
-func _on_tick() -> void:
-	SB.game_timer_changed.emit(timer_remaining)
-
-
-func _process(delta: float) -> void:
-	if not _game_active or _awaiting_choice:
-		return
-
-	# Game timer
-	timer_remaining -= delta
-	if timer_remaining <= 0.0:
-		timer_remaining = 0.0
-		_game_active = false
-		_sprint_active = false
-		_tick_timer.stop()
-		get_tree().paused = true
-		SB.game_over.emit(valuation)
-		return
-
-	# Sprint timer
-	if _sprint_active:
-		sprint_timer -= delta
-		SB.sprint_timer_changed.emit(sprint_timer, sprint_duration)
-
-
-# --- Sprint system ---
-
-func _start_sprint() -> void:
-	sprint_number += 1
-	sprint_duration = Balance.get_sprint_duration(global_upgrades)
-	sprint_timer = sprint_duration
-	_sprint_active = true
-	_generate_sprint_tasks()
-	SB.sprint_started.emit(sprint_number)
-	Log.log_info(name, "Sprint %d started with %d tasks" % [sprint_number, task_queue.size()])
-
-
-func _generate_sprint_tasks() -> void:
-	var task_templates: Array[TaskData] = [TASK_DATA_FEATURE, TASK_DATA_BUG, TASK_DATA_REFACTOR]
-	var difficulties: Array[int] = [1, 1, 2, 2, 3]
-	for i: int in Constants.MAX_SPRINT_TASKS:
-		var template: TaskData = task_templates[randi() % task_templates.size()]
-		var task: TaskData = template.duplicate()
-		task.difficulty = difficulties[randi() % difficulties.size()]
-		_scale_task_hp(task)
-		task_queue.append(task)
-	SB.task_queue_changed.emit(task_queue)
-
-
-func _scale_task_hp(task: TaskData) -> void:
-	var hp: float = Balance.scale_task_hp(task.difficulty, sprint_number)
-	task.current_hp = hp
-	task.max_hp = hp
-
-
-func _check_sprint_complete() -> void:
-	if not task_queue.is_empty():
-		return
-	# Check no dev is still working on a task
-	for dev: Developer in developers:
-		if dev._current_task:
-			return
-	_end_sprint()
-
-
-func _end_sprint() -> void:
-	var bonus: int = 0
-	if sprint_timer > 0.0:
-		var speed_ratio: float = sprint_timer / sprint_duration
-		bonus = int(100.0 * sprint_number * speed_ratio)
-		valuation += bonus
-		SB.valuation_changed.emit()
-	_sprint_active = false
-	SB.sprint_ended.emit(sprint_number, bonus)
-	Log.log_info(name, "Sprint %d ended. Bonus: %d" % [sprint_number, bonus])
-	_check_level_up()
-	if _game_active and not _awaiting_choice:
-		_start_sprint()
-
-
-# --- Upgrade application ---
-
-func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
-	upgrades_taken.append(upgrade)
-	_apply_upgrade(upgrade)
-	_awaiting_choice = false
-	_check_hire_level()
-
-
-func _apply_upgrade(upgrade: UpgradeData) -> void:
-	if upgrade.upgrade_type == Constants.UpgradeType.GLOBAL:
-		global_upgrades.append(upgrade)
-	elif upgrade.upgrade_type == Constants.UpgradeType.DEV:
-		if upgrade.target_dev_type not in dev_upgrades:
-			var arr: Array[UpgradeData] = []
-			dev_upgrades[upgrade.target_dev_type] = arr
-		dev_upgrades[upgrade.target_dev_type].append(upgrade)
-	elif upgrade.upgrade_type == Constants.UpgradeType.SPRINT:
-		global_upgrades.append(upgrade)
-	Log.log_info(name, "Applied upgrade: %s (×%.1f)" % [upgrade.id, upgrade.multiplier])
-
-
-func _check_hire_level() -> void:
-	if level in Constants.HIRE_LEVELS:
-		_awaiting_choice = true
-		SB.developer_hire_requested.emit()
-	else:
-		_resume_after_choice()
-
-
-# --- Level-up ---
-
-func _check_level_up() -> void:
-	if valuation >= get_xp_for_level(level + 1):
-		level += 1
-		_awaiting_choice = true
-		get_tree().paused = true
-		SB.level_up.emit(level)
-		Log.log_info(name, "Level up! Level %d" % level)
-	else:
-		_resume_after_choice()
-
-
-func _resume_after_choice() -> void:
-	get_tree().paused = false
-	if _game_active and not _sprint_active:
-		_start_sprint()
-
-
-func get_xp_for_level(lvl: int) -> int:
-	return Balance.get_xp_for_level(lvl)
-
-
-# --- Task management ---
-
 func take_task(task: TaskData) -> TaskData:
 	if task not in task_queue:
 		return null
 	task_queue.erase(task)
 	SB.task_queue_changed.emit(task_queue)
+	_fill_queue_from_bag()
 	return task
 
-
-func _on_task_destroyed(task: TaskData) -> void:
-	_apply_task_rewards(task)
-	Log.log_info(name, "Task destroyed: %s (difficulty %d)" % [Constants.TaskType.keys()[task.task_type], task.difficulty])
-	_check_sprint_complete()
-
-
-func _apply_task_rewards(task: TaskData) -> void:
-	var reward: int = int(task.max_hp)
-	if reward > 0:
-		valuation += reward
-		SB.valuation_changed.emit()
-		_check_level_up()
-
-
-# --- Developers ---
 
 func hire_developer(dev_data: DeveloperData) -> void:
 	var desk: Developer = Groups.get_first_filtered(get_tree(), "developer", func(d: Developer) -> bool: return not d.data) as Developer
@@ -244,14 +104,209 @@ func hire_developer(dev_data: DeveloperData) -> void:
 	hired_data.append(dev_data)
 	Log.log_info(name, "Hired %s" % Constants.DevType.keys()[dev_data.dev_type])
 
+# --- Lifecycle ---
 
-func fire_developer(developer: Developer) -> void:
-	developers.erase(developer)
-	hired_data.erase(developer.data)
-	Log.log_info(name, "Fired %s" % Constants.DevType.keys()[developer.data.dev_type])
+func _ready() -> void:
+	SB.upgrade_chosen.connect(_on_upgrade_chosen)
+	SB.task_destroyed.connect(_on_task_destroyed)
+	SB.developer_chosen.connect(_on_developer_chosen)
+	_tick_timer = _create_tick_timer()
+
+
+func _process(delta: float) -> void:
+	if not _game_active or _awaiting_choice:
+		return
+
+	timer_remaining -= delta
+	if timer_remaining <= 0.0:
+		timer_remaining = 0.0
+		_game_active = false
+		_tick_timer.stop()
+		get_tree().paused = true
+		SB.game_over.emit(valuation)
+		return
+
+# --- Handlers ---
+
+func _on_tick() -> void:
+	SB.game_timer_changed.emit(timer_remaining)
+
+
+func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
+	upgrades_taken.append(upgrade)
+	_apply_upgrade(upgrade)
+	_awaiting_choice = false
+	_resume_after_choice()
 
 
 func _on_developer_chosen(dev_data: DeveloperData) -> void:
 	hire_developer(dev_data)
 	_awaiting_choice = false
+	if level == 0:
+		# Starting hire — no upgrade choice yet
+		_resume_after_choice()
+	else:
+		# After hiring on level-up, show upgrade choice on the same level
+		_show_upgrade_choice()
+
+
+func _on_task_destroyed(task: TaskData) -> void:
+	_apply_task_rewards(task)
+	Log.log_info(name, "Task destroyed: %s (level %d)" % [Constants.TaskType.keys()[task.task_type], task.level])
+
+# --- Private ---
+
+func _create_tick_timer() -> Timer:
+	var timer: Timer = Timer.new()
+	timer.wait_time = 1.0
+	timer.timeout.connect(_on_tick)
+	add_child(timer)
+	return timer
+
+
+# --- Task bag system ---
+
+func _generate_task_bag() -> void:
+	var task_level: int = maxi(level, 1)
+	var weights: Dictionary = Balance.get_task_type_weights(task_level)
+	_task_bag.clear()
+	for i: int in Constants.TASK_BAG_SIZE:
+		var template: TaskData = _pick_weighted_task(weights)
+		var task: TaskData = template.duplicate()
+		task.level = task_level
+		var hp: float = Balance.get_task_hp(task_level)
+		task.current_hp = hp
+		task.max_hp = hp
+		_task_bag.append(task)
+	Log.log_info(name, "Generated task bag: %d tasks at level %d" % [_task_bag.size(), task_level])
+
+
+func _fill_queue_from_bag() -> void:
+	while task_queue.size() < Constants.MAX_TASK_QUEUE and not _task_bag.is_empty():
+		task_queue.append(_task_bag.pop_front())
+	SB.task_queue_changed.emit(task_queue)
+	if _task_bag.is_empty():
+		_generate_task_bag()
+
+
+# --- Upgrade application ---
+
+func _apply_upgrade(upgrade: UpgradeData) -> void:
+	if upgrade.upgrade_type == Constants.UpgradeType.GLOBAL:
+		global_upgrades.append(upgrade)
+	elif upgrade.upgrade_type == Constants.UpgradeType.DEV:
+		if upgrade.target_dev_type not in dev_upgrades:
+			var arr: Array[UpgradeData] = []
+			dev_upgrades[upgrade.target_dev_type] = arr
+		dev_upgrades[upgrade.target_dev_type].append(upgrade)
+	Log.log_info(name, "Applied upgrade: %s (×%.1f)" % [upgrade.id, upgrade.multiplier])
+
+
+# --- Level-up ---
+
+func _check_level_up() -> void:
+	var next_threshold: int = get_xp_for_level(level + 1)
+	if next_threshold <= 0:
+		return  # max level reached
+	if valuation >= next_threshold:
+		level += 1
+		_awaiting_choice = true
+		get_tree().paused = true
+		SB.level_up.emit(level)
+		Log.log_info(name, "Level up! Level %d" % level)
+		if level in Constants.HIRE_LEVELS:
+			SB.developer_hire_requested.emit()
+		else:
+			_show_upgrade_choice()
+
+
+func _show_upgrade_choice() -> void:
+	_awaiting_choice = true
+	# UiHud listens to level_up and shows upgrade choice popup.
+	# The upgrade_chosen signal triggers _on_upgrade_chosen which calls _resume_after_choice.
+
+
+func _resume_after_choice() -> void:
+	get_tree().paused = false
+	# Check if we leveled up again while paused (from accumulated rewards)
 	_check_level_up()
+
+
+func _apply_task_rewards(task: TaskData) -> void:
+	var reward: int = int(task.max_hp)
+	if reward > 0:
+		valuation += reward
+		SB.valuation_changed.emit()
+		if not _awaiting_choice:
+			_check_level_up()
+
+
+# --- Upgrade selection ---
+
+func _get_all_available() -> Array[UpgradeData]:
+	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if _is_upgrade_available(upgrade):
+			pool.append(upgrade)
+	return pool
+
+
+func _get_available_by_type(type: Constants.UpgradeType) -> Array[UpgradeData]:
+	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if not _is_upgrade_available(upgrade):
+			continue
+		if upgrade.upgrade_type != type:
+			continue
+		pool.append(upgrade)
+	return pool
+
+
+func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
+	if pool.is_empty():
+		return null
+	return pool[randi() % pool.size()]
+
+
+func _is_upgrade_available(upgrade: UpgradeData) -> bool:
+	if _is_taken(upgrade.id):
+		return false
+	if upgrade.min_game_level > 0 and level < upgrade.min_game_level:
+		return false
+	if upgrade.upgrade_type == Constants.UpgradeType.DEV:
+		if not _has_hired_dev_type(upgrade.target_dev_type):
+			return false
+	for req: UpgradeData in upgrade.prerequisites:
+		if not _is_taken(req.id):
+			return false
+	return true
+
+
+func _is_taken(upgrade_id: String) -> bool:
+	for taken: UpgradeData in upgrades_taken:
+		if taken.id == upgrade_id:
+			return true
+	return false
+
+
+func _has_hired_dev_type(dev_type: Constants.DevType) -> bool:
+	for data: DeveloperData in hired_data:
+		if data.dev_type == dev_type:
+			return true
+	return false
+
+
+func _pick_weighted_task(weights: Dictionary) -> TaskData:
+	var roll: float = randf()
+	var cumulative: float = 0.0
+	for task_type: Constants.TaskType in weights:
+		cumulative += weights[task_type] as float
+		if roll <= cumulative:
+			match task_type:
+				Constants.TaskType.FEATURE:
+					return TASK_DATA_FEATURE
+				Constants.TaskType.BUG:
+					return TASK_DATA_BUG
+				Constants.TaskType.REFACTOR:
+					return TASK_DATA_REFACTOR
+	return TASK_DATA_FEATURE

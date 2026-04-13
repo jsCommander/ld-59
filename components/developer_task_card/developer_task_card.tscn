@@ -6,6 +6,11 @@
 [ext_resource type="Script" uid="uid://oeqgun0rje75" path="res://components/traits/flashable_trait.gd" id="3_jptog"]
 [ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="4_dmgnum"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_d0wik"]
+line_spacing = 1.0
+font_size = 14
+font_color = Color(0, 0, 0, 1)
+
 [node name="DeveloperTaskCard" type="VBoxContainer" unique_id=464981821]
 offset_right = 93.0
 offset_bottom = 101.0
@@ -29,6 +34,29 @@ stretch_mode = 5
 [node name="FlashableTrait" type="Node" parent="IconRect" unique_id=169306467]
 unique_name_in_owner = true
 script = ExtResource("3_jptog")
+
+[node name="PanelContainer" type="PanelContainer" parent="IconRect" unique_id=1562338852]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 58.0
+offset_right = 84.0
+offset_bottom = 87.0
+
+[node name="MarginContainer" type="MarginContainer" parent="IconRect/PanelContainer" unique_id=226151537]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="LevelLabel" type="Label" parent="IconRect/PanelContainer/MarginContainer" unique_id=302]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.7)
+theme_override_font_sizes/font_size = 10
+text = "5"
+label_settings = SubResource("LabelSettings_d0wik")
+horizontal_alignment = 1
 
 [node name="DamageNumber" parent="." unique_id=251101799 instance=ExtResource("4_dmgnum")]
 unique_name_in_owner = true

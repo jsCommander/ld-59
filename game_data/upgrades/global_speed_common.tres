@@ -4,9 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "global_speed_15x"
-display_name = "Стендапы покороче"
-description = "×1.5 скорость атаки всем"
+id = "global_speed_common"
+display_name = "Дейлик в 9 утра"
+description = "×1.1 скорость всем"
 upgrade_type = 0
 stat = 1
-multiplier = 1.5
+multiplier = 1.1
+rarity = 0
+prerequisites = []

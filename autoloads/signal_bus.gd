@@ -8,10 +8,6 @@ signal task_destroyed(task: TaskData)
 
 signal valuation_changed
 
-signal sprint_started(sprint_number: int)
-signal sprint_ended(sprint_number: int, bonus: int)
-signal sprint_timer_changed(remaining: float, total: float)
-
 signal game_timer_changed(remaining: float)
 signal level_up(level: int)
 signal game_over(valuation: int)

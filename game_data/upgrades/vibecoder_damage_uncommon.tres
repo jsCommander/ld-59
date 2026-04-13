@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+[ext_resource type="Resource" path="res://game_data/upgrades/vibecoder_damage_common.tres" id="2_prereq"]
+
+[resource]
+script = ExtResource("1")
+id = "vibecoder_damage_uncommon"
+display_name = "Cursor Pro"
+description = "×5 урон vibecoder"
+upgrade_type = 1
+target_dev_type = 0
+stat = 0
+multiplier = 5.0
+rarity = 1
+min_game_level = 3
+prerequisites = [ExtResource("2_prereq")]

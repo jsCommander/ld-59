@@ -4,7 +4,7 @@ extends Node2D
 
 # --- Enums ---
 
-enum State {IDLE, WORKING, YOUTUBE, BURNOUT}
+enum State {IDLE, WORKING}
 
 # --- Exports ---
 
@@ -27,7 +27,6 @@ var _attack_timer: float = 0.0
 var _current_task: TaskData = null
 var _boost_stacks: int = 0
 var _boost_decay_timer: float = 0.0
-var _burnout_timer: float = 0.0
 
 # --- Lifecycle ---
 
@@ -47,10 +46,6 @@ func _process(delta: float) -> void:
 			_process_idle()
 		State.WORKING:
 			_process_working(delta)
-		State.YOUTUBE:
-			_process_youtube()
-		State.BURNOUT:
-			_process_burnout(delta)
 
 	_process_boost_decay(delta)
 
@@ -65,12 +60,7 @@ func _on_task_killed() -> void:
 # --- Public ---
 
 func on_clicked() -> void:
-	match _state:
-		State.YOUTUBE:
-			_change_state(State.IDLE)
-			Log.log_debug(name, "Snapped out of YouTube")
-		State.WORKING, State.IDLE:
-			_apply_boost()
+	_apply_boost()
 
 
 # --- Private ---
@@ -88,17 +78,6 @@ func _process_working(delta: float) -> void:
 	if _attack_timer >= speed:
 		_attack_timer -= speed
 		_perform_attack()
-
-
-func _process_youtube() -> void:
-	pass
-
-
-func _process_burnout(delta: float) -> void:
-	_burnout_timer -= delta
-	if _burnout_timer <= 0.0:
-		_change_state(State.IDLE)
-		Log.log_debug(name, "Recovered from burnout")
 
 
 func _process_boost_decay(delta: float) -> void:
@@ -124,13 +103,6 @@ func _change_state(new_state: State) -> void:
 	match new_state:
 		State.WORKING:
 			animation_player.play("working")
-		State.YOUTUBE:
-			task_display.show_youtube()
-		State.BURNOUT:
-			_burnout_timer = Constants.BURNOUT_DURATION
-			_boost_stacks = 0
-			dev_rig.modulate = Color.WHITE
-			task_display.show_burnout()
 		State.IDLE:
 			_attack_timer = 0.0
 			task_display.hide_task()
@@ -138,10 +110,6 @@ func _change_state(new_state: State) -> void:
 
 func _pick_task() -> void:
 	if PD.task_queue.is_empty():
-		return
-
-	if randf() < Constants.YOUTUBE_CHANCE:
-		_change_state(State.YOUTUBE)
 		return
 
 	var task: TaskData = data.task_select.select(data, PD.task_queue)
@@ -173,9 +141,8 @@ func _apply_boost() -> void:
 	_boost_stacks += 1
 	var heat: float = clampf(float(_boost_stacks) / float(Constants.MAX_BOOST), 0.0, 1.0)
 	dev_rig.modulate = Color.WHITE.lerp(Color(1.5, 0.5, 0.5), heat)
-	if _boost_stacks >= Constants.MAX_BOOST:
-		_change_state(State.BURNOUT)
-		Log.log_info(name, "Burned out from too much boost!")
+	if _boost_stacks > Constants.MAX_BOOST:
+		_boost_stacks = Constants.MAX_BOOST
 
 
 

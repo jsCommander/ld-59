@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+[ext_resource type="Resource" path="res://game_data/upgrades/senior_damage_uncommon.tres" id="2_prereq"]
+
+[resource]
+script = ExtResource("1")
+id = "senior_damage_rare"
+display_name = "Система мониторинга"
+description = "×9 урон senior"
+upgrade_type = 1
+target_dev_type = 2
+stat = 0
+multiplier = 9.0
+rarity = 2
+min_game_level = 5
+prerequisites = [ExtResource("2_prereq")]

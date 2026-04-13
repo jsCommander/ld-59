@@ -2,22 +2,8 @@
 
 [ext_resource type="Script" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.gd" id="1_script"]
 
-[node name="UiSprintPanel" type="VBoxContainer"]
+[node name="UiSprintPanel" type="HBoxContainer"]
 script = ExtResource("1_script")
-
-[node name="SprintLabel" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Спринт 1"
-horizontal_alignment = 1
-
-[node name="SprintTimerBar" type="ProgressBar" parent="."]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 20)
-layout_mode = 2
-max_value = 1.0
-value = 1.0
-show_percentage = false
 
 [node name="CardContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true

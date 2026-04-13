@@ -4,10 +4,12 @@
 
 [resource]
 script = ExtResource("1")
-id = "vibecoder_damage_3x"
-display_name = "Cursor Pro"
-description = "×3 урон вайбкодеров"
+id = "regular_speed_common"
+display_name = "Тихий офис"
+description = "×1.1 скорость regular"
 upgrade_type = 1
-target_dev_type = 0
-stat = 0
-multiplier = 3.0
+target_dev_type = 1
+stat = 1
+multiplier = 1.1
+rarity = 0
+prerequisites = []

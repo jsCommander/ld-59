@@ -2,10 +2,6 @@
 class_name DeveloperTaskCard
 extends Control
 
-# --- Constants ---
-const YOUTUBE_ICON: Texture2D = preload("res://assets/icons/icn_sleep.png")
-const BURNOUT_ICON: Texture2D = preload("res://assets/icons/icn_fire.png")
-
 # --- Exports ---
 @export var task: TaskData:
 	set(value):
@@ -15,6 +11,7 @@ const BURNOUT_ICON: Texture2D = preload("res://assets/icons/icn_fire.png")
 # --- @onready ---
 @onready var icon_rect: TextureRect = %IconRect
 @onready var hp_bar: ProgressBar = %HpBar
+@onready var level_label: Label = %LevelLabel
 @onready var flashable: FlashableTrait = %FlashableTrait
 @onready var damage_number: DamageNumber = %DamageNumber
 
@@ -39,18 +36,6 @@ func kill() -> void:
 	visible = false
 
 
-func show_youtube() -> void:
-	icon_rect.texture = YOUTUBE_ICON
-	hp_bar.visible = false
-	visible = true
-
-
-func show_burnout() -> void:
-	icon_rect.texture = BURNOUT_ICON
-	hp_bar.visible = false
-	visible = true
-
-
 func hide_task() -> void:
 	task = null
 	visible = false
@@ -65,6 +50,7 @@ func _apply_task() -> void:
 		visible = false
 		return
 	icon_rect.texture = task.texture
+	level_label.text = str(task.level)
 	update_health_bar()
 	hp_bar.visible = true
 	visible = true
