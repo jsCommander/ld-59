@@ -1,24 +1,32 @@
-[gd_scene format=3 uid="uid://d3k7xmn9qp2v8"]
+[gd_scene format=3 uid="uid://d3k7xmoaqp2v8"]
 
-[ext_resource type="Script" path="res://components/ui/ui_ceo_commentator/ui_ceo_commentator.gd" id="1_ceo"]
+[ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_330iy"]
+[ext_resource type="Texture2D" uid="uid://b51wgb25nq66" path="res://assets/exports/developer_head.png" id="2_sumtp"]
 
-[node name="UiCeoCommentator" type="Control"]
-anchors_preset = 4
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -220.0
-offset_top = -80.0
-offset_right = -8.0
-offset_bottom = -8.0
-script = ExtResource("1_ceo")
+[node name="UiCeoCommentator" type="MarginContainer" unique_id=1141117849]
+custom_minimum_size = Vector2(128, 128)
+offset_right = 144.0
+offset_bottom = 144.0
 
-[node name="SpeechBubble" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = ""
-autowrap_mode = 3
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1898610342]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=915659583]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1961604376]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1654423982]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("2_sumtp")
+expand_mode = 1
+flip_h = true
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=326465824]
+layout_mode = 2
+text = "CEO"
+label_settings = ExtResource("2_330iy")
+horizontal_alignment = 1

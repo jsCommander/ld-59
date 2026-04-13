@@ -1,43 +1,40 @@
 [gd_scene format=3 uid="uid://bp40y4jbkdshf"]
 
 [ext_resource type="Script" uid="uid://d0310pophnb1c" path="res://components/ui/ui_capitalization/ui_capitalization.gd" id="1_script"]
+[ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_jdt6y"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_h6tq0"]
-font_size = 64
+font_size = 48
 font_color = Color(5.390644e-06, 0.70436645, 0.374116, 1)
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_jdt6y"]
-font_size = 32
-font_color = Color(0, 0.7058824, 0.37254903, 1)
-outline_size = 4
-outline_color = Color(0.0253638, 0.0253638, 0.025363795, 1)
-
-[node name="PanelContainer" type="PanelContainer" unique_id=1894819433]
-custom_minimum_size = Vector2(600, 0)
-offset_right = 49.0
-offset_bottom = 110.0
+[node name="UiCapitalization" type="MarginContainer" unique_id=1735954401]
+offset_right = 616.0
+offset_bottom = 250.0
 script = ExtResource("1_script")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=850298691]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1894819433]
+custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 
-[node name="UiCapitalization" type="VBoxContainer" parent="MarginContainer" unique_id=2099310519]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=850298691]
+layout_mode = 2
+
+[node name="Vbox" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=2099310519]
 layout_mode = 2
 alignment = 1
 
-[node name="ValuationLabel" type="Label" parent="MarginContainer/UiCapitalization" unique_id=321118048]
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/Vbox" unique_id=1393238215]
+layout_mode = 2
+text = "Capitalization"
+label_settings = ExtResource("2_jdt6y")
+horizontal_alignment = 1
+
+[node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/Vbox" unique_id=321118048]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "$0"
 label_settings = SubResource("LabelSettings_h6tq0")
-horizontal_alignment = 1
-
-[node name="CompanyLabel" type="Label" parent="MarginContainer/UiCapitalization" unique_id=932247744]
-unique_name_in_owner = true
-layout_mode = 2
-text = "More than"
-label_settings = SubResource("LabelSettings_jdt6y")
 horizontal_alignment = 1

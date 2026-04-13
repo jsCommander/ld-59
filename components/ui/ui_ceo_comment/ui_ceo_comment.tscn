@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c34pe8sffwio6"]
+
+[ext_resource type="Script" uid="uid://uvhfvtpcw41i" path="res://components/ui/ui_ceo_comment/ui_ceo_comment.gd" id="1_script"]
+[ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_label"]
+
+[node name="UiCeoComment" type="MarginContainer" unique_id=657863998]
+offset_right = 600.0
+offset_bottom = 40.0
+script = ExtResource("1_script")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1548927848]
+layout_mode = 2
+
+[node name="CommentLabel" type="Label" parent="PanelContainer" unique_id=1175453704]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Bigger than X!"
+label_settings = ExtResource("2_label")
+horizontal_alignment = 1

@@ -17,7 +17,7 @@ enum State {IDLE, WAITING, WORKING}
 
 @onready var dev_rig: Node2D = %DevRig
 @onready var dev_head_sprite: Sprite2D = %DevHeadSprite
-@onready var task_display: DeveloperTaskCard = %DeveloperTaskCard
+@onready var task_display: TaskCard = %TaskCard
 @onready var task_landing_point: Marker2D = %TaskLandingPoint
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -73,7 +73,7 @@ func _on_task_assigned(task: TaskData, developer: Developer, _task_position: Vec
 func _on_task_fly_ended(task: TaskData, developer: Developer) -> void:
 	if developer != self:
 		return
-	task_display.task = _current_task
+	task_display.task_data = _current_task
 	_change_state(State.WORKING)
 
 # --- Public ---
@@ -135,7 +135,7 @@ func _perform_attack() -> void:
 	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
 	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.global_upgrades, dev_upgrades)
 	_current_task.current_hp -= damage
-	task_display.update_health_bar()
+	task_display.update_hp()
 	task_display.flash()
 	task_display.show_damage(int(damage))
 	AM.play_sfx(Constants.Sfx.HIT_HURT, 0.15)

@@ -1,5 +1,5 @@
 class_name UiGameTimer
-extends Label
+extends Control
 
 @onready var game_timer_label: Label = %GameTimerLabel
 

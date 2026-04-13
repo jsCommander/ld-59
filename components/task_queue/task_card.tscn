@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b6s5bsjyh1htm" path="res://components/task_queue/task_card.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_xwu51"]
+[ext_resource type="Script" uid="uid://oeqgun0rje75" path="res://components/traits/flashable_trait.gd" id="3_flash"]
+[ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="4_dmgnum"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_u2pmv"]
 font_size = 24
@@ -33,6 +35,10 @@ texture = ExtResource("2_xwu51")
 expand_mode = 3
 stretch_mode = 5
 
+[node name="FlashableTrait" type="Node" parent="VBoxContainer/Icon"]
+unique_name_in_owner = true
+script = ExtResource("3_flash")
+
 [node name="LevelLabel" type="Label" parent="VBoxContainer/Icon" unique_id=647472031]
 unique_name_in_owner = true
 layout_mode = 0
@@ -46,3 +52,7 @@ text = "5"
 label_settings = SubResource("LabelSettings_u2pmv")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DamageNumber" parent="." instance=ExtResource("4_dmgnum")]
+unique_name_in_owner = true
+position = Vector2(120, 20)

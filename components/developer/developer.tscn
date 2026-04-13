@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c5y54cv4grras" path="res://assets/exports/developer_hand.png" id="5_72ilg"]
 [ext_resource type="Texture2D" uid="uid://fqk1ato08gf1" path="res://assets/exports/developer_body.png" id="6_ux65i"]
 [ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="8_2k4jx"]
-[ext_resource type="PackedScene" uid="uid://v2l5dlh6dgoc" path="res://components/developer_task_card/developer_task_card.tscn" id="8_task_display"]
+[ext_resource type="PackedScene" uid="uid://bjgkr1bhtatm4" path="res://components/task_queue/task_card.tscn" id="8_task_display"]
 
 [sub_resource type="Animation" id="Animation_72ilg"]
 length = 0.001
@@ -311,15 +311,16 @@ offset = Vector2(51, 10)
 
 [node name="TaskLandingPoint" type="Marker2D" parent="." unique_id=1556781234]
 unique_name_in_owner = true
-position = Vector2(35, -214)
+position = Vector2(47, -238)
 
-[node name="DeveloperTaskCard" parent="." unique_id=464981821 instance=ExtResource("8_task_display")]
+[node name="TaskCard" parent="." unique_id=464981821 instance=ExtResource("8_task_display")]
 unique_name_in_owner = true
-visible = false
-offset_left = 30.0
-offset_top = -230.0
-offset_right = 123.0
-offset_bottom = -123.0
+offset_left = 42.0
+offset_top = -237.0
+offset_right = 178.0
+offset_bottom = -101.0
+scale = Vector2(0.8, 0.8)
+show_hp = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1885175129]
 libraries/ = SubResource("AnimationLibrary_2k4jx")

@@ -1,5 +1,5 @@
 class_name UiSprintPanel
-extends HBoxContainer
+extends Control
 
 const TASK_CARD: PackedScene = preload("res://components/task_queue/task_card.tscn")
 

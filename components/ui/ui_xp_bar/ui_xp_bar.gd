@@ -1,5 +1,8 @@
 class_name UiXpBar
-extends ProgressBar
+extends Control
+
+@onready var xp_bar_label: ProgressBar = %XpBarLabel
+
 
 # --- Lifecycle ---
 
@@ -18,6 +21,6 @@ func _on_level_up(_level: int) -> void:
 func _update() -> void:
 	var next_xp: int = PD.get_xp_for_level(PD.level + 1)
 	if next_xp > 0:
-		value = float(PD.valuation) / float(next_xp)
+		xp_bar_label.value = float(PD.valuation) / float(next_xp)
 	else:
-		value = 1.0
+		xp_bar_label.value = 1.0

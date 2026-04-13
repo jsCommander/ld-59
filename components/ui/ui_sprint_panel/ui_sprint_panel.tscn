@@ -1,12 +1,19 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://brdupycq201so"]
 
-[ext_resource type="Script" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://6rnldvfqec87" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.gd" id="1_script"]
 
-[node name="UiSprintPanel" type="HBoxContainer"]
+[node name="UiSprintPanel" type="MarginContainer" unique_id=1734520074]
+custom_minimum_size = Vector2(600, 128)
+offset_left = 8.0
+offset_right = 24.0
+offset_bottom = 16.0
 script = ExtResource("1_script")
 
-[node name="CardContainer" type="HBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1387442773]
+layout_mode = 2
+
+[node name="CardContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1586872810]
 unique_name_in_owner = true
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 8
+alignment = 1
