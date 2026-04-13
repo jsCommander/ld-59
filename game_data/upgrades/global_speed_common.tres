@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_speed_common"
-display_name = "Дейлик в 9 утра"
-description = "+10% скорость всем"
+display_name = "9 AM Standup"
+description = "+10% speed for all"
 upgrade_type = 0
 stat = 1
 multiplier = 1.1

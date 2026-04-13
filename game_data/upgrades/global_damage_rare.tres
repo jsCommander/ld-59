@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_damage_rare"
-display_name = "Аджайл-трансформация"
-description = "+200% урон"
+display_name = "Agile Transformation"
+description = "+200% damage"
 upgrade_type = 0
 stat = 0
 multiplier = 3.0

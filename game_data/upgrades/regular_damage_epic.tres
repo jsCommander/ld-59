@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "regular_damage_epic"
-display_name = "Механическая клавиатура"
-description = "+400% урон"
+display_name = "Mechanical Keyboard"
+description = "+400% damage"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0

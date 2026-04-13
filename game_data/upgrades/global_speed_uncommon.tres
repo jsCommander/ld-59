@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_speed_uncommon"
-display_name = "Канбан-доска"
-description = "+20% скорость всем"
+display_name = "Kanban Board"
+description = "+20% speed for all"
 upgrade_type = 0
 stat = 1
 multiplier = 1.2

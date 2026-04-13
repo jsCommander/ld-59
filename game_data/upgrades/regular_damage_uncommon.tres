@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "regular_damage_uncommon"
 display_name = "Stack Overflow Premium"
-description = "+100% урон"
+description = "+100% damage"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0

@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "senior_speed_epic"
-display_name = "Архитектурный паттерн"
-description = "+50% скорость senior"
+display_name = "Architecture Pattern"
+description = "+50% speed senior"
 upgrade_type = 1
 target_dev_type = 2
 stat = 1

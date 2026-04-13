@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = "regular_damage_common"
-display_name = "Код-ревью ботом"
-description = "+50% урон"
+display_name = "Bot Code Review"
+description = "+50% damage"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0

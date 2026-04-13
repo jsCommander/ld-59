@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_damage_uncommon"
-display_name = "Пивот стратегии"
-description = "+100% урон"
+display_name = "Strategy Pivot"
+description = "+100% damage"
 upgrade_type = 0
 stat = 0
 multiplier = 2.0

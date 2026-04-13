@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_speed_epic"
-display_name = "Автоматизация тестов"
-description = "+50% скорость всем"
+display_name = "Test Automation"
+description = "+50% speed for all"
 upgrade_type = 0
 stat = 1
 multiplier = 1.5

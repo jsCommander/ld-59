@@ -1,5 +1,5 @@
 class_name UiCapitalization
-extends VBoxContainer
+extends Control
 
 # --- @onready ---
 
@@ -35,7 +35,7 @@ func _update_company_comparison() -> void:
 		if PD.valuation >= milestone["valuation"]:
 			current_company = milestone["name"]
 	if current_company:
-		company_label.text = "Больше чем у %s!" % current_company
+		company_label.text = "Bigger than %s!" % current_company
 		_flash_company_label()
 
 func _flash_company_label() -> void:

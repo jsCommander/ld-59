@@ -1,5 +1,5 @@
 class_name UiGameOver
-extends CanvasLayer
+extends BaseDialog
 
 # --- @onready ---
 
@@ -13,19 +13,18 @@ extends CanvasLayer
 
 func _ready() -> void:
 	restart_button.pressed.connect(_on_restart)
-	process_mode = Node.PROCESS_MODE_ALWAYS
 
 # --- Public ---
 
-func show_game_over(final_valuation: int) -> void:
+func set_data(data: Dictionary) -> void:
+	var final_valuation: int = data.get("valuation", 0)
 	valuation_label.text = "$%d" % final_valuation
-	level_label.text = "Уровень: %d" % PD.level
+	level_label.text = "Level: %d" % PD.level
 	var team_text: String = ""
 	for dev: Developer in PD.developers:
 		team_text += Constants.DevType.keys()[dev.data.dev_type] + "\n"
 	team_label.text = team_text
 	_show_company_comparison(final_valuation)
-	visible = true
 
 # --- Private ---
 
@@ -42,5 +41,4 @@ func _show_company_comparison(val: int) -> void:
 		company_label.visible = true
 
 func _on_restart() -> void:
-	get_tree().paused = false
-	get_tree().reload_current_scene()
+	close_dialog({"action": "restart"})

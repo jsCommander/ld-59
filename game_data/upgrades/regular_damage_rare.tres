@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "regular_damage_rare"
-display_name = "Второй монитор"
-description = "+200% урон"
+display_name = "Second Monitor"
+description = "+200% damage"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0

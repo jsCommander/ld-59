@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "vibecoder_speed_epic"
-display_name = "MCP серверы"
-description = "+50% скорость vibecoder"
+display_name = "MCP Servers"
+description = "+50% speed vibecoder"
 upgrade_type = 1
 target_dev_type = 0
 stat = 1

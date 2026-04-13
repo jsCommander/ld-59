@@ -1,6 +1,8 @@
 class_name UiGameTimer
 extends Label
 
+@onready var game_timer_label: Label = %GameTimerLabel
+
 # --- Lifecycle ---
 
 func _ready() -> void:
@@ -11,4 +13,4 @@ func _ready() -> void:
 func _on_game_timer_changed(remaining: float) -> void:
 	var minutes: int = int(remaining) / 60
 	var seconds: int = int(remaining) % 60
-	text = "%d:%02d" % [minutes, seconds]
+	game_timer_label.text = "%d:%02d" % [minutes, seconds]

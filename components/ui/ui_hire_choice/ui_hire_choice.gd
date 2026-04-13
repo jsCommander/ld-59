@@ -1,5 +1,5 @@
 class_name UiHireChoice
-extends CanvasLayer
+extends BaseDialog
 
 const HIRE_CARD: PackedScene = preload("res://components/ui/ui_hire_choice/hire_card.tscn")
 
@@ -8,17 +8,11 @@ const HIRE_CARD: PackedScene = preload("res://components/ui/ui_hire_choice/hire_
 @onready var card_container: HBoxContainer = %CardContainer
 @onready var title_label: Label = %TitleLabel
 
-# --- Lifecycle ---
-
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-
 # --- Public ---
 
-func show_hire() -> void:
-	title_label.text = "Найми разработчика"
+func set_data(_data: Dictionary) -> void:
+	title_label.text = "Hire a Developer"
 	_build_cards()
-	visible = true
 
 # --- Private ---
 
@@ -32,5 +26,4 @@ func _build_cards() -> void:
 		card_container.add_child(card)
 
 func _on_dev_chosen(dev_data: DeveloperData) -> void:
-	SB.developer_chosen.emit(dev_data.duplicate())
-	visible = false
+	close_dialog({"dev_data": dev_data.duplicate()})

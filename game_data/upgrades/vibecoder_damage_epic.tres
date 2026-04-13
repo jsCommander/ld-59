@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "vibecoder_damage_epic"
-display_name = "Fine-tuned модель"
-description = "+400% урон"
+display_name = "Fine-tuned Model"
+description = "+400% damage"
 upgrade_type = 1
 target_dev_type = 0
 stat = 0

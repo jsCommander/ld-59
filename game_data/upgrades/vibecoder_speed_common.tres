@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1")
 id = "vibecoder_speed_common"
-display_name = "Быстрый промпт"
-description = "+10% скорость vibecoder"
+display_name = "Quick Prompt"
+description = "+10% speed vibecoder"
 upgrade_type = 1
 target_dev_type = 0
 stat = 1

@@ -4,32 +4,40 @@
 [ext_resource type="PackedScene" uid="uid://wtw8w4usjubw" path="res://game_kit/ui/components/ui_popup_manager/ui_popup_manager.tscn" id="2_popup"]
 [ext_resource type="PackedScene" uid="uid://d3k7xmoaqp2v8" path="res://components/ui/ui_ceo_commentator/ui_ceo_commentator.tscn" id="4_ceo"]
 [ext_resource type="PackedScene" path="res://components/ui/ui_xp_bar/ui_xp_bar.tscn" id="5_xp_bar"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_capitalization/ui_capitalization.tscn" id="6_cap"]
-[ext_resource type="PackedScene" path="res://components/ui/ui_game_timer/ui_game_timer.tscn" id="7_timer"]
+[ext_resource type="PackedScene" uid="uid://bp40y4jbkdshf" path="res://components/ui/ui_capitalization/ui_capitalization.tscn" id="6_cap"]
+[ext_resource type="PackedScene" uid="uid://br7pg5xqte77g" path="res://components/ui/ui_game_timer/ui_game_timer.tscn" id="7_timer"]
 [ext_resource type="PackedScene" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.tscn" id="8_sprint"]
+[ext_resource type="PackedScene" uid="uid://pctqnliuvj64" path="res://game_kit/dialogs/dialog_manager/dialog_manager.tscn" id="9_dialog"]
 
 [node name="UiHud" type="CanvasLayer" unique_id=422278221]
 layer = 5
 script = ExtResource("1_hud")
 
-[node name="TopBar" type="HBoxContainer" parent="." unique_id=39662736]
+[node name="UiXpBar" parent="." unique_id=2082447014 instance=ExtResource("5_xp_bar")]
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 1912.0
-offset_bottom = 118.0
-theme_override_constants/separation = 8
-
-[node name="UiXpBar" parent="TopBar" unique_id=2082447014 instance=ExtResource("5_xp_bar")]
-layout_mode = 2
+offset_right = 637.0
+offset_bottom = 9.0
 size_flags_horizontal = 3
 
-[node name="UiCapitalization" parent="TopBar" unique_id=709801305 instance=ExtResource("6_cap")]
-layout_mode = 2
+[node name="UiCapitalization" parent="." unique_id=709801305 instance=ExtResource("6_cap")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 196.0
+grow_horizontal = 2
 size_flags_horizontal = 3
 
-[node name="UiGameTimer" parent="TopBar" unique_id=705369341 instance=ExtResource("7_timer")]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="UiGameTimer" parent="." unique_id=705369341 instance=ExtResource("7_timer")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -109.0
+offset_right = 0.0
+offset_bottom = 112.0
+grow_horizontal = 0
 
 [node name="BottomBar" type="HBoxContainer" parent="." unique_id=947425971]
 anchors_preset = 7
@@ -55,3 +63,12 @@ unique_name_in_owner = true
 [node name="UiCeoCommentator" parent="." unique_id=2052447669 instance=ExtResource("4_ceo")]
 layout_mode = 3
 anchors_preset = 3
+offset_left = -212.0
+offset_top = -72.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="DialogManager" parent="." unique_id=174145934 instance=ExtResource("9_dialog")]
+unique_name_in_owner = true

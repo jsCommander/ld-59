@@ -66,7 +66,6 @@ func start_game() -> void:
 	_fill_queue_from_bag()
 	# Hire first dev at game start
 	_awaiting_choice = true
-	get_tree().paused = true
 	SB.developer_hire_requested.emit()
 
 
@@ -125,7 +124,6 @@ func _process(delta: float) -> void:
 		timer_remaining = 0.0
 		_game_active = false
 		_tick_timer.stop()
-		get_tree().paused = true
 		SB.game_over.emit(valuation)
 		return
 
@@ -150,18 +148,12 @@ func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
 	upgrades_taken.append(upgrade)
 	_apply_upgrade(upgrade)
 	_awaiting_choice = false
-	_resume_after_choice()
+	_check_level_up()
 
 
 func _on_developer_chosen(dev_data: DeveloperData) -> void:
 	hire_developer(dev_data)
 	_awaiting_choice = false
-	if level == 0:
-		# Starting hire — no upgrade choice yet
-		_resume_after_choice()
-	else:
-		# After hiring on level-up, show upgrade choice on the same level
-		_show_upgrade_choice()
 
 
 func _on_task_destroyed(task: TaskData) -> void:
@@ -225,25 +217,10 @@ func _check_level_up() -> void:
 	if valuation >= next_threshold:
 		level += 1
 		_awaiting_choice = true
-		get_tree().paused = true
 		SB.level_up.emit(level)
 		Log.log_info(name, "Level up! Level %d" % level)
 		if level in Constants.HIRE_LEVELS:
 			SB.developer_hire_requested.emit()
-		else:
-			_show_upgrade_choice()
-
-
-func _show_upgrade_choice() -> void:
-	_awaiting_choice = true
-	# UiHud listens to level_up and shows upgrade choice popup.
-	# The upgrade_chosen signal triggers _on_upgrade_chosen which calls _resume_after_choice.
-
-
-func _resume_after_choice() -> void:
-	get_tree().paused = false
-	# Check if we leveled up again while paused (from accumulated rewards)
-	_check_level_up()
 
 
 func _apply_task_rewards(task: TaskData) -> void:

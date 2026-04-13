@@ -21,7 +21,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FeatureRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(80, 0)
-text = "Фичи"
+text = "Features"
 
 [node name="FeatureBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/FeatureRow"]
 unique_name_in_owner = true
@@ -38,7 +38,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BugRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(80, 0)
-text = "Баги"
+text = "Bugs"
 
 [node name="BugBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/BugRow"]
 unique_name_in_owner = true
@@ -55,7 +55,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SpeedRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(80, 0)
-text = "Скорость"
+text = "Speed"
 
 [node name="SpeedBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/SpeedRow"]
 unique_name_in_owner = true

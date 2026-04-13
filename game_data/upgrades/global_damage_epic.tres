@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_damage_epic"
-display_name = "Серия A"
-description = "+400% урон"
+display_name = "Series A"
+description = "+400% damage"
 upgrade_type = 0
 stat = 0
 multiplier = 5.0

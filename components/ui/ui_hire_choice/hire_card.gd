@@ -20,7 +20,7 @@ func _ready() -> void:
 	if _dev_data.head_texture:
 		icon_rect.texture = _dev_data.head_texture
 	name_label.text = Constants.DevType.keys()[_dev_data.dev_type]
-	stats_label.text = "Фичи: %.1f\nБаги: %.1f\nРефактор: %.1f\nСкорость: %.1f" % [
+	stats_label.text = "Features: %.1f\nBugs: %.1f\nRefactor: %.1f\nSpeed: %.1f" % [
 		_dev_data.task_mults.get(Constants.TaskType.FEATURE, 1.0),
 		_dev_data.task_mults.get(Constants.TaskType.BUG, 1.0),
 		_dev_data.task_mults.get(Constants.TaskType.REFACTOR, 1.0),

@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "senior_speed_rare"
-display_name = "Dotfiles репозиторий"
-description = "+30% скорость senior"
+display_name = "Dotfiles Repo"
+description = "+30% speed senior"
 upgrade_type = 1
 target_dev_type = 2
 stat = 1

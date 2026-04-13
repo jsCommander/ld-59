@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "regular_speed_legendary"
-display_name = "Копия сознания в облаке"
-description = "+100% скорость regular"
+display_name = "Cloud Consciousness"
+description = "+100% speed regular"
 upgrade_type = 1
 target_dev_type = 1
 stat = 1

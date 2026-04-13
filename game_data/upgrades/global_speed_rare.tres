@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "global_speed_rare"
-display_name = "CI/CD пайплайн"
-description = "+30% скорость всем"
+display_name = "CI/CD Pipeline"
+description = "+30% speed for all"
 upgrade_type = 0
 stat = 1
 multiplier = 1.3

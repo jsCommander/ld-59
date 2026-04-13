@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "vibecoder_speed_legendary"
-display_name = "Нейроинтерфейс"
-description = "+100% скорость vibecoder"
+display_name = "Neural Interface"
+description = "+100% speed vibecoder"
 upgrade_type = 1
 target_dev_type = 0
 stat = 1

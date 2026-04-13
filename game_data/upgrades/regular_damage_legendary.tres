@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1")
 id = "regular_damage_legendary"
-display_name = "Полное погружение"
-description = "+900% урон"
+display_name = "Deep Focus"
+description = "+900% damage"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0

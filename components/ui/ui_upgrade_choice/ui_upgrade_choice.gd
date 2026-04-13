@@ -1,5 +1,5 @@
 class_name UiUpgradeChoice
-extends CanvasLayer
+extends BaseDialog
 
 const UPGRADE_CARD: PackedScene = preload("res://components/ui/ui_upgrade_choice/upgrade_card.tscn")
 
@@ -8,18 +8,13 @@ const UPGRADE_CARD: PackedScene = preload("res://components/ui/ui_upgrade_choice
 @onready var card_container: HBoxContainer = %CardContainer
 @onready var title_label: Label = %TitleLabel
 
-# --- Lifecycle ---
-
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-
 # --- Public ---
 
-func show_for_level(level: int) -> void:
-	title_label.text = "Уровень %d — выбери апгрейд" % level
+func set_data(data: Dictionary) -> void:
+	var level: int = data.get("level", 1)
+	title_label.text = "Level %d — Pick an Upgrade" % level
 	var upgrades: Array[UpgradeData] = PD.get_level_up_upgrades()
 	_build_cards(upgrades)
-	visible = true
 
 # --- Private ---
 
@@ -33,5 +28,4 @@ func _build_cards(upgrades: Array[UpgradeData]) -> void:
 		card_container.add_child(card)
 
 func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
-	visible = false
-	SB.upgrade_chosen.emit(upgrade)
+	close_dialog({"upgrade": upgrade})

@@ -125,5 +125,5 @@ const COMPANY_MILESTONES: Array[Dictionary] = [
 	{"valuation": 500000000, "name": "Apple"},
 	{"valuation": 5000000000, "name": "Microsoft"},
 	{"valuation": 100000000000, "name": "US GDP"},
-	{"valuation": 1000000000000, "name": "Мировое господство"},
+	{"valuation": 1000000000000, "name": "World Domination"},
 ]
