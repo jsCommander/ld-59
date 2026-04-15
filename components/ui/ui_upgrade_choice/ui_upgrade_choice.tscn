@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://bbeg72o2c6442"]
 
 [ext_resource type="Script" uid="uid://dl4p74kq17ijc" path="res://components/ui/ui_upgrade_choice/ui_upgrade_choice.gd" id="1_script"]
+[ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_rhqk7"]
 
 [node name="CenterContainer" type="CenterContainer" unique_id=1163224932]
-script = ExtResource("1_script")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
 [node name="UiHireChoice" type="PanelContainer" parent="." unique_id=450250193]
 custom_minimum_size = Vector2(512, 256)
@@ -28,6 +29,7 @@ layout_mode = 2
 theme_type_variation = &"LabelLarge"
 theme_override_font_sizes/font_size = 32
 text = "Choose upgrade"
+label_settings = ExtResource("2_rhqk7")
 horizontal_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1318206242]
@@ -35,3 +37,18 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
+
+[node name="StatsSectionLabel" type="Label" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=678697404]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current Stats"
+label_settings = ExtResource("2_rhqk7")
+horizontal_alignment = 1
+
+[node name="StatsGrid" type="GridContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1758887623]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 8
+columns = 3

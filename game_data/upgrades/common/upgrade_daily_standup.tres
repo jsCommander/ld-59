@@ -9,4 +9,4 @@ display_name = "Daily Standup"
 description = "\"Yesterday I did stuff. Today I'll do stuff. No blockers.\""
 rarity = 0
 trade_off_type = 0
-global_damage = 0.07
+global_damage = 0.1

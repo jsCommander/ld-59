@@ -9,4 +9,4 @@ display_name = "Mentorship"
 description = "Teaching juniors by saying \"just Google it\" less"
 rarity = 1
 trade_off_type = 0
-global_damage = 0.13
+global_damage = 0.20

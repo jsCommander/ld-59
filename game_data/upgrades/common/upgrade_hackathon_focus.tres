@@ -9,5 +9,5 @@ display_name = "Hackathon Focus"
 description = "48 hours of features, 48 days of tech debt"
 rarity = 0
 trade_off_type = 1
-feature_damage = 0.05
-bug_damage = -0.15
+feature_damage = 0.26
+bug_damage = -0.10

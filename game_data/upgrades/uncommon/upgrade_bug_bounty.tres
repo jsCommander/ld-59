@@ -9,5 +9,5 @@ display_name = "Bug Bounty"
 description = "$50 per bug. Devs start writing bugs on purpose."
 rarity = 1
 trade_off_type = 1
-bug_damage = 0.25
-feature_damage = -0.1
+bug_damage = 0.45
+feature_damage = -0.18

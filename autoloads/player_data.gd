@@ -20,6 +20,7 @@ var hired_data: Array[DeveloperData] = []
 
 var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
+var total_stats: Dictionary = {}
 
 var _tick_timer: Timer
 
@@ -34,7 +35,7 @@ func get_level_up_upgrades() -> Array[UpgradeData]:
 	var result: Array[UpgradeData] = []
 	var used_ids: Array[String] = []
 	for i: int in count:
-		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level, upgrades_taken)
+		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level, total_stats)
 		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
 		if pick:
 			result.append(pick)
@@ -76,6 +77,7 @@ func reset() -> void:
 	hired_data.clear()
 	upgrades_taken.clear()
 	global_upgrades.clear()
+	total_stats.clear()
 	_tick_timer.stop()
 
 
@@ -173,7 +175,7 @@ func _generate_sprint() -> void:
 	sprint_number += 1
 	sprint_time = 0.0
 	var task_level: int = level
-	var weights: Dictionary = Balance.calculate_task_type_weights(upgrades_taken)
+	var weights: Dictionary = Balance.calculate_task_type_weights(total_stats)
 	var feature_count: int = roundi(Constants.SPRINT_SIZE * (weights[Constants.TaskType.FEATURE] as float))
 	var bug_count: int = Constants.SPRINT_SIZE - feature_count
 	sprint_slots.clear()
@@ -213,7 +215,18 @@ func _get_available_tasks() -> Array[TaskData]:
 
 func _apply_upgrade(upgrade: UpgradeData) -> void:
 	global_upgrades.append(upgrade)
+	_recalculate_total_stats()
 	Log.log_info(name, "Applied upgrade: %s (%s)" % [upgrade.id, upgrade.display_name])
+
+
+func _recalculate_total_stats() -> void:
+	total_stats.clear()
+	for field: String in Constants.STAT_DISPLAY_NAMES:
+		var total: float = 0.0
+		for upgrade: UpgradeData in global_upgrades:
+			total += upgrade.get(field) as float
+		if not is_zero_approx(total):
+			total_stats[field] = total
 
 
 # --- Level-up ---
@@ -233,7 +246,7 @@ func _check_level_up() -> void:
 
 func _apply_task_rewards(task: TaskData) -> void:
 	var base_reward: int = int(task.max_hp)
-	var reward_mult: float = Balance.calculate_reward_multiplier(upgrades_taken)
+	var reward_mult: float = Balance.calculate_reward_multiplier(total_stats)
 	var reward: int = int(base_reward * reward_mult)
 	if reward > 0:
 		valuation += reward

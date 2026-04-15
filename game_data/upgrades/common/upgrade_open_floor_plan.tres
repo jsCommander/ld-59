@@ -9,5 +9,5 @@ display_name = "Open Floor Plan"
 description = "\"Collaboration!\" screams the CEO from his private office"
 rarity = 0
 trade_off_type = 0
-boost_power = 0.07
-boost_duration = 0.04
+boost_power = 0.13
+boost_duration = 0.07

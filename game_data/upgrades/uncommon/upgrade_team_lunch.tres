@@ -9,4 +9,4 @@ display_name = "Team Lunch"
 description = "Sushi on the company card. Morale through the roof."
 rarity = 1
 trade_off_type = 0
-global_damage = 0.13
+global_damage = 0.20

@@ -9,5 +9,5 @@ display_name = "Series A Funding"
 description = "$10M to find product-market fit. Again."
 rarity = 3
 trade_off_type = 0
-global_damage = 0.2
-reward_bonus = 0.3
+global_damage = 0.24
+reward_bonus = 0.37

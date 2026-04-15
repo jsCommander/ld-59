@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bke0de834q2e6"]
 
 [ext_resource type="Script" uid="uid://djl57ijnn2j4k" path="res://components/ui/ui_hire_choice/ui_hire_choice.gd" id="1_script"]
+[ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_2r7p3"]
 
 [node name="UiHireChoice" type="CenterContainer" unique_id=1965586528]
 anchors_preset = 15
@@ -28,6 +29,7 @@ layout_mode = 2
 theme_type_variation = &"LabelLarge"
 theme_override_font_sizes/font_size = 32
 text = "Hire new developer"
+label_settings = ExtResource("2_2r7p3")
 horizontal_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1737465524]

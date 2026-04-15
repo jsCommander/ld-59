@@ -9,5 +9,5 @@ display_name = "Overtime Policy"
 description = "Mandatory fun hours. Fun not included."
 rarity = 1
 trade_off_type = 1
-global_damage = 0.17
-reward_bonus = -0.15
+global_damage = 0.23
+reward_bonus = -0.14

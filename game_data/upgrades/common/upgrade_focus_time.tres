@@ -9,4 +9,4 @@ display_name = "Focus Time"
 description = "Calendar blocked. Slack on DND. Finally coding."
 rarity = 0
 trade_off_type = 0
-boost_duration = 0.12
+boost_duration = 0.2

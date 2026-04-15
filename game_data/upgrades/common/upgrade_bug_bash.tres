@@ -9,4 +9,4 @@ display_name = "Bug Bash"
 description = "Pizza-fueled bug hunting Friday. Mostly pizza."
 rarity = 0
 trade_off_type = 0
-bug_damage = 0.1
+bug_damage = 0.2

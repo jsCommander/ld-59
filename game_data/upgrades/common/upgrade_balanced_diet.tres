@@ -9,5 +9,5 @@ display_name = "Balanced Diet"
 description = "Equal parts features and bug fixes. Like a food pyramid."
 rarity = 0
 trade_off_type = 0
-feature_damage = 0.05
-bug_damage = 0.05
+feature_damage = 0.1
+bug_damage = 0.1

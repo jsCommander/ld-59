@@ -9,4 +9,4 @@ display_name = "Coffee Machine"
 description = "The real MVP of every sprint"
 rarity = 0
 trade_off_type = 0
-auto_click_speed = 0.08
+auto_click_speed = 0.12

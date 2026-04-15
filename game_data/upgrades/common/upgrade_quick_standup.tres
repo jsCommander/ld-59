@@ -9,4 +9,4 @@ display_name = "Quick Standup"
 description = "15 minutes max. Haha, just kidding."
 rarity = 0
 trade_off_type = 0
-boost_duration = 0.12
+boost_duration = 0.2

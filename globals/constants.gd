@@ -63,14 +63,14 @@ const UPGRADE_CHOICES: int = 5
 const TRADE_OFF_RETURN_RATE: float = 0.3
 
 const STAT_COSTS: Dictionary = {
-	UpgradeStat.GLOBAL_DAMAGE: 1.5,
-	UpgradeStat.FEATURE_DAMAGE: 1.0,
-	UpgradeStat.BUG_DAMAGE: 1.0,
+	UpgradeStat.GLOBAL_DAMAGE: 1.0,
+	UpgradeStat.FEATURE_DAMAGE: 0.5,
+	UpgradeStat.BUG_DAMAGE: 0.5,
 	UpgradeStat.FEATURE_CHANCE: 0.5,
 	UpgradeStat.BUG_CHANCE: 0.5,
-	UpgradeStat.BOOST_POWER: 1.0,
-	UpgradeStat.BOOST_DURATION: 0.8,
-	UpgradeStat.AUTO_CLICK_SPEED: 1.2,
+	UpgradeStat.BOOST_POWER: 0.5,
+	UpgradeStat.BOOST_DURATION: 0.5,
+	UpgradeStat.AUTO_CLICK_SPEED: 0.8,
 	UpgradeStat.REWARD_BONUS: 0.7,
 	UpgradeStat.RARITY_LUCK: 1.0,
 }
@@ -96,6 +96,13 @@ const STAT_FIELDS: Dictionary = {
 }
 
 const BUDGET_TOLERANCE: float = 0.15
+
+const NEGATIVE_BUDGET_LIMITS: Dictionary = {
+	UpgradeRarity.COMMON: 5,
+	UpgradeRarity.UNCOMMON: 10,
+	UpgradeRarity.EPIC: 15,
+	UpgradeRarity.LEGENDARY: 20,
+}
 
 # --- Stat Keys ---
 
@@ -175,51 +182,6 @@ const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
 	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
 	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
 ]
-
-# --- Task HP (by player level) ---
-
-const TASK_HP_BY_LEVEL: Dictionary[int, int] = {
-	1: BASE_HP * 1, # 100
-	2: BASE_HP * 2, # 200
-	3: BASE_HP * 3, # 300
-	4: BASE_HP * 4, # 400
-	5: BASE_HP * 5, # 500
-	6: BASE_HP * 8, # 800
-	7: BASE_HP * 11, # 1100
-	8: BASE_HP * 16, # 1600
-	9: BASE_HP * 24, # 2400
-	10: BASE_HP * 35, # 3500
-	11: BASE_HP * 50, # 5000
-	12: BASE_HP * 75, # 7500
-	13: BASE_HP * 110, # 11000
-	14: BASE_HP * 160, # 16000
-	15: BASE_HP * 240, # 24000
-	16: BASE_HP * 350, # 35000
-	17: BASE_HP * 500, # 50000
-	18: BASE_HP * 750, # 75000
-	19: BASE_HP * 1100, # 110000
-	20: BASE_HP * 1600, # 160000
-	21: BASE_HP * 2400, # 240000
-	22: BASE_HP * 3500, # 350000
-	23: BASE_HP * 5000, # 500000
-	24: BASE_HP * 7500, # 750000
-	25: BASE_HP * 11000, # 1100000
-	26: BASE_HP * 16000, # 1600000
-	27: BASE_HP * 24000, # 2400000
-	28: BASE_HP * 35000, # 3500000
-	29: BASE_HP * 50000, # 5000000
-	30: BASE_HP * 75000, # 7500000
-	31: BASE_HP * 110000, # 11000000
-	32: BASE_HP * 160000, # 16000000
-	33: BASE_HP * 240000, # 24000000
-	34: BASE_HP * 350000, # 35000000
-	35: BASE_HP * 500000, # 50000000
-	36: BASE_HP * 750000, # 75000000
-	37: BASE_HP * 1100000, # 110000000
-	38: BASE_HP * 1600000, # 160000000
-	39: BASE_HP * 2400000, # 240000000
-	40: BASE_HP * 3500000, # 350000000
-}
 
 
 # --- UI ---

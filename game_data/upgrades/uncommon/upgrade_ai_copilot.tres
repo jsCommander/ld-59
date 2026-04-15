@@ -9,4 +9,4 @@ display_name = "AI Copilot"
 description = "It wrote the code. Nobody understands it. It works."
 rarity = 1
 trade_off_type = 0
-boost_power = 0.20
+boost_power = 0.40

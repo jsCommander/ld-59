@@ -9,5 +9,5 @@ display_name = "Debugging Mastery"
 description = "Can read stack traces like poetry. Sad poetry."
 rarity = 1
 trade_off_type = 1
-global_damage = 0.15
-reward_bonus = -0.1
+global_damage = 0.23
+reward_bonus = -0.14

@@ -9,5 +9,5 @@ display_name = "Work-Life Balance"
 description = "Leaves at 5pm. Revolutionary."
 rarity = 1
 trade_off_type = 0
-boost_duration = 0.15
-boost_power = 0.08
+boost_duration = 0.26
+boost_power = 0.14

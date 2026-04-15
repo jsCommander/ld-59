@@ -9,4 +9,4 @@ display_name = "Shoulder Tap"
 description = "\"Hey, got a sec?\" They never have just a sec."
 rarity = 0
 trade_off_type = 0
-boost_power = 0.1
+boost_power = 0.2

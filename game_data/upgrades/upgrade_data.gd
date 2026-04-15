@@ -42,7 +42,23 @@ func validate_budget() -> String:
 	var target: float = Constants.RARITY_BUDGETS[rarity] as float
 	if is_zero_approx(target):
 		return ""
+	var warnings: Array[String] = []
 	var diff: float = absf(budget - target) / target
 	if diff > Constants.BUDGET_TOLERANCE:
-		return "%s: budget %.1f, target %d (%.0f%% off)" % [id, budget, int(target), diff * 100]
-	return ""
+		warnings.append("%s: budget %.1f, target %d (%.0f%% off)" % [id, budget, int(target), diff * 100])
+	var neg_total: float = _calculate_negative_budget()
+	var neg_limit: float = Constants.NEGATIVE_BUDGET_LIMITS[rarity] as float
+	if neg_total > neg_limit:
+		warnings.append("%s: negative budget %.1f exceeds limit %d" % [id, neg_total, int(neg_limit)])
+	return "\n".join(warnings)
+
+
+func _calculate_negative_budget() -> float:
+	var total: float = 0.0
+	for stat: Constants.UpgradeStat in Constants.STAT_FIELDS:
+		var field: String = Constants.STAT_FIELDS[stat]
+		var value: float = get(field) as float
+		if value < 0.0:
+			var cost: float = Constants.STAT_COSTS[stat] as float
+			total += absf(value) * 100.0 * cost
+	return total

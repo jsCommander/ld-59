@@ -9,5 +9,5 @@ display_name = "Crunch Time"
 description = "Burn bright, burn fast, burn out"
 rarity = 0
 trade_off_type = 1
-boost_power = 0.05
-boost_duration = -0.15
+boost_power = 0.25
+boost_duration = -0.10

@@ -7,10 +7,7 @@ const COMMENT_INTERVAL: float = 5.0
 const SLOW_SPRINT_THRESHOLD: float = 30.0
 
 const MILESTONE_COMMENTS: Array[String] = [
-	"Bigger than %s!",
-	"We just passed %s!",
-	"Take that, %s!",
-	"%s is in our rearview mirror!",
+	"We bigger than %s!",
 ]
 
 const SLOW_SPRINT_COMMENTS: Array[String] = [

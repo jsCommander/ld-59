@@ -123,7 +123,7 @@ func _process_auto_boost_decay(delta: float) -> void:
 	if _auto_boost_stacks <= 0:
 		return
 	_auto_boost_decay_timer += delta
-	var decay_interval: float = Balance.calculate_boost_decay_interval(PD.global_upgrades)
+	var decay_interval: float = Balance.calculate_boost_decay_interval(PD.total_stats)
 	if _auto_boost_decay_timer >= decay_interval:
 		_auto_boost_decay_timer -= decay_interval
 		_auto_boost_stacks -= 1
@@ -145,7 +145,7 @@ func _process_player_boost_decay(delta: float) -> void:
 
 
 func _process_auto_click(delta: float) -> void:
-	var interval: float = Balance.calculate_auto_click_interval(PD.global_upgrades)
+	var interval: float = Balance.calculate_auto_click_interval(PD.total_stats)
 	if interval <= 0.0:
 		return
 	_auto_click_timer += delta
@@ -171,7 +171,7 @@ func _change_state(new_state: State) -> void:
 
 
 func _perform_attack() -> void:
-	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.global_upgrades)
+	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.total_stats)
 	_current_task.current_hp -= damage
 	task_display.update_hp()
 	task_display.flash()
@@ -186,7 +186,7 @@ func _get_attack_speed() -> float:
 
 
 func _apply_auto_boost() -> void:
-	var stacks: int = Balance.calculate_boost_stacks(PD.global_upgrades)
+	var stacks: int = Balance.calculate_boost_stacks(PD.total_stats)
 	_auto_boost_stacks = mini(_auto_boost_stacks + stacks, Constants.MAX_AUTO_BOOST)
 	_update_boost_visuals()
 

@@ -9,5 +9,5 @@ display_name = "Feature Factory"
 description = "Ship features, ignore bugs. The PM way."
 rarity = 1
 trade_off_type = 1
-feature_damage = 0.25
-bug_damage = -0.1
+feature_damage = 0.45
+bug_damage = -0.18

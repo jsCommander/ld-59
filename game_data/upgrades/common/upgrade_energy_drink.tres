@@ -9,4 +9,4 @@ display_name = "Energy Drink"
 description = "Third can before noon. Code goes brrr."
 rarity = 0
 trade_off_type = 0
-boost_power = 0.10
+boost_power = 0.2

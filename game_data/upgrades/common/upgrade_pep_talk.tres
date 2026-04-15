@@ -9,4 +9,4 @@ display_name = "Pep Talk"
 description = "\"You're doing great, team!\" *narrator: they weren't*"
 rarity = 0
 trade_off_type = 0
-global_damage = 0.07
+global_damage = 0.1

@@ -9,4 +9,4 @@ display_name = "Refactor Pass"
 description = "Renaming variables counts as progress, right?"
 rarity = 0
 trade_off_type = 0
-global_damage = 0.07
+global_damage = 0.1

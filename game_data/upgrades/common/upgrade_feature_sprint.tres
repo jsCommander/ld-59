@@ -9,4 +9,4 @@ display_name = "Feature Sprint"
 description = "Two weeks to build what sales promised in two days"
 rarity = 0
 trade_off_type = 0
-feature_damage = 0.1
+feature_damage = 0.2
