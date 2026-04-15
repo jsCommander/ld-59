@@ -20,7 +20,7 @@ func _build_cards() -> void:
 	for child: Node in card_container.get_children():
 		child.queue_free()
 	for dev_data: DeveloperData in DR.developers.values():
-		var card: HireCard = HIRE_CARD.instantiate()
+		var card: Control = HIRE_CARD.instantiate()
 		card.setup(dev_data)
 		card.chosen.connect(_on_dev_chosen)
 		card_container.add_child(card)

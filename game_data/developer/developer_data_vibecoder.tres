@@ -8,10 +8,10 @@
 script = ExtResource("1_script")
 dev_type = 0
 head_texture = ExtResource("1_2od2g")
+description = "Fast at features, bad with bugs"
 task_mults = {
-0: 1.6,
-1: 0.4,
-2: 0.4
+0: 2.0,
+1: 0.5
 }
 base_attack_speed = 2.0
 task_select = ExtResource("3_task_select")

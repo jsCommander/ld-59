@@ -72,6 +72,13 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg01"]
+bg_color = Color(1, 0.870588, 0.631373, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j26u"]
 bg_color = Color(0.874152, 0.876338, 0.849289, 1)
 corner_radius_top_left = 8
@@ -118,7 +125,7 @@ ButtonLarge/font_sizes/font_size = 48
 HBoxContainer/constants/separation = 8
 Label/colors/font_color = Color(0.47058824, 0.3019608, 0.19607843, 1)
 LabelLarge/base_type = &"Label"
-LabelLarge/font_sizes/font_size = 48
+LabelLarge/font_sizes/font_size = 128
 LabelOnProgressBar/base_type = &"Label"
 LabelOnProgressBar/colors/font_color = Color(1, 1, 1, 1)
 LabelOnProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
@@ -137,6 +144,8 @@ PanelContainerAccent/base_type = &"PanelContainer"
 PanelContainerAccent/styles/panel = SubResource("StyleBoxFlat_26cd0")
 PanelContainerAccentHover/base_type = &"PanelContainer"
 PanelContainerAccentHover/styles/panel = SubResource("StyleBoxFlat_rnlon")
+PanelContainerBackground/base_type = &"PanelContainer"
+PanelContainerBackground/styles/panel = SubResource("StyleBoxFlat_bg01")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_2j26u")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_sf4qg")
 ProgressBarHealth/base_type = &"ProgressBar"

@@ -2,7 +2,6 @@ class_name PlayerData extends Node
 
 const TASK_DATA_FEATURE: TaskData = preload("res://game_data/task/task_data_feature.tres")
 const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres")
-const TASK_DATA_REFACTOR: TaskData = preload("res://game_data/task/task_data_refactor.tres")
 
 # --- State ---
 
@@ -321,6 +320,4 @@ func _pick_weighted_task(weights: Dictionary) -> TaskData:
 					return TASK_DATA_FEATURE
 				Constants.TaskType.BUG:
 					return TASK_DATA_BUG
-				Constants.TaskType.REFACTOR:
-					return TASK_DATA_REFACTOR
 	return TASK_DATA_FEATURE

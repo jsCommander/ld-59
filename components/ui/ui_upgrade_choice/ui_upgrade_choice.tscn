@@ -1,35 +1,32 @@
-[gd_scene format=3 uid="uid://r6ibM9hBcanxW"]
+[gd_scene format=3 uid="uid://bbeg72o2c6442"]
 
-[ext_resource type="Script" path="res://components/ui/ui_upgrade_choice/ui_upgrade_choice.gd" id="1_script"]
-
-[node name="UiUpgradeChoice" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_script")
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 1
+[node name="CenterContainer" type="CenterContainer" unique_id=1163224932]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="UiHireChoice" type="PanelContainer" parent="." unique_id=450250193]
+custom_minimum_size = Vector2(512, 256)
+layout_mode = 2
+theme_type_variation = &"PanelContainerBackground"
+
+[node name="MarginContainer" type="MarginContainer" parent="UiHireChoice" unique_id=1999141006]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UiHireChoice/MarginContainer" unique_id=1666779]
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="TitleLabel" type="Label" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=2143083545]
 layout_mode = 2
+theme_type_variation = &"LabelLarge"
 theme_override_font_sizes/font_size = 32
+text = "Choose upgrade"
 horizontal_alignment = 1
 
-[node name="CardContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="CardContainer" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1318206242]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 16

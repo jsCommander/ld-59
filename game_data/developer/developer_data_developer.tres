@@ -7,11 +7,11 @@
 [resource]
 script = ExtResource("1_script")
 head_texture = ExtResource("1_pvxg2")
+description = "Jack of all trades"
 task_mults = {
 0: 1.0,
-1: 1.0,
-2: 1.0
+1: 1.0
 }
 base_attack_speed = 2.0
 task_select = ExtResource("3_task_select")
-id = "developer_regular"
+id = "developer_developer"

@@ -2,8 +2,8 @@ class_name Constants extends Resource
 
 const BUILTIN_SIGNALS: Array[String] = BaseConstants.BUILTIN_SIGNALS
 
-enum DevType {VIBECODER, REGULAR, SENIOR}
-enum TaskType {FEATURE, BUG, REFACTOR}
+enum DevType {VIBECODER, DEVELOPER, SENIOR}
+enum TaskType {FEATURE, BUG}
 enum Music {FR, FR3, SG, SPB}
 enum Sfx {PICKUP, HIT_HURT, EXPLOSION, CLICK}
 enum UpgradeType {GLOBAL, DEV}
@@ -14,6 +14,7 @@ const BASE_HP: int = 100
 const BASE_DAMAGE: int = int(BASE_HP * 0.4)
 const XP_BASE: int = 100
 const SPEED_CAP: float = 0.1
+const MAX_DEV_STAT_MULTIPLIER: float = 2.0
 
 const BASE_TOTAL_GAME_TIME: float = 600.0
 const HIRE_LEVELS: Array[int] = [0, 3, 6, 10, 14, 18, 23, 28, 34]
@@ -57,7 +58,7 @@ const TASK_HP_BY_LEVEL: Dictionary[int, int] = {
 
 # game_level threshold -> task type weights (threshold-based: use max key ≤ current level)
 const TASK_TYPE_WEIGHTS: Dictionary[int, Dictionary] = {
-	1: {TaskType.FEATURE: 0.34, TaskType.BUG: 0.33, TaskType.REFACTOR: 0.33},
+	1: {TaskType.FEATURE: 0.5, TaskType.BUG: 0.5},
 }
 
 # Placeholder values — tune during playtesting
