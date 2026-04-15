@@ -12,6 +12,7 @@ script = ExtResource("1_maq6b")
 anchor_mode = 0
 
 [node name="BackgroundOffice" parent="." unique_id=906555021 instance=ExtResource("1_wevqg")]
+z_index = -10
 
 [node name="Desks" type="Node2D" parent="." unique_id=329046567]
 
