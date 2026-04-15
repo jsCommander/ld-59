@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "series_a_funding"
+display_name = "Series A Funding"
+description = "$10M to find product-market fit. Again."
+rarity = 3
+trade_off_type = 0
+global_damage = 0.2
+reward_bonus = 0.3

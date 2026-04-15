@@ -4,27 +4,32 @@ extends Control
 # --- Constants ---
 
 const COMMENT_INTERVAL: float = 5.0
+const SLOW_SPRINT_THRESHOLD: float = 30.0
 
-const GOOD_COMMENTS: Array[String] = [
-	"Stonks 📈",
-	"To the moon!",
-	"Amazing velocity!",
-	"Ship it!",
-	"We're crushing it!",
-	"Investors will love this!",
-	"10x engineers!",
-	"This is the way",
+const MILESTONE_COMMENTS: Array[String] = [
+	"Bigger than %s!",
+	"We just passed %s!",
+	"Take that, %s!",
+	"%s is in our rearview mirror!",
 ]
 
-const BAD_COMMENTS: Array[String] = [
-	"Have you tried working harder?",
-	"Let's circle back on this",
-	"We need to pivot",
-	"Per my last email...",
-	"Let's take this offline",
+const SLOW_SPRINT_COMMENTS: Array[String] = [
+	"This sprint is taking forever...",
 	"Can we 2x the velocity?",
-	"Why isn't this done yet?",
-	"I'll put it on the agenda",
+	"Why isn't this sprint done yet?",
+	"Have you tried working harder?",
+	"Let's circle back on this sprint",
+	"We need to ship faster!",
+	"Investors are watching...",
+	"Per my last email... ship it",
+]
+
+const VALUATION_COMMENTS: Array[String] = [
+	"Stonks 📈",
+	"To the moon!",
+	"Investors will love this!",
+	"We're crushing it!",
+	"This is the way",
 ]
 
 # --- @onready ---
@@ -48,7 +53,7 @@ func _process(delta: float) -> void:
 	_comment_timer += delta
 	if _comment_timer >= COMMENT_INTERVAL:
 		_comment_timer -= COMMENT_INTERVAL
-		_show_random_comment()
+		_show_periodic_comment()
 
 # --- Handlers ---
 
@@ -59,15 +64,18 @@ func _on_valuation_changed() -> void:
 			current_company = milestone["name"]
 	if current_company and current_company != _last_milestone:
 		_last_milestone = current_company
-		_show_comment("Bigger than %s!" % current_company)
+		var template: String = MILESTONE_COMMENTS[randi() % MILESTONE_COMMENTS.size()]
+		_show_comment(template % current_company)
 
 # --- Private ---
 
-func _show_random_comment() -> void:
+func _show_periodic_comment() -> void:
 	if not PD._game_active:
 		return
-	var comments: Array[String] = GOOD_COMMENTS + BAD_COMMENTS
-	_show_comment(comments[randi() % comments.size()])
+	if PD.sprint_time >= SLOW_SPRINT_THRESHOLD:
+		_show_comment(SLOW_SPRINT_COMMENTS[randi() % SLOW_SPRINT_COMMENTS.size()])
+	else:
+		_show_comment(VALUATION_COMMENTS[randi() % VALUATION_COMMENTS.size()])
 
 
 func _show_comment(text: String) -> void:

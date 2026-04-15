@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "feature_sprint"
+display_name = "Feature Sprint"
+description = "Two weeks to build what sales promised in two days"
+rarity = 0
+trade_off_type = 0
+feature_damage = 0.1

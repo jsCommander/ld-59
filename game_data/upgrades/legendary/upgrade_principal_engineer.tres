@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "principal_engineer"
+display_name = "Principal Engineer"
+description = "Says \"it depends\" to every question. Always right."
+rarity = 3
+trade_off_type = 1
+global_damage = 0.25
+bug_damage = 0.2
+feature_damage = -0.3

@@ -7,12 +7,12 @@ const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres
 
 var valuation: int = 0
 var level: int = 0
-var game_level: int = 1
 var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
 var _awaiting_choice: bool = false
 
 var sprint_number: int = 0
+var sprint_time: float = 0.0
 var sprint_slots: Array = []
 
 var developers: Array[Developer] = []
@@ -20,33 +20,35 @@ var hired_data: Array[DeveloperData] = []
 
 var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
-var dev_upgrades: Dictionary = {}
-var _empty_upgrades: Array[UpgradeData] = []
 
 var _tick_timer: Timer
 
 # --- Public ---
-
-func get_dev_upgrades(dev_type: Constants.DevType) -> Array[UpgradeData]:
-	if dev_type in dev_upgrades:
-		return dev_upgrades[dev_type] as Array[UpgradeData]
-	return _empty_upgrades
-
 
 func get_xp_for_level(lvl: int) -> int:
 	return Balance.get_xp_for_level(lvl)
 
 
 func get_level_up_upgrades() -> Array[UpgradeData]:
-	var count: int = Balance.calculate_upgrade_choices(upgrades_taken)
+	var count: int = Constants.UPGRADE_CHOICES
 	var result: Array[UpgradeData] = []
 	var used_ids: Array[String] = []
 	for i: int in count:
-		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level)
+		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level, upgrades_taken)
 		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
 		if pick:
 			result.append(pick)
 			used_ids.append(pick.id)
+	# Guarantee at least one boost upgrade
+	var has_boost: bool = false
+	for upgrade: UpgradeData in result:
+		if _is_boost_upgrade(upgrade):
+			has_boost = true
+			break
+	if not has_boost:
+		var boost_pick: UpgradeData = _pick_boost_upgrade(used_ids)
+		if boost_pick and not result.is_empty():
+			result[randi() % result.size()] = boost_pick
 	return result
 
 
@@ -64,8 +66,8 @@ func start_game() -> void:
 func reset() -> void:
 	valuation = 0
 	level = 0
-	game_level = 1
 	sprint_number = 0
+	sprint_time = 0.0
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
 	_awaiting_choice = false
@@ -74,7 +76,6 @@ func reset() -> void:
 	hired_data.clear()
 	upgrades_taken.clear()
 	global_upgrades.clear()
-	dev_upgrades.clear()
 	_tick_timer.stop()
 
 
@@ -109,17 +110,6 @@ func _ready() -> void:
 	_tick_timer = _create_tick_timer()
 
 
-func _process(delta: float) -> void:
-	if not _game_active or _awaiting_choice:
-		return
-
-	timer_remaining -= delta
-	if timer_remaining <= 0.0:
-		timer_remaining = 0.0
-		_game_active = false
-		_tick_timer.stop()
-		SB.game_over.emit(valuation)
-		return
 
 # --- Handlers ---
 
@@ -138,8 +128,16 @@ func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
 
 
 func _on_tick() -> void:
-	var elapsed: float = Constants.BASE_TOTAL_GAME_TIME - timer_remaining
-	game_level = Balance.get_game_level(elapsed)
+	if not _game_active or _awaiting_choice:
+		return
+	timer_remaining -= 1.0
+	sprint_time += 1.0
+	if timer_remaining <= 0.0:
+		timer_remaining = 0.0
+		_game_active = false
+		_tick_timer.stop()
+		SB.game_over.emit(valuation)
+		return
 	SB.game_timer_changed.emit(timer_remaining)
 
 
@@ -173,17 +171,17 @@ func _create_tick_timer() -> Timer:
 
 func _generate_sprint() -> void:
 	sprint_number += 1
-	var task_level: int = game_level
+	sprint_time = 0.0
+	var task_level: int = level
 	var weights: Dictionary = Balance.calculate_task_type_weights(upgrades_taken)
+	var feature_count: int = roundi(Constants.SPRINT_SIZE * (weights[Constants.TaskType.FEATURE] as float))
+	var bug_count: int = Constants.SPRINT_SIZE - feature_count
 	sprint_slots.clear()
-	for i: int in Constants.SPRINT_SIZE:
-		var template: TaskData = _pick_weighted_task(weights)
-		var task: TaskData = template.duplicate()
-		task.level = task_level
-		var hp: float = Balance.get_task_hp(task_level)
-		task.current_hp = hp
-		task.max_hp = hp
-		sprint_slots.append(task)
+	for i: int in feature_count:
+		_add_sprint_task(TASK_DATA_FEATURE, task_level)
+	for i: int in bug_count:
+		_add_sprint_task(TASK_DATA_BUG, task_level)
+	sprint_slots.shuffle()
 	SB.task_queue_changed.emit(sprint_slots)
 	SB.sprint_number_changed.emit(sprint_number)
 	Log.log_info(name, "Sprint %d: %d tasks at level %d" % [sprint_number, sprint_slots.size(), task_level])
@@ -214,13 +212,7 @@ func _get_available_tasks() -> Array[TaskData]:
 # --- Upgrade application ---
 
 func _apply_upgrade(upgrade: UpgradeData) -> void:
-	if upgrade.upgrade_type == Constants.UpgradeType.GLOBAL:
-		global_upgrades.append(upgrade)
-	elif upgrade.upgrade_type == Constants.UpgradeType.DEV:
-		if upgrade.target_dev_type not in dev_upgrades:
-			var arr: Array[UpgradeData] = []
-			dev_upgrades[upgrade.target_dev_type] = arr
-		dev_upgrades[upgrade.target_dev_type].append(upgrade)
+	global_upgrades.append(upgrade)
 	Log.log_info(name, "Applied upgrade: %s (%s)" % [upgrade.id, upgrade.display_name])
 
 
@@ -259,24 +251,12 @@ func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
 
 
 func _is_upgrade_available(upgrade: UpgradeData) -> bool:
-	if _is_taken(upgrade.id):
-		return false
-	if upgrade.upgrade_type == Constants.UpgradeType.DEV:
-		if not _has_hired_dev_type(upgrade.target_dev_type):
-			return false
-	return true
+	return not _is_taken(upgrade.id)
 
 
 func _is_taken(upgrade_id: String) -> bool:
 	for taken: UpgradeData in upgrades_taken:
 		if taken.id == upgrade_id:
-			return true
-	return false
-
-
-func _has_hired_dev_type(dev_type: Constants.DevType) -> bool:
-	for data: DeveloperData in hired_data:
-		if data.dev_type == dev_type:
 			return true
 	return false
 
@@ -301,15 +281,26 @@ func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids
 	return _pick_random_from(pool)
 
 
-func _pick_weighted_task(weights: Dictionary) -> TaskData:
-	var roll: float = randf()
-	var cumulative: float = 0.0
-	for task_type: Constants.TaskType in weights:
-		cumulative += weights[task_type] as float
-		if roll <= cumulative:
-			match task_type:
-				Constants.TaskType.FEATURE:
-					return TASK_DATA_FEATURE
-				Constants.TaskType.BUG:
-					return TASK_DATA_BUG
-	return TASK_DATA_FEATURE
+func _is_boost_upgrade(upgrade: UpgradeData) -> bool:
+	return not is_zero_approx(upgrade.boost_power) or not is_zero_approx(upgrade.boost_duration) or not is_zero_approx(upgrade.auto_click_speed)
+
+
+func _pick_boost_upgrade(exclude_ids: Array[String]) -> UpgradeData:
+	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if not _is_upgrade_available(upgrade):
+			continue
+		if upgrade.id in exclude_ids:
+			continue
+		if _is_boost_upgrade(upgrade):
+			pool.append(upgrade)
+	return _pick_random_from(pool)
+
+
+func _add_sprint_task(template: TaskData, task_level: int) -> void:
+	var task: TaskData = template.duplicate()
+	task.level = task_level
+	var hp: float = Balance.get_task_hp(task_level)
+	task.current_hp = hp
+	task.max_hp = hp
+	sprint_slots.append(task)

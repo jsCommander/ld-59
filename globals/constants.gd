@@ -2,11 +2,12 @@ class_name Constants extends Resource
 
 const BUILTIN_SIGNALS: Array[String] = BaseConstants.BUILTIN_SIGNALS
 
+# --- Enums ---
+
 enum DevType {VIBECODER, DEVELOPER, SENIOR}
 enum TaskType {FEATURE, BUG}
 enum Music {FR, FR3, SG, SPB}
 enum Sfx {PICKUP, HIT_HURT, EXPLOSION, CLICK}
-enum UpgradeType {GLOBAL, DEV}
 enum UpgradeStat {
 	GLOBAL_DAMAGE,
 	FEATURE_DAMAGE,
@@ -17,28 +18,49 @@ enum UpgradeStat {
 	BOOST_DURATION,
 	AUTO_CLICK_SPEED,
 	REWARD_BONUS,
-	UPGRADE_CHOICES,
+	RARITY_LUCK,
 }
 enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
 enum TradeOffType {PURE, TRADE_OFF}
 
+# --- Combat ---
+
 const BASE_HP: int = 100
 const BASE_DAMAGE: int = int(BASE_HP * 0.4)
-const XP_BASE: int = 100
+const BASE_ATTACK_SPEED: float = 2.0
 const SPEED_CAP: float = 0.1
-const MAX_DEV_STAT_MULTIPLIER: float = 2.0
 
+# --- Auto Boost ---
+
+const MAX_AUTO_BOOST: int = 10
+const BOOST_DECAY_RATE: float = 1.0
+const BOOST_SPEED_MULT: float = 0.5
+const AUTO_CLICK_BASE_INTERVAL: float = 2.0
+
+# --- Player Boost ---
+
+const PLAYER_BOOST_MAX: int = 10
+const PLAYER_BOOST_POWER: float = 3.0
+const PLAYER_BOOST_DECAY_INTERVAL: float = 2.0
+
+# --- Progression ---
+
+const XP_BASE: int = 100
+const SPRINT_SIZE: int = 10
+const MAX_LEVEL: int = 40
+const MAX_DEV_STAT_MULTIPLIER: float = 2.0
 const BASE_TOTAL_GAME_TIME: float = 600.0
 const HIRE_LEVELS: Array[int] = [0, 3, 6, 10, 14, 18, 23, 28, 34]
 
-const SPRINT_SIZE: int = 10
-const MAX_LEVEL: int = 40
+# --- Tasks ---
 
-const BASE_ATTACK_SPEED: float = 2.0
-const MAX_BOOST: int = 5
-const BOOST_DECAY_RATE: float = 5.0
-const BOOST_SPEED_MULT: float = 0.2
-const AUTO_CLICK_BASE_INTERVAL: float = 3.0
+const BASE_FEATURE_CHANCE: float = 50.0
+const BASE_BUG_CHANCE: float = 50.0
+
+# --- Upgrades ---
+
+const UPGRADE_CHOICES: int = 5
+const TRADE_OFF_RETURN_RATE: float = 0.3
 
 const STAT_COSTS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: 1.5,
@@ -50,7 +72,7 @@ const STAT_COSTS: Dictionary = {
 	UpgradeStat.BOOST_DURATION: 0.8,
 	UpgradeStat.AUTO_CLICK_SPEED: 1.2,
 	UpgradeStat.REWARD_BONUS: 0.7,
-	UpgradeStat.UPGRADE_CHOICES: 10.0,
+	UpgradeStat.RARITY_LUCK: 1.0,
 }
 
 const RARITY_BUDGETS: Dictionary = {
@@ -60,12 +82,22 @@ const RARITY_BUDGETS: Dictionary = {
 	UpgradeRarity.LEGENDARY: 50,
 }
 
-const TRADE_OFF_RETURN_RATE: float = 0.5
+const STAT_FIELDS: Dictionary = {
+	UpgradeStat.GLOBAL_DAMAGE: "global_damage",
+	UpgradeStat.FEATURE_DAMAGE: "feature_damage",
+	UpgradeStat.BUG_DAMAGE: "bug_damage",
+	UpgradeStat.FEATURE_CHANCE: "feature_chance",
+	UpgradeStat.BUG_CHANCE: "bug_chance",
+	UpgradeStat.BOOST_POWER: "boost_power",
+	UpgradeStat.BOOST_DURATION: "boost_duration",
+	UpgradeStat.AUTO_CLICK_SPEED: "auto_click_speed",
+	UpgradeStat.REWARD_BONUS: "reward_bonus",
+	UpgradeStat.RARITY_LUCK: "rarity_luck",
+}
 
-const BASE_FEATURE_CHANCE: float = 50.0
-const BASE_BUG_CHANCE: float = 50.0
-const BASE_UPGRADE_CHOICES: int = 3
-const MAX_UPGRADE_CHOICES: int = 5
+const BUDGET_TOLERANCE: float = 0.15
+
+# --- Stat Keys ---
 
 const STAT_GLOBAL_DAMAGE: String = "global_damage"
 const STAT_FEATURE_DAMAGE: String = "feature_damage"
@@ -76,6 +108,7 @@ const STAT_BOOST_POWER: String = "boost_power"
 const STAT_BOOST_DURATION: String = "boost_duration"
 const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
 const STAT_REWARD_BONUS: String = "reward_bonus"
+const STAT_RARITY_LUCK: String = "rarity_luck"
 
 const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_GLOBAL_DAMAGE: "Global Damage",
@@ -83,96 +116,113 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_BUG_DAMAGE: "Bug Damage",
 	STAT_FEATURE_CHANCE: "Feature Chance",
 	STAT_BUG_CHANCE: "Bug Chance",
-	STAT_BOOST_POWER: "Boost Power",
-	STAT_BOOST_DURATION: "Boost Duration",
+	STAT_BOOST_POWER: "Auto Boost Power",
+	STAT_BOOST_DURATION: "Auto Boost Duration",
 	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
 	STAT_REWARD_BONUS: "Reward Bonus",
+	STAT_RARITY_LUCK: "Rarity Luck",
 }
 
-# game level ranges -> rarity weights for rolling upgrade rarity
+# --- Rarity Rates (by player level) ---
+
 const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
-	# levels 1-10
-	{UpgradeRarity.COMMON: 0.80, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
-	# levels 11-20
-	{UpgradeRarity.COMMON: 0.40, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.05},
-	# levels 21-30
-	{UpgradeRarity.COMMON: 0.15, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.35, UpgradeRarity.LEGENDARY: 0.20},
-	# levels 31-40
-	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.30},
+	# lvl 1-5: mostly common
+	{UpgradeRarity.COMMON: 0.70, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.65, UpgradeRarity.UNCOMMON: 0.28, UpgradeRarity.EPIC: 0.07, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.60, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.55, UpgradeRarity.UNCOMMON: 0.32, UpgradeRarity.EPIC: 0.13, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.50, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.15, UpgradeRarity.LEGENDARY: 0.0},
+	# lvl 6-10: uncommon peaks, epic grows
+	{UpgradeRarity.COMMON: 0.45, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.40, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.25, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.35, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.30, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.35, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.25, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.0},
+	# lvl 11-15: epic dominant, legendaries unlock at 15
+	{UpgradeRarity.COMMON: 0.22, UpgradeRarity.UNCOMMON: 0.33, UpgradeRarity.EPIC: 0.45, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.20, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.50, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.18, UpgradeRarity.UNCOMMON: 0.27, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.15, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.05},
+	{UpgradeRarity.COMMON: 0.12, UpgradeRarity.UNCOMMON: 0.23, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.10},
+	# lvl 16-20: legendary grows
+	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.15},
+	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.18, UpgradeRarity.EPIC: 0.52, UpgradeRarity.LEGENDARY: 0.20},
+	{UpgradeRarity.COMMON: 0.08, UpgradeRarity.UNCOMMON: 0.17, UpgradeRarity.EPIC: 0.50, UpgradeRarity.LEGENDARY: 0.25},
+	{UpgradeRarity.COMMON: 0.07, UpgradeRarity.UNCOMMON: 0.15, UpgradeRarity.EPIC: 0.48, UpgradeRarity.LEGENDARY: 0.30},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.13, UpgradeRarity.EPIC: 0.47, UpgradeRarity.LEGENDARY: 0.35},
+	# lvl 21-25: legendary rises
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.12, UpgradeRarity.EPIC: 0.43, UpgradeRarity.LEGENDARY: 0.40},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.45},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.35, UpgradeRarity.LEGENDARY: 0.50},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.55},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.25, UpgradeRarity.LEGENDARY: 0.60},
+	# lvl 26-30: legendary dominant
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.08, UpgradeRarity.EPIC: 0.22, UpgradeRarity.LEGENDARY: 0.65},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.07, UpgradeRarity.EPIC: 0.18, UpgradeRarity.LEGENDARY: 0.70},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.15, UpgradeRarity.LEGENDARY: 0.75},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.12, UpgradeRarity.LEGENDARY: 0.78},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.80},
+	# lvl 31-35: mostly legendary
+	{UpgradeRarity.COMMON: 0.03, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.82},
+	{UpgradeRarity.COMMON: 0.03, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.08, UpgradeRarity.LEGENDARY: 0.84},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.07, UpgradeRarity.LEGENDARY: 0.86},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.04, UpgradeRarity.EPIC: 0.06, UpgradeRarity.LEGENDARY: 0.88},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
+	# lvl 36-40: endgame
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
+	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
 ]
 
-# elapsed time thresholds -> game_level
-const GAME_LEVEL_THRESHOLDS: Array[float] = [
-	BASE_TOTAL_GAME_TIME * 0.0, # level 1
-	BASE_TOTAL_GAME_TIME * 0.1, # level 2
-	BASE_TOTAL_GAME_TIME * 0.2, # level 3
-	BASE_TOTAL_GAME_TIME * 0.3, # level 4
-	BASE_TOTAL_GAME_TIME * 0.4, # level 5
-	BASE_TOTAL_GAME_TIME * 0.5, # level 6
-	BASE_TOTAL_GAME_TIME * 0.6, # level 7
-	BASE_TOTAL_GAME_TIME * 0.7, # level 8
-	BASE_TOTAL_GAME_TIME * 0.8, # level 9
-	BASE_TOTAL_GAME_TIME * 0.9, # level 10
-]
+# --- Task HP (by player level) ---
 
-# game_level -> task HP
 const TASK_HP_BY_LEVEL: Dictionary[int, int] = {
 	1: BASE_HP * 1, # 100
-	2: BASE_HP * 3, # 300
-	3: BASE_HP * 6, # 600
-	4: BASE_HP * 30, # 3000
-	5: BASE_HP * 60, # 6000
-	6: BASE_HP * 600, # 60000
-	7: BASE_HP * 1200, # 120000
-	8: BASE_HP * 30000, # 3000000
-	9: BASE_HP * 60000, # 6000000
-	10: BASE_HP * 150000, # 15000000
+	2: BASE_HP * 2, # 200
+	3: BASE_HP * 3, # 300
+	4: BASE_HP * 4, # 400
+	5: BASE_HP * 5, # 500
+	6: BASE_HP * 8, # 800
+	7: BASE_HP * 11, # 1100
+	8: BASE_HP * 16, # 1600
+	9: BASE_HP * 24, # 2400
+	10: BASE_HP * 35, # 3500
+	11: BASE_HP * 50, # 5000
+	12: BASE_HP * 75, # 7500
+	13: BASE_HP * 110, # 11000
+	14: BASE_HP * 160, # 16000
+	15: BASE_HP * 240, # 24000
+	16: BASE_HP * 350, # 35000
+	17: BASE_HP * 500, # 50000
+	18: BASE_HP * 750, # 75000
+	19: BASE_HP * 1100, # 110000
+	20: BASE_HP * 1600, # 160000
+	21: BASE_HP * 2400, # 240000
+	22: BASE_HP * 3500, # 350000
+	23: BASE_HP * 5000, # 500000
+	24: BASE_HP * 7500, # 750000
+	25: BASE_HP * 11000, # 1100000
+	26: BASE_HP * 16000, # 1600000
+	27: BASE_HP * 24000, # 2400000
+	28: BASE_HP * 35000, # 3500000
+	29: BASE_HP * 50000, # 5000000
+	30: BASE_HP * 75000, # 7500000
+	31: BASE_HP * 110000, # 11000000
+	32: BASE_HP * 160000, # 16000000
+	33: BASE_HP * 240000, # 24000000
+	34: BASE_HP * 350000, # 35000000
+	35: BASE_HP * 500000, # 50000000
+	36: BASE_HP * 750000, # 75000000
+	37: BASE_HP * 1100000, # 110000000
+	38: BASE_HP * 1600000, # 160000000
+	39: BASE_HP * 2400000, # 240000000
+	40: BASE_HP * 3500000, # 350000000
 }
 
-# Placeholder values — tune during playtesting
-# Cumulative XP needed to reach each level
-const LEVEL_THRESHOLDS: Array[int] = [
-	XP_BASE * 1, # lvl 1
-	XP_BASE * 3, # lvl 2
-	XP_BASE * 6, # lvl 3
-	XP_BASE * 10, # lvl 4
-	XP_BASE * 16, # lvl 5
-	XP_BASE * 24, # lvl 6
-	XP_BASE * 35, # lvl 7
-	XP_BASE * 50, # lvl 8
-	XP_BASE * 70, # lvl 9
-	XP_BASE * 100, # lvl 10
-	XP_BASE * 140, # lvl 11
-	XP_BASE * 200, # lvl 12
-	XP_BASE * 280, # lvl 13
-	XP_BASE * 400, # lvl 14
-	XP_BASE * 560, # lvl 15
-	XP_BASE * 800, # lvl 16
-	XP_BASE * 1100, # lvl 17
-	XP_BASE * 1600, # lvl 18
-	XP_BASE * 2200, # lvl 19
-	XP_BASE * 3200, # lvl 20
-	XP_BASE * 4500, # lvl 21
-	XP_BASE * 6400, # lvl 22
-	XP_BASE * 9000, # lvl 23
-	XP_BASE * 13000, # lvl 24
-	XP_BASE * 18000, # lvl 25
-	XP_BASE * 25000, # lvl 26
-	XP_BASE * 36000, # lvl 27
-	XP_BASE * 50000, # lvl 28
-	XP_BASE * 70000, # lvl 29
-	XP_BASE * 100000, # lvl 30
-	XP_BASE * 140000, # lvl 31
-	XP_BASE * 200000, # lvl 32
-	XP_BASE * 280000, # lvl 33
-	XP_BASE * 400000, # lvl 34
-	XP_BASE * 560000, # lvl 35
-	XP_BASE * 800000, # lvl 36
-	XP_BASE * 1100000, # lvl 37
-	XP_BASE * 1600000, # lvl 38
-	XP_BASE * 2200000, # lvl 39
-	XP_BASE * 3200000, # lvl 40
-]
+
+# --- UI ---
 
 const RARITY_COLORS: Dictionary = {
 	UpgradeRarity.COMMON: Color(0.6, 0.6, 0.6),
@@ -184,15 +234,42 @@ const RARITY_COLORS: Dictionary = {
 const STAT_POSITIVE_COLOR: Color = Color(0.2, 0.8, 0.2)
 const STAT_NEGATIVE_COLOR: Color = Color(0.9, 0.2, 0.2)
 
+# --- Milestones ---
+
 const COMPANY_MILESTONES: Array[Dictionary] = [
-	{"valuation": 500, "name": "Zynga"},
-	{"valuation": 5000, "name": "Niantic"},
-	{"valuation": 50000, "name": "Ubisoft"},
-	{"valuation": 500000, "name": "EA"},
-	{"valuation": 5000000, "name": "Valve"},
-	{"valuation": 50000000, "name": "Epic Games"},
-	{"valuation": 500000000, "name": "Apple"},
-	{"valuation": 5000000000, "name": "Microsoft"},
-	{"valuation": 100000000000, "name": "US GDP"},
+	# Everyday items
+	{"valuation": 100, "name": "Cup of Coffee"},
+	{"valuation": 300, "name": "Pair of AirPods"},
+	{"valuation": 500, "name": "Kebab Stand"},
+	{"valuation": 1500, "name": "PS5"},
+	{"valuation": 5000, "name": "MacBook Pro"},
+	{"valuation": 15000, "name": "Used Car"},
+	{"valuation": 50000, "name": "Tesla Model 3"},
+	{"valuation": 150000, "name": "Developer Salary"},
+	{"valuation": 500000, "name": "Studio Apartment"},
+	{"valuation": 1500000, "name": "House"},
+	{"valuation": 3000000, "name": "Penthouse"},
+	{"valuation": 5000000, "name": "Yacht"},
+	# Companies
+	{"valuation": 8000000, "name": "Indie Game Studio"},
+	{"valuation": 15000000, "name": "Mobile Game Studio"},
+	{"valuation": 30000000, "name": "Supergiant Games"},
+	{"valuation": 50000000, "name": "Ubisoft"},
+	{"valuation": 80000000, "name": "Zynga"},
+	{"valuation": 150000000, "name": "Valve"},
+	{"valuation": 300000000, "name": "Discord"},
+	{"valuation": 500000000, "name": "Epic Games"},
+	{"valuation": 800000000, "name": "Roblox"},
+	{"valuation": 1500000000, "name": "EA"},
+	{"valuation": 3000000000, "name": "Spotify"},
+	{"valuation": 5000000000, "name": "Nintendo"},
+	{"valuation": 10000000000, "name": "AMD"},
+	{"valuation": 15000000000, "name": "Netflix"},
+	{"valuation": 30000000000, "name": "Sony"},
+	{"valuation": 50000000000, "name": "Samsung"},
+	{"valuation": 80000000000, "name": "Oracle"},
+	{"valuation": 150000000000, "name": "Meta"},
+	{"valuation": 300000000000, "name": "Tesla"},
+	{"valuation": 500000000000, "name": "Google"},
 	{"valuation": 1000000000000, "name": "World Domination"},
 ]

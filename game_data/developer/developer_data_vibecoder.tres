@@ -11,7 +11,7 @@ head_texture = ExtResource("1_2od2g")
 description = "Fast at features, bad with bugs"
 task_mults = {
 0: 2.0,
-1: 0.5
+1: 0.7
 }
 base_attack_speed = 2.0
 task_select = ExtResource("3_task_select")

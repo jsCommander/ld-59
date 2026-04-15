@@ -28,8 +28,10 @@ enum State {IDLE, WAITING, WORKING}
 var _state: State = State.IDLE
 var _attack_timer: float = 0.0
 var _current_task: TaskData = null
-var _boost_stacks: int = 0
-var _boost_decay_timer: float = 0.0
+var _auto_boost_stacks: int = 0
+var _auto_boost_decay_timer: float = 0.0
+var _player_boost_stacks: int = 0
+var _player_boost_decay_timer: float = 0.0
 var _auto_click_timer: float = 0.0
 
 # --- Lifecycle ---
@@ -88,7 +90,7 @@ func _on_task_fly_ended(_task: TaskData, developer: Developer) -> void:
 func on_clicked() -> void:
 	if not data:
 		return
-	_apply_boost()
+	_apply_player_boost()
 
 
 func get_task_position() -> Vector2:
@@ -113,27 +115,43 @@ func _process_working(delta: float) -> void:
 
 
 func _process_boost_decay(delta: float) -> void:
-	if _boost_stacks <= 0:
+	_process_auto_boost_decay(delta)
+	_process_player_boost_decay(delta)
+
+
+func _process_auto_boost_decay(delta: float) -> void:
+	if _auto_boost_stacks <= 0:
 		return
-	_boost_decay_timer += delta
-	var decay_interval: float = Balance.calculate_boost_decay_interval(PD.global_upgrades, PD.get_dev_upgrades(data.dev_type))
-	if _boost_decay_timer >= decay_interval:
-		_boost_decay_timer -= decay_interval
-		_boost_stacks -= 1
-		if _boost_stacks <= 0:
-			_boost_stacks = 0
+	_auto_boost_decay_timer += delta
+	var decay_interval: float = Balance.calculate_boost_decay_interval(PD.global_upgrades)
+	if _auto_boost_decay_timer >= decay_interval:
+		_auto_boost_decay_timer -= decay_interval
+		_auto_boost_stacks -= 1
+		if _auto_boost_stacks <= 0:
+			_auto_boost_stacks = 0
+		_update_boost_visuals()
+
+
+func _process_player_boost_decay(delta: float) -> void:
+	if _player_boost_stacks <= 0:
+		return
+	_player_boost_decay_timer += delta
+	if _player_boost_decay_timer >= Constants.PLAYER_BOOST_DECAY_INTERVAL:
+		_player_boost_decay_timer -= Constants.PLAYER_BOOST_DECAY_INTERVAL
+		_player_boost_stacks -= 1
+		if _player_boost_stacks <= 0:
+			_player_boost_stacks = 0
 		_update_boost_visuals()
 
 
 func _process_auto_click(delta: float) -> void:
-	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
-	var interval: float = Balance.calculate_auto_click_interval(PD.global_upgrades, dev_upgrades)
+	var interval: float = Balance.calculate_auto_click_interval(PD.global_upgrades)
 	if interval <= 0.0:
 		return
 	_auto_click_timer += delta
 	if _auto_click_timer >= interval:
 		_auto_click_timer -= interval
-		_apply_boost(true)
+		_apply_auto_boost()
 
 
 func _change_state(new_state: State) -> void:
@@ -153,8 +171,7 @@ func _change_state(new_state: State) -> void:
 
 
 func _perform_attack() -> void:
-	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
-	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.global_upgrades, dev_upgrades)
+	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.global_upgrades)
 	_current_task.current_hp -= damage
 	task_display.update_hp()
 	task_display.flash()
@@ -165,23 +182,30 @@ func _perform_attack() -> void:
 
 
 func _get_attack_speed() -> float:
-	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
-	return Balance.calculate_attack_speed(data, PD.global_upgrades, dev_upgrades, _boost_stacks)
+	return Balance.calculate_attack_speed(data, _auto_boost_stacks, _player_boost_stacks)
 
 
-func _apply_boost(is_auto: bool = false) -> void:
-	_boost_stacks += 1
-	if _boost_stacks > Constants.MAX_BOOST:
-		_boost_stacks = Constants.MAX_BOOST
+func _apply_auto_boost() -> void:
+	var stacks: int = Balance.calculate_boost_stacks(PD.global_upgrades)
+	_auto_boost_stacks = mini(_auto_boost_stacks + stacks, Constants.MAX_AUTO_BOOST)
 	_update_boost_visuals()
-	if not is_auto:
-		SB.boost_applied.emit(self)
+
+
+func _apply_player_boost() -> void:
+	_player_boost_stacks += 1
+	if _player_boost_stacks > Constants.PLAYER_BOOST_MAX:
+		_player_boost_stacks = Constants.PLAYER_BOOST_MAX
+	_player_boost_decay_timer = 0.0
+	_update_boost_visuals()
+	SB.boost_applied.emit(self)
 
 
 func _update_boost_visuals() -> void:
-	var heat: float = clampf(float(_boost_stacks) / float(Constants.MAX_BOOST), 0.0, 1.0)
-	dev_rig.modulate = Color.WHITE.lerp(Color(1.5, 0.5, 0.5), heat)
-	sweat_effect.emitting = _boost_stacks > 0
+	var auto_heat: float = float(_auto_boost_stacks) / float(Constants.MAX_AUTO_BOOST)
+	var player_heat: float = float(_player_boost_stacks) / float(Constants.PLAYER_BOOST_MAX)
+	var heat: float = clampf(maxf(auto_heat, player_heat), 0.0, 1.0)
+	dev_rig.modulate = Color.WHITE.lerp(Color(2.0, 0.2, 0.2), heat)
+	sweat_effect.emitting = _auto_boost_stacks + _player_boost_stacks > 0
 
 
 

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "steady_pace"
+display_name = "Steady Pace"
+description = "Slow and steady wins the... sprint?"
+rarity = 0
+trade_off_type = 0
+boost_power = 0.1

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bug_bounty"
+display_name = "Bug Bounty"
+description = "$50 per bug. Devs start writing bugs on purpose."
+rarity = 1
+trade_off_type = 1
+bug_damage = 0.25
+feature_damage = -0.1

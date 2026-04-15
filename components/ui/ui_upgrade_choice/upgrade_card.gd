@@ -67,7 +67,3 @@ func _populate_stats() -> void:
 			var stat_row: StatModifier = STAT_MODIFIER.instantiate()
 			stat_row.setup(Constants.STAT_DISPLAY_NAMES[field], value)
 			stats_container.add_child(stat_row)
-	if _upgrade.upgrade_choices != 0:
-		var stat_row: StatModifier = STAT_MODIFIER.instantiate()
-		stat_row.setup("Upgrade Choices", float(_upgrade.upgrade_choices), true)
-		stats_container.add_child(stat_row)
