@@ -21,7 +21,6 @@ buses/default_bus_layout="uid://baoc86f6np62k"
 
 [autoload]
 
-C="*uid://css8o1j0l4bws"
 SB="*uid://im1hpuaks3nm"
 AM="*res://autoloads/audio_manager.gd"
 DR="*res://autoloads/data_registry.gd"
@@ -35,8 +34,7 @@ window/stretch/mode="canvas_items"
 
 [gui]
 
-theme/custom="uid://f3gbxjll107l"
-theme/custom_font="uid://cof01hgecqg2p"
+theme/custom="uid://crpirwghwbflu"
 
 [input]
 

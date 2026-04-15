@@ -70,7 +70,7 @@ func _on_task_assigned(task: TaskData, developer: Developer, _task_position: Vec
 	_change_state(State.WAITING)
 
 
-func _on_task_fly_ended(task: TaskData, developer: Developer) -> void:
+func _on_task_fly_ended(_task: TaskData, developer: Developer) -> void:
 	if developer != self:
 		return
 	task_display.task_data = _current_task

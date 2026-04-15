@@ -18,8 +18,7 @@ const SPEED_CAP: float = 0.1
 const BASE_TOTAL_GAME_TIME: float = 600.0
 const HIRE_LEVELS: Array[int] = [0, 3, 6, 10, 14, 18, 23, 28, 34]
 
-const MAX_TASK_QUEUE: int = 8
-const TASK_BAG_SIZE: int = 10
+const SPRINT_SIZE: int = 10
 const MAX_LEVEL: int = 40
 
 const BASE_ATTACK_SPEED: float = 2.0

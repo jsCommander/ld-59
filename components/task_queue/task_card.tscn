@@ -11,8 +11,9 @@ outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" unique_id=175095984]
-offset_right = 120.0
-offset_bottom = 120.0
+custom_minimum_size = Vector2(144, 144)
+offset_right = 144.0
+offset_bottom = 144.0
 script = ExtResource("1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2708197]
@@ -29,13 +30,13 @@ show_percentage = false
 
 [node name="Icon" type="TextureRect" parent="VBoxContainer" unique_id=1]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = ExtResource("2_xwu51")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="FlashableTrait" type="Node" parent="VBoxContainer/Icon"]
+[node name="FlashableTrait" type="Node" parent="VBoxContainer/Icon" unique_id=2059328820]
 unique_name_in_owner = true
 script = ExtResource("3_flash")
 
@@ -53,6 +54,6 @@ label_settings = SubResource("LabelSettings_u2pmv")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DamageNumber" parent="." instance=ExtResource("4_dmgnum")]
+[node name="DamageNumber" parent="." unique_id=2030767181 instance=ExtResource("4_dmgnum")]
 unique_name_in_owner = true
 position = Vector2(120, 20)

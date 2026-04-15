@@ -1,4 +1,6 @@
-[gd_resource type="Theme" format=3 uid="uid://f3gbxjll107l"]
+[gd_resource type="Theme" format=3 uid="uid://crpirwghwbflu"]
+
+[ext_resource type="FontFile" uid="uid://b3u2v4unutk0g" path="res://game_kit/fonts/Caveat-VariableFont_wght.ttf" id="1_ibuqq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nt2f"]
 bg_color = Color(1, 0.870588, 0.631373, 1)
@@ -99,8 +101,9 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [resource]
+default_font = ExtResource("1_ibuqq")
 default_font_size = 24
-Button/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/colors/font_color = Color(0.47058824, 0.3019608, 0.19607843, 1)
 Button/colors/font_focus_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_hover_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_hover_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
@@ -113,7 +116,7 @@ Button/styles/pressed = SubResource("StyleBoxFlat_gpyc2")
 ButtonLarge/base_type = &"Button"
 ButtonLarge/font_sizes/font_size = 48
 HBoxContainer/constants/separation = 8
-Label/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
+Label/colors/font_color = Color(0.47058824, 0.3019608, 0.19607843, 1)
 LabelLarge/base_type = &"Label"
 LabelLarge/font_sizes/font_size = 48
 MarginContainer/constants/margin_bottom = 8

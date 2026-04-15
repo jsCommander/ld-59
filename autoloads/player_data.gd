@@ -13,8 +13,8 @@ var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
 var _awaiting_choice: bool = false
 
-var task_queue: Array[TaskData] = []
-var _task_bag: Array[TaskData] = []
+var sprint_number: int = 0
+var sprint_slots: Array = []
 
 var developers: Array[Developer] = []
 var hired_data: Array[DeveloperData] = []
@@ -62,8 +62,7 @@ func start_game() -> void:
 	developers.assign(Groups.get_all_of_type(get_tree(), "developer", Developer))
 	_game_active = true
 	_tick_timer.start()
-	_generate_task_bag()
-	_fill_queue_from_bag()
+	_generate_sprint()
 	# Hire first dev at game start
 	_awaiting_choice = true
 	SB.developer_hire_requested.emit()
@@ -73,11 +72,11 @@ func reset() -> void:
 	valuation = 0
 	level = 0
 	game_level = 1
+	sprint_number = 0
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
 	_awaiting_choice = false
-	task_queue.clear()
-	_task_bag.clear()
+	sprint_slots.clear()
 	developers.clear()
 	hired_data.clear()
 	upgrades_taken.clear()
@@ -87,11 +86,13 @@ func reset() -> void:
 
 
 func take_task(task: TaskData) -> TaskData:
-	if task not in task_queue:
+	var idx: int = sprint_slots.find(task)
+	if idx == -1:
 		return null
-	task_queue.erase(task)
-	SB.task_queue_changed.emit(task_queue)
-	_fill_queue_from_bag()
+	sprint_slots[idx] = null
+	SB.task_queue_changed.emit(sprint_slots)
+	if _all_slots_empty():
+		_generate_sprint()
 	return task
 
 
@@ -130,9 +131,9 @@ func _process(delta: float) -> void:
 # --- Handlers ---
 
 func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
-	if task_queue.is_empty():
+	var task: TaskData = _find_first_task()
+	if not task:
 		return
-	var task: TaskData = task_queue[0]
 	var taken: TaskData = take_task(task)
 	if taken:
 		SB.task_assigned.emit(taken, developer, task_position)
@@ -170,29 +171,38 @@ func _create_tick_timer() -> Timer:
 	return timer
 
 
-# --- Task bag system ---
+# --- Sprint system ---
 
-func _generate_task_bag() -> void:
+func _generate_sprint() -> void:
+	sprint_number += 1
 	var task_level: int = game_level
 	var weights: Dictionary = Balance.get_task_type_weights(task_level)
-	_task_bag.clear()
-	for i: int in Constants.TASK_BAG_SIZE:
+	sprint_slots.clear()
+	for i: int in Constants.SPRINT_SIZE:
 		var template: TaskData = _pick_weighted_task(weights)
 		var task: TaskData = template.duplicate()
 		task.level = task_level
 		var hp: float = Balance.get_task_hp(task_level)
 		task.current_hp = hp
 		task.max_hp = hp
-		_task_bag.append(task)
-	Log.log_info(name, "Generated task bag: %d tasks at level %d" % [_task_bag.size(), task_level])
+		sprint_slots.append(task)
+	SB.task_queue_changed.emit(sprint_slots)
+	SB.sprint_number_changed.emit(sprint_number)
+	Log.log_info(name, "Sprint %d: %d tasks at level %d" % [sprint_number, sprint_slots.size(), task_level])
 
 
-func _fill_queue_from_bag() -> void:
-	while task_queue.size() < Constants.MAX_TASK_QUEUE and not _task_bag.is_empty():
-		task_queue.append(_task_bag.pop_front())
-	SB.task_queue_changed.emit(task_queue)
-	if _task_bag.is_empty():
-		_generate_task_bag()
+func _all_slots_empty() -> bool:
+	for slot: Variant in sprint_slots:
+		if slot != null:
+			return false
+	return true
+
+
+func _find_first_task() -> TaskData:
+	for slot: Variant in sprint_slots:
+		if slot != null:
+			return slot as TaskData
+	return null
 
 
 # --- Upgrade application ---

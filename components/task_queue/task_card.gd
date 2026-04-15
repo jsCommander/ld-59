@@ -49,12 +49,24 @@ func show_damage(damage: int) -> void:
 
 func kill() -> void:
 	task_data = null
-	visible = false
+	hide_content()
 
 
 func hide_task() -> void:
 	task_data = null
-	visible = false
+	hide_content()
+
+
+func show_content() -> void:
+	icon.visible = true
+	hp_bar.visible = show_hp
+	level_label.visible = true
+
+
+func hide_content() -> void:
+	icon.visible = false
+	hp_bar.visible = false
+	level_label.visible = false
 
 # --- Private ---
 
@@ -62,11 +74,12 @@ func _apply_task() -> void:
 	if not is_instance_valid(icon):
 		return
 	if not task_data:
-		visible = false
+		hide_content()
 		return
+
+	show_content()
 	icon.texture = task_data.texture
 	level_label.text = str(task_data.level)
 	if show_hp and task_data.max_hp > 0.0:
 		hp_bar.visible = true
 		hp_bar.value = task_data.current_hp / task_data.max_hp
-	visible = true
