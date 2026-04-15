@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "senior_damage_uncommon"
 display_name = "Architecture RFC"
-description = "+100% damage"
+description = "A 47-page document nobody will read"
 upgrade_type = 1
 target_dev_type = 2
 stat = 0

@@ -66,6 +66,8 @@ const RARITY_BUDGETS: Dictionary = {
 }
 
 const TRADE_OFF_RETURN_RATE: float = 0.5
+
+enum TradeOffType { PURE, TRADE_OFF }
 ```
 
 ## Task Types
@@ -193,89 +195,89 @@ Legend: `+` = positive stat, `−` = negative stat. Budget cost shown in parenth
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G1 | Pep Talk | +7% Global Damage | 10.5 |
-| G2 | Feature Sprint | +10% Feature Damage | 10 |
-| G3 | Bug Bash | +10% Bug Damage | 10 |
-| G4 | Shoulder Tap | +10% Boost Power | 10 |
-| G5 | Quick Standup | +12% Boost Duration | 9.6 |
-| G6 | Coffee Machine | +8% Auto Click Speed | 9.6 |
-| G7 | Profit Sharing | +14% Reward Bonus | 9.8 |
-| G8 | Expanded Shortlist | +1 Upgrade Choices | 10 |
-| G9 | Rubber Duck | +5% Feature Damage, +5% Bug Damage | 10 |
-| G10 | Open Floor Plan | +7% Boost Power, +4% Boost Duration | 10.2 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G1 | Pep Talk | "You're doing great, team!" *narrator: they weren't* | +7% Global Damage | 10.5 |
+| G2 | Feature Sprint | Two weeks to build what sales promised in two days | +10% Feature Damage | 10 |
+| G3 | Bug Bash | Pizza-fueled bug hunting Friday. Mostly pizza. | +10% Bug Damage | 10 |
+| G4 | Shoulder Tap | "Hey, got a sec?" They never have just a sec. | +10% Boost Power | 10 |
+| G5 | Quick Standup | 15 minutes max. Haha, just kidding. | +12% Boost Duration | 9.6 |
+| G6 | Coffee Machine | The real MVP of every sprint | +8% Auto Click Speed | 9.6 |
+| G7 | Profit Sharing | 0.001% equity. Life changing. | +14% Reward Bonus | 9.8 |
+| G8 | Expanded Shortlist | More resumes, more problems, more choices | +1 Upgrade Choices | 10 |
+| G9 | Rubber Duck | Explain the bug to the duck. Duck fixes everything. | +5% Feature Damage, +5% Bug Damage | 10 |
+| G10 | Open Floor Plan | "Collaboration!" screams the CEO from his private office | +7% Boost Power, +4% Boost Duration | 10.2 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G11 | Hackathon Focus | +15% Feature Damage, −10% Bug Damage | 10 |
-| G12 | Debug Marathon | +15% Bug Damage, −10% Feature Damage | 10 |
-| G13 | Crunch Time | +15% Boost Power, −12% Boost Duration | 10.2 |
-| G14 | Feature Pivot | +15% Feature Damage, +30% Feature Chance, −20% Bug Chance | 10 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G11 | Hackathon Focus | 48 hours of features, 48 days of tech debt | +15% Feature Damage, −10% Bug Damage | 10 |
+| G12 | Debug Marathon | Nothing ships until it's clean. Nothing ships. | +15% Bug Damage, −10% Feature Damage | 10 |
+| G13 | Crunch Time | Burn bright, burn fast, burn out | +15% Boost Power, −12% Boost Duration | 10.2 |
+| G14 | Feature Pivot | "We're pivoting to AI" — every startup, 2024 | +15% Feature Damage, +30% Feature Chance, −20% Bug Chance | 10 |
 
 #### Global — Uncommon (12, budget 20)
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G15 | Team Lunch | +13% Global Damage | 19.5 |
-| G16 | Sprint Planning | +20% Feature Damage | 20 |
-| G17 | Code Review | +20% Bug Damage | 20 |
-| G18 | Pair Programming | +15% Boost Power, +6% Boost Duration | 19.8 |
-| G19 | Task Automation | +17% Auto Click Speed | 20.4 |
-| G20 | KPI Dashboard | +28% Reward Bonus | 19.6 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G15 | Team Lunch | Sushi on the company card. Morale through the roof. | +13% Global Damage | 19.5 |
+| G16 | Sprint Planning | Three hours of pointing at cards. Somehow works. | +20% Feature Damage | 20 |
+| G17 | Code Review | "Looks good to me" — reviewer who didn't read it | +20% Bug Damage | 20 |
+| G18 | Pair Programming | Two devs, one keyboard, zero personal space | +15% Boost Power, +6% Boost Duration | 19.8 |
+| G19 | Task Automation | Automate the boring stuff. Become the boring stuff. | +17% Auto Click Speed | 20.4 |
+| G20 | KPI Dashboard | If it's not measured, did it even happen? | +28% Reward Bonus | 19.6 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G21 | Feature Factory | +25% Feature Damage, −10% Bug Damage | 20 |
-| G22 | Bug Bounty | +25% Bug Damage, −10% Feature Damage | 20 |
-| G23 | Overtime Policy | +17% Global Damage, −15% Reward Bonus | 20.25 |
-| G24 | Agile Pivot | +20% Feature Damage, +20% Feature Chance, −20% Bug Chance | 20 |
-| G25 | Incident Response | +20% Bug Damage, +20% Bug Chance, −20% Feature Chance | 20 |
-| G26 | Micromanagement | +20% Boost Power, +10% Boost Duration, −15% Auto Click Speed | 19 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G21 | Feature Factory | Ship features, ignore bugs. The PM way. | +25% Feature Damage, −10% Bug Damage | 20 |
+| G22 | Bug Bounty | $50 per bug. Devs start writing bugs on purpose. | +25% Bug Damage, −10% Feature Damage | 20 |
+| G23 | Overtime Policy | Mandatory fun hours. Fun not included. | +17% Global Damage, −15% Reward Bonus | 20.25 |
+| G24 | Agile Pivot | We were waterfall all along | +20% Feature Damage, +20% Feature Chance, −20% Bug Chance | 20 |
+| G25 | Incident Response | Page everyone. Blame no one. Fix nothing. | +20% Bug Damage, +20% Bug Chance, −20% Feature Chance | 20 |
+| G26 | Micromanagement | "Just checking in!" every 5 minutes | +20% Boost Power, +10% Boost Duration, −15% Auto Click Speed | 19 |
 
 #### Global — Epic (9, budget 35)
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G27 | Strategy Offsite | +23% Global Damage | 34.5 |
-| G28 | Automation Suite | +20% Auto Click Speed, +10% Boost Duration | 32 |
-| G29 | HR Department | +1 Upgrade Choices, +10% Reward Bonus | 17 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G27 | Strategy Offsite | Expensive hotel, expensive ideas, expensive mistakes | +23% Global Damage | 34.5 |
+| G28 | Automation Suite | CI/CD pipeline that's longer than the actual code | +20% Auto Click Speed, +10% Boost Duration | 32 |
+| G29 | HR Department | Finally someone to handle the "culture" | +1 Upgrade Choices, +10% Reward Bonus | 17 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G30 | Feature Blitz | +35% Feature Damage, +20% Feature Chance, −15% Bug Damage | 37.5 |
-| G31 | Bug Sweep | +35% Bug Damage, +20% Bug Chance, −15% Feature Damage | 37.5 |
-| G32 | Deadline Pressure | +25% Boost Power, +15% Auto Click Speed, −20% Boost Duration | 35 |
-| G33 | Growth Hacking | +50% Reward Bonus, −15% Global Damage | 23.75 |
-| G34 | All-Hands Meeting | +20% Global Damage, +15% Boost Power, −20% Auto Click Speed | 33 |
-| G35 | Product Roadmap | +30% Feature Damage, +50% Feature Chance, −40% Bug Chance | 45 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G30 | Feature Blitz | Ship first, ask questions never | +35% Feature Damage, +20% Feature Chance, −15% Bug Damage | 37.5 |
+| G31 | Bug Sweep | Bugs are features now. Wait, no, the other way. | +35% Bug Damage, +20% Bug Chance, −15% Feature Damage | 37.5 |
+| G32 | Deadline Pressure | Nothing motivates like a demo tomorrow | +25% Boost Power, +15% Auto Click Speed, −20% Boost Duration | 35 |
+| G33 | Growth Hacking | Revenue is vanity, growth is sanity, profit is... later | +50% Reward Bonus, −15% Global Damage | 23.75 |
+| G34 | All-Hands Meeting | 200 people watching one person's screen share | +20% Global Damage, +15% Boost Power, −20% Auto Click Speed | 33 |
+| G35 | Product Roadmap | Beautifully designed fiction | +30% Feature Damage, +50% Feature Chance, −40% Bug Chance | 45 |
 
 #### Global — Legendary (5, budget 50)
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G36 | Series A Funding | +25% Global Damage, +30% Reward Bonus | 58.5 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G36 | Series A Funding | $10M to find product-market fit. Again. | +25% Global Damage, +30% Reward Bonus | 58.5 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| G37 | IPO | +60% Reward Bonus, +15% Global Damage, −30% Boost Duration | 52.5 |
-| G38 | Full Automation | +30% Auto Click Speed, +25% Boost Power, −30% Boost Duration | 49 |
-| G39 | Feature Unicorn | +40% Feature Damage, +60% Feature Chance, −50% Bug Damage | 45 |
-| G40 | Zero Bug Policy | +40% Bug Damage, +60% Bug Chance, −50% Feature Damage | 45 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| G37 | IPO | Ring the bell, cash the stock, crash the price | +60% Reward Bonus, +15% Global Damage, −30% Boost Duration | 52.5 |
+| G38 | Full Automation | The robots took our jobs and they're faster | +30% Auto Click Speed, +25% Boost Power, −30% Boost Duration | 49 |
+| G39 | Feature Unicorn | It does everything! None of it well! | +40% Feature Damage, +60% Feature Chance, −50% Bug Damage | 45 |
+| G40 | Zero Bug Policy | "We don't have bugs. We have undocumented features." | +40% Bug Damage, +60% Bug Chance, −50% Feature Damage | 45 |
 
 ### Dev-Specific Upgrades — Vibecoder (14)
 
@@ -283,53 +285,53 @@ Legend: `+` = positive stat, `−` = negative stat. Budget cost shown in parenth
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| V1 | Vibe Check | +10% Feature Damage | 10 |
-| V2 | Rapid Prototype | +7% Global Damage | 10.5 |
-| V3 | Energy Drink | +10% Boost Power | 10 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| V1 | Vibe Check | Does the code pass the vibe check? Ship it. | +10% Feature Damage | 10 |
+| V2 | Rapid Prototype | Works on my machine. That counts, right? | +7% Global Damage | 10.5 |
+| V3 | Energy Drink | Third can before noon. Code goes brrr. | +10% Boost Power | 10 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| V4 | Move Fast | +15% Feature Damage, −10% Bug Damage | 10 |
-| V5 | Ship It | +10% Feature Damage, +20% Feature Chance, −20% Bug Chance | 10 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| V4 | Move Fast | Break things. That's literally the motto. | +15% Feature Damage, −10% Bug Damage | 10 |
+| V5 | Ship It | "We'll fix it in prod." Spoiler: they won't. | +10% Feature Damage, +20% Feature Chance, −20% Bug Chance | 10 |
 
 #### Vibecoder — Uncommon (4, budget 20)
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| V6 | AI Copilot | +20% Boost Power | 20 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| V6 | AI Copilot | It wrote the code. Nobody understands it. It works. | +20% Boost Power | 20 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| V7 | Prompt Engineering | +25% Feature Damage, −10% Bug Damage | 20 |
-| V8 | Demo Day | +20% Feature Damage, +20% Feature Chance, −20% Bug Chance | 20 |
-| V9 | Vibe Coding | +20% Boost Power, +10% Feature Damage, −15% Bug Damage | 22.5 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| V7 | Prompt Engineering | "Act as a senior developer" *chef's kiss* | +25% Feature Damage, −10% Bug Damage | 20 |
+| V8 | Demo Day | Smoke and mirrors, but the investors loved it | +20% Feature Damage, +20% Feature Chance, −20% Bug Chance | 20 |
+| V9 | Vibe Coding | Headphones on, world off, features out | +20% Boost Power, +10% Feature Damage, −15% Bug Damage | 22.5 |
 
 #### Vibecoder — Epic (3, budget 35)
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| V10 | 10x Developer | +30% Feature Damage, +20% Boost Power, −25% Bug Damage | 37.5 |
-| V11 | Feature Machine | +35% Feature Damage, +40% Feature Chance, −30% Bug Chance | 42.5 |
-| V12 | Caffeine Overdose | +35% Boost Power, +15% Feature Damage, −25% Boost Duration | 40 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| V10 | 10x Developer | Writes 10x code. Creates 10x bugs. Net positive? | +30% Feature Damage, +20% Boost Power, −25% Bug Damage | 37.5 |
+| V11 | Feature Machine | Features per hour is off the charts. Quality per feature... | +35% Feature Damage, +40% Feature Chance, −30% Bug Chance | 42.5 |
+| V12 | Caffeine Overdose | Heart rate: 180. Commits per hour: also 180. | +35% Boost Power, +15% Feature Damage, −25% Boost Duration | 40 |
 
 #### Vibecoder — Legendary (2, budget 50)
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| V13 | Founding Engineer | +30% Global Damage, +30% Feature Damage, −40% Bug Damage | 55 |
-| V14 | Ship or Die | +50% Feature Damage, +40% Boost Power, −50% Bug Damage | 65 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| V13 | Founding Engineer | Was here before version control. Knows where the bodies are buried. | +30% Global Damage, +30% Feature Damage, −40% Bug Damage | 55 |
+| V14 | Ship or Die | The startup mantra. Features or bankruptcy. No middle ground. | +50% Feature Damage, +40% Boost Power, −50% Bug Damage | 65 |
 
 ### Dev-Specific Upgrades — Regular (13)
 
@@ -337,47 +339,47 @@ Legend: `+` = positive stat, `−` = negative stat. Budget cost shown in parenth
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| R1 | Daily Standup | +7% Global Damage | 10.5 |
-| R2 | Balanced Diet | +5% Feature Damage, +5% Bug Damage | 10 |
-| R3 | Process Guide | +14% Reward Bonus | 9.8 |
-| R4 | Focus Time | +12% Boost Duration | 9.6 |
-| R5 | Steady Pace | +10% Boost Power | 10 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| R1 | Daily Standup | "Yesterday I did stuff. Today I'll do stuff. No blockers." | +7% Global Damage | 10.5 |
+| R2 | Balanced Diet | Equal parts features and bug fixes. Like a food pyramid. | +5% Feature Damage, +5% Bug Damage | 10 |
+| R3 | Process Guide | A 47-page doc nobody reads but somehow helps | +14% Reward Bonus | 9.8 |
+| R4 | Focus Time | Calendar blocked. Slack on DND. Finally coding. | +12% Boost Duration | 9.6 |
+| R5 | Steady Pace | Slow and steady wins the... sprint? | +10% Boost Power | 10 |
 
 #### Regular — Uncommon (4, budget 20)
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| R6 | Cross-Training | +10% Feature Damage, +10% Bug Damage | 20 |
-| R7 | Mentorship | +13% Global Damage | 19.5 |
-| R8 | Work-Life Balance | +15% Boost Duration, +8% Boost Power | 20 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| R6 | Cross-Training | Can do frontend AND backend. Master of neither. | +10% Feature Damage, +10% Bug Damage | 20 |
+| R7 | Mentorship | Teaching juniors by saying "just Google it" less | +13% Global Damage | 19.5 |
+| R8 | Work-Life Balance | Leaves at 5pm. Revolutionary. | +15% Boost Duration, +8% Boost Power | 20 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| R9 | Versatile Developer | +20% Global Damage, −15% Reward Bonus | 24.75 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| R9 | Versatile Developer | Does everything, gets paid for nothing | +20% Global Damage, −15% Reward Bonus | 24.75 |
 
 #### Regular — Epic (3, budget 35)
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| R10 | Full Stack | +15% Feature Damage, +15% Bug Damage, +15% Reward Bonus, −15% Boost Duration | 34.5 |
-| R11 | Reliable Engine | +20% Global Damage, +10% Boost Duration | 38 |
-| R12 | Swiss Army Dev | +15% Global Damage, +10% Feature Damage, +10% Bug Damage, −15% Boost Duration | 36.5 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| R10 | Full Stack | Frontend, backend, database, devops, and crying | +15% Feature Damage, +15% Bug Damage, +15% Reward Bonus, −15% Boost Duration | 34.5 |
+| R11 | Reliable Engine | Boring code that just works. The dream. | +20% Global Damage, +10% Boost Duration | 38 |
+| R12 | Swiss Army Dev | 17 skills, all at "intermediate" level | +15% Global Damage, +10% Feature Damage, +10% Bug Damage, −15% Boost Duration | 36.5 |
 
 #### Regular — Legendary (1, budget 50)
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| R13 | Tech Lead | +25% Global Damage, +15% Feature Damage, +15% Bug Damage, −20% Boost Duration | 59.5 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| R13 | Tech Lead | Writes no code but somehow everything breaks without them | +25% Global Damage, +15% Feature Damage, +15% Bug Damage, −20% Boost Duration | 59.5 |
 
 ### Dev-Specific Upgrades — Senior (13)
 
@@ -385,52 +387,52 @@ Legend: `+` = positive stat, `−` = negative stat. Budget cost shown in parenth
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| S1 | Code Audit | +10% Bug Damage | 10 |
-| S2 | Refactor Pass | +7% Global Damage | 10.5 |
-| S3 | Deep Focus | +12% Boost Duration | 9.6 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| S1 | Code Audit | "Who wrote this garbage?" *git blame* "Oh. Me." | +10% Bug Damage | 10 |
+| S2 | Refactor Pass | Renaming variables counts as progress, right? | +7% Global Damage | 10.5 |
+| S3 | Deep Focus | 4 hours in the zone. 3 hours recovering from interruption. | +12% Boost Duration | 9.6 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| S4 | Bug Priority | +10% Bug Damage, +20% Bug Chance, −20% Feature Chance | 10 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| S4 | Bug Priority | "All bugs are P0" — every product manager ever | +10% Bug Damage, +20% Bug Chance, −20% Feature Chance | 10 |
 
 #### Senior — Uncommon (4, budget 20)
 
 **Pure:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| S5 | Monitoring Setup | +20% Boost Power | 20 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| S5 | Monitoring Setup | Grafana dashboards nobody looks at until 3am | +20% Boost Power | 20 |
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| S6 | Architecture Review | +25% Bug Damage, −10% Feature Damage | 20 |
-| S7 | Technical Debt Payoff | +20% Bug Damage, +20% Bug Chance, −20% Feature Chance | 20 |
-| S8 | Debugging Mastery | +20% Global Damage, −10% Reward Bonus | 26.5 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| S6 | Architecture Review | "This should be a microservice" — the answer to everything | +25% Bug Damage, −10% Feature Damage | 20 |
+| S7 | Technical Debt Payoff | Finally fixing that TODO from 2019 | +20% Bug Damage, +20% Bug Chance, −20% Feature Chance | 20 |
+| S8 | Debugging Mastery | Can read stack traces like poetry. Sad poetry. | +20% Global Damage, −10% Reward Bonus | 26.5 |
 
 #### Senior — Epic (3, budget 35)
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| S9 | Post-Mortem Expert | +30% Bug Damage, +20% Boost Power, −25% Feature Damage | 37.5 |
-| S10 | Bug Exterminator | +35% Bug Damage, +40% Bug Chance, −30% Feature Chance | 42.5 |
-| S11 | System Architect | +25% Global Damage, +20% Bug Damage, −20% Feature Damage | 47.5 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| S9 | Post-Mortem Expert | Knows exactly why it broke. Didn't prevent it. | +30% Bug Damage, +20% Boost Power, −25% Feature Damage | 37.5 |
+| S10 | Bug Exterminator | Exterminates bugs and feature requests alike | +35% Bug Damage, +40% Bug Chance, −30% Feature Chance | 42.5 |
+| S11 | System Architect | Draws boxes and arrows. Boxes actually work this time. | +25% Global Damage, +20% Bug Damage, −20% Feature Damage | 47.5 |
 
 #### Senior — Legendary (2, budget 50)
 
 **Trade-off:**
 
-| # | Name | Effects | Budget |
-|---|---|---|---|
-| S12 | Principal Engineer | +30% Global Damage, +30% Bug Damage, −40% Feature Damage | 55 |
-| S13 | Bug Whisperer | +50% Bug Damage, +40% Boost Power, −50% Feature Damage | 65 |
+| # | Name | Description | Effects | Budget |
+|---|---|---|---|---|
+| S12 | Principal Engineer | Says "it depends" to every question. Always right. | +30% Global Damage, +30% Bug Damage, −40% Feature Damage | 55 |
+| S13 | Bug Whisperer | Talks to bugs. Bugs listen. Bugs leave. | +50% Bug Damage, +40% Boost Power, −50% Feature Damage | 65 |
 
 ## UpgradeData Resource Schema
 
@@ -444,6 +446,7 @@ class_name UpgradeData extends BaseGameData  # BaseGameData adds id: String
 @export var icon: Texture2D
 @export var rarity: Constants.UpgradeRarity  # COMMON, UNCOMMON, EPIC, LEGENDARY
 @export var upgrade_type: Constants.UpgradeType  # GLOBAL, DEV
+@export var trade_off_type: Constants.TradeOffType  # PURE, TRADE_OFF
 @export var target_dev_type: Constants.DevType  # only for DEV upgrades
 @export var min_game_level: int = 1
 
@@ -476,6 +479,30 @@ Upgrades are **free at level-up** (Brotato style — choose 1 of 3-5). Reward Bo
 ## Rarity Rolling
 
 Each upgrade choice slot rolls rarity **independently** using the appearance rate table. No pity/guarantee system.
+
+## File Organization
+
+Upgrade `.tres` files are organized in subdirectories by type:
+
+```
+game_data/upgrades/
+  upgrade_data.gd          # Resource class definition
+  global/                  # Global upgrades (G1-G40)
+    pep_talk.tres
+    feature_sprint.tres
+    ...
+  vibecoder/               # Vibecoder dev-specific upgrades (V1-V14)
+    vibe_check.tres
+    ...
+  regular/                 # Regular dev-specific upgrades (R1-R13)
+    daily_standup.tres
+    ...
+  senior/                  # Senior dev-specific upgrades (S1-S13)
+    code_audit.tres
+    ...
+```
+
+**Required change**: `BaseDataRegistry._find_game_data_in_path()` must be updated to scan subdirectories recursively (currently only scans top-level files).
 
 ## Migration from Current System
 

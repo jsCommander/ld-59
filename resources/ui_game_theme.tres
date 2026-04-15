@@ -79,6 +79,40 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc01"]
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc04"]
+bg_color = Color(0.6, 0.2, 0.8, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc05"]
+bg_color = Color(1, 0.5, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc03"]
+bg_color = Color(0.2, 0.4, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc02"]
+bg_color = Color(0.2, 0.8, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j26u"]
 bg_color = Color(0.874152, 0.876338, 0.849289, 1)
 corner_radius_top_left = 8
@@ -146,6 +180,16 @@ PanelContainerAccentHover/base_type = &"PanelContainer"
 PanelContainerAccentHover/styles/panel = SubResource("StyleBoxFlat_rnlon")
 PanelContainerBackground/base_type = &"PanelContainer"
 PanelContainerBackground/styles/panel = SubResource("StyleBoxFlat_bg01")
+PanelContainerRarityCommon/base_type = &"PanelContainer"
+PanelContainerRarityCommon/styles/panel = SubResource("StyleBoxFlat_rc01")
+PanelContainerRarityEpic/base_type = &"PanelContainer"
+PanelContainerRarityEpic/styles/panel = SubResource("StyleBoxFlat_rc04")
+PanelContainerRarityLegendary/base_type = &"PanelContainer"
+PanelContainerRarityLegendary/styles/panel = SubResource("StyleBoxFlat_rc05")
+PanelContainerRarityRare/base_type = &"PanelContainer"
+PanelContainerRarityRare/styles/panel = SubResource("StyleBoxFlat_rc03")
+PanelContainerRarityUncommon/base_type = &"PanelContainer"
+PanelContainerRarityUncommon/styles/panel = SubResource("StyleBoxFlat_rc02")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_2j26u")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_sf4qg")
 ProgressBarHealth/base_type = &"ProgressBar"

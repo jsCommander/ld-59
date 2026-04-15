@@ -6,7 +6,7 @@
 script = ExtResource("1")
 id = "global_boost_power_common"
 display_name = "Shoulder Tap"
-description = "+30% boost power"
+description = "Hey, got a sec?"
 upgrade_type = 0
 stat = 1
 click_boost_power_mult = 1.3

@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "vibecoder_damage_legendary"
 display_name = "AGI in Production"
-description = "+900% damage"
+description = "It's sentient and it filed a PR"
 upgrade_type = 1
 target_dev_type = 0
 stat = 0

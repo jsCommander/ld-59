@@ -10,7 +10,6 @@ const FLY_ICON_SIZE: Vector2 = Vector2(64, 64)
 
 # --- @onready ---
 
-@onready var popup_manager: UiPopupManager = %UiPopupManager
 @onready var sprint_panel: UiSprintPanel = %UiSprintPanel
 @onready var dialog_manager: DialogManager = %DialogManager
 

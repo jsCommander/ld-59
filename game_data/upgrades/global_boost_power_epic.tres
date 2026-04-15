@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_boost_power_epic"
 display_name = "Performance Review"
-description = "+150% boost power"
+description = "Let's discuss your growth trajectory"
 upgrade_type = 0
 stat = 1
 click_boost_power_mult = 2.5

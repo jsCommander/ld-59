@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_boost_power_legendary"
 display_name = "Hovering Behind Screen"
-description = "+300% boost power"
+description = "They can feel you breathing"
 upgrade_type = 0
 stat = 1
 click_boost_power_mult = 4.0

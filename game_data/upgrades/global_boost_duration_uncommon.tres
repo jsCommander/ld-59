@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_boost_duration_uncommon"
 display_name = "Slack Ping"
-description = "+50% boost duration"
+description = "Seen ✓✓"
 upgrade_type = 0
 stat = 1
 click_boost_duration_mult = 1.5

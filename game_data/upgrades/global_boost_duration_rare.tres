@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_boost_duration_rare"
 display_name = "Calendar Invite"
-description = "+100% boost duration"
+description = "30 min, no agenda, mandatory"
 upgrade_type = 0
 stat = 1
 click_boost_duration_mult = 2.0

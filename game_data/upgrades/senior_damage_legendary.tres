@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "senior_damage_legendary"
 display_name = "10x Engineer"
-description = "+900% damage"
+description = "Mythical. Rare. Probably just two 5x engineers."
 upgrade_type = 1
 target_dev_type = 2
 stat = 0

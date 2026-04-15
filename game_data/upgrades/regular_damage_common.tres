@@ -6,7 +6,7 @@
 script = ExtResource("1")
 id = "regular_damage_common"
 display_name = "Bot Code Review"
-description = "+50% damage"
+description = "LGTM 🤖"
 upgrade_type = 1
 target_dev_type = 1
 stat = 0

@@ -6,7 +6,7 @@
 script = ExtResource("1")
 id = "global_boost_duration_common"
 display_name = "Quick Check-in"
-description = "+30% boost duration"
+description = "Anything blockers? No? Great, bye."
 upgrade_type = 0
 stat = 1
 click_boost_duration_mult = 1.3

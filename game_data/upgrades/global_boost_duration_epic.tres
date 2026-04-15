@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_boost_duration_epic"
 display_name = "Daily Standups"
-description = "+200% boost duration"
+description = "Yesterday's standup is today's standup"
 upgrade_type = 0
 stat = 1
 click_boost_duration_mult = 3.0

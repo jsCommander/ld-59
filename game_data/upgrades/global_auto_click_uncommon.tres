@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_auto_click_uncommon"
 display_name = "Standup Bot"
-description = "+50% auto-click speed"
+description = "What did we even discuss?"
 upgrade_type = 0
 stat = 2
 auto_click_speed_mult = 1.5

@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "senior_damage_rare"
 display_name = "Monitoring System"
-description = "+200% damage"
+description = "If it's not in Grafana, it didn't happen"
 upgrade_type = 1
 target_dev_type = 2
 stat = 0

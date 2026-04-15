@@ -7,7 +7,7 @@
 script = ExtResource("1")
 id = "global_damage_uncommon"
 display_name = "Strategy Pivot"
-description = "+100% damage"
+description = "Pivoting to what you should've done from the start"
 upgrade_type = 0
 stat = 0
 multiplier = 2.0

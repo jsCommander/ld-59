@@ -10,11 +10,14 @@ offset_bottom = 293.0
 script = ExtResource("1_script")
 
 [node name="UpgradeRarity" type="PanelContainer" parent="." unique_id=533698313]
+unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"PanelContainerBackground"
+mouse_filter = 2
+theme_type_variation = &"PanelContainerRarityEpic"
 
 [node name="MarginContainer" type="MarginContainer" parent="UpgradeRarity" unique_id=725522122]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="UpgradeRarity/MarginContainer" unique_id=1832619004]
 layout_mode = 2
@@ -22,6 +25,7 @@ mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="UpgradeRarity/MarginContainer/PanelContainer" unique_id=151489426]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
@@ -31,7 +35,13 @@ theme_override_constants/margin_bottom = 12
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="NameLabel" type="Label" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=379006658]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
 [node name="IconRect" type="TextureRect" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1128170736]
+unique_name_in_owner = true
 visible = false
 clip_contents = true
 custom_minimum_size = Vector2(128, 128)
@@ -41,8 +51,10 @@ texture = ExtResource("2_etht1")
 expand_mode = 1
 
 [node name="Stats" type="VBoxContainer" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=900998279]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="DescriptionLabel" type="Label" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=331070]
+unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3

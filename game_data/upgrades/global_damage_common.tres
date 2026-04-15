@@ -6,7 +6,7 @@
 script = ExtResource("1")
 id = "global_damage_common"
 display_name = "Pep Talk"
-description = "+50% damage"
+description = "You believe in them. That's... something."
 upgrade_type = 0
 stat = 0
 multiplier = 1.5
