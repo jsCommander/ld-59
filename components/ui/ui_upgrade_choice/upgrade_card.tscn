@@ -52,9 +52,13 @@ expand_mode = 1
 
 [node name="Stats" type="VBoxContainer" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=900998279]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 
 [node name="DescriptionLabel" type="Label" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=331070]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3

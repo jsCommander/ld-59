@@ -7,8 +7,20 @@ enum TaskType {FEATURE, BUG}
 enum Music {FR, FR3, SG, SPB}
 enum Sfx {PICKUP, HIT_HURT, EXPLOSION, CLICK}
 enum UpgradeType {GLOBAL, DEV}
-enum UpgradeStat {DAMAGE, CLICK_BOOST, AUTO_CLICK}
-enum UpgradeRarity {COMMON, UNCOMMON, RARE, EPIC, LEGENDARY}
+enum UpgradeStat {
+	GLOBAL_DAMAGE,
+	FEATURE_DAMAGE,
+	BUG_DAMAGE,
+	FEATURE_CHANCE,
+	BUG_CHANCE,
+	BOOST_POWER,
+	BOOST_DURATION,
+	AUTO_CLICK_SPEED,
+	REWARD_BONUS,
+	UPGRADE_CHOICES,
+}
+enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
+enum TradeOffType {PURE, TRADE_OFF}
 
 const BASE_HP: int = 100
 const BASE_DAMAGE: int = int(BASE_HP * 0.4)
@@ -27,6 +39,67 @@ const MAX_BOOST: int = 5
 const BOOST_DECAY_RATE: float = 5.0
 const BOOST_SPEED_MULT: float = 0.2
 const AUTO_CLICK_BASE_INTERVAL: float = 3.0
+
+const STAT_COSTS: Dictionary = {
+	UpgradeStat.GLOBAL_DAMAGE: 1.5,
+	UpgradeStat.FEATURE_DAMAGE: 1.0,
+	UpgradeStat.BUG_DAMAGE: 1.0,
+	UpgradeStat.FEATURE_CHANCE: 0.5,
+	UpgradeStat.BUG_CHANCE: 0.5,
+	UpgradeStat.BOOST_POWER: 1.0,
+	UpgradeStat.BOOST_DURATION: 0.8,
+	UpgradeStat.AUTO_CLICK_SPEED: 1.2,
+	UpgradeStat.REWARD_BONUS: 0.7,
+	UpgradeStat.UPGRADE_CHOICES: 10.0,
+}
+
+const RARITY_BUDGETS: Dictionary = {
+	UpgradeRarity.COMMON: 10,
+	UpgradeRarity.UNCOMMON: 20,
+	UpgradeRarity.EPIC: 35,
+	UpgradeRarity.LEGENDARY: 50,
+}
+
+const TRADE_OFF_RETURN_RATE: float = 0.5
+
+const BASE_FEATURE_CHANCE: float = 50.0
+const BASE_BUG_CHANCE: float = 50.0
+const BASE_UPGRADE_CHOICES: int = 3
+const MAX_UPGRADE_CHOICES: int = 5
+
+const STAT_GLOBAL_DAMAGE: String = "global_damage"
+const STAT_FEATURE_DAMAGE: String = "feature_damage"
+const STAT_BUG_DAMAGE: String = "bug_damage"
+const STAT_FEATURE_CHANCE: String = "feature_chance"
+const STAT_BUG_CHANCE: String = "bug_chance"
+const STAT_BOOST_POWER: String = "boost_power"
+const STAT_BOOST_DURATION: String = "boost_duration"
+const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
+const STAT_REWARD_BONUS: String = "reward_bonus"
+
+const STAT_DISPLAY_NAMES: Dictionary = {
+	STAT_GLOBAL_DAMAGE: "Global Damage",
+	STAT_FEATURE_DAMAGE: "Feature Damage",
+	STAT_BUG_DAMAGE: "Bug Damage",
+	STAT_FEATURE_CHANCE: "Feature Chance",
+	STAT_BUG_CHANCE: "Bug Chance",
+	STAT_BOOST_POWER: "Boost Power",
+	STAT_BOOST_DURATION: "Boost Duration",
+	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
+	STAT_REWARD_BONUS: "Reward Bonus",
+}
+
+# game level ranges -> rarity weights for rolling upgrade rarity
+const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
+	# levels 1-10
+	{UpgradeRarity.COMMON: 0.80, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
+	# levels 11-20
+	{UpgradeRarity.COMMON: 0.40, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.05},
+	# levels 21-30
+	{UpgradeRarity.COMMON: 0.15, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.35, UpgradeRarity.LEGENDARY: 0.20},
+	# levels 31-40
+	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.30},
+]
 
 # elapsed time thresholds -> game_level
 const GAME_LEVEL_THRESHOLDS: Array[float] = [
@@ -54,11 +127,6 @@ const TASK_HP_BY_LEVEL: Dictionary[int, int] = {
 	8: BASE_HP * 30000, # 3000000
 	9: BASE_HP * 60000, # 6000000
 	10: BASE_HP * 150000, # 15000000
-}
-
-# game_level threshold -> task type weights (threshold-based: use max key ≤ current level)
-const TASK_TYPE_WEIGHTS: Dictionary[int, Dictionary] = {
-	1: {TaskType.FEATURE: 0.5, TaskType.BUG: 0.5},
 }
 
 # Placeholder values — tune during playtesting
@@ -108,11 +176,13 @@ const LEVEL_THRESHOLDS: Array[int] = [
 
 const RARITY_COLORS: Dictionary = {
 	UpgradeRarity.COMMON: Color(0.6, 0.6, 0.6),
-	UpgradeRarity.UNCOMMON: Color(0.2, 0.8, 0.2),
-	UpgradeRarity.RARE: Color(0.2, 0.4, 1.0),
+	UpgradeRarity.UNCOMMON: Color(0.2, 0.4, 1.0),
 	UpgradeRarity.EPIC: Color(0.6, 0.2, 0.8),
-	UpgradeRarity.LEGENDARY: Color(1.0, 0.5, 0.0),
+	UpgradeRarity.LEGENDARY: Color(0.9, 0.2, 0.2),
 }
+
+const STAT_POSITIVE_COLOR: Color = Color(0.2, 0.8, 0.2)
+const STAT_NEGATIVE_COLOR: Color = Color(0.9, 0.2, 0.2)
 
 const COMPANY_MILESTONES: Array[Dictionary] = [
 	{"valuation": 500, "name": "Zynga"},

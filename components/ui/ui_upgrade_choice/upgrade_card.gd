@@ -2,22 +2,14 @@ class_name UpgradeCard
 extends Control
 
 # --- Constants ---
-const STAT_MODIFIER: PackedScene = preload("res://components/ui/stat_modifier/stat_modifier.tscn")
+const STAT_MODIFIER: PackedScene = preload("res://components/ui/ui_sprint_panel/stat_modifier.tscn")
 
 const RARITY_VARIATIONS: Dictionary = {
 	Constants.UpgradeRarity.COMMON: &"PanelContainerRarityCommon",
 	Constants.UpgradeRarity.UNCOMMON: &"PanelContainerRarityUncommon",
-	Constants.UpgradeRarity.RARE: &"PanelContainerRarityRare",
 	Constants.UpgradeRarity.EPIC: &"PanelContainerRarityEpic",
 	Constants.UpgradeRarity.LEGENDARY: &"PanelContainerRarityLegendary",
 }
-
-const STAT_MODIFIERS: Array[Dictionary] = [
-	{"field": "multiplier", "name": "Damage"},
-	{"field": "click_boost_power_mult", "name": "Boost Power"},
-	{"field": "click_boost_duration_mult", "name": "Boost Duration"},
-	{"field": "auto_click_speed_mult", "name": "Auto Click"},
-]
 
 # --- Signals ---
 signal chosen(upgrade: UpgradeData)
@@ -69,10 +61,13 @@ func _gui_input(event: InputEvent) -> void:
 
 # --- Private ---
 func _populate_stats() -> void:
-	for mod: Dictionary in STAT_MODIFIERS:
-		var value: float = _upgrade.get(mod["field"])
-		if is_equal_approx(value, 1.0):
-			continue
+	for field: String in Constants.STAT_DISPLAY_NAMES:
+		var value: float = _upgrade.get(field)
+		if not is_zero_approx(value):
+			var stat_row: StatModifier = STAT_MODIFIER.instantiate()
+			stat_row.setup(Constants.STAT_DISPLAY_NAMES[field], value)
+			stats_container.add_child(stat_row)
+	if _upgrade.upgrade_choices != 0:
 		var stat_row: StatModifier = STAT_MODIFIER.instantiate()
-		stat_row.setup(mod["name"], value)
+		stat_row.setup("Upgrade Choices", float(_upgrade.upgrade_choices), true)
 		stats_container.add_child(stat_row)

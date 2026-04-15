@@ -16,5 +16,5 @@ layout_mode = 2
 [node name="SprintLabel" type="Label" parent="MarginContainer" unique_id=1258481882]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Sprint 2"
+text = "Sprint 1"
 label_settings = ExtResource("2_oq3ov")

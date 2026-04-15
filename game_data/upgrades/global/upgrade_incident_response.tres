@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "incident_response"
+display_name = "Incident Response"
+description = "Page everyone. Blame no one. Fix nothing."
+rarity = 1
+upgrade_type = 0
+trade_off_type = 1
+bug_damage = 0.2
+bug_chance = 0.2
+feature_chance = -0.2

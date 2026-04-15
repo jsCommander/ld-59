@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "ship_it"
+display_name = "Ship It"
+description = "\"We'll fix it in prod.\" Spoiler: they won't."
+rarity = 0
+upgrade_type = 1
+trade_off_type = 1
+target_dev_type = 0
+feature_damage = 0.10
+feature_chance = 0.20
+bug_chance = -0.20

@@ -38,21 +38,15 @@ func get_xp_for_level(lvl: int) -> int:
 
 
 func get_level_up_upgrades() -> Array[UpgradeData]:
+	var count: int = Balance.calculate_upgrade_choices(upgrades_taken)
 	var result: Array[UpgradeData] = []
-	var global_pick: UpgradeData = _pick_random_from(_get_available_by_type(Constants.UpgradeType.GLOBAL))
-	if global_pick:
-		result.append(global_pick)
-	var dev_pick: UpgradeData = _pick_random_from(_get_available_by_type(Constants.UpgradeType.DEV))
-	if dev_pick:
-		result.append(dev_pick)
-	var all_available: Array[UpgradeData] = _get_all_available()
-	var remaining: Array[UpgradeData] = []
-	for u: UpgradeData in all_available:
-		if u not in result:
-			remaining.append(u)
-	var random_pick: UpgradeData = _pick_random_from(remaining)
-	if random_pick:
-		result.append(random_pick)
+	var used_ids: Array[String] = []
+	for i: int in count:
+		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level)
+		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
+		if pick:
+			result.append(pick)
+			used_ids.append(pick.id)
 	return result
 
 
@@ -180,7 +174,7 @@ func _create_tick_timer() -> Timer:
 func _generate_sprint() -> void:
 	sprint_number += 1
 	var task_level: int = game_level
-	var weights: Dictionary = Balance.get_task_type_weights(task_level)
+	var weights: Dictionary = Balance.calculate_task_type_weights(upgrades_taken)
 	sprint_slots.clear()
 	for i: int in Constants.SPRINT_SIZE:
 		var template: TaskData = _pick_weighted_task(weights)
@@ -227,7 +221,7 @@ func _apply_upgrade(upgrade: UpgradeData) -> void:
 			var arr: Array[UpgradeData] = []
 			dev_upgrades[upgrade.target_dev_type] = arr
 		dev_upgrades[upgrade.target_dev_type].append(upgrade)
-	Log.log_info(name, "Applied upgrade: %s (×%.1f)" % [upgrade.id, upgrade.multiplier])
+	Log.log_info(name, "Applied upgrade: %s (%s)" % [upgrade.id, upgrade.display_name])
 
 
 # --- Level-up ---
@@ -246,7 +240,9 @@ func _check_level_up() -> void:
 
 
 func _apply_task_rewards(task: TaskData) -> void:
-	var reward: int = int(task.max_hp)
+	var base_reward: int = int(task.max_hp)
+	var reward_mult: float = Balance.calculate_reward_multiplier(upgrades_taken)
+	var reward: int = int(base_reward * reward_mult)
 	if reward > 0:
 		valuation += reward
 		SB.valuation_changed.emit()
@@ -255,25 +251,6 @@ func _apply_task_rewards(task: TaskData) -> void:
 
 
 # --- Upgrade selection ---
-
-func _get_all_available() -> Array[UpgradeData]:
-	var pool: Array[UpgradeData] = []
-	for upgrade: UpgradeData in DR.upgrades.values():
-		if _is_upgrade_available(upgrade):
-			pool.append(upgrade)
-	return pool
-
-
-func _get_available_by_type(type: Constants.UpgradeType) -> Array[UpgradeData]:
-	var pool: Array[UpgradeData] = []
-	for upgrade: UpgradeData in DR.upgrades.values():
-		if not _is_upgrade_available(upgrade):
-			continue
-		if upgrade.upgrade_type != type:
-			continue
-		pool.append(upgrade)
-	return pool
-
 
 func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
 	if pool.is_empty():
@@ -284,13 +261,8 @@ func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
 func _is_upgrade_available(upgrade: UpgradeData) -> bool:
 	if _is_taken(upgrade.id):
 		return false
-	if upgrade.min_game_level > 0 and game_level < upgrade.min_game_level:
-		return false
 	if upgrade.upgrade_type == Constants.UpgradeType.DEV:
 		if not _has_hired_dev_type(upgrade.target_dev_type):
-			return false
-	for req: UpgradeData in upgrade.prerequisites:
-		if not _is_taken(req.id):
 			return false
 	return true
 
@@ -307,6 +279,26 @@ func _has_hired_dev_type(dev_type: Constants.DevType) -> bool:
 		if data.dev_type == dev_type:
 			return true
 	return false
+
+
+func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:
+	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if not _is_upgrade_available(upgrade):
+			continue
+		if upgrade.id in exclude_ids:
+			continue
+		if upgrade.rarity == target_rarity:
+			pool.append(upgrade)
+	if pool.is_empty():
+		# Fallback: try any rarity
+		for upgrade: UpgradeData in DR.upgrades.values():
+			if not _is_upgrade_available(upgrade):
+				continue
+			if upgrade.id in exclude_ids:
+				continue
+			pool.append(upgrade)
+	return _pick_random_from(pool)
 
 
 func _pick_weighted_task(weights: Dictionary) -> TaskData:
