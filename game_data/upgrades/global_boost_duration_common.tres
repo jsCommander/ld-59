@@ -4,12 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "senior_speed_common"
-display_name = "Vim Config"
-description = "+10% speed senior"
-upgrade_type = 1
-target_dev_type = 2
+id = "global_boost_duration_common"
+display_name = "Quick Check-in"
+description = "+30% boost duration"
+upgrade_type = 0
 stat = 1
-multiplier = 1.1
+click_boost_duration_mult = 1.3
 rarity = 0
 prerequisites = []

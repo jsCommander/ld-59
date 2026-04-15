@@ -26,7 +26,7 @@ func flash(duration: float = 0.08) -> void:
 	if not _target:
 		return
 	if _flash_tween and _flash_tween.is_valid():
-		_flash_tween.kill()
+		return
 	_original_material = _target.material
 	_target.material = _flash_material
 	_flash_material.set_shader_parameter("active", true)

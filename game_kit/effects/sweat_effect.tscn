@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="Gradient" id="Gradient_drop"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_drop"]
+gradient = SubResource("Gradient_drop")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Curve" id="Curve_scale"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_scale"]
+curve = SubResource("Curve_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sweat"]
+resource_local_to_scene = true
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(60, 10, 0)
+direction = Vector3(0, 1, 0)
+spread = 55.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 200, 0)
+scale_min = 5.0
+scale_max = 9.0
+scale_curve = SubResource("CurveTexture_scale")
+color = Color(0.55, 0.75, 1.0, 0.7)
+
+[node name="SweatEffect" type="GPUParticles2D"]
+emitting = false
+amount = 4
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_sweat")
+texture = SubResource("GradientTexture2D_drop")

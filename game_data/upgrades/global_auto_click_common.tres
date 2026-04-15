@@ -4,12 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "regular_speed_common"
-display_name = "Quiet Office"
-description = "+10% speed regular"
-upgrade_type = 1
-target_dev_type = 1
-stat = 1
-multiplier = 1.1
+id = "global_auto_click_common"
+display_name = "Coffee Machine"
+description = "Auto-click (base speed)"
+upgrade_type = 0
+stat = 2
+auto_click_speed_mult = 1.0
 rarity = 0
 prerequisites = []

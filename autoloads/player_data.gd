@@ -131,9 +131,14 @@ func _process(delta: float) -> void:
 # --- Handlers ---
 
 func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
-	var task: TaskData = _find_first_task()
-	if not task:
+	var available: Array[TaskData] = _get_available_tasks()
+	if available.is_empty():
 		return
+	var task: TaskData
+	if developer.data.task_select:
+		task = developer.data.task_select.select(developer.data, available)
+	else:
+		task = available[0]
 	var taken: TaskData = take_task(task)
 	if taken:
 		SB.task_assigned.emit(taken, developer, task_position)
@@ -203,6 +208,14 @@ func _find_first_task() -> TaskData:
 		if slot != null:
 			return slot as TaskData
 	return null
+
+
+func _get_available_tasks() -> Array[TaskData]:
+	var tasks: Array[TaskData] = []
+	for slot: Variant in sprint_slots:
+		if slot != null:
+			tasks.append(slot as TaskData)
+	return tasks
 
 
 # --- Upgrade application ---

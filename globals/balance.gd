@@ -10,10 +10,48 @@ static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskT
 
 static func calculate_attack_speed(dev_data: DeveloperData, global_upgrades: Array[UpgradeData], dev_upgrades: Array[UpgradeData], boost_stacks: int = 0) -> float:
 	var base: float = dev_data.base_attack_speed
-	var speed_mult: float = _calc_mult(Constants.UpgradeStat.SPEED, global_upgrades, dev_upgrades)
-	var boost_mult: float = 1.0 + boost_stacks * Constants.BOOST_SPEED_MULT
-	var interval: float = base / (speed_mult * boost_mult)
+	var boost_power: float = calculate_boost_power(global_upgrades, dev_upgrades)
+	var boost_mult: float = 1.0 + boost_stacks * boost_power
+	var interval: float = base / boost_mult
 	return maxf(interval, Constants.SPEED_CAP)
+
+
+static func calculate_boost_power(global_upgrades: Array[UpgradeData], dev_upgrades: Array[UpgradeData]) -> float:
+	var mult: float = 1.0
+	for upgrade: UpgradeData in global_upgrades:
+		if upgrade.stat == Constants.UpgradeStat.CLICK_BOOST:
+			mult *= upgrade.click_boost_power_mult
+	for upgrade: UpgradeData in dev_upgrades:
+		if upgrade.stat == Constants.UpgradeStat.CLICK_BOOST:
+			mult *= upgrade.click_boost_power_mult
+	return Constants.BOOST_SPEED_MULT * mult
+
+
+static func calculate_boost_decay_interval(global_upgrades: Array[UpgradeData], dev_upgrades: Array[UpgradeData]) -> float:
+	var mult: float = 1.0
+	for upgrade: UpgradeData in global_upgrades:
+		if upgrade.stat == Constants.UpgradeStat.CLICK_BOOST:
+			mult *= upgrade.click_boost_duration_mult
+	for upgrade: UpgradeData in dev_upgrades:
+		if upgrade.stat == Constants.UpgradeStat.CLICK_BOOST:
+			mult *= upgrade.click_boost_duration_mult
+	return (1.0 / Constants.BOOST_DECAY_RATE) * mult
+
+
+static func calculate_auto_click_interval(global_upgrades: Array[UpgradeData], dev_upgrades: Array[UpgradeData]) -> float:
+	var mult: float = 1.0
+	var has_upgrade: bool = false
+	for upgrade: UpgradeData in global_upgrades:
+		if upgrade.stat == Constants.UpgradeStat.AUTO_CLICK:
+			mult *= upgrade.auto_click_speed_mult
+			has_upgrade = true
+	for upgrade: UpgradeData in dev_upgrades:
+		if upgrade.stat == Constants.UpgradeStat.AUTO_CLICK:
+			mult *= upgrade.auto_click_speed_mult
+			has_upgrade = true
+	if not has_upgrade:
+		return 0.0
+	return Constants.AUTO_CLICK_BASE_INTERVAL / mult
 
 
 static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType) -> float:
@@ -51,6 +89,7 @@ static func get_task_type_weights(game_level: int) -> Dictionary:
 
 static func get_game_duration() -> float:
 	return Constants.BASE_TOTAL_GAME_TIME
+
 
 
 static func _calc_mult(stat: Constants.UpgradeStat, global_upgrades: Array[UpgradeData], dev_upgrades: Array[UpgradeData]) -> float:

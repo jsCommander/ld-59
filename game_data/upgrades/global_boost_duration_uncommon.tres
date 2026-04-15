@@ -1,16 +1,15 @@
 [gd_resource type="Resource" script_class="UpgradeData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
-[ext_resource type="Resource" path="res://game_data/upgrades/global_speed_epic.tres" id="2_prereq"]
+[ext_resource type="Resource" path="res://game_data/upgrades/global_boost_duration_common.tres" id="2_prereq"]
 
 [resource]
 script = ExtResource("1")
-id = "global_speed_legendary"
-display_name = "Bottomless Coffee"
-description = "+100% speed for all"
+id = "global_boost_duration_uncommon"
+display_name = "Slack Ping"
+description = "+50% boost duration"
 upgrade_type = 0
 stat = 1
-multiplier = 2.0
-rarity = 4
-min_game_level = 9
+click_boost_duration_mult = 1.5
+rarity = 1
 prerequisites = [ExtResource("2_prereq")]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://brdupycq201so"]
 
 [ext_resource type="Script" uid="uid://6rnldvfqec87" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://bjgkr1bhtatm4" path="res://components/task_queue/task_card.tscn" id="2_task_card"]
+[ext_resource type="PackedScene" uid="uid://bjgkr1bhtatm4" path="res://components/ui/ui_task_card/task_card.tscn" id="2_task_card"]
 
 [node name="UiSprintPanel" type="MarginContainer" unique_id=1734520074]
 offset_left = 8.0

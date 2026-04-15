@@ -19,6 +19,7 @@ extends Control
 @onready var hp_bar: ProgressBar = %HpBar
 @onready var level_label: Label = %LevelLabel
 @onready var flashable: FlashableTrait = %FlashableTrait
+@onready var hp_label: Label = %HpLabel
 @onready var damage_number: DamageNumber = %DamageNumber
 
 # --- Lifecycle ---
@@ -36,7 +37,9 @@ func update_hp() -> void:
 	if not is_instance_valid(hp_bar) or not task_data or task_data.max_hp <= 0.0:
 		return
 	hp_bar.visible = true
-	hp_bar.value = maxf(task_data.current_hp / task_data.max_hp, 0.0)
+	hp_bar.max_value = task_data.max_hp
+	hp_bar.value = maxf(task_data.current_hp, 0.0)
+	hp_label.text = str(int(task_data.current_hp))
 
 
 func flash() -> void:
@@ -44,8 +47,7 @@ func flash() -> void:
 
 
 func show_damage(damage: int) -> void:
-	damage_number.spawn("-%dsp" % damage, Vector2.UP, Color.YELLOW)
-
+	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
 
 func kill() -> void:
 	task_data = null
@@ -82,4 +84,6 @@ func _apply_task() -> void:
 	level_label.text = str(task_data.level)
 	if show_hp and task_data.max_hp > 0.0:
 		hp_bar.visible = true
-		hp_bar.value = task_data.current_hp / task_data.max_hp
+		hp_bar.max_value = task_data.max_hp
+		hp_bar.value = task_data.current_hp
+		hp_label.text = str(int(task_data.current_hp))

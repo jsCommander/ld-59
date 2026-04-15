@@ -20,6 +20,8 @@ enum State {IDLE, WAITING, WORKING}
 @onready var task_display: TaskCard = %TaskCard
 @onready var task_landing_point: Marker2D = %TaskLandingPoint
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var clickable: ClickableTrait = $ClickableTrait
+@onready var sweat_effect: GPUParticles2D = $SweatEffect
 
 # --- State ---
 
@@ -28,6 +30,7 @@ var _attack_timer: float = 0.0
 var _current_task: TaskData = null
 var _boost_stacks: int = 0
 var _boost_decay_timer: float = 0.0
+var _auto_click_timer: float = 0.0
 
 # --- Lifecycle ---
 
@@ -38,6 +41,7 @@ func _ready() -> void:
 	add_to_group("developer")
 	SB.task_assigned.connect(_on_task_assigned)
 	SB.task_fly_ended.connect(_on_task_fly_ended)
+	clickable.clicked.connect(on_clicked)
 
 
 func _process(delta: float) -> void:
@@ -53,11 +57,13 @@ func _process(delta: float) -> void:
 			_process_working(delta)
 
 	_process_boost_decay(delta)
+	_process_auto_click(delta)
 
 # --- Handlers ---
 
 func _on_task_killed() -> void:
 	SB.task_destroyed.emit(_current_task)
+	task_display.visible = false
 	task_display.kill()
 	_current_task = null
 	_change_state(State.IDLE)
@@ -73,12 +79,15 @@ func _on_task_assigned(task: TaskData, developer: Developer, _task_position: Vec
 func _on_task_fly_ended(_task: TaskData, developer: Developer) -> void:
 	if developer != self:
 		return
+	task_display.visible = true
 	task_display.task_data = _current_task
 	_change_state(State.WORKING)
 
 # --- Public ---
 
 func on_clicked() -> void:
+	if not data:
+		return
 	_apply_boost()
 
 
@@ -107,12 +116,24 @@ func _process_boost_decay(delta: float) -> void:
 	if _boost_stacks <= 0:
 		return
 	_boost_decay_timer += delta
-	if _boost_decay_timer >= 1.0 / Constants.BOOST_DECAY_RATE:
-		_boost_decay_timer -= 1.0 / Constants.BOOST_DECAY_RATE
+	var decay_interval: float = Balance.calculate_boost_decay_interval(PD.global_upgrades, PD.get_dev_upgrades(data.dev_type))
+	if _boost_decay_timer >= decay_interval:
+		_boost_decay_timer -= decay_interval
 		_boost_stacks -= 1
 		if _boost_stacks <= 0:
 			_boost_stacks = 0
-			dev_rig.modulate = Color.WHITE
+		_update_boost_visuals()
+
+
+func _process_auto_click(delta: float) -> void:
+	var dev_upgrades: Array[UpgradeData] = PD.get_dev_upgrades(data.dev_type)
+	var interval: float = Balance.calculate_auto_click_interval(PD.global_upgrades, dev_upgrades)
+	if interval <= 0.0:
+		return
+	_auto_click_timer += delta
+	if _auto_click_timer >= interval:
+		_auto_click_timer -= interval
+		_apply_boost(true)
 
 
 func _change_state(new_state: State) -> void:
@@ -148,12 +169,19 @@ func _get_attack_speed() -> float:
 	return Balance.calculate_attack_speed(data, PD.global_upgrades, dev_upgrades, _boost_stacks)
 
 
-func _apply_boost() -> void:
+func _apply_boost(is_auto: bool = false) -> void:
 	_boost_stacks += 1
-	var heat: float = clampf(float(_boost_stacks) / float(Constants.MAX_BOOST), 0.0, 1.0)
-	dev_rig.modulate = Color.WHITE.lerp(Color(1.5, 0.5, 0.5), heat)
 	if _boost_stacks > Constants.MAX_BOOST:
 		_boost_stacks = Constants.MAX_BOOST
+	_update_boost_visuals()
+	if not is_auto:
+		SB.boost_applied.emit(self)
+
+
+func _update_boost_visuals() -> void:
+	var heat: float = clampf(float(_boost_stacks) / float(Constants.MAX_BOOST), 0.0, 1.0)
+	dev_rig.modulate = Color.WHITE.lerp(Color(1.5, 0.5, 0.5), heat)
+	sweat_effect.emitting = _boost_stacks > 0
 
 
 

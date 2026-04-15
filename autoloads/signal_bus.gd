@@ -36,3 +36,5 @@ signal upgrade_chosen(upgrade: UpgradeData)
 signal developer_hire_requested
 @warning_ignore("unused_signal")
 signal developer_chosen(dev_data: DeveloperData)
+@warning_ignore("unused_signal")
+signal boost_applied(developer: Developer)

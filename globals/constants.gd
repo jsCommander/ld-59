@@ -7,7 +7,7 @@ enum TaskType {FEATURE, BUG, REFACTOR}
 enum Music {FR, FR3, SG, SPB}
 enum Sfx {PICKUP, HIT_HURT, EXPLOSION, CLICK}
 enum UpgradeType {GLOBAL, DEV}
-enum UpgradeStat {DAMAGE, SPEED}
+enum UpgradeStat {DAMAGE, CLICK_BOOST, AUTO_CLICK}
 enum UpgradeRarity {COMMON, UNCOMMON, RARE, EPIC, LEGENDARY}
 
 const BASE_HP: int = 100
@@ -22,9 +22,10 @@ const SPRINT_SIZE: int = 10
 const MAX_LEVEL: int = 40
 
 const BASE_ATTACK_SPEED: float = 2.0
-const MAX_BOOST: int = 10
-const BOOST_DECAY_RATE: float = 1.0
-const BOOST_SPEED_MULT: float = 0.05
+const MAX_BOOST: int = 5
+const BOOST_DECAY_RATE: float = 5.0
+const BOOST_SPEED_MULT: float = 0.2
+const AUTO_CLICK_BASE_INTERVAL: float = 3.0
 
 # elapsed time thresholds -> game_level
 const GAME_LEVEL_THRESHOLDS: Array[float] = [
@@ -56,9 +57,7 @@ const TASK_HP_BY_LEVEL: Dictionary[int, int] = {
 
 # game_level threshold -> task type weights (threshold-based: use max key ≤ current level)
 const TASK_TYPE_WEIGHTS: Dictionary[int, Dictionary] = {
-	1: {TaskType.FEATURE: 1.0, TaskType.BUG: 0.0, TaskType.REFACTOR: 0.0},
-	4: {TaskType.FEATURE: 0.7, TaskType.BUG: 0.2, TaskType.REFACTOR: 0.1},
-	8: {TaskType.FEATURE: 0.3, TaskType.BUG: 0.3, TaskType.REFACTOR: 0.3},
+	1: {TaskType.FEATURE: 0.34, TaskType.BUG: 0.33, TaskType.REFACTOR: 0.33},
 }
 
 # Placeholder values — tune during playtesting

@@ -1,16 +1,15 @@
 [gd_resource type="Resource" script_class="UpgradeData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
-[ext_resource type="Resource" path="res://game_data/upgrades/global_speed_common.tres" id="2_prereq"]
+[ext_resource type="Resource" path="res://game_data/upgrades/global_boost_duration_rare.tres" id="2_prereq"]
 
 [resource]
 script = ExtResource("1")
-id = "global_speed_uncommon"
-display_name = "Kanban Board"
-description = "+20% speed for all"
+id = "global_boost_duration_epic"
+display_name = "Daily Standups"
+description = "+200% boost duration"
 upgrade_type = 0
 stat = 1
-multiplier = 1.2
-rarity = 1
-min_game_level = 3
+click_boost_duration_mult = 3.0
+rarity = 3
 prerequisites = [ExtResource("2_prereq")]

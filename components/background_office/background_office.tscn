@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bn6l56wo7yx5w"]
 
-[ext_resource type="Texture2D" uid="uid://b8g4wf7a01bn5" path="res://assets/exports/background.png" id="1_bg"]
+[ext_resource type="Texture2D" uid="uid://bqkh0pbig80q3" path="res://assets/exports/background.png" id="1_bg"]
 
 [node name="BackgroundOffice" type="Node2D" unique_id=906555021]
 
