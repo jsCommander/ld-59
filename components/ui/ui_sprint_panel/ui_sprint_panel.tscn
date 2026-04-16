@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://brdupycq201so"]
 
 [ext_resource type="Script" uid="uid://6rnldvfqec87" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://bjgkr1bhtatm4" path="res://components/ui/ui_task_card/task_card.tscn" id="2_task_card"]
 
 [node name="UiSprintPanel" type="MarginContainer" unique_id=1734520074]
 offset_left = 8.0
@@ -9,48 +8,11 @@ offset_right = 24.0
 offset_bottom = 16.0
 script = ExtResource("1_script")
 
-[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1903774778]
-layout_mode = 2
-theme_type_variation = &"PanelContainerDark"
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2" unique_id=384062300]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1387442773]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/MarginContainer" unique_id=1387442773]
-layout_mode = 2
-
-[node name="CardContainer" type="HBoxContainer" parent="PanelContainer2/MarginContainer/PanelContainer" unique_id=1586872810]
+[node name="CardContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1586872810]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
-
-[node name="TaskCard1" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=1610732728 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard2" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=864503572 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard3" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=2087355060 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard4" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=1730148183 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard5" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=1424057726 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard6" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=74224296 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard7" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=919540706 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard8" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=1527217063 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard9" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=733434214 instance=ExtResource("2_task_card")]
-layout_mode = 2
-
-[node name="TaskCard10" parent="PanelContainer2/MarginContainer/PanelContainer/CardContainer" unique_id=384011137 instance=ExtResource("2_task_card")]
-layout_mode = 2

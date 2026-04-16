@@ -12,36 +12,23 @@ const FLY_ICON_SIZE: Vector2 = Vector2(64, 64)
 
 @onready var sprint_panel: UiSprintPanel = %UiSprintPanel
 @onready var dialog_manager: DialogManager = %DialogManager
-
-# --- State ---
-
-var _pending_upgrade_level: int = -1
+@onready var upgrade_button: UiUpgradeButton = %UiUpgradeButton
 
 # --- Lifecycle ---
 
 func _ready() -> void:
-	SB.level_up.connect(_on_level_up)
 	SB.developer_hire_requested.connect(_on_hire_requested)
 	SB.game_over.connect(_on_game_over)
 	SB.task_assigned.connect(_on_task_assigned)
+	upgrade_button.pressed.connect(_on_upgrade_button_pressed)
 
 # --- Handlers ---
-
-func _on_popup_closed() -> void:
-	SB.selection_cleared.emit()
-
-func _on_level_up(level: int) -> void:
-	_pending_upgrade_level = level
-	if level not in Constants.HIRE_LEVELS:
-		_show_upgrade_popup(level)
 
 func _on_hire_requested() -> void:
 	var result: Dictionary = await dialog_manager.open_dialog(UI_HIRE_CHOICE, {}, true)
 	var dev_data: DeveloperData = result.get("dev_data")
 	if dev_data:
 		SB.developer_chosen.emit(dev_data)
-	if _pending_upgrade_level > 0:
-		_show_upgrade_popup(_pending_upgrade_level)
 
 func _on_game_over(final_valuation: int) -> void:
 	var result: Dictionary = await dialog_manager.open_dialog(UI_GAME_OVER, {"valuation": final_valuation}, true)
@@ -51,15 +38,24 @@ func _on_game_over(final_valuation: int) -> void:
 func _on_task_assigned(task: TaskData, developer: Developer, task_position: Vector2) -> void:
 	_fly_task_to_developer(task, developer, task_position)
 
+func _on_upgrade_button_pressed() -> void:
+	while not PD.pending_upgrades.is_empty():
+		var upgrade_type: Constants.UpgradeType = PD.pending_upgrades.pop_front()
+		SB.pending_upgrades_changed.emit()
+		if upgrade_type == Constants.UpgradeType.HIRE:
+			var result: Dictionary = await dialog_manager.open_dialog(UI_HIRE_CHOICE, {}, true)
+			var dev_data: DeveloperData = result.get("dev_data")
+			if dev_data:
+				SB.developer_chosen.emit(dev_data)
+		elif upgrade_type == Constants.UpgradeType.UPGRADE:
+			var result: Dictionary = await dialog_manager.open_dialog(UI_UPGRADE_CHOICE, {"level": PD.level}, true)
+			var upgrade: UpgradeData = result.get("upgrade")
+			if upgrade:
+				SB.upgrade_chosen.emit(upgrade)
+		else:
+			Log.log_warn(name, "Unknown upgrade type: %d, skipping" % upgrade_type)
+
 # --- Private ---
-
-func _show_upgrade_popup(level: int) -> void:
-	var result: Dictionary = await dialog_manager.open_dialog(UI_UPGRADE_CHOICE, {"level": level}, true)
-	var upgrade: UpgradeData = result.get("upgrade")
-	if upgrade:
-		SB.upgrade_chosen.emit(upgrade)
-	_pending_upgrade_level = -1
-
 
 func _fly_task_to_developer(task: TaskData, developer: Developer, task_position: Vector2) -> void:
 	var start_pos: Vector2 = sprint_panel.get_card_position(task)

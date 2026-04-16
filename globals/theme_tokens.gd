@@ -18,9 +18,9 @@ const SECONDARY_HOVER: Color = Color("#a0754f")
 # --- Surface ---
 
 const SURFACE: Color = Color("#ffffff")
-const SURFACE_DARK: Color = Color("#3d2a1a")
+const SURFACE_DARK: Color = Color("#5e4432")
 const SURFACE_CARD: Color = Color("#fff5e6")
-const SURFACE_CARD_HOVER: Color = Color("#ffeacc")
+
 const OVERLAY: Color = Color("#00000047")
 const OUTLINE: Color = Color("#000000")
 const NEUTRAL: Color = Color("#dfe0d9")
@@ -44,12 +44,12 @@ const PURPLE: Color = Color("#9933cc")
 # ============================================================
 
 const FONT_SIZE_DEFAULT: int = 24
-const FONT_SIZE_H1: int = 128
+const FONT_SIZE_H1: int = 64
 const FONT_SIZE_H2: int = 48
 const FONT_SIZE_H3: int = 32
 
-const FONT_COLOR: Color = SECONDARY
-const FONT_COLOR_MUTED: Color = SECONDARY_HOVER
+const FONT_COLOR: Color = Color("#000000")
+const FONT_COLOR_MUTED: Color = Color("#a89880") # ~3.5:1 on SURFACE_DARK — secondary labels only
 const FONT_COLOR_ON_ACCENT: Color = SURFACE
 const FONT_COLOR_ON_ACCENT_OUTLINE: Color = OUTLINE
 const FONT_COLOR_ON_ACCENT_SHADOW: Color = OUTLINE
@@ -68,7 +68,7 @@ const STAT_NEGATIVE: Color = DESTRUCTIVE
 const RARITY_COMMON: Color = GREY
 const RARITY_UNCOMMON: Color = BLUE
 const RARITY_EPIC: Color = PURPLE
-const RARITY_LEGENDARY: Color = DESTRUCTIVE
+const RARITY_LEGENDARY: Color = PRIMARY
 
 const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 	Constants.UpgradeRarity.COMMON: RARITY_COMMON,
@@ -79,10 +79,10 @@ const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 
 # --- Game Entities ---
 
-const FEATURE: Color = SKY
-const BUG: Color = SALMON
-const HP: Color = SALMON
-const MONEY: Color = TEAL
+const FEATURE: Color = Color("#8fb8d9")
+const BUG: Color = Color("#d9998f")
+const HP: Color = BUG
+const MONEY: Color = Color("#00cc44")
 
 # ============================================================
 # Component Variants (Godot theme type variations)
@@ -98,28 +98,28 @@ const LABEL_H3_SIZE: int = FONT_SIZE_H3
 const LABEL_ON_ACCENT_COLOR: Color = FONT_COLOR_ON_ACCENT
 const LABEL_ON_ACCENT_OUTLINE: Color = FONT_COLOR_ON_ACCENT_OUTLINE
 const LABEL_ON_ACCENT_SHADOW: Color = FONT_COLOR_ON_ACCENT_SHADOW
-const LABEL_ON_DARK_COLOR: Color = SURFACE_CARD
-
-# --- RichTextLabel ---
-
-const RICH_TEXT_LABEL_DEFAULT_COLOR: Color = FONT_COLOR
+const LABEL_MONEY_COLOR: Color = MONEY
 
 # --- Button ---
 
-const BUTTON_DEFAULT_COLOR: Color = FONT_COLOR
+const BUTTON_DEFAULT_COLOR: Color = FONT_COLOR_ON_ACCENT
 const BUTTON_DEFAULT_BG: Color = PRIMARY
 const BUTTON_DEFAULT_BG_HOVER: Color = PRIMARY_HOVER
 const BUTTON_DEFAULT_BG_FOCUS: Color = PRIMARY_HOVER
 const BUTTON_DEFAULT_BG_PRESSED: Color = PRIMARY_PRESSED
 const BUTTON_DEFAULT_BORDER: Color = SECONDARY
 const BUTTON_LARGE_SIZE: int = FONT_SIZE_H2
+const BUTTON_UPGRADE_COLOR: Color = FONT_COLOR_ON_ACCENT
+const BUTTON_UPGRADE_BG: Color = MONEY
+const BUTTON_UPGRADE_BG_HOVER: Color = Color("#6bab92")
+const BUTTON_UPGRADE_BG_PRESSED: Color = Color("#4a8870")
 
 # --- PanelContainer ---
 
-const PANEL_CONTAINER_DEFAULT_BG: Color = SURFACE_CARD
+const PANEL_CONTAINER_DEFAULT_BG: Color = SURFACE
 const PANEL_CONTAINER_PRIMARY_BG: Color = PRIMARY
 const PANEL_CONTAINER_PRIMARY_HOVER_BG: Color = PRIMARY_HOVER
-const PANEL_CONTAINER_DARK_BG: Color = SURFACE_DARK
+const PANEL_CONTAINER_LIGHT_BG: Color = SURFACE_CARD
 const PANEL_CONTAINER_RARITY_COMMON_BG: Color = RARITY_COMMON
 const PANEL_CONTAINER_RARITY_UNCOMMON_BG: Color = RARITY_UNCOMMON
 const PANEL_CONTAINER_RARITY_EPIC_BG: Color = RARITY_EPIC
@@ -127,8 +127,9 @@ const PANEL_CONTAINER_RARITY_LEGENDARY_BG: Color = RARITY_LEGENDARY
 
 # --- ProgressBar ---
 
-const PROGRESS_DEFAULT_BG: Color = NEUTRAL
+const PROGRESS_DEFAULT_BG: Color = SURFACE
 const PROGRESS_DEFAULT_FILL: Color = PRIMARY
 const PROGRESS_FEATURE_FILL: Color = FEATURE
 const PROGRESS_BUG_FILL: Color = BUG
 const PROGRESS_HP_FILL: Color = HP
+const PROGRESS_EXP_FILL: Color = MONEY

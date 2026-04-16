@@ -14,7 +14,6 @@ script = ExtResource("1_script")
 [node name="UiHireChoice" type="PanelContainer" parent="." unique_id=1734089240]
 custom_minimum_size = Vector2(512, 256)
 layout_mode = 2
-theme_type_variation = &"PanelContainerDark"
 
 [node name="MarginContainer" type="MarginContainer" parent="UiHireChoice" unique_id=1101002084]
 layout_mode = 2

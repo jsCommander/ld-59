@@ -47,7 +47,11 @@ func _ready() -> void:
 
 # --- Handlers ---
 func _on_mouse_entered() -> void:
-	modulate = Color(0.75, 0.75, 0.75)
+	if _upgrade:
+		var rarity_color: Color = ThemeTokens.RARITY_COLORS_DICT.get(_upgrade.rarity, Color.WHITE)
+		modulate = Color.WHITE.lerp(rarity_color, 0.15)
+	else:
+		modulate = Color(0.9, 0.9, 0.9)
 
 
 func _on_mouse_exited() -> void:

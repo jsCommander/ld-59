@@ -50,15 +50,51 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_default"]
-bg_color = Color(1, 0.960784, 0.901961, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_upgrade_hover"]
+bg_color = Color(0.42, 0.671, 0.573, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_dark"]
-bg_color = Color(0.239216, 0.164706, 0.101961, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_upgrade_normal"]
+bg_color = Color(0, 0.8, 0.267, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_upgrade_pressed"]
+bg_color = Color(0.29, 0.533, 0.439, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.301961, 0.196078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_default"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_light"]
+bg_color = Color(1, 0.960784, 0.901961, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -92,7 +128,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_legendary"]
-bg_color = Color(0.901961, 0.2, 0.2, 1)
+bg_color = Color(1, 0.780392, 0.321569, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -106,7 +142,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
-bg_color = Color(0.87451, 0.87451, 0.85098, 1)
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -120,21 +156,28 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bug"]
-bg_color = Color(1, 0.509804, 0.435294, 1)
+bg_color = Color(0.851, 0.6, 0.561, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_exp"]
+bg_color = Color(0, 0.8, 0.267, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_feature"]
-bg_color = Color(0.462745, 0.678431, 1, 1)
+bg_color = Color(0.561, 0.722, 0.851, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_hp"]
-bg_color = Color(1, 0.509804, 0.435294, 1)
+bg_color = Color(0.851, 0.6, 0.561, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -143,11 +186,11 @@ corner_radius_bottom_left = 8
 [resource]
 default_font = ExtResource("1_ibuqq")
 default_font_size = 24
-Button/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
-Button/colors/font_focus_color = Color(0.470588, 0.301961, 0.196078, 1)
-Button/colors/font_hover_color = Color(0.470588, 0.301961, 0.196078, 1)
-Button/colors/font_hover_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
-Button/colors/font_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
 Button/styles/disabled = null
 Button/styles/focus = SubResource("StyleBoxFlat_btn_focus")
 Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
@@ -155,20 +198,61 @@ Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 ButtonLarge/base_type = &"Button"
 ButtonLarge/font_sizes/font_size = 48
+ButtonUpgrade/base_type = &"Button"
+ButtonUpgrade/colors/font_color = Color(1, 1, 1, 1)
+ButtonUpgrade/colors/font_focus_color = Color(1, 1, 1, 1)
+ButtonUpgrade/colors/font_hover_color = Color(1, 1, 1, 1)
+ButtonUpgrade/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+ButtonUpgrade/colors/font_outline_color = Color(0, 0, 0, 1)
+ButtonUpgrade/colors/font_pressed_color = Color(1, 1, 1, 1)
+ButtonUpgrade/colors/font_shadow_color = Color(0, 0, 0, 1)
+ButtonUpgrade/font_sizes/font_size = 48
+ButtonUpgrade/styles/focus = SubResource("StyleBoxFlat_btn_upgrade_hover")
+ButtonUpgrade/styles/hover = SubResource("StyleBoxFlat_btn_upgrade_hover")
+ButtonUpgrade/styles/normal = SubResource("StyleBoxFlat_btn_upgrade_normal")
+ButtonUpgrade/styles/pressed = SubResource("StyleBoxFlat_btn_upgrade_pressed")
 HBoxContainer/constants/separation = 8
-Label/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
+Label/colors/font_color = Color(0, 0, 0, 1)
 LabelH1/base_type = &"Label"
-LabelH1/font_sizes/font_size = 128
+LabelH1/font_sizes/font_size = 64
+LabelH1OnAccent/base_type = &"Label"
+LabelH1OnAccent/colors/font_color = Color(1, 1, 1, 1)
+LabelH1OnAccent/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelH1OnAccent/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelH1OnAccent/font_sizes/font_size = 64
 LabelH2/base_type = &"Label"
 LabelH2/font_sizes/font_size = 48
+LabelH2OnAccent/base_type = &"Label"
+LabelH2OnAccent/colors/font_color = Color(1, 1, 1, 1)
+LabelH2OnAccent/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelH2OnAccent/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelH2OnAccent/font_sizes/font_size = 48
 LabelH3/base_type = &"Label"
 LabelH3/font_sizes/font_size = 32
+LabelH3OnAccent/base_type = &"Label"
+LabelH3OnAccent/colors/font_color = Color(1, 1, 1, 1)
+LabelH3OnAccent/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelH3OnAccent/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelH3OnAccent/font_sizes/font_size = 32
+LabelMoneyH1/base_type = &"Label"
+LabelMoneyH1/colors/font_color = Color(0, 0.8, 0.267, 1)
+LabelMoneyH1/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelMoneyH1/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelMoneyH1/font_sizes/font_size = 64
+LabelMoneyH2/base_type = &"Label"
+LabelMoneyH2/colors/font_color = Color(0, 0.8, 0.267, 1)
+LabelMoneyH2/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelMoneyH2/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelMoneyH2/font_sizes/font_size = 48
+LabelMoneyH3/base_type = &"Label"
+LabelMoneyH3/colors/font_color = Color(0, 0.8, 0.267, 1)
+LabelMoneyH3/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelMoneyH3/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelMoneyH3/font_sizes/font_size = 32
 LabelOnAccent/base_type = &"Label"
 LabelOnAccent/colors/font_color = Color(1, 1, 1, 1)
 LabelOnAccent/colors/font_outline_color = Color(0, 0, 0, 1)
 LabelOnAccent/colors/font_shadow_color = Color(0, 0, 0, 1)
-LabelOnDark/base_type = &"Label"
-LabelOnDark/colors/font_color = Color(1, 0.960784, 0.901961, 1)
 MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8
@@ -179,8 +263,8 @@ MarginContainerLarge/constants/margin_left = 24
 MarginContainerLarge/constants/margin_right = 24
 MarginContainerLarge/constants/margin_top = 24
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_panel_default")
-PanelContainerDark/base_type = &"PanelContainer"
-PanelContainerDark/styles/panel = SubResource("StyleBoxFlat_panel_dark")
+PanelContainerLight/base_type = &"PanelContainer"
+PanelContainerLight/styles/panel = SubResource("StyleBoxFlat_panel_light")
 PanelContainerPrimary/base_type = &"PanelContainer"
 PanelContainerPrimary/styles/panel = SubResource("StyleBoxFlat_panel_primary")
 PanelContainerPrimaryHover/base_type = &"PanelContainer"
@@ -196,12 +280,18 @@ PanelContainerRarityUncommon/styles/panel = SubResource("StyleBoxFlat_rarity_unc
 ProgressBar/styles/background = SubResource("StyleBoxFlat_progress_bg")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_progress_fill")
 ProgressBarBug/base_type = &"ProgressBar"
+ProgressBarBug/styles/background = SubResource("StyleBoxFlat_progress_bg")
 ProgressBarBug/styles/fill = SubResource("StyleBoxFlat_progress_bug")
+ProgressBarEXP/base_type = &"ProgressBar"
+ProgressBarEXP/styles/background = SubResource("StyleBoxFlat_progress_bg")
+ProgressBarEXP/styles/fill = SubResource("StyleBoxFlat_progress_exp")
 ProgressBarFeature/base_type = &"ProgressBar"
+ProgressBarFeature/styles/background = SubResource("StyleBoxFlat_progress_bg")
 ProgressBarFeature/styles/fill = SubResource("StyleBoxFlat_progress_feature")
 ProgressBarHP/base_type = &"ProgressBar"
+ProgressBarHP/styles/background = SubResource("StyleBoxFlat_progress_bg")
 ProgressBarHP/styles/fill = SubResource("StyleBoxFlat_progress_hp")
-RichTextLabel/colors/default_color = Color(0.470588, 0.301961, 0.196078, 1)
+RichTextLabel/colors/default_color = Color(1, 0.960784, 0.901961, 1)
 VBoxContainer/constants/separation = 8
 VBoxContainerLarge/base_type = &"VBoxContainer"
 VBoxContainerLarge/constants/separation = 16

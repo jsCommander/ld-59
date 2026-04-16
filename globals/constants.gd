@@ -23,6 +23,7 @@ enum UpgradeStat {
 enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
 enum TradeOffType {PURE, TRADE_OFF_CROSS_GROUP}
 enum UpgradeGroup {DPS_DEV, CLICK_BOOST, TASK_TYPE, ECONOMY}
+enum UpgradeType {HIRE, UPGRADE}
 
 # --- Combat ---
 
@@ -33,14 +34,14 @@ const SPEED_CAP: float = 0.1
 
 # --- Boost ---
 
-const MAX_BOOST_STACKS: int = 10
+const MAX_BOOST_STACKS: int = 5
 const BOOST_DECAY_INTERVAL: float = 1.0
 const AUTO_CLICK_BASE_INTERVAL: float = 2.0
 
 # --- Progression ---
 
 const XP_BASE: int = 100
-const SPRINT_SIZE: int = 10
+const SPRINT_SIZE: int = 12
 const MAX_LEVEL: int = 40
 const MAX_DEV_STAT_MULTIPLIER: float = 2.0
 const BASE_TOTAL_GAME_TIME: float = 600.0

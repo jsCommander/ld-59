@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://c1wrmylm70gcw"]
+
+[ext_resource type="Script" uid="uid://dpsbfb42cpg57" path="res://components/ui/ui_game_info/ui_game_info.gd" id="1_script"]
+
+[node name="UiGameInfo" type="MarginContainer" unique_id=1874399714]
+script = ExtResource("1_script")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=990424383]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=242466915]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=433736169]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1314904886]
+layout_mode = 2
+
+[node name="Labels" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/HBox" unique_id=1047971293]
+layout_mode = 2
+alignment = 1
+
+[node name="TimeLeftLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Labels" unique_id=2037264855]
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "Time Left:"
+
+[node name="LevelLabel2" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Labels" unique_id=1651923218]
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "Player Level:"
+
+[node name="SprintLabel2" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Labels" unique_id=470254898]
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "Sprint:"
+
+[node name="Data" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/HBox" unique_id=186298730]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="TimerLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Data" unique_id=1255183343]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "10:00"
+horizontal_alignment = 1
+
+[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Data" unique_id=215746323]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "0"
+horizontal_alignment = 1
+
+[node name="SprintLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Data" unique_id=1076817196]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "0"
+horizontal_alignment = 1
+
+[node name="Capitalization" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1476233261]
+layout_mode = 2

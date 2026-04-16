@@ -1,6 +1,10 @@
 class_name UiSprintPanel
 extends Control
 
+# --- Constants ---
+
+const TASK_CARD: PackedScene = preload("res://components/ui/ui_task_card/task_card.tscn")
+
 # --- @onready ---
 
 @onready var card_container: HBoxContainer = %CardContainer
@@ -13,9 +17,10 @@ var _card_positions: Dictionary = {}
 # --- Lifecycle ---
 
 func _ready() -> void:
-	for child: Node in card_container.get_children():
-		if child is TaskCard:
-			_cards.append(child as TaskCard)
+	for i: int in Constants.SPRINT_SIZE:
+		var card: TaskCard = TASK_CARD.instantiate()
+		card_container.add_child(card)
+		_cards.append(card)
 	SB.task_queue_changed.connect(_update_slots)
 
 # --- Public ---

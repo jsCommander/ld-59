@@ -9,7 +9,7 @@ var valuation: int = 0
 var level: int = 0
 var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
-var _awaiting_choice: bool = false
+var pending_upgrades: Array[Constants.UpgradeType] = []
 
 var sprint_number: int = 0
 var sprint_time: float = 0.0
@@ -68,7 +68,6 @@ func start_game() -> void:
 	_tick_timer.start()
 	_generate_sprint()
 	# Hire first dev at game start
-	_awaiting_choice = true
 	SB.developer_hire_requested.emit()
 
 
@@ -79,7 +78,7 @@ func reset() -> void:
 	sprint_time = 0.0
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
-	_awaiting_choice = false
+	pending_upgrades.clear()
 	sprint_slots.clear()
 	developers.clear()
 	hired_data.clear()
@@ -138,7 +137,7 @@ func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
 
 
 func _on_tick() -> void:
-	if not _game_active or _awaiting_choice:
+	if not _game_active:
 		return
 	timer_remaining -= 1.0
 	sprint_time += 1.0
@@ -154,13 +153,11 @@ func _on_tick() -> void:
 func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
 	upgrades_taken.append(upgrade)
 	_apply_upgrade(upgrade)
-	_awaiting_choice = false
 	_check_level_up()
 
 
 func _on_developer_chosen(dev_data: DeveloperData) -> void:
 	hire_developer(dev_data)
-	_awaiting_choice = false
 
 
 func _on_task_destroyed(task: TaskData) -> void:
@@ -239,16 +236,22 @@ func _recalculate_total_stats() -> void:
 # --- Level-up ---
 
 func _check_level_up() -> void:
-	var next_threshold: int = get_xp_for_level(level + 1)
-	if next_threshold <= 0:
-		return  # max level reached
-	if valuation >= next_threshold:
+	var changed: bool = false
+	while true:
+		var next_threshold: int = get_xp_for_level(level + 1)
+		if next_threshold <= 0:
+			break
+		if valuation < next_threshold:
+			break
 		level += 1
-		_awaiting_choice = true
 		SB.level_up.emit(level)
 		Log.log_info(name, "Level up! Level %d" % level)
 		if level in Constants.HIRE_LEVELS:
-			SB.developer_hire_requested.emit()
+			pending_upgrades.append(Constants.UpgradeType.HIRE)
+		pending_upgrades.append(Constants.UpgradeType.UPGRADE)
+		changed = true
+	if changed:
+		SB.pending_upgrades_changed.emit()
 
 
 func _apply_task_rewards(task: TaskData) -> void:
@@ -258,8 +261,7 @@ func _apply_task_rewards(task: TaskData) -> void:
 	if reward > 0:
 		valuation += reward
 		SB.valuation_changed.emit()
-		if not _awaiting_choice:
-			_check_level_up()
+		_check_level_up()
 
 
 # --- Upgrade selection ---

@@ -12,12 +12,13 @@
 [ext_resource type="PackedScene" uid="uid://cquf7pv4aw3ew" path="res://components/traits/clickable_trait.tscn" id="10_clickable"]
 [ext_resource type="PackedScene" path="res://game_kit/effects/sweat_effect.tscn" id="11_sweat"]
 [ext_resource type="Texture2D" uid="uid://cjumot1iuq6kf" path="res://assets/exports/sweat.png" id="11_tbq0k"]
+[ext_resource type="PackedScene" uid="uid://bniil2qj37xof" path="res://components/ui/ui_boost_stack/ui_boost_stack.tscn" id="12_boost"]
 
 [sub_resource type="Gradient" id="Gradient_jibcc"]
 offsets = PackedFloat32Array(0.94578314, 0.993506)
 colors = PackedColorArray(0, 0, 0, 0.59000003, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bqu5l"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwf8w"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_jibcc")
 width = 128
@@ -26,7 +27,7 @@ fill = 1
 fill_from = Vector2(0.50641, 0.510684)
 fill_to = Vector2(0.645299, 0.119658)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_rh21r"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bqu5l"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_jibcc")
 width = 128
@@ -297,10 +298,10 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_scale"]
 curve = SubResource("Curve_scale")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mvyip"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rh21r"]
 resource_local_to_scene = true
 particle_flag_disable_z = true
-direction = Vector3(-1, -1, 0)
+direction = Vector3(0, -1, 0)
 initial_velocity_min = 280.28
 initial_velocity_max = 318.34
 gravity = Vector3(0, 1000, 0)
@@ -320,7 +321,7 @@ scale = Vector2(1.9383522, 1.1881869)
 
 [node name="Sprite2D" parent="shadow" index="0"]
 scale = Vector2(1.5327008, 0.59375)
-texture = SubResource("GradientTexture2D_bqu5l")
+texture = SubResource("GradientTexture2D_nwf8w")
 
 [node name="shadow2" parent="." unique_id=755118871 instance=ExtResource("9_72ilg")]
 position = Vector2(-180.00002, -21)
@@ -329,7 +330,7 @@ scale = Vector2(0.6399975, 0.7600008)
 [node name="Sprite2D" parent="shadow2" index="0"]
 position = Vector2(5.0000157, -2.380951)
 scale = Vector2(1.584378, 0.4985122)
-texture = SubResource("GradientTexture2D_rh21r")
+texture = SubResource("GradientTexture2D_bqu5l")
 
 [node name="ChairSprite" type="Sprite2D" parent="." unique_id=443780231]
 position = Vector2(-176, -83)
@@ -342,7 +343,6 @@ texture = ExtResource("2")
 
 [node name="DevRig" type="Node2D" parent="." unique_id=998168427]
 unique_name_in_owner = true
-visible = false
 position = Vector2(-143, -102)
 
 [node name="LaptopSprite" type="Sprite2D" parent="DevRig" unique_id=1978603851]
@@ -390,17 +390,25 @@ libraries/ = SubResource("AnimationLibrary_2k4jx")
 
 [node name="SweatEffect" parent="." unique_id=1551872451 instance=ExtResource("11_sweat")]
 z_index = 3
-position = Vector2(-176, -273)
+position = Vector2(-159, -280)
 amount = 3
 texture = ExtResource("11_tbq0k")
 explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_mvyip")
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_rh21r")
 
 [node name="ClickableTrait" parent="." unique_id=1968813727 instance=ExtResource("10_clickable")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClickableTrait" unique_id=2072034239]
 position = Vector2(-117.5, -161.5)
 shape = SubResource("RectangleShape2D_click")
+
+[node name="UiBoostStack" parent="." unique_id=92013375 instance=ExtResource("12_boost")]
+unique_name_in_owner = true
+offset_left = -296.0
+offset_top = -261.0
+offset_right = -256.0
+offset_bottom = -117.0
 
 [editable path="shadow"]
 [editable path="shadow2"]

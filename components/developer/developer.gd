@@ -22,6 +22,7 @@ enum State {IDLE, WAITING, WORKING}
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var clickable: ClickableTrait = $ClickableTrait
 @onready var sweat_effect: GPUParticles2D = $SweatEffect
+@onready var boost_stack_ui: UiBoostStack = %UiBoostStack
 
 # --- State ---
 
@@ -172,8 +173,9 @@ func _apply_boost() -> void:
 
 func _update_boost_visuals() -> void:
 	var heat: float = float(_boost_stacks) / float(Constants.MAX_BOOST_STACKS)
-	dev_rig.modulate = Color.WHITE.lerp(Color(2.0, 0.2, 0.2), heat)
+	dev_rig.modulate = Color.WHITE.lerp(Color(1.4, 0.5, 0.4), heat)
 	sweat_effect.emitting = _boost_stacks > 0
+	boost_stack_ui.stack_count = _boost_stacks
 
 
 func _apply_data() -> void:
