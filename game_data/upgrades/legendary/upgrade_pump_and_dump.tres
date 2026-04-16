@@ -9,6 +9,6 @@ display_name = "Pump and Dump"
 description = "Hype the metrics, cash out early"
 rarity = 3
 group = 3
-trade_off_type = 2
+trade_off_type = 1
 feature_chance = -0.17
 reward_bonus = 1.46

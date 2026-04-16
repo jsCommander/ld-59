@@ -10,7 +10,6 @@ class_name UpgradeData extends BaseGameData
 @export var rarity: Constants.UpgradeRarity = Constants.UpgradeRarity.COMMON
 @export var group: Constants.UpgradeGroup = Constants.UpgradeGroup.DPS_DEV
 @export var trade_off_type: Constants.TradeOffType = Constants.TradeOffType.PURE
-@export var max_count: int = 0
 @export_group("Stat Effects")
 @export var global_damage: float = 0.0
 @export var feature_damage: float = 0.0
@@ -84,17 +83,7 @@ func _validate_trade_off() -> Array[String]:
 	if trade_off_type == Constants.TradeOffType.PURE and not negative_groups.is_empty():
 		warnings.append("%s: marked as PURE but has negative stats" % id)
 
-	# Check 2: INTRA_GROUP with cross-group negative
-	if trade_off_type == Constants.TradeOffType.TRADE_OFF_INTRA_GROUP:
-		for neg_group: Constants.UpgradeGroup in negative_groups:
-			if neg_group != group:
-				warnings.append("%s: TRADE_OFF_INTRA_GROUP but has negative stat from group %s (upgrade group: %s)" % [
-					id,
-					Constants.UpgradeGroup.keys()[neg_group],
-					Constants.UpgradeGroup.keys()[group],
-				])
-
-	# Check 3: CROSS_GROUP with same-group negative
+	# Check 2: CROSS_GROUP with same-group negative
 	if trade_off_type == Constants.TradeOffType.TRADE_OFF_CROSS_GROUP:
 		for neg_group: Constants.UpgradeGroup in negative_groups:
 			if neg_group == group:
@@ -103,7 +92,7 @@ func _validate_trade_off() -> Array[String]:
 					Constants.UpgradeGroup.keys()[group],
 				])
 
-	# Check 4: Group mismatch — all positive stats from one group, but group field differs
+	# Check 3: Group mismatch — all positive stats from one group, but group field differs
 	if positive_groups.size() == 1 and positive_groups[0] != group:
 		warnings.append("%s: group is %s but all positive stats are in %s" % [
 			id,

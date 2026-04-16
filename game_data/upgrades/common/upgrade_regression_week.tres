@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "zen_mode"
-display_name = "Zen Mode"
-description = "Slow is smooth, smooth is fast"
-rarity = 1
-group = 1
-trade_off_type = 1
-boost_damage = -0.08
-boost_duration = 0.62
+id = "regression_week"
+display_name = "Regression Week"
+description = "Block the sprint, the tests have feelings too"
+rarity = 0
+group = 2
+trade_off_type = 0
+bug_chance = 0.2

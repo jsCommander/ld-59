@@ -8,6 +8,6 @@ id = "versatile_developer"
 display_name = "Versatile Developer"
 description = "Does everything, gets paid for nothing"
 rarity = 1
-trade_off_type = 2
+trade_off_type = 1
 global_damage = 0.32
 reward_bonus = -0.08

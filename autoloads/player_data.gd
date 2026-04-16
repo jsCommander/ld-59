@@ -31,25 +31,33 @@ func get_xp_for_level(lvl: int) -> int:
 
 
 func get_level_up_upgrades() -> Array[UpgradeData]:
+	const RARITY_ORDER: Array[Constants.UpgradeRarity] = [
+		Constants.UpgradeRarity.LEGENDARY,
+		Constants.UpgradeRarity.EPIC,
+		Constants.UpgradeRarity.UNCOMMON,
+		Constants.UpgradeRarity.COMMON,
+	]
 	var count: int = Constants.UPGRADE_CHOICES
 	var result: Array[UpgradeData] = []
 	var used_ids: Array[String] = []
+	var rarity_count: Dictionary[Constants.UpgradeRarity, int] = {
+		Constants.UpgradeRarity.COMMON: 0,
+		Constants.UpgradeRarity.UNCOMMON: 0,
+		Constants.UpgradeRarity.EPIC: 0,
+		Constants.UpgradeRarity.LEGENDARY: 0,
+	}
 	for i: int in count:
 		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level, total_stats)
+		# Downgrade to the next available rarity if the offer cap is already reached
+		var idx: int = RARITY_ORDER.find(rarity)
+		while idx < RARITY_ORDER.size() - 1 and rarity_count[RARITY_ORDER[idx]] >= Constants.OFFER_RARITY_CAP_DICT[RARITY_ORDER[idx]]:
+			idx += 1
+		rarity = RARITY_ORDER[idx]
 		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
 		if pick:
 			result.append(pick)
 			used_ids.append(pick.id)
-	# Guarantee at least one boost upgrade
-	var has_boost: bool = false
-	for upgrade: UpgradeData in result:
-		if _is_boost_upgrade(upgrade):
-			has_boost = true
-			break
-	if not has_boost:
-		var boost_pick: UpgradeData = _pick_boost_upgrade(used_ids)
-		if boost_pick and not result.is_empty():
-			result[randi() % result.size()] = boost_pick
+			rarity_count[pick.rarity] += 1
 	return result
 
 
@@ -263,13 +271,12 @@ func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
 
 
 func _is_upgrade_available(upgrade: UpgradeData) -> bool:
-	if upgrade.max_count <= 0:
-		return true
+	var limit: int = Constants.RARITY_MAX_COUNT_DICT[upgrade.rarity]
 	var count: int = 0
 	for taken: UpgradeData in upgrades_taken:
 		if taken.id == upgrade.id:
 			count += 1
-	return count < upgrade.max_count
+	return count < limit
 
 
 func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:
@@ -288,22 +295,6 @@ func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids
 				continue
 			if upgrade.id in exclude_ids:
 				continue
-			pool.append(upgrade)
-	return _pick_random_from(pool)
-
-
-func _is_boost_upgrade(upgrade: UpgradeData) -> bool:
-	return not is_zero_approx(upgrade.boost_damage) or not is_zero_approx(upgrade.boost_duration) or not is_zero_approx(upgrade.auto_click_speed)
-
-
-func _pick_boost_upgrade(exclude_ids: Array[String]) -> UpgradeData:
-	var pool: Array[UpgradeData] = []
-	for upgrade: UpgradeData in DR.upgrades.values():
-		if not _is_upgrade_available(upgrade):
-			continue
-		if upgrade.id in exclude_ids:
-			continue
-		if _is_boost_upgrade(upgrade):
 			pool.append(upgrade)
 	return _pick_random_from(pool)
 

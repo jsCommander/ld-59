@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "bug_sweep"
-display_name = "Bug Sweep"
-description = "Bugs are features now. Wait, no, the other way."
-rarity = 2
-trade_off_type = 1
-bug_damage = 0.85
-bug_chance = 0.4
-feature_damage = -0.18
+id = "lucky_streak"
+display_name = "Lucky Streak"
+description = "Horseshoe on the monitor, clover in the repo"
+rarity = 1
+group = 3
+trade_off_type = 0
+rarity_luck = 0.3

@@ -8,6 +8,6 @@ id = "pep_talk"
 display_name = "Pep Talk"
 description = "\"You're doing great, team!\" *narrator: they weren't*"
 rarity = 0
-trade_off_type = 2
+trade_off_type = 1
 global_damage = 0.1
 feature_chance = -0.05

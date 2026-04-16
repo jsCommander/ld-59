@@ -8,6 +8,6 @@ id = "daily_standup"
 display_name = "Daily Standup"
 description = "\"Yesterday I did stuff. Today I'll do stuff. No blockers.\""
 rarity = 0
-trade_off_type = 2
+trade_off_type = 1
 global_damage = 0.1
 boost_duration = -0.05

@@ -8,6 +8,6 @@ id = "hustle_culture"
 display_name = "Hustle Culture"
 description = "Sleep is for the weak and well-adjusted"
 group = 1
-trade_off_type = 2
+trade_off_type = 1
 boost_damage = 0.21
 reward_bonus = -0.03

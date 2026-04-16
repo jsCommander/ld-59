@@ -8,6 +8,6 @@ id = "rapid_prototype"
 display_name = "Rapid Prototype"
 description = "Works on my machine. That counts, right?"
 rarity = 0
-trade_off_type = 2
+trade_off_type = 1
 global_damage = 0.1
 reward_bonus = -0.04

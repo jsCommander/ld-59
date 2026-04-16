@@ -94,14 +94,12 @@ func _write_upgrade_data_log() -> void:
 				var value: float = upgrade.get(field) as float
 				if not is_zero_approx(value):
 					stats_parts.append("%s=%+.0f%%" % [field, value * 100.0])
-			var max_count_str: String = " [max:%d]" % upgrade.max_count if upgrade.max_count > 0 else ""
-			lines.append("  %-30s %-12s %-28s budget:%.1f  %s%s" % [
+			lines.append("  %-30s %-12s %-28s budget:%.1f  %s" % [
 				upgrade.id,
 				group_keys[upgrade.group],
 				type_keys[upgrade.trade_off_type],
 				upgrade.calculate_budget(),
 				", ".join(stats_parts),
-				max_count_str,
 			])
 
 	var path: String = "res://logs/upgrade_data.log"

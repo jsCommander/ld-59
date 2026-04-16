@@ -9,6 +9,6 @@ display_name = "Deep Focus"
 description = "4 hours in the zone. 3 hours recovering from interruption."
 rarity = 0
 group = 1
-trade_off_type = 2
+trade_off_type = 1
 boost_duration = 0.2
 global_damage = -0.02

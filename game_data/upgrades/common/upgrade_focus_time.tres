@@ -9,6 +9,6 @@ display_name = "Focus Time"
 description = "Calendar blocked. Slack on DND. Finally coding."
 rarity = 0
 group = 1
-trade_off_type = 2
+trade_off_type = 1
 boost_duration = 0.2
 reward_bonus = -0.04

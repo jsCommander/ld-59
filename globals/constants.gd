@@ -21,7 +21,7 @@ enum UpgradeStat {
 	RARITY_LUCK,
 }
 enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
-enum TradeOffType {PURE, TRADE_OFF_INTRA_GROUP, TRADE_OFF_CROSS_GROUP}
+enum TradeOffType {PURE, TRADE_OFF_CROSS_GROUP}
 enum UpgradeGroup {DPS_DEV, CLICK_BOOST, TASK_TYPE, ECONOMY}
 
 # --- Combat ---
@@ -55,6 +55,20 @@ const BASE_BUG_CHANCE: float = 50.0
 
 const UPGRADE_CHOICES: int = 5
 const TRADE_OFF_RETURN_RATE: float = 0.3
+
+const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
+	UpgradeRarity.COMMON: 99,
+	UpgradeRarity.UNCOMMON: 5,
+	UpgradeRarity.EPIC: 3,
+	UpgradeRarity.LEGENDARY: 1,
+}
+
+const OFFER_RARITY_CAP_DICT: Dictionary[UpgradeRarity, int] = {
+	UpgradeRarity.COMMON: UPGRADE_CHOICES,
+	UpgradeRarity.UNCOMMON: 3,
+	UpgradeRarity.EPIC: 2,
+	UpgradeRarity.LEGENDARY: 1,
+}
 
 const STAT_COSTS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: 1.0,
@@ -113,43 +127,31 @@ const STAT_TO_GROUP_DICT: Dictionary = {
 
 const UPGRADE_MIN_COUNT_DICT: Dictionary = {
 	TradeOffType.PURE: {
-		UpgradeRarity.COMMON: 10,
-		UpgradeRarity.UNCOMMON: 10,
-		UpgradeRarity.EPIC: 10,
-		UpgradeRarity.LEGENDARY: 10,
-	},
-	TradeOffType.TRADE_OFF_INTRA_GROUP: {
-		UpgradeRarity.COMMON: 10,
-		UpgradeRarity.UNCOMMON: 10,
-		UpgradeRarity.EPIC: 10,
-		UpgradeRarity.LEGENDARY: 10,
+		UpgradeRarity.COMMON: 1,
+		UpgradeRarity.UNCOMMON: 1,
+		UpgradeRarity.EPIC: 1,
+		UpgradeRarity.LEGENDARY: 1,
 	},
 	TradeOffType.TRADE_OFF_CROSS_GROUP: {
-		UpgradeRarity.COMMON: 10,
-		UpgradeRarity.UNCOMMON: 10,
-		UpgradeRarity.EPIC: 10,
-		UpgradeRarity.LEGENDARY: 10,
+		UpgradeRarity.COMMON: 1,
+		UpgradeRarity.UNCOMMON: 1,
+		UpgradeRarity.EPIC: 1,
+		UpgradeRarity.LEGENDARY: 1,
 	},
 }
 
 const UPGRADE_MAX_COUNT_DICT: Dictionary = {
 	TradeOffType.PURE: {
-		UpgradeRarity.COMMON: 12,
-		UpgradeRarity.UNCOMMON: 12,
-		UpgradeRarity.EPIC: 12,
-		UpgradeRarity.LEGENDARY: 12,
-	},
-	TradeOffType.TRADE_OFF_INTRA_GROUP: {
-		UpgradeRarity.COMMON: 12,
-		UpgradeRarity.UNCOMMON: 12,
-		UpgradeRarity.EPIC: 12,
-		UpgradeRarity.LEGENDARY: 12,
+		UpgradeRarity.COMMON: 15,
+		UpgradeRarity.UNCOMMON: 15,
+		UpgradeRarity.EPIC: 15,
+		UpgradeRarity.LEGENDARY: 15,
 	},
 	TradeOffType.TRADE_OFF_CROSS_GROUP: {
-		UpgradeRarity.COMMON: 12,
-		UpgradeRarity.UNCOMMON: 12,
-		UpgradeRarity.EPIC: 12,
-		UpgradeRarity.LEGENDARY: 12,
+		UpgradeRarity.COMMON: 15,
+		UpgradeRarity.UNCOMMON: 15,
+		UpgradeRarity.EPIC: 15,
+		UpgradeRarity.LEGENDARY: 15,
 	},
 }
 

@@ -8,6 +8,6 @@ id = "penny_pincher"
 display_name = "Penny Pincher"
 description = "Budget so tight it squeaks"
 group = 3
-trade_off_type = 2
+trade_off_type = 1
 feature_damage = -0.04
 reward_bonus = 0.15
