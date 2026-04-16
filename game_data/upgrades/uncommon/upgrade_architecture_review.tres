@@ -9,5 +9,5 @@ display_name = "Architecture Review"
 description = "\"This should be a microservice\" — the answer to everything"
 rarity = 1
 trade_off_type = 1
-bug_damage = 0.45
-feature_damage = -0.18
+bug_damage = 0.64
+feature_damage = -0.12

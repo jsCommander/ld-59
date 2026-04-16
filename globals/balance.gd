@@ -1,43 +1,31 @@
 class_name Balance
 
 
-## Damage = BASE_DAMAGE × task_mult × (1 + global_damage) × (1 + type_damage)
-static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskType, stats: Dictionary) -> float:
+## Damage = BASE_DAMAGE × task_mult × (1 + global_damage) × (1 + type_damage) × (1 + stacks × boost_power)
+static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskType, stats: Dictionary, boost_stacks: int = 0) -> float:
 	var base: float = Constants.BASE_DAMAGE
 	var task_mult: float = get_task_mult(dev_data, task_type)
 	var global_dmg_mult: float = 1.0 + _get_stat(Constants.STAT_GLOBAL_DAMAGE, stats)
 	var type_field: String = Constants.STAT_FEATURE_DAMAGE if task_type == Constants.TaskType.FEATURE else Constants.STAT_BUG_DAMAGE
 	var type_dmg_mult: float = 1.0 + _get_stat(type_field, stats)
-	return base * task_mult * global_dmg_mult * type_dmg_mult
+	var boost_dmg_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_POWER, stats)
+	return base * task_mult * global_dmg_mult * type_dmg_mult * boost_dmg_mult
 
 
-static func calculate_attack_speed(dev_data: DeveloperData, auto_boost_stacks: int = 0, player_boost_stacks: int = 0) -> float:
+## Attack speed = base / (1 + stacks × boost_duration), clamped to SPEED_CAP
+static func calculate_attack_speed(dev_data: DeveloperData, boost_stacks: int = 0, stats: Dictionary = {}) -> float:
 	var base: float = dev_data.base_attack_speed
-	var total_stacks: int = auto_boost_stacks + player_boost_stacks
-	var boost_mult: float = 1.0 + total_stacks * Constants.BOOST_SPEED_MULT
+	var boost_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_DURATION, stats)
 	var interval: float = base / boost_mult
 	return maxf(interval, Constants.SPEED_CAP)
 
 
-## Boost power = number of stacks applied per auto click (1 + boost_power)
-static func calculate_boost_stacks(stats: Dictionary) -> int:
-	return 1 + int(_get_stat(Constants.STAT_BOOST_POWER, stats))
-
-
-## Boost decay interval = (1/DECAY_RATE) × (1 + boost_duration)
-static func calculate_boost_decay_interval(stats: Dictionary) -> float:
-	var mult: float = 1.0 + _get_stat(Constants.STAT_BOOST_DURATION, stats)
-	return (1.0 / Constants.BOOST_DECAY_RATE) * mult
-
-
-## Auto click interval = BASE_INTERVAL / (1 + auto_click_speed). Returns 0 if no boost stats.
+## Auto click interval = BASE_INTERVAL / (1 + auto_click_speed). Returns 0 if no auto_click_speed.
 static func calculate_auto_click_interval(stats: Dictionary) -> float:
-	var has_boost: bool = not is_zero_approx(_get_stat(Constants.STAT_BOOST_POWER, stats)) \
-		or not is_zero_approx(_get_stat(Constants.STAT_BOOST_DURATION, stats)) \
-		or not is_zero_approx(_get_stat(Constants.STAT_AUTO_CLICK_SPEED, stats))
-	if not has_boost:
+	var speed: float = _get_stat(Constants.STAT_AUTO_CLICK_SPEED, stats)
+	if is_zero_approx(speed):
 		return 0.0
-	return Constants.AUTO_CLICK_BASE_INTERVAL / (1.0 + _get_stat(Constants.STAT_AUTO_CLICK_SPEED, stats))
+	return Constants.AUTO_CLICK_BASE_INTERVAL / (1.0 + speed)
 
 
 ## Reward multiplier = 1 + reward_bonus

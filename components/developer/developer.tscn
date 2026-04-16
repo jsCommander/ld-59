@@ -6,17 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://d06257gr8h1ge" path="res://assets/exports/laptop.png" id="4_ux65i"]
 [ext_resource type="Texture2D" uid="uid://c5y54cv4grras" path="res://assets/exports/developer_hand.png" id="5_72ilg"]
 [ext_resource type="Texture2D" uid="uid://fqk1ato08gf1" path="res://assets/exports/developer_body.png" id="6_ux65i"]
-[ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="8_2k4jx"]
 [ext_resource type="PackedScene" uid="uid://bjgkr1bhtatm4" path="res://components/ui/ui_task_card/task_card.tscn" id="8_task_display"]
+[ext_resource type="Texture2D" uid="uid://7shm7adg4vjr" path="res://assets/exports/developer_head_vibe.png" id="8_tbq0k"]
 [ext_resource type="PackedScene" uid="uid://dk56elq863m31" path="res://game_kit/components/base_shadow.tscn" id="9_72ilg"]
 [ext_resource type="PackedScene" uid="uid://cquf7pv4aw3ew" path="res://components/traits/clickable_trait.tscn" id="10_clickable"]
 [ext_resource type="PackedScene" path="res://game_kit/effects/sweat_effect.tscn" id="11_sweat"]
+[ext_resource type="Texture2D" uid="uid://cjumot1iuq6kf" path="res://assets/exports/sweat.png" id="11_tbq0k"]
 
 [sub_resource type="Gradient" id="Gradient_jibcc"]
 offsets = PackedFloat32Array(0.94578314, 0.993506)
 colors = PackedColorArray(0, 0, 0, 0.59000003, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_2k4jx"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwf8w"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_jibcc")
 width = 128
@@ -25,7 +26,7 @@ fill = 1
 fill_from = Vector2(0.50641, 0.510684)
 fill_to = Vector2(0.645299, 0.119658)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_tbq0k"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bqu5l"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_jibcc")
 width = 128
@@ -289,17 +290,6 @@ _data = {
 &"working": SubResource("Animation_ux65i")
 }
 
-[sub_resource type="Gradient" id="Gradient_2k4jx"]
-offsets = PackedFloat32Array(0.37090164, 0.48770493)
-colors = PackedColorArray(0.73236537, 0.82180536, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwf8w"]
-gradient = SubResource("Gradient_2k4jx")
-width = 16
-height = 16
-fill = 1
-fill_from = Vector2(0.49786323, 0.51282054)
-
 [sub_resource type="Curve" id="Curve_scale"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -307,16 +297,14 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_scale"]
 curve = SubResource("Curve_scale")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nwf8w"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rh21r"]
 resource_local_to_scene = true
 particle_flag_disable_z = true
-direction = Vector3(0, -1, 0)
-spread = 180.0
-initial_velocity_min = 120.0
-initial_velocity_max = 240.0
-gravity = Vector3(0, 120, 0)
-scale_min = 3.0
-scale_max = 6.0
+direction = Vector3(-1, -1, 0)
+initial_velocity_min = 280.28
+initial_velocity_max = 318.34
+gravity = Vector3(0, 1000, 0)
+scale_max = 2.0
 scale_curve = SubResource("CurveTexture_scale")
 color = Color(0.6, 0.8, 1, 0.8)
 
@@ -332,7 +320,7 @@ scale = Vector2(1.9383522, 1.1881869)
 
 [node name="Sprite2D" parent="shadow" index="0"]
 scale = Vector2(1.5327008, 0.59375)
-texture = SubResource("GradientTexture2D_2k4jx")
+texture = SubResource("GradientTexture2D_nwf8w")
 
 [node name="shadow2" parent="." unique_id=755118871 instance=ExtResource("9_72ilg")]
 position = Vector2(-180.00002, -21)
@@ -341,7 +329,7 @@ scale = Vector2(0.6399975, 0.7600008)
 [node name="Sprite2D" parent="shadow2" index="0"]
 position = Vector2(5.0000157, -2.380951)
 scale = Vector2(1.584378, 0.4985122)
-texture = SubResource("GradientTexture2D_tbq0k")
+texture = SubResource("GradientTexture2D_bqu5l")
 
 [node name="ChairSprite" type="Sprite2D" parent="." unique_id=443780231]
 position = Vector2(-176, -83)
@@ -376,8 +364,7 @@ texture = ExtResource("6_ux65i")
 [node name="DevHeadSprite" type="Sprite2D" parent="DevRig" unique_id=1700812408]
 unique_name_in_owner = true
 position = Vector2(-17, -126)
-texture = ExtResource("8_2k4jx")
-offset = Vector2(0, 25)
+texture = ExtResource("8_tbq0k")
 
 [node name="DevRightHandSprite" type="Sprite2D" parent="DevRig" unique_id=1343074361]
 unique_name_in_owner = true
@@ -403,12 +390,11 @@ libraries/ = SubResource("AnimationLibrary_2k4jx")
 
 [node name="SweatEffect" parent="." unique_id=1551872451 instance=ExtResource("11_sweat")]
 z_index = 3
-position = Vector2(-157, -250)
-amount = 10
-texture = SubResource("GradientTexture2D_nwf8w")
-preprocess = 1.0
-randomness = 1.0
-process_material = SubResource("ParticleProcessMaterial_nwf8w")
+position = Vector2(-176, -273)
+amount = 3
+texture = ExtResource("11_tbq0k")
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_rh21r")
 
 [node name="ClickableTrait" parent="." unique_id=1968813727 instance=ExtResource("10_clickable")]
 

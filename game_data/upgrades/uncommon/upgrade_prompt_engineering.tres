@@ -9,5 +9,5 @@ display_name = "Prompt Engineering"
 description = "\"Act as a senior developer\" *chef's kiss*"
 rarity = 1
 trade_off_type = 1
-feature_damage = 0.45
-bug_damage = -0.18
+feature_damage = 0.64
+bug_damage = -0.12

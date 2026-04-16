@@ -9,5 +9,5 @@ display_name = "Automation Suite"
 description = "CI/CD pipeline that's longer than the actual code"
 rarity = 2
 trade_off_type = 0
-auto_click_speed = 0.33
-boost_duration = 0.17
+auto_click_speed = 0.57
+boost_duration = 0.29

@@ -30,18 +30,11 @@ const BASE_DAMAGE: int = int(BASE_HP * 0.4)
 const BASE_ATTACK_SPEED: float = 2.0
 const SPEED_CAP: float = 0.1
 
-# --- Auto Boost ---
+# --- Boost ---
 
-const MAX_AUTO_BOOST: int = 10
-const BOOST_DECAY_RATE: float = 1.0
-const BOOST_SPEED_MULT: float = 0.5
+const MAX_BOOST_STACKS: int = 10
+const BOOST_DECAY_INTERVAL: float = 1.0
 const AUTO_CLICK_BASE_INTERVAL: float = 2.0
-
-# --- Player Boost ---
-
-const PLAYER_BOOST_MAX: int = 10
-const PLAYER_BOOST_POWER: float = 3.0
-const PLAYER_BOOST_DECAY_INTERVAL: float = 2.0
 
 # --- Progression ---
 
@@ -77,9 +70,9 @@ const STAT_COSTS: Dictionary = {
 
 const RARITY_BUDGETS: Dictionary = {
 	UpgradeRarity.COMMON: 10,
-	UpgradeRarity.UNCOMMON: 20,
-	UpgradeRarity.EPIC: 35,
-	UpgradeRarity.LEGENDARY: 50,
+	UpgradeRarity.UNCOMMON: 30,
+	UpgradeRarity.EPIC: 60,
+	UpgradeRarity.LEGENDARY: 100,
 }
 
 const STAT_FIELDS: Dictionary = {
@@ -98,10 +91,10 @@ const STAT_FIELDS: Dictionary = {
 const BUDGET_TOLERANCE: float = 0.15
 
 const NEGATIVE_BUDGET_LIMITS: Dictionary = {
-	UpgradeRarity.COMMON: 5,
-	UpgradeRarity.UNCOMMON: 10,
-	UpgradeRarity.EPIC: 15,
-	UpgradeRarity.LEGENDARY: 20,
+	UpgradeRarity.COMMON: 3,
+	UpgradeRarity.UNCOMMON: 6,
+	UpgradeRarity.EPIC: 9,
+	UpgradeRarity.LEGENDARY: 12,
 }
 
 # --- Stat Keys ---
@@ -123,8 +116,8 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_BUG_DAMAGE: "Bug Damage",
 	STAT_FEATURE_CHANCE: "Feature Chance",
 	STAT_BUG_CHANCE: "Bug Chance",
-	STAT_BOOST_POWER: "Auto Boost Power",
-	STAT_BOOST_DURATION: "Auto Boost Duration",
+	STAT_BOOST_POWER: "Damage per Stack",
+	STAT_BOOST_DURATION: "Speed per Stack",
 	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
 	STAT_REWARD_BONUS: "Reward Bonus",
 	STAT_RARITY_LUCK: "Rarity Luck",
@@ -133,30 +126,30 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 # --- Rarity Rates (by player level) ---
 
 const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
-	# lvl 1-5: mostly common
-	{UpgradeRarity.COMMON: 0.70, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.65, UpgradeRarity.UNCOMMON: 0.28, UpgradeRarity.EPIC: 0.07, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.60, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.55, UpgradeRarity.UNCOMMON: 0.32, UpgradeRarity.EPIC: 0.13, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.50, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.15, UpgradeRarity.LEGENDARY: 0.0},
-	# lvl 6-10: uncommon peaks, epic grows
-	{UpgradeRarity.COMMON: 0.45, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.40, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.25, UpgradeRarity.LEGENDARY: 0.0},
+	# lvl 1-5: common + uncommon only
+	{UpgradeRarity.COMMON: 0.75, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.70, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.65, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.60, UpgradeRarity.UNCOMMON: 0.40, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.55, UpgradeRarity.UNCOMMON: 0.45, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
+	# lvl 6-10: epics unlock
+	{UpgradeRarity.COMMON: 0.45, UpgradeRarity.UNCOMMON: 0.45, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.40, UpgradeRarity.UNCOMMON: 0.40, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.0},
 	{UpgradeRarity.COMMON: 0.35, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.30, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.35, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.25, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.0},
-	# lvl 11-15: epic dominant, legendaries unlock at 15
-	{UpgradeRarity.COMMON: 0.22, UpgradeRarity.UNCOMMON: 0.33, UpgradeRarity.EPIC: 0.45, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.20, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.50, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.18, UpgradeRarity.UNCOMMON: 0.27, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.15, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.05},
-	{UpgradeRarity.COMMON: 0.12, UpgradeRarity.UNCOMMON: 0.23, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.10},
-	# lvl 16-20: legendary grows
-	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.55, UpgradeRarity.LEGENDARY: 0.15},
-	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.18, UpgradeRarity.EPIC: 0.52, UpgradeRarity.LEGENDARY: 0.20},
-	{UpgradeRarity.COMMON: 0.08, UpgradeRarity.UNCOMMON: 0.17, UpgradeRarity.EPIC: 0.50, UpgradeRarity.LEGENDARY: 0.25},
-	{UpgradeRarity.COMMON: 0.07, UpgradeRarity.UNCOMMON: 0.15, UpgradeRarity.EPIC: 0.48, UpgradeRarity.LEGENDARY: 0.30},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.13, UpgradeRarity.EPIC: 0.47, UpgradeRarity.LEGENDARY: 0.35},
+	{UpgradeRarity.COMMON: 0.30, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.25, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.50, UpgradeRarity.LEGENDARY: 0.0},
+	# lvl 11-15: epic dominant
+	{UpgradeRarity.COMMON: 0.20, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.60, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.18, UpgradeRarity.UNCOMMON: 0.17, UpgradeRarity.EPIC: 0.65, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.15, UpgradeRarity.UNCOMMON: 0.15, UpgradeRarity.EPIC: 0.70, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.12, UpgradeRarity.UNCOMMON: 0.13, UpgradeRarity.EPIC: 0.75, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.80, UpgradeRarity.LEGENDARY: 0.0},
+	# lvl 16-20: epic peaks, legendaries unlock at 20
+	{UpgradeRarity.COMMON: 0.08, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.82, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.07, UpgradeRarity.UNCOMMON: 0.08, UpgradeRarity.EPIC: 0.85, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.07, UpgradeRarity.EPIC: 0.88, UpgradeRarity.LEGENDARY: 0.0},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.85, UpgradeRarity.LEGENDARY: 0.05},
+	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.80, UpgradeRarity.LEGENDARY: 0.10},
 	# lvl 21-25: legendary rises
 	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.12, UpgradeRarity.EPIC: 0.43, UpgradeRarity.LEGENDARY: 0.40},
 	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.45},

@@ -9,4 +9,4 @@ display_name = "Strategy Offsite"
 description = "Expensive hotel, expensive ideas, expensive mistakes"
 rarity = 2
 trade_off_type = 0
-global_damage = 0.35
+global_damage = 0.6

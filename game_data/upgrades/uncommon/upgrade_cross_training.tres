@@ -9,5 +9,5 @@ display_name = "Cross-Training"
 description = "Can do frontend AND backend. Master of neither."
 rarity = 1
 trade_off_type = 0
-feature_damage = 0.20
-bug_damage = 0.20
+feature_damage = 0.3
+bug_damage = 0.3

@@ -9,4 +9,4 @@ display_name = "Task Automation"
 description = "Automate the boring stuff. Become the boring stuff."
 rarity = 1
 trade_off_type = 0
-auto_click_speed = 0.25
+auto_click_speed = 0.38

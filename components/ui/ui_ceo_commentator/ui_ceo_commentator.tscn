@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d3k7xmoaqp2v8"]
 
+[ext_resource type="Texture2D" uid="uid://b8u7ysamf4oqr" path="res://assets/exports/ceo.png" id="1_sumtp"]
 [ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_330iy"]
-[ext_resource type="Texture2D" uid="uid://b51wgb25nq66" path="res://assets/exports/developer_head.png" id="2_sumtp"]
 
 [node name="UiCeoCommentator" type="MarginContainer" unique_id=1141117849]
 custom_minimum_size = Vector2(128, 128)
@@ -19,10 +19,12 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1654423982]
+clip_contents = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-texture = ExtResource("2_sumtp")
+texture = ExtResource("1_sumtp")
 expand_mode = 1
+stretch_mode = 5
 flip_h = true
 
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=326465824]

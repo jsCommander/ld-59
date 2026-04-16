@@ -19,7 +19,9 @@ func set_data(_data: Dictionary) -> void:
 func _build_cards() -> void:
 	for child: Node in card_container.get_children():
 		child.queue_free()
-	for dev_data: DeveloperData in DR.developers.values():
+	var sorted_devs: Array = DR.developers.values()
+	sorted_devs.sort_custom(func(a: DeveloperData, b: DeveloperData) -> bool: return a.dev_type < b.dev_type)
+	for dev_data: DeveloperData in sorted_devs:
 		var card: Control = HIRE_CARD.instantiate()
 		card.setup(dev_data)
 		card.chosen.connect(_on_dev_chosen)

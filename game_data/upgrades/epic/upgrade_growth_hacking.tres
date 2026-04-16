@@ -9,5 +9,5 @@ display_name = "Growth Hacking"
 description = "Revenue is vanity, growth is sanity, profit is... later"
 rarity = 2
 trade_off_type = 1
-reward_bonus = 0.56
-global_damage = -0.14
+reward_bonus = 0.9
+global_damage = -0.09

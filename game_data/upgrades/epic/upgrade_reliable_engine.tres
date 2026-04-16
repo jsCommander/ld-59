@@ -9,5 +9,5 @@ display_name = "Reliable Engine"
 description = "Boring code that just works. The dream."
 rarity = 2
 trade_off_type = 1
-global_damage = 0.28
-boost_duration = 0.14
+global_damage = 0.48
+boost_duration = 0.24

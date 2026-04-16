@@ -9,5 +9,5 @@ display_name = "HR Department"
 description = "Finally someone to handle the \"culture\""
 rarity = 2
 trade_off_type = 0
-reward_bonus = 0.29
-rarity_luck = 0.15
+reward_bonus = 0.49
+rarity_luck = 0.25

@@ -202,3 +202,4 @@ VBoxContainerLarge/base_type = &"VBoxContainer"
 VBoxContainerLarge/constants/separation = 16
 VBoxContainerSmall/base_type = &"VBoxContainer"
 VBoxContainerSmall/constants/separation = 4
+metadata/_custom_type_script = "uid://bp1wc6jgtosqm"

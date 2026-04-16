@@ -9,5 +9,5 @@ display_name = "Move Fast"
 description = "Break things. That's literally the motto."
 rarity = 0
 trade_off_type = 1
-feature_damage = 0.23
-bug_damage = -0.10
+feature_damage = 0.22
+bug_damage = -0.06

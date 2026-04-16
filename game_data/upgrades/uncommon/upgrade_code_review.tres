@@ -9,4 +9,4 @@ display_name = "Code Review"
 description = "\"Looks good to me\" — reviewer who didn't read it"
 rarity = 1
 trade_off_type = 0
-bug_damage = 0.40
+bug_damage = 0.6

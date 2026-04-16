@@ -9,5 +9,5 @@ display_name = "Pair Programming"
 description = "Two devs, one keyboard, zero personal space"
 rarity = 1
 trade_off_type = 0
-boost_power = 0.29
-boost_duration = 0.11
+boost_damage = 0.43
+boost_duration = 0.17

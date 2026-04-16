@@ -9,5 +9,5 @@ display_name = "Debug Marathon"
 description = "Nothing ships until it's clean. Nothing ships."
 rarity = 0
 trade_off_type = 1
-bug_damage = 0.26
-feature_damage = -0.10
+bug_damage = 0.22
+feature_damage = -0.06

@@ -9,4 +9,4 @@ display_name = "Steady Pace"
 description = "Slow and steady wins the... sprint?"
 rarity = 0
 trade_off_type = 0
-boost_power = 0.2
+boost_damage = 0.2

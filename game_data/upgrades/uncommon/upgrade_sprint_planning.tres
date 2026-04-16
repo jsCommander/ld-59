@@ -9,4 +9,4 @@ display_name = "Sprint Planning"
 description = "Three hours of pointing at cards. Somehow works."
 rarity = 1
 trade_off_type = 0
-feature_damage = 0.40
+feature_damage = 0.6
