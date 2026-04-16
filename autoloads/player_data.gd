@@ -295,7 +295,7 @@ func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids
 
 
 func _is_boost_upgrade(upgrade: UpgradeData) -> bool:
-	return not is_zero_approx(upgrade.boost_power) or not is_zero_approx(upgrade.boost_duration) or not is_zero_approx(upgrade.auto_click_speed)
+	return not is_zero_approx(upgrade.boost_damage) or not is_zero_approx(upgrade.boost_duration) or not is_zero_approx(upgrade.auto_click_speed)
 
 
 func _pick_boost_upgrade(exclude_ids: Array[String]) -> UpgradeData:

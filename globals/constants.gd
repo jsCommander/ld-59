@@ -14,7 +14,7 @@ enum UpgradeStat {
 	BUG_DAMAGE,
 	FEATURE_CHANCE,
 	BUG_CHANCE,
-	BOOST_POWER,
+	BOOST_DAMAGE,
 	BOOST_DURATION,
 	AUTO_CLICK_SPEED,
 	REWARD_BONUS,
@@ -61,7 +61,7 @@ const STAT_COSTS: Dictionary = {
 	UpgradeStat.BUG_DAMAGE: 0.5,
 	UpgradeStat.FEATURE_CHANCE: 0.5,
 	UpgradeStat.BUG_CHANCE: 0.5,
-	UpgradeStat.BOOST_POWER: 0.5,
+	UpgradeStat.BOOST_DAMAGE: 0.5,
 	UpgradeStat.BOOST_DURATION: 0.5,
 	UpgradeStat.AUTO_CLICK_SPEED: 0.8,
 	UpgradeStat.REWARD_BONUS: 0.7,
@@ -81,7 +81,7 @@ const STAT_FIELDS: Dictionary = {
 	UpgradeStat.BUG_DAMAGE: "bug_damage",
 	UpgradeStat.FEATURE_CHANCE: "feature_chance",
 	UpgradeStat.BUG_CHANCE: "bug_chance",
-	UpgradeStat.BOOST_POWER: "boost_power",
+	UpgradeStat.BOOST_DAMAGE: "boost_damage",
 	UpgradeStat.BOOST_DURATION: "boost_duration",
 	UpgradeStat.AUTO_CLICK_SPEED: "auto_click_speed",
 	UpgradeStat.REWARD_BONUS: "reward_bonus",
@@ -104,7 +104,7 @@ const STAT_FEATURE_DAMAGE: String = "feature_damage"
 const STAT_BUG_DAMAGE: String = "bug_damage"
 const STAT_FEATURE_CHANCE: String = "feature_chance"
 const STAT_BUG_CHANCE: String = "bug_chance"
-const STAT_BOOST_POWER: String = "boost_power"
+const STAT_BOOST_DAMAGE: String = "boost_damage"
 const STAT_BOOST_DURATION: String = "boost_duration"
 const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
 const STAT_REWARD_BONUS: String = "reward_bonus"
@@ -116,8 +116,8 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_BUG_DAMAGE: "Bug Damage",
 	STAT_FEATURE_CHANCE: "Feature Chance",
 	STAT_BUG_CHANCE: "Bug Chance",
-	STAT_BOOST_POWER: "Damage per Stack",
-	STAT_BOOST_DURATION: "Speed per Stack",
+	STAT_BOOST_DAMAGE: "Boost Damage",
+	STAT_BOOST_DURATION: "Boost Speed",
 	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
 	STAT_REWARD_BONUS: "Reward Bonus",
 	STAT_RARITY_LUCK: "Rarity Luck",

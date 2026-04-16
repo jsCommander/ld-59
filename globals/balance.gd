@@ -1,14 +1,14 @@
 class_name Balance
 
 
-## Damage = BASE_DAMAGE × task_mult × (1 + global_damage) × (1 + type_damage) × (1 + stacks × boost_power)
+## Damage = BASE_DAMAGE × task_mult × (1 + global_damage) × (1 + type_damage) × (1 + stacks × boost_damage)
 static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskType, stats: Dictionary, boost_stacks: int = 0) -> float:
 	var base: float = Constants.BASE_DAMAGE
 	var task_mult: float = get_task_mult(dev_data, task_type)
 	var global_dmg_mult: float = 1.0 + _get_stat(Constants.STAT_GLOBAL_DAMAGE, stats)
 	var type_field: String = Constants.STAT_FEATURE_DAMAGE if task_type == Constants.TaskType.FEATURE else Constants.STAT_BUG_DAMAGE
 	var type_dmg_mult: float = 1.0 + _get_stat(type_field, stats)
-	var boost_dmg_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_POWER, stats)
+	var boost_dmg_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_DAMAGE, stats)
 	return base * task_mult * global_dmg_mult * type_dmg_mult * boost_dmg_mult
 
 
