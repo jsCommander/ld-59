@@ -8,6 +8,7 @@ id = "full_automation"
 display_name = "Full Automation"
 description = "The robots took our jobs and they're faster"
 rarity = 3
+group = 1
 trade_off_type = 1
 auto_click_speed = 0.85
 boost_damage = 0.71

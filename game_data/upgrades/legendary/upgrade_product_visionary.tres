@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "product_visionary"
+display_name = "Product Visionary"
+description = "Sees the roadmap three quarters ahead"
+rarity = 3
+group = 2
+feature_chance = 1.33
+bug_chance = 0.67

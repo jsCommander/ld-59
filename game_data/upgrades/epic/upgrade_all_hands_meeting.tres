@@ -8,6 +8,7 @@ id = "all_hands_meeting"
 display_name = "All-Hands Meeting"
 description = "200 people watching one person's screen share"
 rarity = 2
+group = 1
 trade_off_type = 1
 global_damage = 0.41
 boost_damage = 0.44

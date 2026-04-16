@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "corporate_espionage"
+display_name = "Corporate Espionage"
+description = "Competitive intelligence taken literally"
+rarity = 2
+trade_off_type = 2
+global_damage = 0.5
+feature_damage = 0.25
+reward_bonus = -0.09

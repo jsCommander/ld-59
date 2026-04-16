@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "artificial_scarcity"
+display_name = "Artificial Scarcity"
+description = "Limited edition features at premium prices"
+rarity = 3
+group = 2
+trade_off_type = 2
+feature_chance = 1.37
+bug_chance = 0.68
+reward_bonus = -0.12

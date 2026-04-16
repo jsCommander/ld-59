@@ -10,4 +10,4 @@ visible = true
 texture = ExtResource("2_w4fp6")
 
 [node name="ProgressBar" parent="PanelContainer" index="0"]
-theme_type_variation = &"ProgressBarHealth"
+theme_type_variation = &"ProgressBarHP"

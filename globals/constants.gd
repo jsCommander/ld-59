@@ -21,7 +21,8 @@ enum UpgradeStat {
 	RARITY_LUCK,
 }
 enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
-enum TradeOffType {PURE, TRADE_OFF}
+enum TradeOffType {PURE, TRADE_OFF_INTRA_GROUP, TRADE_OFF_CROSS_GROUP}
+enum UpgradeGroup {DPS_DEV, CLICK_BOOST, TASK_TYPE, ECONOMY}
 
 # --- Combat ---
 
@@ -95,6 +96,61 @@ const NEGATIVE_BUDGET_LIMITS: Dictionary = {
 	UpgradeRarity.UNCOMMON: 6,
 	UpgradeRarity.EPIC: 9,
 	UpgradeRarity.LEGENDARY: 12,
+}
+
+const STAT_TO_GROUP_DICT: Dictionary = {
+	UpgradeStat.GLOBAL_DAMAGE: UpgradeGroup.DPS_DEV,
+	UpgradeStat.FEATURE_DAMAGE: UpgradeGroup.DPS_DEV,
+	UpgradeStat.BUG_DAMAGE: UpgradeGroup.DPS_DEV,
+	UpgradeStat.BOOST_DAMAGE: UpgradeGroup.CLICK_BOOST,
+	UpgradeStat.BOOST_DURATION: UpgradeGroup.CLICK_BOOST,
+	UpgradeStat.AUTO_CLICK_SPEED: UpgradeGroup.CLICK_BOOST,
+	UpgradeStat.FEATURE_CHANCE: UpgradeGroup.TASK_TYPE,
+	UpgradeStat.BUG_CHANCE: UpgradeGroup.TASK_TYPE,
+	UpgradeStat.REWARD_BONUS: UpgradeGroup.ECONOMY,
+	UpgradeStat.RARITY_LUCK: UpgradeGroup.ECONOMY,
+}
+
+const UPGRADE_MIN_COUNT_DICT: Dictionary = {
+	TradeOffType.PURE: {
+		UpgradeRarity.COMMON: 10,
+		UpgradeRarity.UNCOMMON: 10,
+		UpgradeRarity.EPIC: 10,
+		UpgradeRarity.LEGENDARY: 10,
+	},
+	TradeOffType.TRADE_OFF_INTRA_GROUP: {
+		UpgradeRarity.COMMON: 10,
+		UpgradeRarity.UNCOMMON: 10,
+		UpgradeRarity.EPIC: 10,
+		UpgradeRarity.LEGENDARY: 10,
+	},
+	TradeOffType.TRADE_OFF_CROSS_GROUP: {
+		UpgradeRarity.COMMON: 10,
+		UpgradeRarity.UNCOMMON: 10,
+		UpgradeRarity.EPIC: 10,
+		UpgradeRarity.LEGENDARY: 10,
+	},
+}
+
+const UPGRADE_MAX_COUNT_DICT: Dictionary = {
+	TradeOffType.PURE: {
+		UpgradeRarity.COMMON: 12,
+		UpgradeRarity.UNCOMMON: 12,
+		UpgradeRarity.EPIC: 12,
+		UpgradeRarity.LEGENDARY: 12,
+	},
+	TradeOffType.TRADE_OFF_INTRA_GROUP: {
+		UpgradeRarity.COMMON: 12,
+		UpgradeRarity.UNCOMMON: 12,
+		UpgradeRarity.EPIC: 12,
+		UpgradeRarity.LEGENDARY: 12,
+	},
+	TradeOffType.TRADE_OFF_CROSS_GROUP: {
+		UpgradeRarity.COMMON: 12,
+		UpgradeRarity.UNCOMMON: 12,
+		UpgradeRarity.EPIC: 12,
+		UpgradeRarity.LEGENDARY: 12,
+	},
 }
 
 # --- Stat Keys ---
@@ -177,17 +233,6 @@ const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
 ]
 
 
-# --- UI ---
-
-const RARITY_COLORS: Dictionary = {
-	UpgradeRarity.COMMON: Color(0.6, 0.6, 0.6),
-	UpgradeRarity.UNCOMMON: Color(0.2, 0.4, 1.0),
-	UpgradeRarity.EPIC: Color(0.6, 0.2, 0.8),
-	UpgradeRarity.LEGENDARY: Color(0.9, 0.2, 0.2),
-}
-
-const STAT_POSITIVE_COLOR: Color = Color(0.2, 0.8, 0.2)
-const STAT_NEGATIVE_COLOR: Color = Color(0.9, 0.2, 0.2)
 
 # --- Milestones ---
 

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "feature_pipeline"
+display_name = "Feature Pipeline"
+description = "CI/CD for features, not just code"
+rarity = 2
+group = 2
+feature_chance = 1.2

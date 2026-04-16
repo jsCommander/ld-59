@@ -174,19 +174,18 @@ func _create_tick_timer() -> Timer:
 func _generate_sprint() -> void:
 	sprint_number += 1
 	sprint_time = 0.0
-	var task_level: int = level
 	var weights: Dictionary = Balance.calculate_task_type_weights(total_stats)
 	var feature_count: int = roundi(Constants.SPRINT_SIZE * (weights[Constants.TaskType.FEATURE] as float))
 	var bug_count: int = Constants.SPRINT_SIZE - feature_count
 	sprint_slots.clear()
 	for i: int in feature_count:
-		_add_sprint_task(TASK_DATA_FEATURE, task_level)
+		_add_sprint_task(TASK_DATA_FEATURE, sprint_number)
 	for i: int in bug_count:
-		_add_sprint_task(TASK_DATA_BUG, task_level)
+		_add_sprint_task(TASK_DATA_BUG, sprint_number)
 	sprint_slots.shuffle()
 	SB.task_queue_changed.emit(sprint_slots)
 	SB.sprint_number_changed.emit(sprint_number)
-	Log.log_info(name, "Sprint %d: %d tasks at level %d" % [sprint_number, sprint_slots.size(), task_level])
+	Log.log_info(name, "Sprint %d: %d tasks" % [sprint_number, sprint_slots.size()])
 
 
 func _all_slots_empty() -> bool:
@@ -264,14 +263,13 @@ func _pick_random_from(pool: Array[UpgradeData]) -> UpgradeData:
 
 
 func _is_upgrade_available(upgrade: UpgradeData) -> bool:
-	return not _is_taken(upgrade.id)
-
-
-func _is_taken(upgrade_id: String) -> bool:
+	if upgrade.max_count <= 0:
+		return true
+	var count: int = 0
 	for taken: UpgradeData in upgrades_taken:
-		if taken.id == upgrade_id:
-			return true
-	return false
+		if taken.id == upgrade.id:
+			count += 1
+	return count < upgrade.max_count
 
 
 func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "feature_or_die"
+display_name = "Feature or Die"
+description = "The backlog has spoken"
+rarity = 3
+group = 2
+trade_off_type = 1
+feature_chance = 2.05
+bug_chance = -0.17

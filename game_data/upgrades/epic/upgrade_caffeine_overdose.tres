@@ -8,6 +8,7 @@ id = "caffeine_overdose"
 display_name = "Caffeine Overdose"
 description = "Heart rate: 180. Commits per hour: also 180."
 rarity = 2
+group = 1
 trade_off_type = 1
 boost_damage = 0.94
 feature_damage = 0.32

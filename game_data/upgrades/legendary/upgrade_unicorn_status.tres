@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "unicorn_status"
+display_name = "Unicorn Status"
+description = "Billion dollar valuation, zero profit"
+rarity = 3
+group = 3
+reward_bonus = 0.37
+rarity_luck = 0.74

@@ -11,7 +11,7 @@ icon = ExtResource("3_vue71")
 metadata/_custom_type_script = "uid://bw2amd7nm0o2b"
 
 [node name="UiActionBarItem" type="PanelContainer"]
-theme_type_variation = &"PanelContainerAccent"
+theme_type_variation = &"PanelContainerPrimary"
 script = ExtResource("1_emsrj")
 item = SubResource("Resource_1qu8h")
 

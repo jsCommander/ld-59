@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "cash_grab"
+display_name = "Cash Grab"
+description = "Monetize first, innovate never"
+rarity = 3
+group = 3
+trade_off_type = 1
+reward_bonus = 1.46
+rarity_luck = -0.08

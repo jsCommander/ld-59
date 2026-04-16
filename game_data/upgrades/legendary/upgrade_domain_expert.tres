@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "domain_expert"
+display_name = "Domain Expert"
+description = "Knows the business better than the business does"
+rarity = 3
+global_damage = 0.8
+feature_damage = 0.4

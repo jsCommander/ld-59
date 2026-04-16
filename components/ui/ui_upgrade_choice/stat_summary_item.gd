@@ -20,9 +20,9 @@ func _ready() -> void:
 	var percent: int = int(_value * 100)
 	if percent > 0:
 		stat_value_label.text = "+%d%%" % percent
-		stat_value_label.add_theme_color_override("font_color", Constants.STAT_POSITIVE_COLOR)
+		stat_value_label.add_theme_color_override("font_color", ThemeTokens.STAT_POSITIVE)
 	elif percent < 0:
 		stat_value_label.text = "%d%%" % percent
-		stat_value_label.add_theme_color_override("font_color", Constants.STAT_NEGATIVE_COLOR)
+		stat_value_label.add_theme_color_override("font_color", ThemeTokens.STAT_NEGATIVE)
 	else:
 		stat_value_label.text = "0%"

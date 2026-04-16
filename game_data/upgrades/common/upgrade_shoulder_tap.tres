@@ -8,5 +8,6 @@ id = "shoulder_tap"
 display_name = "Shoulder Tap"
 description = "\"Hey, got a sec?\" They never have just a sec."
 rarity = 0
+group = 1
 trade_off_type = 0
 boost_damage = 0.2

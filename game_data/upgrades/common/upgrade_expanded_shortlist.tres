@@ -8,5 +8,6 @@ id = "expanded_shortlist"
 display_name = "Lucky Shortlist"
 description = "Better candidates keep showing up somehow"
 rarity = 0
+group = 3
 trade_off_type = 0
 rarity_luck = 0.1

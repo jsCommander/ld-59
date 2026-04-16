@@ -8,5 +8,6 @@ id = "monitoring_setup"
 display_name = "Monitoring Setup"
 description = "Grafana dashboards nobody looks at until 3am"
 rarity = 1
+group = 1
 trade_off_type = 0
 boost_damage = 0.6

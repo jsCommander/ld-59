@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "keyboard_warrior"
+display_name = "Keyboard Warrior"
+description = "Types 200 WPM with mechanical switches"
+rarity = 2
+group = 1
+trade_off_type = 1
+boost_damage = 0.3
+boost_duration = -0.13
+auto_click_speed = 0.59

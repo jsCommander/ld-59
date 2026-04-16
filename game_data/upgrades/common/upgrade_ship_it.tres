@@ -8,6 +8,7 @@ id = "ship_it"
 display_name = "Ship It"
 description = "\"We'll fix it in prod.\" Spoiler: they won't."
 rarity = 0
+group = 2
 trade_off_type = 1
 feature_damage = 0.05
 feature_chance = 0.17

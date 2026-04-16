@@ -8,5 +8,6 @@ id = "energy_drink"
 display_name = "Energy Drink"
 description = "Third can before noon. Code goes brrr."
 rarity = 0
+group = 1
 trade_off_type = 0
 boost_damage = 0.2

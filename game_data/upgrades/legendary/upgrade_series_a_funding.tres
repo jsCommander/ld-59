@@ -8,6 +8,7 @@ id = "series_a_funding"
 display_name = "Series A Funding"
 description = "$10M to find product-market fit. Again."
 rarity = 3
+group = 3
 trade_off_type = 0
 global_damage = 0.48
 reward_bonus = 0.74

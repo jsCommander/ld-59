@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "penetration_testing"
+display_name = "Penetration Testing"
+description = "Finding bugs before they find you"
+rarity = 2
+bug_damage = 1.2

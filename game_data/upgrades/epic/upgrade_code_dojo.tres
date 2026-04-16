@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "code_dojo"
+display_name = "Code Dojo"
+description = "Weekly kata sessions keep the blade sharp"
+rarity = 2
+feature_damage = 1.2

@@ -17,7 +17,7 @@
 offsets = PackedFloat32Array(0.94578314, 0.993506)
 colors = PackedColorArray(0, 0, 0, 0.59000003, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwf8w"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bqu5l"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_jibcc")
 width = 128
@@ -26,7 +26,7 @@ fill = 1
 fill_from = Vector2(0.50641, 0.510684)
 fill_to = Vector2(0.645299, 0.119658)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bqu5l"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rh21r"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_jibcc")
 width = 128
@@ -297,7 +297,7 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_scale"]
 curve = SubResource("Curve_scale")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rh21r"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mvyip"]
 resource_local_to_scene = true
 particle_flag_disable_z = true
 direction = Vector3(-1, -1, 0)
@@ -320,7 +320,7 @@ scale = Vector2(1.9383522, 1.1881869)
 
 [node name="Sprite2D" parent="shadow" index="0"]
 scale = Vector2(1.5327008, 0.59375)
-texture = SubResource("GradientTexture2D_nwf8w")
+texture = SubResource("GradientTexture2D_bqu5l")
 
 [node name="shadow2" parent="." unique_id=755118871 instance=ExtResource("9_72ilg")]
 position = Vector2(-180.00002, -21)
@@ -329,7 +329,7 @@ scale = Vector2(0.6399975, 0.7600008)
 [node name="Sprite2D" parent="shadow2" index="0"]
 position = Vector2(5.0000157, -2.380951)
 scale = Vector2(1.584378, 0.4985122)
-texture = SubResource("GradientTexture2D_bqu5l")
+texture = SubResource("GradientTexture2D_rh21r")
 
 [node name="ChairSprite" type="Sprite2D" parent="." unique_id=443780231]
 position = Vector2(-176, -83)
@@ -394,7 +394,7 @@ position = Vector2(-176, -273)
 amount = 3
 texture = ExtResource("11_tbq0k")
 explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_rh21r")
+process_material = SubResource("ParticleProcessMaterial_mvyip")
 
 [node name="ClickableTrait" parent="." unique_id=1968813727 instance=ExtResource("10_clickable")]
 

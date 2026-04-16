@@ -34,10 +34,10 @@ func _update():
 		return
 		
 	texture_rect.texture = item.icon
-	self.theme_type_variation = "PanelContainerAccentHover" if _selected else "PanelContainerAccent"
+	self.theme_type_variation = "PanelContainerPrimaryHover" if _selected else "PanelContainerPrimary"
 
 func _on_mouse_entered() -> void:
-	self.theme_type_variation = "PanelContainerAccentHover"
+	self.theme_type_variation = "PanelContainerPrimaryHover"
 
 func _on_mouse_exited() -> void:
-	self.theme_type_variation = "PanelContainerAccent"
+	self.theme_type_variation = "PanelContainerPrimary"

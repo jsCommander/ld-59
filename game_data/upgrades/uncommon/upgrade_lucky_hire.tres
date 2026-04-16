@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "lucky_hire"
+display_name = "Lucky Hire"
+description = "Found a 10x developer on the first resume"
+rarity = 1
+group = 3
+trade_off_type = 1
+reward_bonus = -0.06
+rarity_luck = 0.31

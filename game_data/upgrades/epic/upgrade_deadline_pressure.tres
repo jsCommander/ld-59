@@ -8,6 +8,7 @@ id = "deadline_pressure"
 display_name = "Deadline Pressure"
 description = "Nothing motivates like a demo tomorrow"
 rarity = 2
+group = 1
 trade_off_type = 1
 boost_damage = 0.65
 auto_click_speed = 0.38

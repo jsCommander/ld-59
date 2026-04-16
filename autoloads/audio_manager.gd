@@ -19,7 +19,7 @@ func _register_sfx() -> void:
 	register_sfx(Constants.Sfx.PICKUP, preload("res://assets/sfx/pickupCoin.wav"))
 	register_sfx(Constants.Sfx.HIT_HURT, preload("res://assets/sfx/hitHurt.wav"))
 	register_sfx(Constants.Sfx.EXPLOSION, preload("res://assets/sfx/explosion.wav"))
-	register_sfx(Constants.Sfx.CLICK, preload("res://assets/sfx/click.wav"))
+	register_sfx(Constants.Sfx.CLICK, preload("res://assets/sfx/whip_shot_2.mp3"))
 
 
 func _connect_signals() -> void:
@@ -32,4 +32,4 @@ func _on_task_destroyed(_task: TaskData) -> void:
 
 
 func _on_boost_applied(_developer: Developer) -> void:
-	play_sfx(Constants.Sfx.CLICK)
+	play_sfx(Constants.Sfx.CLICK, 0.15)

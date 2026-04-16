@@ -57,7 +57,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-theme_type_variation = &"LabelLarge"
+theme_type_variation = &"LabelH1"
 text = "Но честно? Для инди-проекта часто достаточно одного звука с рандомным pitch. Главное — не играть звук на КАЖДЫЙ символ, а то будет адская какофония. Лучше через символ или с небольшой случайностью. 
 
 одного звука с рандомным pitch. Главное — не играть звук на КАЖДЫЙ символ, а то будет адская какофония. Лучше через символ или с небольшой случайностью. 
@@ -73,7 +73,7 @@ offset_left = 48.0
 offset_top = -16.0
 offset_right = 320.0
 offset_bottom = 57.0
-theme_type_variation = &"PanelContainerAccent"
+theme_type_variation = &"PanelContainerPrimary"
 
 [node name="MarginContainer" type="MarginContainer" parent="Speaker"]
 layout_mode = 2
@@ -82,6 +82,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-theme_type_variation = &"LabelLarge"
+theme_type_variation = &"LabelH1"
 text = "МУЖИК"
 horizontal_alignment = 1

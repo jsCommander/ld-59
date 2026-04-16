@@ -25,7 +25,7 @@ visible = false
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 size_flags_vertical = 8
-theme_type_variation = &"ProgressBarHealth"
+theme_type_variation = &"ProgressBarHP"
 max_value = 1.0
 show_percentage = false
 
@@ -37,7 +37,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_type_variation = &"LabelOnProgressBar"
+theme_type_variation = &"LabelOnAccent"
 text = "4444"
 horizontal_alignment = 1
 vertical_alignment = 1

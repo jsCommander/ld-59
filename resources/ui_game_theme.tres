@@ -2,7 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://b3u2v4unutk0g" path="res://game_kit/fonts/Caveat-VariableFont_wght.ttf" id="1_ibuqq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nt2f"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
 bg_color = Color(1, 0.870588, 0.631373, 1)
 border_width_left = 1
 border_width_top = 1
@@ -14,7 +14,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h27ae"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
 bg_color = Color(1, 0.870588, 0.631373, 1)
 border_width_left = 1
 border_width_top = 1
@@ -26,7 +26,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjqi4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
 bg_color = Color(1, 0.780392, 0.321569, 1)
 border_width_left = 1
 border_width_top = 1
@@ -37,9 +37,8 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-corner_detail = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gpyc2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
 bg_color = Color(0.894118, 0.560784, 0.266667, 1)
 border_width_left = 1
 border_width_top = 1
@@ -51,91 +50,91 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1h7u"]
-bg_color = Color(1, 1, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_default"]
+bg_color = Color(1, 0.960784, 0.901961, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_26cd0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_dark"]
+bg_color = Color(0.239216, 0.164706, 0.101961, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_primary"]
 bg_color = Color(1, 0.780392, 0.321569, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnlon"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_primary_hover"]
 bg_color = Color(1, 0.870588, 0.631373, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg01"]
-bg_color = Color(1, 0.870588, 0.631373, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_common"]
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc01"]
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc04"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_epic"]
 bg_color = Color(0.6, 0.2, 0.8, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc05"]
-bg_color = Color(1, 0.5, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_legendary"]
+bg_color = Color(0.901961, 0.2, 0.2, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc03"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_uncommon"]
 bg_color = Color(0.2, 0.4, 1, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc02"]
-bg_color = Color(0.2, 0.8, 0.2, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.87451, 0.87451, 0.85098, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j26u"]
-bg_color = Color(0.874152, 0.876338, 0.849289, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sf4qg"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
 bg_color = Color(1, 0.780392, 0.321569, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48cky"]
-bg_color = Color(1, 0.510256, 0.443869, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bug"]
+bg_color = Color(1, 0.509804, 0.435294, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ey3cy"]
-bg_color = Color(0.462135, 0.680315, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_feature"]
+bg_color = Color(0.462745, 0.678431, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_hp"]
+bg_color = Color(1, 0.509804, 0.435294, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -144,26 +143,32 @@ corner_radius_bottom_left = 8
 [resource]
 default_font = ExtResource("1_ibuqq")
 default_font_size = 24
-Button/colors/font_color = Color(0.47058824, 0.3019608, 0.19607843, 1)
+Button/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_focus_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_hover_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_hover_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/colors/font_pressed_color = Color(0.470588, 0.301961, 0.196078, 1)
 Button/styles/disabled = null
-Button/styles/focus = SubResource("StyleBoxFlat_6nt2f")
-Button/styles/hover = SubResource("StyleBoxFlat_h27ae")
-Button/styles/normal = SubResource("StyleBoxFlat_vjqi4")
-Button/styles/pressed = SubResource("StyleBoxFlat_gpyc2")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_focus")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 ButtonLarge/base_type = &"Button"
 ButtonLarge/font_sizes/font_size = 48
 HBoxContainer/constants/separation = 8
-Label/colors/font_color = Color(0.47058824, 0.3019608, 0.19607843, 1)
-LabelLarge/base_type = &"Label"
-LabelLarge/font_sizes/font_size = 128
-LabelOnProgressBar/base_type = &"Label"
-LabelOnProgressBar/colors/font_color = Color(1, 1, 1, 1)
-LabelOnProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
-LabelOnProgressBar/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/colors/font_color = Color(0.470588, 0.301961, 0.196078, 1)
+LabelH1/base_type = &"Label"
+LabelH1/font_sizes/font_size = 128
+LabelH2/base_type = &"Label"
+LabelH2/font_sizes/font_size = 48
+LabelH3/base_type = &"Label"
+LabelH3/font_sizes/font_size = 32
+LabelOnAccent/base_type = &"Label"
+LabelOnAccent/colors/font_color = Color(1, 1, 1, 1)
+LabelOnAccent/colors/font_outline_color = Color(0, 0, 0, 1)
+LabelOnAccent/colors/font_shadow_color = Color(0, 0, 0, 1)
+LabelOnDark/base_type = &"Label"
+LabelOnDark/colors/font_color = Color(1, 0.960784, 0.901961, 1)
 MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8
@@ -173,33 +178,32 @@ MarginContainerLarge/constants/margin_bottom = 24
 MarginContainerLarge/constants/margin_left = 24
 MarginContainerLarge/constants/margin_right = 24
 MarginContainerLarge/constants/margin_top = 24
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_g1h7u")
-PanelContainerAccent/base_type = &"PanelContainer"
-PanelContainerAccent/styles/panel = SubResource("StyleBoxFlat_26cd0")
-PanelContainerAccentHover/base_type = &"PanelContainer"
-PanelContainerAccentHover/styles/panel = SubResource("StyleBoxFlat_rnlon")
-PanelContainerBackground/base_type = &"PanelContainer"
-PanelContainerBackground/styles/panel = SubResource("StyleBoxFlat_bg01")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_panel_default")
+PanelContainerDark/base_type = &"PanelContainer"
+PanelContainerDark/styles/panel = SubResource("StyleBoxFlat_panel_dark")
+PanelContainerPrimary/base_type = &"PanelContainer"
+PanelContainerPrimary/styles/panel = SubResource("StyleBoxFlat_panel_primary")
+PanelContainerPrimaryHover/base_type = &"PanelContainer"
+PanelContainerPrimaryHover/styles/panel = SubResource("StyleBoxFlat_panel_primary_hover")
 PanelContainerRarityCommon/base_type = &"PanelContainer"
-PanelContainerRarityCommon/styles/panel = SubResource("StyleBoxFlat_rc01")
+PanelContainerRarityCommon/styles/panel = SubResource("StyleBoxFlat_rarity_common")
 PanelContainerRarityEpic/base_type = &"PanelContainer"
-PanelContainerRarityEpic/styles/panel = SubResource("StyleBoxFlat_rc04")
+PanelContainerRarityEpic/styles/panel = SubResource("StyleBoxFlat_rarity_epic")
 PanelContainerRarityLegendary/base_type = &"PanelContainer"
-PanelContainerRarityLegendary/styles/panel = SubResource("StyleBoxFlat_rc05")
-PanelContainerRarityRare/base_type = &"PanelContainer"
-PanelContainerRarityRare/styles/panel = SubResource("StyleBoxFlat_rc03")
+PanelContainerRarityLegendary/styles/panel = SubResource("StyleBoxFlat_rarity_legendary")
 PanelContainerRarityUncommon/base_type = &"PanelContainer"
-PanelContainerRarityUncommon/styles/panel = SubResource("StyleBoxFlat_rc02")
-ProgressBar/styles/background = SubResource("StyleBoxFlat_2j26u")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_sf4qg")
-ProgressBarHealth/base_type = &"ProgressBar"
-ProgressBarHealth/styles/fill = SubResource("StyleBoxFlat_48cky")
-ProgressBarMana/base_type = &"ProgressBar"
-ProgressBarMana/styles/fill = SubResource("StyleBoxFlat_ey3cy")
+PanelContainerRarityUncommon/styles/panel = SubResource("StyleBoxFlat_rarity_uncommon")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_progress_bg")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_progress_fill")
+ProgressBarBug/base_type = &"ProgressBar"
+ProgressBarBug/styles/fill = SubResource("StyleBoxFlat_progress_bug")
+ProgressBarFeature/base_type = &"ProgressBar"
+ProgressBarFeature/styles/fill = SubResource("StyleBoxFlat_progress_feature")
+ProgressBarHP/base_type = &"ProgressBar"
+ProgressBarHP/styles/fill = SubResource("StyleBoxFlat_progress_hp")
 RichTextLabel/colors/default_color = Color(0.470588, 0.301961, 0.196078, 1)
 VBoxContainer/constants/separation = 8
 VBoxContainerLarge/base_type = &"VBoxContainer"
 VBoxContainerLarge/constants/separation = 16
 VBoxContainerSmall/base_type = &"VBoxContainer"
 VBoxContainerSmall/constants/separation = 4
-metadata/_custom_type_script = "uid://bp1wc6jgtosqm"

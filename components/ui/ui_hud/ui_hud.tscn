@@ -79,7 +79,7 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="UiSprintLabel" parent="." unique_id=703987759 instance=ExtResource("9_ks61w")]
-offset_left = 30.0
-offset_top = 883.0
-offset_right = 138.0
-offset_bottom = 940.0
+offset_left = 43.0
+offset_top = 875.0
+offset_right = 167.0
+offset_bottom = 948.0

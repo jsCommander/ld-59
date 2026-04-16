@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "laser_focus"
+display_name = "Laser Focus"
+description = "Sees only features, bugs are someone else's problem"
+rarity = 3
+trade_off_type = 1
+global_damage = 0.51
+feature_damage = 1.03
+bug_damage = -0.17

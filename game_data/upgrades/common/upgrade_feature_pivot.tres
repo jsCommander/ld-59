@@ -8,6 +8,7 @@ id = "feature_pivot"
 display_name = "Feature Pivot"
 description = "\"We're pivoting to AI\" — every startup, 2024"
 rarity = 0
+group = 2
 trade_off_type = 1
 feature_damage = 0.07
 feature_chance = 0.15

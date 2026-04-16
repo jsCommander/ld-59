@@ -27,5 +27,5 @@ func _ready() -> void:
 	else:
 		var percent: int = int(_value * 100)
 		modifier_label.text = "+%d%%" % percent if percent >= 0 else "%d%%" % percent
-	var color: Color = Constants.STAT_POSITIVE_COLOR if _value >= 0 else Constants.STAT_NEGATIVE_COLOR
+	var color: Color = ThemeTokens.STAT_POSITIVE if _value >= 0 else ThemeTokens.STAT_NEGATIVE
 	modifier_label.add_theme_color_override("font_color", color)

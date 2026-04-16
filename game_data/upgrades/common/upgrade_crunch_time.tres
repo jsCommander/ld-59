@@ -8,6 +8,7 @@ id = "crunch_time"
 display_name = "Crunch Time"
 description = "Burn bright, burn fast, burn out"
 rarity = 0
+group = 1
 trade_off_type = 1
 boost_damage = 0.22
 boost_duration = -0.06

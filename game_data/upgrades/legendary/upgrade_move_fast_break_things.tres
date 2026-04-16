@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "move_fast_break_things"
+display_name = "Move Fast Break Things"
+description = "Facebook's original motto, now your problem"
+rarity = 3
+trade_off_type = 2
+global_damage = 0.82
+feature_damage = 0.41
+reward_bonus = -0.12

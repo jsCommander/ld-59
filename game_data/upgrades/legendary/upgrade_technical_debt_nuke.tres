@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game_data/upgrades/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "technical_debt_nuke"
+display_name = "Technical Debt Nuke"
+description = "Rewrote everything from scratch. Again."
+rarity = 3
+trade_off_type = 2
+global_damage = 0.82
+bug_damage = 0.41
+auto_click_speed = -0.1

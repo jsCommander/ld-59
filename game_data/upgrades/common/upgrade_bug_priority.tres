@@ -8,6 +8,7 @@ id = "bug_priority"
 display_name = "Bug Priority"
 description = "\"All bugs are P0\" — every product manager ever"
 rarity = 0
+group = 2
 trade_off_type = 1
 bug_damage = 0.05
 bug_chance = 0.17
