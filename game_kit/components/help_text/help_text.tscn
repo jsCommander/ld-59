@@ -1,19 +1,23 @@
 [gd_scene format=3 uid="uid://bjmpyefdpx1r"]
 
-[ext_resource type="Script" uid="uid://c0wv2bcmivrj7" path="res://game_kit/components/help_text/help_text.gd" id="1_5j5wg"]
+[ext_resource type="PackedScene" uid="uid://cfjcwt6msfm4u" path="res://components/ui/ui_arrow.tscn" id="2_bn3mh"]
 
-[node name="HelpText" type="CenterContainer" unique_id=2140200559]
-offset_right = 336.0
-offset_bottom = 252.0
-pivot_offset = Vector2(168, 128)
-script = ExtResource("1_5j5wg")
+[node name="BoostArrows" type="Control" unique_id=992226455]
+layout_mode = 3
+anchors_preset = 0
 
-[node name="Label" type="Label" parent="." unique_id=2051011228]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(256, 0)
-layout_mode = 2
-theme_type_variation = &"LabelH1OnAccent"
-text = "Click On Dev for boost"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
+[node name="Arrow" parent="." unique_id=1270685439 instance=ExtResource("2_bn3mh")]
+position = Vector2(-136, -47)
+rotation = 0.61322534
+
+[node name="Arrow2" parent="." unique_id=327748699 instance=ExtResource("2_bn3mh")]
+position = Vector2(-54, -115)
+rotation = 1.123083
+
+[node name="Arrow3" parent="." unique_id=646808695 instance=ExtResource("2_bn3mh")]
+position = Vector2(60, -121)
+rotation = 1.8387508
+
+[node name="Arrow4" parent="." unique_id=733436364 instance=ExtResource("2_bn3mh")]
+position = Vector2(144, -56.000004)
+rotation = 2.4331315

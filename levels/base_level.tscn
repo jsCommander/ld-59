@@ -53,11 +53,11 @@ position = Vector2(1600, 704)
 unique_name_in_owner = true
 position = Vector2(1600, 896)
 
-[node name="BoostHelp" parent="." unique_id=1805909656 instance=ExtResource("4_help")]
-unique_name_in_owner = true
-offset_left = 347.0
-offset_top = 463.0
-offset_right = 647.0
-offset_bottom = 727.0
-
 [node name="UiHud" parent="." unique_id=1097246371 instance=ExtResource("3_maq6b")]
+
+[node name="BoostArrows" parent="." unique_id=992226455 instance=ExtResource("4_help")]
+unique_name_in_owner = true
+offset_left = 799.0
+offset_top = 462.0
+offset_right = 799.0
+offset_bottom = 462.0

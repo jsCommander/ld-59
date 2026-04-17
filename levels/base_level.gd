@@ -2,7 +2,7 @@ extends Node2D
 
 # --- @onready ---
 
-@onready var boost_help: Control = %BoostHelp
+@onready var boost_help: Control = %BoostArrows
 @onready var dev_center_mid: Developer = %DevCenterMid
 @onready var dev_left_mid: Developer = %DevLeftMid
 @onready var dev_right_mid: Developer = %DevRightMid
@@ -17,7 +17,7 @@ extends Node2D
 
 func _ready() -> void:
 	add_to_group("level")
-	AM.play_playlist([Constants.Music.FR, Constants.Music.FR3, Constants.Music.SG, Constants.Music.SPB])
+	AM.play_playlist([Constants.Music.SPB])
 	SB.player_boost_applied.connect(_on_player_boost_applied)
 	SB.developer_chosen.connect(_on_developer_chosen_for_help)
 	PD.start_game([
