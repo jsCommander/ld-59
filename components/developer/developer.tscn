@@ -343,6 +343,7 @@ texture = ExtResource("2")
 
 [node name="DevRig" type="Node2D" parent="." unique_id=998168427]
 unique_name_in_owner = true
+visible = false
 position = Vector2(-143, -102)
 
 [node name="LaptopSprite" type="Sprite2D" parent="DevRig" unique_id=1978603851]
@@ -409,6 +410,12 @@ offset_left = -296.0
 offset_top = -261.0
 offset_right = -256.0
 offset_bottom = -117.0
+theme_type_variation = &""
+
+[node name="BoostTickTimer" type="Timer" parent="." unique_id=1811200001]
+unique_name_in_owner = true
+wait_time = 0.1
+autostart = true
 
 [editable path="shadow"]
 [editable path="shadow2"]

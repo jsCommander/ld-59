@@ -11,6 +11,13 @@ const RARITY_VARIATIONS: Dictionary = {
 	Constants.UpgradeRarity.LEGENDARY: &"PanelContainerRarityLegendary",
 }
 
+const RARITY_HOVER_VARIATIONS: Dictionary = {
+	Constants.UpgradeRarity.COMMON: &"PanelContainerRarityCommonHover",
+	Constants.UpgradeRarity.UNCOMMON: &"PanelContainerRarityUncommonHover",
+	Constants.UpgradeRarity.EPIC: &"PanelContainerRarityEpicHover",
+	Constants.UpgradeRarity.LEGENDARY: &"PanelContainerRarityLegendaryHover",
+}
+
 # --- Signals ---
 signal chosen(upgrade: UpgradeData)
 
@@ -47,15 +54,13 @@ func _ready() -> void:
 
 # --- Handlers ---
 func _on_mouse_entered() -> void:
-	if _upgrade:
-		var rarity_color: Color = ThemeTokens.RARITY_COLORS_DICT.get(_upgrade.rarity, Color.WHITE)
-		modulate = Color.WHITE.lerp(rarity_color, 0.15)
-	else:
-		modulate = Color(0.9, 0.9, 0.9)
+	if _upgrade and _upgrade.rarity in RARITY_HOVER_VARIATIONS:
+		upgrade_rarity_panel.theme_type_variation = RARITY_HOVER_VARIATIONS[_upgrade.rarity]
 
 
 func _on_mouse_exited() -> void:
-	modulate = Color(1, 1, 1)
+	if _upgrade and _upgrade.rarity in RARITY_VARIATIONS:
+		upgrade_rarity_panel.theme_type_variation = RARITY_VARIATIONS[_upgrade.rarity]
 
 
 func _gui_input(event: InputEvent) -> void:

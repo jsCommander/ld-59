@@ -1,5 +1,5 @@
 class_name StatSummaryItem
-extends PanelContainer
+extends Control
 
 # --- @onready ---
 @onready var stat_name_label: Label = %StatNameLabel

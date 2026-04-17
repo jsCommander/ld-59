@@ -35,14 +35,14 @@ const SPEED_CAP: float = 0.1
 # --- Boost ---
 
 const MAX_BOOST_STACKS: int = 5
-const BOOST_DECAY_INTERVAL: float = 1.0
+const BOOST_STACK_MAX_LIFETIME: float = 1
+const BOOST_STACK_TICK_INTERVAL: float = 0.1
 const AUTO_CLICK_BASE_INTERVAL: float = 2.0
 
 # --- Progression ---
 
 const XP_BASE: int = 100
 const SPRINT_SIZE: int = 12
-const MAX_LEVEL: int = 40
 const MAX_DEV_STAT_MULTIPLIER: float = 2.0
 const BASE_TOTAL_GAME_TIME: float = 600.0
 const HIRE_LEVELS: Array[int] = [0, 3, 6, 10, 14, 18, 23, 28, 34]
@@ -54,7 +54,7 @@ const BASE_BUG_CHANCE: float = 50.0
 
 # --- Upgrades ---
 
-const UPGRADE_CHOICES: int = 5
+const UPGRADE_CHOICES: int = 4
 const TRADE_OFF_RETURN_RATE: float = 0.3
 
 const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
@@ -73,15 +73,15 @@ const OFFER_RARITY_CAP_DICT: Dictionary[UpgradeRarity, int] = {
 
 const STAT_COSTS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: 1.0,
-	UpgradeStat.FEATURE_DAMAGE: 0.5,
-	UpgradeStat.BUG_DAMAGE: 0.5,
-	UpgradeStat.FEATURE_CHANCE: 0.5,
-	UpgradeStat.BUG_CHANCE: 0.5,
-	UpgradeStat.BOOST_DAMAGE: 0.5,
-	UpgradeStat.BOOST_DURATION: 0.5,
-	UpgradeStat.AUTO_CLICK_SPEED: 0.8,
-	UpgradeStat.REWARD_BONUS: 0.7,
-	UpgradeStat.RARITY_LUCK: 1.0,
+	UpgradeStat.FEATURE_DAMAGE: 1.0,
+	UpgradeStat.BUG_DAMAGE: 1.0,
+	UpgradeStat.FEATURE_CHANCE: 1.0,
+	UpgradeStat.BUG_CHANCE: 1.0,
+	UpgradeStat.BOOST_DAMAGE: 1.0,
+	UpgradeStat.BOOST_DURATION: 1.0,
+	UpgradeStat.AUTO_CLICK_SPEED: 1.0,
+	UpgradeStat.REWARD_BONUS: 1,
+	UpgradeStat.RARITY_LUCK: 3.0,
 }
 
 const RARITY_BUDGETS: Dictionary = {
@@ -169,6 +169,11 @@ const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
 const STAT_REWARD_BONUS: String = "reward_bonus"
 const STAT_RARITY_LUCK: String = "rarity_luck"
 
+const FORBIDDEN_POSITIVE_STAT_COMBINATIONS: Array[Array] = [
+	[STAT_FEATURE_CHANCE, STAT_BUG_CHANCE],
+	[STAT_FEATURE_DAMAGE, STAT_BUG_DAMAGE],
+]
+
 const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_GLOBAL_DAMAGE: "Global Damage",
 	STAT_FEATURE_DAMAGE: "Feature Damage",
@@ -234,7 +239,6 @@ const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
 	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
 	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
 ]
-
 
 
 # --- Milestones ---

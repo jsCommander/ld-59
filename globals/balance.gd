@@ -86,14 +86,14 @@ static func get_task_hp(player_level: int) -> float:
 	const LINEAR_PHASE_CAP: int = 5
 	const X10_EVERY_N_LEVELS: float = 8.0
 	const CURVE_SHIFT: float = 0.1
-	var clamped: int = clampi(player_level, 1, Constants.MAX_LEVEL)
+	var clamped: int = maxi(player_level, 1)
 	if clamped <= LINEAR_PHASE_CAP:
 		return float(Constants.BASE_HP * clamped)
 	return float(Constants.BASE_HP) * round(pow(10.0, clamped / X10_EVERY_N_LEVELS - CURVE_SHIFT))
 
 
 static func get_xp_for_level(level: int) -> int:
-	if level < 1 or level > Constants.MAX_LEVEL:
+	if level < 1:
 		return 0
 	if level <= 4:
 		return Constants.XP_BASE * level * (level + 1) / 2

@@ -19,7 +19,7 @@ const SECONDARY_HOVER: Color = Color("#a0754f")
 
 const SURFACE: Color = Color("#ffffff")
 const SURFACE_DARK: Color = Color("#5e4432")
-const SURFACE_CARD: Color = Color("#fff5e6")
+const SURFACE_CARD: Color = Color("#ead9b8")
 
 const OVERLAY: Color = Color("#00000047")
 const OUTLINE: Color = Color("#000000")
@@ -70,6 +70,11 @@ const RARITY_UNCOMMON: Color = BLUE
 const RARITY_EPIC: Color = PURPLE
 const RARITY_LEGENDARY: Color = PRIMARY
 
+const RARITY_COMMON_HOVER: Color = Color("#b3b3b3")
+const RARITY_UNCOMMON_HOVER: Color = Color("#668cff")
+const RARITY_EPIC_HOVER: Color = Color("#b366d9")
+const RARITY_LEGENDARY_HOVER: Color = PRIMARY_HOVER
+
 const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 	Constants.UpgradeRarity.COMMON: RARITY_COMMON,
 	Constants.UpgradeRarity.UNCOMMON: RARITY_UNCOMMON,
@@ -79,8 +84,8 @@ const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 
 # --- Game Entities ---
 
-const FEATURE: Color = Color("#8fb8d9")
-const BUG: Color = Color("#d9998f")
+const FEATURE: Color = Color("#4ea8e0")
+const BUG: Color = Color("#e86b6b")
 const HP: Color = BUG
 const MONEY: Color = Color("#00cc44")
 
@@ -119,11 +124,15 @@ const BUTTON_UPGRADE_BG_PRESSED: Color = Color("#4a8870")
 const PANEL_CONTAINER_DEFAULT_BG: Color = SURFACE
 const PANEL_CONTAINER_PRIMARY_BG: Color = PRIMARY
 const PANEL_CONTAINER_PRIMARY_HOVER_BG: Color = PRIMARY_HOVER
-const PANEL_CONTAINER_LIGHT_BG: Color = SURFACE_CARD
+const PANEL_CONTAINER_CARD_BG: Color = SURFACE_CARD
 const PANEL_CONTAINER_RARITY_COMMON_BG: Color = RARITY_COMMON
 const PANEL_CONTAINER_RARITY_UNCOMMON_BG: Color = RARITY_UNCOMMON
 const PANEL_CONTAINER_RARITY_EPIC_BG: Color = RARITY_EPIC
 const PANEL_CONTAINER_RARITY_LEGENDARY_BG: Color = RARITY_LEGENDARY
+const PANEL_CONTAINER_RARITY_COMMON_HOVER_BG: Color = RARITY_COMMON_HOVER
+const PANEL_CONTAINER_RARITY_UNCOMMON_HOVER_BG: Color = RARITY_UNCOMMON_HOVER
+const PANEL_CONTAINER_RARITY_EPIC_HOVER_BG: Color = RARITY_EPIC_HOVER
+const PANEL_CONTAINER_RARITY_LEGENDARY_HOVER_BG: Color = RARITY_LEGENDARY_HOVER
 
 # --- ProgressBar ---
 

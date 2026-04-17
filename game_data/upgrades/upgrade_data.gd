@@ -52,7 +52,20 @@ func validate_budget() -> String:
 	if neg_total > neg_limit:
 		warnings.append("%s: negative budget %.1f exceeds limit %d" % [id, neg_total, int(neg_limit)])
 	warnings.append_array(_validate_trade_off())
+	warnings.append_array(_validate_forbidden_combinations())
 	return "\n".join(warnings)
+
+
+func _validate_forbidden_combinations() -> Array[String]:
+	var warnings: Array[String] = []
+	for combo: Array in Constants.FORBIDDEN_POSITIVE_STAT_COMBINATIONS:
+		var positive_fields: Array[String] = []
+		for field: String in combo:
+			if (get(field) as float) > 0.0:
+				positive_fields.append(field)
+		if positive_fields.size() == combo.size():
+			warnings.append("%s: forbidden positive combination [%s]" % [id, ", ".join(positive_fields)])
+	return warnings
 
 
 func _calculate_negative_budget() -> float:

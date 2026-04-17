@@ -25,6 +25,7 @@ theme_type_variation = &"LabelMoneyH3"
 text = "Some comments"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="PanelContainer2" type="PanelContainer" parent="HBoxContainer" unique_id=1898610342]
 custom_minimum_size = Vector2(128, 128)

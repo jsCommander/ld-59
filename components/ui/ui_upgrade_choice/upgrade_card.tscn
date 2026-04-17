@@ -19,11 +19,7 @@ theme_type_variation = &"PanelContainerRarityEpic"
 layout_mode = 2
 mouse_filter = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="UpgradeRarity/MarginContainer" unique_id=1832619004]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="UpgradeRarity/MarginContainer/PanelContainer" unique_id=151489426]
+[node name="MarginContainer" type="MarginContainer" parent="UpgradeRarity/MarginContainer" unique_id=151489426]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 12
@@ -31,16 +27,18 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer" unique_id=901907270]
+[node name="VBoxContainer" type="VBoxContainer" parent="UpgradeRarity/MarginContainer/MarginContainer" unique_id=901907270]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="NameLabel" type="Label" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=379006658]
+[node name="NameLabel" type="Label" parent="UpgradeRarity/MarginContainer/MarginContainer/VBoxContainer" unique_id=379006658]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"LabelH3OnAccent"
+text = "Upgrade name"
 horizontal_alignment = 1
 
-[node name="IconRect" type="TextureRect" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1128170736]
+[node name="IconRect" type="TextureRect" parent="UpgradeRarity/MarginContainer/MarginContainer/VBoxContainer" unique_id=1128170736]
 unique_name_in_owner = true
 visible = false
 clip_contents = true
@@ -50,15 +48,17 @@ size_flags_horizontal = 4
 texture = ExtResource("2_etht1")
 expand_mode = 1
 
-[node name="Stats" type="VBoxContainer" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=900998279]
+[node name="Stats" type="VBoxContainer" parent="UpgradeRarity/MarginContainer/MarginContainer/VBoxContainer" unique_id=900998279]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 
-[node name="DescriptionLabel" type="Label" parent="UpgradeRarity/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=331070]
+[node name="DescriptionLabel" type="Label" parent="UpgradeRarity/MarginContainer/MarginContainer/VBoxContainer" unique_id=331070]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_type_variation = &"LabelOnAccent"
+text = "dfsfsfsd"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://6rnldvfqec87" path="res://components/ui/ui_sprint_panel/ui_sprint_panel.gd" id="1_script"]
 
 [node name="UiSprintPanel" type="MarginContainer" unique_id=1734520074]
+custom_minimum_size = Vector2(256, 128)
 offset_left = 8.0
 offset_right = 24.0
 offset_bottom = 16.0

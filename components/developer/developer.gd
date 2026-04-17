@@ -23,14 +23,14 @@ enum State {IDLE, WAITING, WORKING}
 @onready var clickable: ClickableTrait = $ClickableTrait
 @onready var sweat_effect: GPUParticles2D = $SweatEffect
 @onready var boost_stack_ui: UiBoostStack = %UiBoostStack
+@onready var boost_tick_timer: Timer = %BoostTickTimer
 
 # --- State ---
 
 var _state: State = State.IDLE
 var _attack_timer: float = 0.0
 var _current_task: TaskData = null
-var _boost_stacks: int = 0
-var _boost_decay_timer: float = 0.0
+var _boost_stacks: Array[BoostStack] = []
 var _auto_click_timer: float = 0.0
 
 # --- Lifecycle ---
@@ -43,6 +43,7 @@ func _ready() -> void:
 	SB.task_assigned.connect(_on_task_assigned)
 	SB.task_fly_ended.connect(_on_task_fly_ended)
 	clickable.clicked.connect(on_clicked)
+	boost_tick_timer.timeout.connect(_on_boost_tick)
 
 
 func _process(delta: float) -> void:
@@ -57,10 +58,25 @@ func _process(delta: float) -> void:
 		State.WORKING:
 			_process_working(delta)
 
-	_process_decay(delta)
 	_process_auto_click(delta)
 
 # --- Handlers ---
+
+func _on_boost_tick() -> void:
+	if _boost_stacks.is_empty():
+		return
+	var interval: float = Constants.BOOST_STACK_TICK_INTERVAL
+	var expired: Array[BoostStack] = []
+	for stack: BoostStack in _boost_stacks:
+		stack.lifetime += interval
+		if stack.lifetime >= stack.max_lifetime:
+			expired.append(stack)
+	if expired.is_empty():
+		return
+	for stack: BoostStack in expired:
+		_boost_stacks.erase(stack)
+	_update_boost_visuals()
+
 
 func _on_task_killed() -> void:
 	SB.task_destroyed.emit(_current_task)
@@ -113,16 +129,6 @@ func _process_working(delta: float) -> void:
 		_perform_attack()
 
 
-func _process_decay(delta: float) -> void:
-	if _boost_stacks <= 0:
-		return
-	_boost_decay_timer += delta
-	if _boost_decay_timer >= Constants.BOOST_DECAY_INTERVAL:
-		_boost_decay_timer -= Constants.BOOST_DECAY_INTERVAL
-		_boost_stacks -= 1
-		_update_boost_visuals()
-
-
 func _process_auto_click(delta: float) -> void:
 	var interval: float = Balance.calculate_auto_click_interval(PD.total_stats)
 	if interval <= 0.0:
@@ -150,7 +156,7 @@ func _change_state(new_state: State) -> void:
 
 
 func _perform_attack() -> void:
-	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.total_stats, _boost_stacks)
+	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.total_stats, _boost_stacks.size())
 	_current_task.current_hp -= damage
 	task_display.update_hp()
 	task_display.flash()
@@ -161,21 +167,24 @@ func _perform_attack() -> void:
 
 
 func _get_attack_speed() -> float:
-	return Balance.calculate_attack_speed(data, _boost_stacks, PD.total_stats)
+	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.total_stats)
 
 
 func _apply_boost() -> void:
-	_boost_stacks = mini(_boost_stacks + 1, Constants.MAX_BOOST_STACKS)
-	_boost_decay_timer = 0.0
+	if _boost_stacks.size() >= Constants.MAX_BOOST_STACKS:
+		return
+	var stack: BoostStack = BoostStack.new()
+	_boost_stacks.append(stack)
 	_update_boost_visuals()
 	SB.boost_applied.emit(self)
 
 
 func _update_boost_visuals() -> void:
-	var heat: float = float(_boost_stacks) / float(Constants.MAX_BOOST_STACKS)
+	var count: int = _boost_stacks.size()
+	var heat: float = float(count) / float(Constants.MAX_BOOST_STACKS)
 	dev_rig.modulate = Color.WHITE.lerp(Color(1.4, 0.5, 0.4), heat)
-	sweat_effect.emitting = _boost_stacks > 0
-	boost_stack_ui.stack_count = _boost_stacks
+	sweat_effect.emitting = count > 0
+	boost_stack_ui.stack_count = count
 
 
 func _apply_data() -> void:

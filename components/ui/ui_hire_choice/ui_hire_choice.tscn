@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bke0de834q2e6"]
 
 [ext_resource type="Script" uid="uid://djl57ijnn2j4k" path="res://components/ui/ui_hire_choice/ui_hire_choice.gd" id="1_script"]
-[ext_resource type="LabelSettings" uid="uid://ulmnrtlyjrap" path="res://resources/capitalization_label_settings.tres" id="2_2r7p3"]
 
 [node name="UiHireChoice" type="CenterContainer" unique_id=1965586528]
 anchors_preset = 15
@@ -14,6 +13,7 @@ script = ExtResource("1_script")
 [node name="UiHireChoice" type="PanelContainer" parent="." unique_id=1734089240]
 custom_minimum_size = Vector2(512, 256)
 layout_mode = 2
+theme_type_variation = &"PanelContainerCard"
 
 [node name="MarginContainer" type="MarginContainer" parent="UiHireChoice" unique_id=1101002084]
 layout_mode = 2
@@ -25,14 +25,15 @@ theme_override_constants/separation = 24
 [node name="TitleLabel" type="Label" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=114733493]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"LabelH1"
+theme_type_variation = &"LabelMoneyH3"
 theme_override_font_sizes/font_size = 32
 text = "Hire new developer"
-label_settings = ExtResource("2_2r7p3")
 horizontal_alignment = 1
 
-[node name="CardContainer" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1737465524]
+[node name="MarginContainer" type="MarginContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1200670981]
+layout_mode = 2
+
+[node name="CardContainer" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer/MarginContainer" unique_id=1737465524]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 16
 alignment = 1

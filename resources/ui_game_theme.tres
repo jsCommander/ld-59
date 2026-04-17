@@ -93,8 +93,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_light"]
-bg_color = Color(1, 0.960784, 0.901961, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_card"]
+bg_color = Color(0.917647, 0.85098, 0.721569, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -120,8 +120,22 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_common_hover"]
+bg_color = Color(0.7, 0.7, 0.7, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_epic"]
 bg_color = Color(0.6, 0.2, 0.8, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_epic_hover"]
+bg_color = Color(0.7, 0.4, 0.85, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -134,8 +148,22 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_legendary_hover"]
+bg_color = Color(1, 0.870588, 0.631373, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_uncommon"]
 bg_color = Color(0.2, 0.4, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rarity_uncommon_hover"]
+bg_color = Color(0.4, 0.55, 1, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -156,7 +184,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bug"]
-bg_color = Color(0.851, 0.6, 0.561, 1)
+bg_color = Color(0.909804, 0.419608, 0.419608, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -170,14 +198,14 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_feature"]
-bg_color = Color(0.561, 0.722, 0.851, 1)
+bg_color = Color(0.305882, 0.658824, 0.878431, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_hp"]
-bg_color = Color(0.851, 0.6, 0.561, 1)
+bg_color = Color(0.909804, 0.419608, 0.419608, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -263,20 +291,28 @@ MarginContainerLarge/constants/margin_left = 24
 MarginContainerLarge/constants/margin_right = 24
 MarginContainerLarge/constants/margin_top = 24
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_panel_default")
-PanelContainerLight/base_type = &"PanelContainer"
-PanelContainerLight/styles/panel = SubResource("StyleBoxFlat_panel_light")
+PanelContainerCard/base_type = &"PanelContainer"
+PanelContainerCard/styles/panel = SubResource("StyleBoxFlat_panel_card")
 PanelContainerPrimary/base_type = &"PanelContainer"
 PanelContainerPrimary/styles/panel = SubResource("StyleBoxFlat_panel_primary")
 PanelContainerPrimaryHover/base_type = &"PanelContainer"
 PanelContainerPrimaryHover/styles/panel = SubResource("StyleBoxFlat_panel_primary_hover")
 PanelContainerRarityCommon/base_type = &"PanelContainer"
 PanelContainerRarityCommon/styles/panel = SubResource("StyleBoxFlat_rarity_common")
+PanelContainerRarityCommonHover/base_type = &"PanelContainer"
+PanelContainerRarityCommonHover/styles/panel = SubResource("StyleBoxFlat_rarity_common_hover")
 PanelContainerRarityEpic/base_type = &"PanelContainer"
 PanelContainerRarityEpic/styles/panel = SubResource("StyleBoxFlat_rarity_epic")
+PanelContainerRarityEpicHover/base_type = &"PanelContainer"
+PanelContainerRarityEpicHover/styles/panel = SubResource("StyleBoxFlat_rarity_epic_hover")
 PanelContainerRarityLegendary/base_type = &"PanelContainer"
 PanelContainerRarityLegendary/styles/panel = SubResource("StyleBoxFlat_rarity_legendary")
+PanelContainerRarityLegendaryHover/base_type = &"PanelContainer"
+PanelContainerRarityLegendaryHover/styles/panel = SubResource("StyleBoxFlat_rarity_legendary_hover")
 PanelContainerRarityUncommon/base_type = &"PanelContainer"
 PanelContainerRarityUncommon/styles/panel = SubResource("StyleBoxFlat_rarity_uncommon")
+PanelContainerRarityUncommonHover/base_type = &"PanelContainer"
+PanelContainerRarityUncommonHover/styles/panel = SubResource("StyleBoxFlat_rarity_uncommon_hover")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_progress_bg")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_progress_fill")
 ProgressBarBug/base_type = &"ProgressBar"
