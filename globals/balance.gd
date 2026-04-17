@@ -31,11 +31,6 @@ static func calculate_auto_click_interval(stats: Dictionary) -> float:
 	return Constants.AUTO_CLICK_BASE_INTERVAL / (1.0 + speed)
 
 
-## Reward multiplier = 1 + reward_bonus
-static func calculate_reward_multiplier(stats: Dictionary) -> float:
-	return 1.0 + _get_stat(Constants.STAT_REWARD_BONUS, stats)
-
-
 ## Task type weights based on Feature/Bug Chance stats
 static func calculate_task_type_weights(stats: Dictionary) -> Dictionary:
 	var feature_w: float = Constants.BASE_FEATURE_CHANCE + _get_stat(Constants.STAT_FEATURE_CHANCE, stats)
@@ -49,27 +44,10 @@ static func calculate_task_type_weights(stats: Dictionary) -> Dictionary:
 	}
 
 
-## Roll a rarity based on game_level (time-based) with rarity_luck bonus
-static func roll_rarity(player_level: int, stats: Dictionary) -> Constants.UpgradeRarity:
+## Roll a rarity based on player level
+static func roll_rarity(player_level: int) -> Constants.UpgradeRarity:
 	var bracket: int = clampi(player_level - 1, 0, Constants.RARITY_APPEARANCE_RATES.size() - 1)
-	var weights: Dictionary = Constants.RARITY_APPEARANCE_RATES[bracket].duplicate()
-	var luck: float = _get_stat(Constants.STAT_RARITY_LUCK, stats)
-	if luck > 0.0:
-		var common_w: float = weights[Constants.UpgradeRarity.COMMON] as float
-		var shift: float = minf(luck, common_w - 0.05)
-		if shift > 0.0:
-			weights[Constants.UpgradeRarity.COMMON] = common_w - shift
-			# Distribute to higher rarities proportionally
-			var higher_total: float = 0.0
-			for rarity: Constants.UpgradeRarity in weights:
-				if rarity != Constants.UpgradeRarity.COMMON:
-					higher_total += weights[rarity] as float
-			if higher_total > 0.0:
-				for rarity: Constants.UpgradeRarity in weights:
-					if rarity != Constants.UpgradeRarity.COMMON:
-						weights[rarity] = (weights[rarity] as float) + shift * ((weights[rarity] as float) / higher_total)
-			else:
-				weights[Constants.UpgradeRarity.UNCOMMON] = (weights[Constants.UpgradeRarity.UNCOMMON] as float) + shift
+	var weights: Dictionary = Constants.RARITY_APPEARANCE_RATES[bracket]
 	var roll: float = randf()
 	var cumulative: float = 0.0
 	for rarity: Constants.UpgradeRarity in weights:
@@ -87,20 +65,12 @@ static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType
 
 static func get_task_hp(player_level: int) -> float:
 	const LINEAR_PHASE_CAP: int = 5
-	const X10_EVERY_N_LEVELS: float = 8.0
-	const CURVE_SHIFT: float = 0.1
+	const X2_EVERY_N_LEVELS: float = 2.0
+	const CURVE_SHIFT: float = 0.4
 	var clamped: int = maxi(player_level, 1)
 	if clamped <= LINEAR_PHASE_CAP:
 		return float(Constants.BASE_HP * clamped)
-	return float(Constants.BASE_HP) * round(pow(10.0, clamped / X10_EVERY_N_LEVELS - CURVE_SHIFT))
-
-
-static func get_xp_for_level(level: int) -> int:
-	if level < 1:
-		return 0
-	if level <= 4:
-		return Constants.XP_BASE * level * (level + 1) / 2
-	return Constants.XP_BASE * int(round(pow(2.0, level / 2.0 + 1.644)))
+	return float(Constants.BASE_HP) * round(pow(2.0, clamped / X2_EVERY_N_LEVELS - CURVE_SHIFT))
 
 
 static func get_game_duration() -> float:

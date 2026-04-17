@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cquf7pv4aw3ew"]
 
-[ext_resource type="Script" uid="uid://cjte8te852ft3" path="res://components/traits/clickable_trait.gd" id="1_script"]
+[ext_resource type="Script" path="res://components/traits/clickable_trait.gd" id="1_script"]
 
 [node name="ClickableTrait" type="Area2D" unique_id=627472876]
 collision_layer = 16384

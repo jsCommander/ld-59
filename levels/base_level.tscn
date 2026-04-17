@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bn6l56wo7yx5w" path="res://components/background_office/background_office.tscn" id="1_wevqg"]
 [ext_resource type="PackedScene" uid="uid://dnfgvwc8qcvgq" path="res://components/developer/developer.tscn" id="2_46036"]
 [ext_resource type="PackedScene" uid="uid://dbl4ngexfuoxh" path="res://components/ui/ui_hud/ui_hud.tscn" id="3_maq6b"]
+[ext_resource type="PackedScene" uid="uid://bjmpyefdpx1r" path="res://game_kit/components/help_text/help_text.tscn" id="4_help"]
 
 [node name="BaseLevel" type="Node2D" unique_id=49000895]
 script = ExtResource("1_maq6b")
@@ -16,31 +17,47 @@ z_index = -10
 
 [node name="Desks" type="Node2D" parent="." unique_id=329046567]
 
-[node name="Developer" parent="Desks" unique_id=1391907512 instance=ExtResource("2_46036")]
+[node name="DevLeftTop" parent="Desks" unique_id=1391907512 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(320, 512)
 
-[node name="Developer2" parent="Desks" unique_id=1321413250 instance=ExtResource("2_46036")]
+[node name="DevLeftMid" parent="Desks" unique_id=1321413250 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(320, 704)
 
-[node name="Developer3" parent="Desks" unique_id=2057359003 instance=ExtResource("2_46036")]
+[node name="DevLeftBot" parent="Desks" unique_id=2057359003 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(320, 896)
 
-[node name="Developer4" parent="Desks" unique_id=135221190 instance=ExtResource("2_46036")]
+[node name="DevCenterTop" parent="Desks" unique_id=135221190 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(960, 512)
 
-[node name="Developer5" parent="Desks" unique_id=1920258354 instance=ExtResource("2_46036")]
+[node name="DevCenterMid" parent="Desks" unique_id=1920258354 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(960, 704)
 
-[node name="Developer6" parent="Desks" unique_id=1803476830 instance=ExtResource("2_46036")]
+[node name="DevCenterBot" parent="Desks" unique_id=1803476830 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(960, 896)
 
-[node name="Developer7" parent="Desks" unique_id=434195867 instance=ExtResource("2_46036")]
+[node name="DevRightTop" parent="Desks" unique_id=434195867 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(1600, 512)
 
-[node name="Developer8" parent="Desks" unique_id=1820003214 instance=ExtResource("2_46036")]
+[node name="DevRightMid" parent="Desks" unique_id=1820003214 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(1600, 704)
 
-[node name="Developer9" parent="Desks" unique_id=111926583 instance=ExtResource("2_46036")]
+[node name="DevRightBot" parent="Desks" unique_id=111926583 instance=ExtResource("2_46036")]
+unique_name_in_owner = true
 position = Vector2(1600, 896)
+
+[node name="BoostHelp" parent="." unique_id=1805909656 instance=ExtResource("4_help")]
+unique_name_in_owner = true
+offset_left = 347.0
+offset_top = 463.0
+offset_right = 647.0
+offset_bottom = 727.0
 
 [node name="UiHud" parent="." unique_id=1097246371 instance=ExtResource("3_maq6b")]

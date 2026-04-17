@@ -21,8 +21,6 @@ enum UpgradeStat {
 	BOOST_DURATION,
 	BOOST_LIFETIME,
 	AUTO_CLICK_SPEED,
-	REWARD_BONUS,
-	RARITY_LUCK,
 }
 enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
 enum TradeOffType {PURE, TRADE_OFF_CROSS_GROUP}
@@ -39,17 +37,26 @@ const SPEED_CAP: float = 0.1
 # --- Boost ---
 
 const MAX_BOOST_STACKS: int = 6
-const BOOST_STACK_MAX_LIFETIME: float = 1
+const BOOST_STACK_MAX_LIFETIME: float = 3
 const BOOST_STACK_TICK_INTERVAL: float = 0.1
 const AUTO_CLICK_BASE_INTERVAL: float = 2.0
 
 # --- Progression ---
 
 const XP_BASE: int = 100
-const SPRINT_SIZE: int = 12
+const MAX_SPRINT_SIZE: int = 12
+const SPRINT_SIZES: Array[int] = [
+	2, # level 1:  1 dev
+	4, # level 2:  2 devs (hire)
+	6, # level 3:  3 devs (hire)
+	8, # level 4:  4 devs (hire)
+	10, # level 5:  5 devs (hire)
+	10, # level 6:  5 devs
+	12, # level 7:  6 devs (hire)
+]
 const MAX_DEV_STAT_MULTIPLIER: float = 2.0
 const BASE_TOTAL_GAME_TIME: float = 600.0
-const HIRE_LEVELS: Array[int] = [0, 3, 6, 10, 14, 18, 23, 28, 34]
+const HIRE_LEVELS: Array[int] = [0, 2, 3, 4, 5, 7, 8, 9, 10]
 
 # --- Tasks ---
 
@@ -63,16 +70,16 @@ const TRADE_OFF_RETURN_RATE: float = 1.0
 
 const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
 	UpgradeRarity.COMMON: 99,
-	UpgradeRarity.UNCOMMON: 5,
-	UpgradeRarity.EPIC: 3,
-	UpgradeRarity.LEGENDARY: 1,
+	UpgradeRarity.UNCOMMON: 10,
+	UpgradeRarity.EPIC: 10,
+	UpgradeRarity.LEGENDARY: 5,
 }
 
 const OFFER_RARITY_CAP_DICT: Dictionary[UpgradeRarity, int] = {
-	UpgradeRarity.COMMON: UPGRADE_CHOICES,
-	UpgradeRarity.UNCOMMON: 3,
-	UpgradeRarity.EPIC: 2,
-	UpgradeRarity.LEGENDARY: 1,
+	UpgradeRarity.COMMON: 4,
+	UpgradeRarity.UNCOMMON: 4,
+	UpgradeRarity.EPIC: 4,
+	UpgradeRarity.LEGENDARY: 4,
 }
 
 const STAT_COSTS: Dictionary = {
@@ -88,8 +95,6 @@ const STAT_COSTS: Dictionary = {
 	UpgradeStat.BOOST_DURATION: 1.0,
 	UpgradeStat.BOOST_LIFETIME: 1.0,
 	UpgradeStat.AUTO_CLICK_SPEED: 1.0,
-	UpgradeStat.REWARD_BONUS: 1,
-	UpgradeStat.RARITY_LUCK: 2.0,
 }
 
 const RARITY_BUDGETS: Dictionary = {
@@ -112,8 +117,6 @@ const STAT_FIELDS: Dictionary = {
 	UpgradeStat.BOOST_DURATION: "boost_duration",
 	UpgradeStat.BOOST_LIFETIME: "boost_lifetime",
 	UpgradeStat.AUTO_CLICK_SPEED: "auto_click_speed",
-	UpgradeStat.REWARD_BONUS: "reward_bonus",
-	UpgradeStat.RARITY_LUCK: "rarity_luck",
 }
 
 const BUDGET_TOLERANCE: float = 0.15
@@ -138,8 +141,6 @@ const STAT_TO_GROUP_DICT: Dictionary = {
 	UpgradeStat.AUTO_CLICK_SPEED: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.FEATURE_CHANCE: UpgradeGroup.TASK_TYPE,
 	UpgradeStat.BUG_CHANCE: UpgradeGroup.TASK_TYPE,
-	UpgradeStat.REWARD_BONUS: UpgradeGroup.ECONOMY,
-	UpgradeStat.RARITY_LUCK: UpgradeGroup.ECONOMY,
 }
 
 const UPGRADE_MIN_COUNT_DICT: Dictionary = {
@@ -186,8 +187,6 @@ const STAT_BOOST_DAMAGE: String = "boost_damage"
 const STAT_BOOST_DURATION: String = "boost_duration"
 const STAT_BOOST_LIFETIME: String = "boost_lifetime"
 const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
-const STAT_REWARD_BONUS: String = "reward_bonus"
-const STAT_RARITY_LUCK: String = "rarity_luck"
 
 const FORBIDDEN_POSITIVE_STAT_COMBINATIONS: Array[Array] = [
 	[STAT_FEATURE_CHANCE, STAT_BUG_CHANCE],
@@ -211,9 +210,6 @@ const STAT_ORDER: Array[String] = [
 	# Chances
 	STAT_FEATURE_CHANCE,
 	STAT_BUG_CHANCE,
-	# Luck / economy
-	STAT_REWARD_BONUS,
-	STAT_RARITY_LUCK,
 ]
 
 const STAT_DISPLAY_NAMES: Dictionary = {
@@ -229,8 +225,6 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_BOOST_DURATION: "Boost Speed",
 	STAT_BOOST_LIFETIME: "Boost Lifetime",
 	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
-	STAT_REWARD_BONUS: "Reward Bonus",
-	STAT_RARITY_LUCK: "Rarity Luck",
 }
 
 # --- Rarity Rates (by player level) ---

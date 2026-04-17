@@ -10,53 +10,73 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1500789356]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1313349162]
 layout_mode = 2
 theme_type_variation = &"PanelContainerCard"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=992474785]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=110373158]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1727353538]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=208217327]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1230111758]
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2049765472]
 layout_mode = 2
 theme_type_variation = &"LabelMoneyH1"
-text = "Time's Up!"
+text = "Congratulations!"
 horizontal_alignment = 1
 
-[node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1229828738]
+[node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=13499712]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "dfdfdf"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=901859479]
+[node name="CompanyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1254880668]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
-[node name="TeamLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1941953478]
+[node name="SprintsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=650665320]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 
-[node name="CompanyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2012610182]
+[node name="TeamHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2070439466]
+layout_mode = 2
+theme_type_variation = &"LabelMoneyH3"
+text = "Your Team"
+horizontal_alignment = 1
+
+[node name="TeamGrid" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=3509554]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 5
+
+[node name="StatsHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=60750761]
+layout_mode = 2
+theme_type_variation = &"LabelMoneyH3"
+text = "Your Final Stats"
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=409575687]
+[node name="StatsContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1820249151]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="RestartButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=268304023]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 22
-text = "Retry"
+text = "Start Again"

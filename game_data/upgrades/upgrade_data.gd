@@ -23,8 +23,6 @@ class_name UpgradeData extends BaseGameData
 @export var boost_duration: float = 0.0
 @export var boost_lifetime: float = 0.0
 @export var auto_click_speed: float = 0.0
-@export var reward_bonus: float = 0.0
-@export var rarity_luck: float = 0.0
 
 # --- Public ---
 

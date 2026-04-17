@@ -49,12 +49,12 @@ func _tween_icon(index: int, target: Color) -> void:
 	_icon_tweens[index] = tw
 
 
-func _fade_to(show: bool) -> void:
+func _fade_to(should_show: bool) -> void:
 	if _fade_tween and _fade_tween.is_valid():
 		_fade_tween.kill()
-	if show:
+	if should_show:
 		visible = true
-	var target_alpha: float = 1.0 if show else 0.0
+	var target_alpha: float = 1.0 if should_show else 0.0
 	_fade_tween = create_tween()
 	_fade_tween.tween_property(self, "modulate:a", target_alpha, FADE_DURATION)
 	if not show:

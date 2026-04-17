@@ -8,8 +8,6 @@ signal selection_cleared
 @warning_ignore("unused_signal")
 signal task_queue_changed(slots: Array)
 @warning_ignore("unused_signal")
-signal sprint_number_changed(sprint_number: int)
-@warning_ignore("unused_signal")
 signal task_destroyed(task: TaskData)
 
 @warning_ignore("unused_signal")
@@ -39,4 +37,6 @@ signal developer_chosen(dev_data: DeveloperData)
 @warning_ignore("unused_signal")
 signal pending_upgrades_changed
 @warning_ignore("unused_signal")
-signal boost_applied(developer: Developer)
+signal player_boost_applied(developer: Developer)
+@warning_ignore("unused_signal")
+signal auto_boost_applied(developer: Developer)

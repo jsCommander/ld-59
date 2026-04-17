@@ -35,9 +35,9 @@ const DESTRUCTIVE: Color = Color("#e63333")
 const SALMON: Color = Color("#ff826f")
 const SKY: Color = Color("#76adff")
 const TEAL: Color = Color("#00ab70")
-const GREY: Color = Color("#999999")
-const BLUE: Color = Color("#3366ff")
-const PURPLE: Color = Color("#9933cc")
+const GREY: Color = Color("#b5b3ae")
+const BLUE: Color = Color("#8aadff")
+const PURPLE: Color = Color("#b98de0")
 
 # ============================================================
 # Typography
@@ -68,12 +68,12 @@ const STAT_NEGATIVE: Color = DESTRUCTIVE
 const RARITY_COMMON: Color = GREY
 const RARITY_UNCOMMON: Color = BLUE
 const RARITY_EPIC: Color = PURPLE
-const RARITY_LEGENDARY: Color = PRIMARY
+const RARITY_LEGENDARY: Color = Color("#ffd68a")
 
-const RARITY_COMMON_HOVER: Color = Color("#b3b3b3")
-const RARITY_UNCOMMON_HOVER: Color = Color("#668cff")
-const RARITY_EPIC_HOVER: Color = Color("#b366d9")
-const RARITY_LEGENDARY_HOVER: Color = PRIMARY_HOVER
+const RARITY_COMMON_HOVER: Color = Color("#cac8c3")
+const RARITY_UNCOMMON_HOVER: Color = Color("#adc5ff")
+const RARITY_EPIC_HOVER: Color = Color("#d0aceb")
+const RARITY_LEGENDARY_HOVER: Color = Color("#ffe4ad")
 
 const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 	Constants.UpgradeRarity.COMMON: RARITY_COMMON,

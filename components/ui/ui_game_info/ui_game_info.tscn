@@ -31,11 +31,6 @@ layout_mode = 2
 theme_type_variation = &"LabelMoneyH3"
 text = "Player Level:"
 
-[node name="SprintLabel2" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Labels" unique_id=470254898]
-layout_mode = 2
-theme_type_variation = &"LabelMoneyH3"
-text = "Sprint:"
-
 [node name="Data" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/HBox" unique_id=186298730]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -54,13 +49,3 @@ layout_mode = 2
 theme_type_variation = &"LabelMoneyH3"
 text = "0"
 horizontal_alignment = 1
-
-[node name="SprintLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/HBox/Data" unique_id=1076817196]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"LabelMoneyH3"
-text = "0"
-horizontal_alignment = 1
-
-[node name="Capitalization" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1476233261]
-layout_mode = 2

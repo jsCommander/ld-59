@@ -44,7 +44,7 @@ var _is_slow: bool = false
 
 func _ready() -> void:
 	comments_label.text = ""
-	SB.sprint_number_changed.connect(_on_sprint_completed)
+	SB.level_up.connect(_on_sprint_completed)
 	SB.valuation_changed.connect(_on_valuation_changed)
 
 func _process(_delta: float) -> void:
@@ -59,7 +59,7 @@ func _process(_delta: float) -> void:
 
 # --- Handlers ---
 
-func _on_sprint_completed(_sprint_number: int) -> void:
+func _on_sprint_completed(_level: int) -> void:
 	_set_comment(SPRINT_DONE_COMMENTS[randi() % SPRINT_DONE_COMMENTS.size()])
 
 func _on_valuation_changed() -> void:

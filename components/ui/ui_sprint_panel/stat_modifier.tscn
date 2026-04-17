@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b2dtmqk0i163f"]
 
-[ext_resource type="Script" uid="uid://dkhhgla86ek2u" path="res://components/ui/ui_sprint_panel/stat_modifier.gd" id="1_script"]
+[ext_resource type="Script" path="res://components/ui/ui_sprint_panel/stat_modifier.gd" id="1_script"]
 
 [node name="StatModifier" type="HBoxContainer" unique_id=1369429806]
 offset_right = 105.0

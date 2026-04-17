@@ -3,22 +3,19 @@
 [ext_resource type="Script" uid="uid://dtoj10senvx5b" path="res://components/ui/ui_boost_stack/ui_boost_stack.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b02ac0lwi1bhp" path="res://assets/exports/fire.png" id="2_fire"]
 
-[node name="UiBoostStack" type="PanelContainer" unique_id=1085689898]
-offset_right = 24.0
-offset_bottom = 128.0
+[node name="UiBoostStack" type="MarginContainer" unique_id=1438114566]
+offset_right = 40.0
+offset_bottom = 170.0
 mouse_filter = 2
 theme_type_variation = &"PanelContainerCard"
 script = ExtResource("1_script")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1849247887]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=717058688]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=717058688]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 2
 
-[node name="Fire6" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=2090460851]
+[node name="Fire6" type="TextureRect" parent="VBoxContainer" unique_id=2090460851]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -27,7 +24,7 @@ texture = ExtResource("2_fire")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Fire5" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=2090460850]
+[node name="Fire5" type="TextureRect" parent="VBoxContainer" unique_id=2090460850]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -36,7 +33,7 @@ texture = ExtResource("2_fire")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Fire4" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=68196845]
+[node name="Fire4" type="TextureRect" parent="VBoxContainer" unique_id=68196845]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -45,7 +42,7 @@ texture = ExtResource("2_fire")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Fire3" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=336583977]
+[node name="Fire3" type="TextureRect" parent="VBoxContainer" unique_id=336583977]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -54,7 +51,7 @@ texture = ExtResource("2_fire")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Fire2" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=222593226]
+[node name="Fire2" type="TextureRect" parent="VBoxContainer" unique_id=222593226]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -63,7 +60,7 @@ texture = ExtResource("2_fire")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Fire1" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=105222052]
+[node name="Fire1" type="TextureRect" parent="VBoxContainer" unique_id=105222052]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -71,3 +68,7 @@ mouse_filter = 2
 texture = ExtResource("2_fire")
 expand_mode = 3
 stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1849247887]
+visible = false
+layout_mode = 2

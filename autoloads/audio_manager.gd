@@ -24,12 +24,12 @@ func _register_sfx() -> void:
 
 func _connect_signals() -> void:
 	SB.task_destroyed.connect(_on_task_destroyed)
-	SB.boost_applied.connect(_on_boost_applied)
+	SB.player_boost_applied.connect(_on_player_boost_applied)
 
 
 func _on_task_destroyed(_task: TaskData) -> void:
 	play_sfx(Constants.Sfx.EXPLOSION, 0.3)
 
 
-func _on_boost_applied(_developer: Developer) -> void:
+func _on_player_boost_applied(_developer: Developer) -> void:
 	play_sfx(Constants.Sfx.CLICK, 0.15)

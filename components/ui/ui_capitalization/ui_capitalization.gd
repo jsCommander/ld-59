@@ -5,7 +5,8 @@ extends Control
 
 @onready var valuation_label: Label = %ValuationLabel
 @onready var milestone_label: Label = %MilestoneLabel
-@onready var next_level_label: Label = %NextLevel
+@onready var current_compare_label: Label = %CurrentCompareLabel
+@onready var goal_compare_label: Label = %GoalCompareLabel
 
 # --- State ---
 
@@ -15,38 +16,38 @@ var _last_milestone: String = ""
 
 func _ready() -> void:
 	SB.valuation_changed.connect(_update_valuation)
-	SB.level_up.connect(_on_level_up)
 	_update_valuation()
-	_update_next_level()
-
-# --- Handlers ---
-
-func _on_level_up(_level: int) -> void:
-	_update_next_level()
 
 # --- Private ---
 
 func _update_valuation() -> void:
 	valuation_label.text = "$" + Utils.format_number(PD.valuation)
-	_update_milestone()
-	_update_next_level()
+	var current_name: String = _get_current_milestone_name()
+	current_compare_label.text = current_name if current_name else ""
+	_update_next_goal()
 
-func _update_milestone() -> void:
-	var current_company: String = ""
+
+func _update_next_goal() -> void:
+	var next: Dictionary = _get_next_milestone()
+	if next.is_empty():
+		milestone_label.visible = false
+		goal_compare_label.text = ""
+		return
+	milestone_label.text = "$" + Utils.format_number(next["valuation"])
+	milestone_label.visible = true
+	goal_compare_label.text = next["name"]
+
+
+func _get_current_milestone_name() -> String:
+	var result: String = ""
 	for milestone: Dictionary in Constants.COMPANY_MILESTONES:
 		if PD.valuation >= milestone["valuation"]:
-			current_company = milestone["name"]
-	if current_company != _last_milestone:
-		_last_milestone = current_company
-		if _last_milestone:
-			milestone_label.text = _last_milestone
-			milestone_label.visible = true
-		else:
-			milestone_label.visible = false
+			result = milestone["name"]
+	return result
 
-func _update_next_level() -> void:
-	var target: int = PD.get_xp_for_level(PD.level + 1)
-	if target > 0:
-		next_level_label.text = "$%s / $%s" % [Utils.format_number(PD.valuation), Utils.format_number(target)]
-	else:
-		next_level_label.text = "MAX"
+
+func _get_next_milestone() -> Dictionary:
+	for milestone: Dictionary in Constants.COMPANY_MILESTONES:
+		if PD.valuation < milestone["valuation"]:
+			return milestone
+	return {}

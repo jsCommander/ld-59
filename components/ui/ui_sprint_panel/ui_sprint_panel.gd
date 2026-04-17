@@ -17,7 +17,7 @@ var _card_positions: Dictionary = {}
 # --- Lifecycle ---
 
 func _ready() -> void:
-	for i: int in Constants.SPRINT_SIZE:
+	for i: int in Constants.MAX_SPRINT_SIZE:
 		var card: TaskCard = TASK_CARD.instantiate()
 		card_container.add_child(card)
 		_cards.append(card)

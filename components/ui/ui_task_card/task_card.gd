@@ -17,7 +17,6 @@ extends Control
 
 @onready var icon: TextureRect = %Icon
 @onready var hp_bar: ProgressBar = %HpBar
-@onready var level_label: Label = %LevelLabel
 @onready var flashable: FlashableTrait = %FlashableTrait
 @onready var hp_label: Label = %HpLabel
 @onready var damage_number: DamageNumber = %DamageNumber
@@ -39,7 +38,7 @@ func update_hp() -> void:
 	hp_bar.visible = true
 	hp_bar.max_value = task_data.max_hp
 	hp_bar.value = maxf(task_data.current_hp, 0.0)
-	hp_label.text = str(int(task_data.current_hp))
+	hp_label.text = Utils.format_number(int(task_data.current_hp))
 
 
 func flash() -> void:
@@ -61,14 +60,12 @@ func hide_task() -> void:
 
 func show_content() -> void:
 	icon.visible = true
-	hp_bar.visible = show_hp
-	level_label.visible = true
+	hp_bar.visible = true
 
 
 func hide_content() -> void:
 	icon.visible = false
 	hp_bar.visible = false
-	level_label.visible = false
 
 # --- Private ---
 
@@ -81,9 +78,8 @@ func _apply_task() -> void:
 
 	show_content()
 	icon.texture = task_data.texture
-	level_label.text = str(task_data.level)
-	if show_hp and task_data.max_hp > 0.0:
+	if task_data.max_hp > 0.0:
 		hp_bar.visible = true
 		hp_bar.max_value = task_data.max_hp
 		hp_bar.value = task_data.current_hp
-		hp_label.text = str(int(task_data.current_hp))
+		hp_label.text = Utils.format_number(int(task_data.current_hp))

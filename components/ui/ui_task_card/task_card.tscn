@@ -5,10 +5,6 @@
 [ext_resource type="Script" uid="uid://oeqgun0rje75" path="res://components/traits/flashable_trait.gd" id="3_flash"]
 [ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="4_dmgnum"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_u2pmv"]
-font_size = 24
-outline_size = 8
-outline_color = Color(0, 0, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" unique_id=175095984]
 custom_minimum_size = Vector2(144, 144)
@@ -21,8 +17,7 @@ layout_mode = 2
 
 [node name="HpBar" type="ProgressBar" parent="VBoxContainer" unique_id=300]
 unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(0, 18)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 8
 theme_type_variation = &"ProgressBarHP"
@@ -31,13 +26,17 @@ show_percentage = false
 
 [node name="HpLabel" type="Label" parent="VBoxContainer/HpBar" unique_id=1080729483]
 unique_name_in_owner = true
-visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -6.0
+offset_right = -2.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_type_variation = &"LabelOnAccent"
+theme_type_variation = &"LabelH3OnAccent"
 text = "4444"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -55,20 +54,6 @@ stretch_mode = 5
 unique_name_in_owner = true
 script = ExtResource("3_flash")
 
-[node name="LevelLabel" type="Label" parent="VBoxContainer/Icon" unique_id=647472031]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-offset_left = 82.0
-offset_top = 76.0
-offset_right = 112.0
-offset_bottom = 120.0
-theme_override_colors/font_color = Color(1, 1, 1, 0.7)
-theme_override_font_sizes/font_size = 10
-text = "5"
-label_settings = SubResource("LabelSettings_u2pmv")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="DamageNumber" parent="." unique_id=2030767181 instance=ExtResource("4_dmgnum")]
 unique_name_in_owner = true

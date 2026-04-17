@@ -11,7 +11,6 @@ var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
 var pending_upgrades: Array[Constants.UpgradeType] = []
 
-var sprint_number: int = 0
 var sprint_time: float = 0.0
 var sprint_slots: Array = []
 
@@ -22,48 +21,33 @@ var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
 var total_stats: Dictionary = {}
 
+var player_click_count: int = 0
+var is_boost_help_showed: bool = false
 var _tick_timer: Timer
 
 # --- Public ---
 
-func get_xp_for_level(lvl: int) -> int:
-	return Balance.get_xp_for_level(lvl)
-
-
 func get_level_up_upgrades() -> Array[UpgradeData]:
-	const RARITY_ORDER: Array[Constants.UpgradeRarity] = [
-		Constants.UpgradeRarity.LEGENDARY,
-		Constants.UpgradeRarity.EPIC,
-		Constants.UpgradeRarity.UNCOMMON,
-		Constants.UpgradeRarity.COMMON,
+	const REQUIRED_GROUPS: Array[Constants.UpgradeGroup] = [
+		Constants.UpgradeGroup.DPS_DEV,
+		Constants.UpgradeGroup.DPS_DEV,
+		Constants.UpgradeGroup.CLICK_BOOST,
+		Constants.UpgradeGroup.TASK_TYPE,
 	]
-	var count: int = Constants.UPGRADE_CHOICES
 	var result: Array[UpgradeData] = []
 	var used_ids: Array[String] = []
-	var rarity_count: Dictionary[Constants.UpgradeRarity, int] = {
-		Constants.UpgradeRarity.COMMON: 0,
-		Constants.UpgradeRarity.UNCOMMON: 0,
-		Constants.UpgradeRarity.EPIC: 0,
-		Constants.UpgradeRarity.LEGENDARY: 0,
-	}
-	for i: int in count:
-		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level, total_stats)
-		# Downgrade to the next available rarity if the offer cap is already reached
-		var idx: int = RARITY_ORDER.find(rarity)
-		while idx < RARITY_ORDER.size() - 1 and rarity_count[RARITY_ORDER[idx]] >= Constants.OFFER_RARITY_CAP_DICT[RARITY_ORDER[idx]]:
-			idx += 1
-		rarity = RARITY_ORDER[idx]
-		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
+	for group: Constants.UpgradeGroup in REQUIRED_GROUPS:
+		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level)
+		var pick: UpgradeData = _pick_upgrade_by_group_and_rarity(group, rarity, used_ids)
 		if pick:
 			result.append(pick)
 			used_ids.append(pick.id)
-			rarity_count[pick.rarity] += 1
 	return result
 
 
-func start_game() -> void:
+func start_game(desks: Array[Developer]) -> void:
 	reset()
-	developers.assign(Groups.get_all_of_type(get_tree(), "developer", Developer))
+	developers.assign(desks)
 	_game_active = true
 	_tick_timer.start()
 	_generate_sprint()
@@ -74,14 +58,16 @@ func start_game() -> void:
 func reset() -> void:
 	valuation = 0
 	level = 0
-	sprint_number = 0
 	sprint_time = 0.0
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
+	player_click_count = 0
+	is_boost_help_showed = false
 	pending_upgrades.clear()
 	sprint_slots.clear()
 	developers.clear()
 	hired_data.clear()
+
 	upgrades_taken.clear()
 	global_upgrades.clear()
 	total_stats.clear()
@@ -95,17 +81,17 @@ func take_task(task: TaskData) -> TaskData:
 	sprint_slots[idx] = null
 	SB.task_queue_changed.emit(sprint_slots)
 	if _all_slots_empty():
+		_level_up()
 		_generate_sprint()
 	return task
 
 
 func hire_developer(dev_data: DeveloperData) -> void:
-	var desk: Developer = Groups.get_first_filtered(get_tree(), "developer", func(d: Developer) -> bool: return not d.data) as Developer
+	var desk: Developer = _find_next_desk()
 	if not desk:
 		Log.log_warn(name, "No empty desks available")
 		return
 	desk.data = dev_data
-	developers.append(desk)
 	hired_data.append(dev_data)
 	Log.log_info(name, "Hired %s" % Constants.DevType.keys()[dev_data.dev_type])
 
@@ -116,11 +102,18 @@ func _ready() -> void:
 	SB.task_destroyed.connect(_on_task_destroyed)
 	SB.developer_chosen.connect(_on_developer_chosen)
 	SB.task_requested.connect(_on_task_requested)
+	SB.player_boost_applied.connect(_on_player_boost_applied)
 	_tick_timer = _create_tick_timer()
 
 
 
 # --- Handlers ---
+
+func _on_player_boost_applied(_developer: Developer) -> void:
+	player_click_count += 1
+	if player_click_count >= 5 and not is_boost_help_showed:
+		is_boost_help_showed = true
+
 
 func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
 	var available: Array[TaskData] = _get_available_tasks()
@@ -153,7 +146,6 @@ func _on_tick() -> void:
 func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
 	upgrades_taken.append(upgrade)
 	_apply_upgrade(upgrade)
-	_check_level_up()
 
 
 func _on_developer_chosen(dev_data: DeveloperData) -> void:
@@ -166,6 +158,14 @@ func _on_task_destroyed(task: TaskData) -> void:
 
 # --- Private ---
 
+func _find_next_desk() -> Developer:
+	for desk: Developer in developers:
+		if not desk.data:
+			return desk
+	return null
+
+
+
 func _create_tick_timer() -> Timer:
 	var timer: Timer = Timer.new()
 	timer.wait_time = 1.0
@@ -177,20 +177,19 @@ func _create_tick_timer() -> Timer:
 # --- Sprint system ---
 
 func _generate_sprint() -> void:
-	sprint_number += 1
 	sprint_time = 0.0
 	var weights: Dictionary = Balance.calculate_task_type_weights(total_stats)
-	var feature_count: int = roundi(Constants.SPRINT_SIZE * (weights[Constants.TaskType.FEATURE] as float))
-	var bug_count: int = Constants.SPRINT_SIZE - feature_count
+	var sprint_size: int = _get_sprint_size()
+	var feature_count: int = roundi(sprint_size * (weights[Constants.TaskType.FEATURE] as float))
+	var bug_count: int = sprint_size - feature_count
 	sprint_slots.clear()
 	for i: int in feature_count:
-		_add_sprint_task(TASK_DATA_FEATURE, sprint_number)
+		_add_sprint_task(TASK_DATA_FEATURE, level)
 	for i: int in bug_count:
-		_add_sprint_task(TASK_DATA_BUG, sprint_number)
+		_add_sprint_task(TASK_DATA_BUG, level)
 	sprint_slots.shuffle()
 	SB.task_queue_changed.emit(sprint_slots)
-	SB.sprint_number_changed.emit(sprint_number)
-	Log.log_info(name, "Sprint %d: %d tasks" % [sprint_number, sprint_slots.size()])
+	Log.log_info(name, "Level %d: %d tasks" % [level, sprint_slots.size()])
 
 
 func _all_slots_empty() -> bool:
@@ -215,6 +214,11 @@ func _get_available_tasks() -> Array[TaskData]:
 	return tasks
 
 
+func _get_sprint_size() -> int:
+	var idx: int = clampi(level - 1, 0, Constants.SPRINT_SIZES.size() - 1)
+	return Constants.SPRINT_SIZES[idx]
+
+
 # --- Upgrade application ---
 
 func _apply_upgrade(upgrade: UpgradeData) -> void:
@@ -235,33 +239,21 @@ func _recalculate_total_stats() -> void:
 
 # --- Level-up ---
 
-func _check_level_up() -> void:
-	var changed: bool = false
-	while true:
-		var next_threshold: int = get_xp_for_level(level + 1)
-		if next_threshold <= 0:
-			break
-		if valuation < next_threshold:
-			break
-		level += 1
-		SB.level_up.emit(level)
-		Log.log_info(name, "Level up! Level %d" % level)
-		if level in Constants.HIRE_LEVELS:
-			pending_upgrades.append(Constants.UpgradeType.HIRE)
-		pending_upgrades.append(Constants.UpgradeType.UPGRADE)
-		changed = true
-	if changed:
-		SB.pending_upgrades_changed.emit()
+func _level_up() -> void:
+	level += 1
+	SB.level_up.emit(level)
+	Log.log_info(name, "Level up! Level %d" % level)
+	if level in Constants.HIRE_LEVELS:
+		pending_upgrades.append(Constants.UpgradeType.HIRE)
+	pending_upgrades.append(Constants.UpgradeType.UPGRADE)
+	SB.pending_upgrades_changed.emit()
 
 
 func _apply_task_rewards(task: TaskData) -> void:
-	var base_reward: int = int(task.max_hp)
-	var reward_mult: float = Balance.calculate_reward_multiplier(total_stats)
-	var reward: int = int(base_reward * reward_mult)
+	var reward: int = int(task.max_hp)
 	if reward > 0:
 		valuation += reward
 		SB.valuation_changed.emit()
-		_check_level_up()
 
 
 # --- Upgrade selection ---
@@ -279,6 +271,27 @@ func _is_upgrade_available(upgrade: UpgradeData) -> bool:
 		if taken.id == upgrade.id:
 			count += 1
 	return count < limit
+
+
+func _pick_upgrade_by_group_and_rarity(target_group: Constants.UpgradeGroup, target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:
+	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if not _is_upgrade_available(upgrade):
+			continue
+		if upgrade.id in exclude_ids:
+			continue
+		if upgrade.group == target_group and upgrade.rarity == target_rarity:
+			pool.append(upgrade)
+	if pool.is_empty():
+		# Fallback: same group, any rarity
+		for upgrade: UpgradeData in DR.upgrades.values():
+			if not _is_upgrade_available(upgrade):
+				continue
+			if upgrade.id in exclude_ids:
+				continue
+			if upgrade.group == target_group:
+				pool.append(upgrade)
+	return _pick_random_from(pool)
 
 
 func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:

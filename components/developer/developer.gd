@@ -182,7 +182,9 @@ func _apply_boost(from_player: bool = true) -> void:
 	_flash_click()
 	_update_boost_visuals()
 	if from_player:
-		SB.boost_applied.emit(self)
+		SB.player_boost_applied.emit(self)
+	else:
+		SB.auto_boost_applied.emit(self)
 
 
 func _flash_click() -> void:
