@@ -11,6 +11,7 @@ grow_vertical = 2
 script = ExtResource("1_script")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1313349162]
+custom_minimum_size = Vector2(768, 0)
 layout_mode = 2
 theme_type_variation = &"PanelContainerCard"
 
@@ -31,52 +32,70 @@ theme_type_variation = &"LabelMoneyH1"
 text = "Congratulations!"
 horizontal_alignment = 1
 
-[node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=13499712]
-unique_name_in_owner = true
+[node name="ValuationRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1986961118]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-horizontal_alignment = 1
+alignment = 1
 
-[node name="CompanyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1254880668]
+[node name="ValuationText" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/ValuationRow" unique_id=358067903]
+layout_mode = 2
+theme_type_variation = &"LabelH2OnAccent"
+text = "Your startup grew to a valuation of:"
+
+[node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/ValuationRow" unique_id=610173013]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-horizontal_alignment = 1
+theme_type_variation = &"LabelMoneyH2"
+text = "$0"
+
+[node name="CompanyRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1058054070]
+layout_mode = 2
+alignment = 1
+
+[node name="CompanyText" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CompanyRow" unique_id=973202965]
+layout_mode = 2
+theme_type_variation = &"LabelH2OnAccent"
+text = "This is more than:"
+
+[node name="CompanyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CompanyRow" unique_id=296495041]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelMoneyH2"
+text = "canonix"
 
 [node name="SprintsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=650665320]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_type_variation = &"LabelH2OnAccent"
+text = "sprints"
 horizontal_alignment = 1
 
 [node name="TeamHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2070439466]
 layout_mode = 2
-theme_type_variation = &"LabelMoneyH3"
+theme_type_variation = &"LabelMoneyH2"
 text = "Your Team"
 horizontal_alignment = 1
 
 [node name="TeamGrid" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=3509554]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+size_flags_horizontal = 4
 columns = 5
 
 [node name="StatsHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=60750761]
 layout_mode = 2
-theme_type_variation = &"LabelMoneyH3"
+theme_type_variation = &"LabelMoneyH2"
 text = "Your Final Stats"
 horizontal_alignment = 1
 
-[node name="StatsContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1820249151]
+[node name="StatsContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1820249151]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 4
+size_flags_horizontal = 4
+columns = 3
 
 [node name="RestartButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=268304023]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 22
-text = "Start Again"
+theme_type_variation = &"ButtonLarge"
+text = "Ready For New Startup?"

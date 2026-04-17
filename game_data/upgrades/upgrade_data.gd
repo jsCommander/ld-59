@@ -53,9 +53,29 @@ func validate_budget() -> String:
 	var neg_limit: float = Constants.NEGATIVE_BUDGET_LIMITS[rarity] as float
 	if neg_total > neg_limit:
 		warnings.append("%s: negative budget %.1f exceeds limit %d" % [id, neg_total, int(neg_limit)])
+	warnings.append_array(_validate_stat_count())
 	warnings.append_array(_validate_trade_off())
 	warnings.append_array(_validate_forbidden_combinations())
 	return "\n".join(warnings)
+
+
+func _validate_stat_count() -> Array[String]:
+	var warnings: Array[String] = []
+	var limit: int = Constants.RARITY_MAX_STAT_COUNT[rarity]
+	var count: int = 0
+	for stat: Constants.UpgradeStat in Constants.STAT_FIELDS:
+		var field: String = Constants.STAT_FIELDS[stat]
+		var value: float = get(field) as float
+		if not is_zero_approx(value):
+			count += 1
+	if count > limit:
+		warnings.append("%s: has %d stats, max for %s is %d" % [
+			id,
+			count,
+			Constants.UpgradeRarity.keys()[rarity],
+			limit,
+		])
+	return warnings
 
 
 func _validate_forbidden_combinations() -> Array[String]:

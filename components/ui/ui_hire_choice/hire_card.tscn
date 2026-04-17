@@ -85,4 +85,6 @@ show_percentage = false
 [node name="DescriptionLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2071312975]
 unique_name_in_owner = true
 layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3

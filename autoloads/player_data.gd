@@ -11,8 +11,10 @@ var timer_remaining: float = Constants.BASE_TOTAL_GAME_TIME
 var _game_active: bool = false
 var pending_upgrades: Array[Constants.UpgradeType] = []
 
+var sprint_number: int = 0
 var sprint_time: float = 0.0
 var sprint_slots: Array = []
+var _sprints_to_level_up: int = 0
 
 var developers: Array[Developer] = []
 var hired_data: Array[DeveloperData] = []
@@ -48,6 +50,7 @@ func get_level_up_upgrades() -> Array[UpgradeData]:
 func start_game(desks: Array[Developer]) -> void:
 	reset()
 	developers.assign(desks)
+	timer_remaining = Balance.get_game_duration()
 	_game_active = true
 	_tick_timer.start()
 	_generate_sprint()
@@ -58,6 +61,7 @@ func start_game(desks: Array[Developer]) -> void:
 func reset() -> void:
 	valuation = 0
 	level = 0
+	sprint_number = 0
 	sprint_time = 0.0
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
@@ -81,7 +85,10 @@ func take_task(task: TaskData) -> TaskData:
 	sprint_slots[idx] = null
 	SB.task_queue_changed.emit(sprint_slots)
 	if _all_slots_empty():
-		_level_up()
+		_sprints_to_level_up += 1
+		if _sprints_to_level_up >= Balance.get_sprints_to_level_up(level):
+			_sprints_to_level_up = 0
+			_level_up()
 		_generate_sprint()
 	return task
 
@@ -177,6 +184,7 @@ func _create_tick_timer() -> Timer:
 # --- Sprint system ---
 
 func _generate_sprint() -> void:
+	sprint_number += 1
 	sprint_time = 0.0
 	var weights: Dictionary = Balance.calculate_task_type_weights(total_stats)
 	var sprint_size: int = _get_sprint_size()

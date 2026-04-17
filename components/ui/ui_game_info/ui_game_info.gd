@@ -16,7 +16,7 @@ func _ready() -> void:
 # --- Handlers ---
 
 func _on_level_up(level: int) -> void:
-	level_label.text = "Level %d" % level
+	level_label.text = "%d" % level
 
 func _on_game_timer_changed(remaining: float) -> void:
 	@warning_ignore("integer_division")

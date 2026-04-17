@@ -3,11 +3,9 @@
 [ext_resource type="Script" uid="uid://b6s5bsjyh1htm" path="res://components/ui/ui_task_card/task_card.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_xwu51"]
 [ext_resource type="Script" uid="uid://oeqgun0rje75" path="res://components/traits/flashable_trait.gd" id="3_flash"]
-[ext_resource type="PackedScene" uid="uid://bvgyu4uqoahr" path="res://game_kit/components/damage_number/damage_number.tscn" id="4_dmgnum"]
-
+[ext_resource type="PackedScene" uid="uid://08mpeha8oo0c" path="res://game_kit/components/floating_text/floating_text.tscn" id="4_ftxt"]
 
 [node name="MarginContainer" type="MarginContainer" unique_id=175095984]
-custom_minimum_size = Vector2(144, 144)
 offset_right = 144.0
 offset_bottom = 144.0
 script = ExtResource("1")
@@ -17,6 +15,7 @@ layout_mode = 2
 
 [node name="HpBar" type="ProgressBar" parent="VBoxContainer" unique_id=300]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 8
@@ -44,7 +43,7 @@ vertical_alignment = 1
 [node name="Icon" type="TextureRect" parent="VBoxContainer" unique_id=1]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(112, 112)
 layout_mode = 2
 texture = ExtResource("2_xwu51")
 expand_mode = 3
@@ -54,7 +53,14 @@ stretch_mode = 5
 unique_name_in_owner = true
 script = ExtResource("3_flash")
 
-
-[node name="DamageNumber" parent="." unique_id=2030767181 instance=ExtResource("4_dmgnum")]
+[node name="FloatingText" parent="." unique_id=215540548 instance=ExtResource("4_ftxt")]
 unique_name_in_owner = true
-position = Vector2(120, 20)
+position = Vector2(150, 5)
+travel_distance = 50.0
+
+[node name="Label" type="Label" parent="FloatingText" unique_id=1642797799]
+offset_right = 29.0
+offset_bottom = 41.0
+theme_type_variation = &"LabelH3OnAccent"
+text = "99"
+horizontal_alignment = 1

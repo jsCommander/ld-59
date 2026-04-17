@@ -64,13 +64,16 @@ static func get_task_mult(dev_data: DeveloperData, task_type: Constants.TaskType
 
 
 static func get_task_hp(player_level: int) -> float:
-	const LINEAR_PHASE_CAP: int = 5
-	const X2_EVERY_N_LEVELS: float = 2.0
-	const CURVE_SHIFT: float = 0.4
 	var clamped: int = maxi(player_level, 1)
-	if clamped <= LINEAR_PHASE_CAP:
-		return float(Constants.BASE_HP * clamped)
-	return float(Constants.BASE_HP) * round(pow(2.0, clamped / X2_EVERY_N_LEVELS - CURVE_SHIFT))
+	return float(Constants.BASE_HP) + Constants.HP_PER_LEVEL * (clamped - 1)
+
+
+static func get_sprints_to_level_up(player_level: int) -> int:
+	var result: int = 1
+	for bracket in Constants.SPRINTS_TO_LEVEL_UP:
+		if player_level >= bracket["level"]:
+			result = bracket["sprints"]
+	return result
 
 
 static func get_game_duration() -> float:

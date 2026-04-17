@@ -23,7 +23,7 @@ func _ready() -> void:
 		return
 	if _dev_data.head_texture:
 		icon_rect.texture = _dev_data.head_texture
-	name_label.text = Constants.DevType.keys()[_dev_data.dev_type]
+	name_label.text = Constants.DEV_TYPE_DISPLAY_NAMES[_dev_data.dev_type]
 	feature_bar.value = _dev_data.task_mults.get(Constants.TaskType.FEATURE, 1.0) / Constants.MAX_DEV_STAT_MULTIPLIER
 	bug_bar.value = _dev_data.task_mults.get(Constants.TaskType.BUG, 1.0) / Constants.MAX_DEV_STAT_MULTIPLIER
 	description_label.text = _dev_data.description

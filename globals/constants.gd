@@ -27,12 +27,19 @@ enum TradeOffType {PURE, TRADE_OFF_CROSS_GROUP}
 enum UpgradeGroup {DPS_DEV, CLICK_BOOST, TASK_TYPE, ECONOMY}
 enum UpgradeType {HIRE, UPGRADE}
 
+const DEV_TYPE_DISPLAY_NAMES: Dictionary[DevType, String] = {
+	DevType.VIBECODER: "Vibe Coder",
+	DevType.DEVELOPER: "Regular",
+	DevType.SENIOR: "Senior",
+}
+
 # --- Combat ---
 
-const BASE_HP: int = 100
-const BASE_DAMAGE: int = int(BASE_HP * 0.6)
+const BASE_HP: int = 1000
+const BASE_DAMAGE: int = int(BASE_HP * 0.5)
 const BASE_ATTACK_SPEED: float = 2.0
 const SPEED_CAP: float = 0.1
+const HP_PER_LEVEL: float = 1500
 
 # --- Boost ---
 
@@ -55,8 +62,13 @@ const SPRINT_SIZES: Array[int] = [
 	12, # level 7:  6 devs (hire)
 ]
 const MAX_DEV_STAT_MULTIPLIER: float = 2.0
-const BASE_TOTAL_GAME_TIME: float = 600.0
+const BASE_TOTAL_GAME_TIME: float = 60.0
 const HIRE_LEVELS: Array[int] = [0, 2, 3, 4, 5, 7, 8, 9, 10]
+const SPRINTS_TO_LEVEL_UP: Array[Dictionary] = [
+	{"level": 1, "sprints": 1},
+	{"level": 20, "sprints": 2},
+	{"level": 40, "sprints": 3},
+]
 
 # --- Tasks ---
 
@@ -67,6 +79,13 @@ const BASE_BUG_CHANCE: float = 0.5
 
 const UPGRADE_CHOICES: int = 4
 const TRADE_OFF_RETURN_RATE: float = 1.0
+
+const RARITY_MAX_STAT_COUNT: Dictionary[UpgradeRarity, int] = {
+	UpgradeRarity.COMMON: 1,
+	UpgradeRarity.UNCOMMON: 2,
+	UpgradeRarity.EPIC: 3,
+	UpgradeRarity.LEGENDARY: 4,
+}
 
 const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
 	UpgradeRarity.COMMON: 99,

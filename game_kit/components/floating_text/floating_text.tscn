@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://08mpeha8oo0c"]
+
+[ext_resource type="Script" uid="uid://dtusbjgl43prd" path="res://game_kit/components/floating_text/floating_text.gd" id="1_script"]
+
+[node name="FloatingText" type="Node2D" unique_id=1454235317]
+script = ExtResource("1_script")
+
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

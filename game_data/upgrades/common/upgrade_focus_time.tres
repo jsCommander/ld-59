@@ -9,5 +9,4 @@ display_name = "Focus Time"
 description = "Calendar blocked. Slack on DND. Finally coding."
 group = 1
 trade_off_type = 1
-boost_duration = 0.05
-auto_click_speed = 0.05
+auto_click_speed = 0.1

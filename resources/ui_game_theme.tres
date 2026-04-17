@@ -3,6 +3,10 @@
 [ext_resource type="FontFile" uid="uid://b3u2v4unutk0g" path="res://game_kit/fonts/Caveat-VariableFont_wght.ttf" id="1_ibuqq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
 bg_color = Color(1, 0.870588, 0.631373, 1)
 border_width_left = 1
 border_width_top = 1
@@ -15,6 +19,10 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
 bg_color = Color(1, 0.870588, 0.631373, 1)
 border_width_left = 1
 border_width_top = 1
@@ -27,6 +35,10 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
 bg_color = Color(1, 0.780392, 0.321569, 1)
 border_width_left = 1
 border_width_top = 1
@@ -39,43 +51,11 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
 bg_color = Color(0.894118, 0.560784, 0.266667, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.470588, 0.301961, 0.196078, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_large_hover"]
-bg_color = Color(0.9608, 0.9098, 0.7843, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.470588, 0.301961, 0.196078, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_large_normal"]
-bg_color = Color(0.917647, 0.85098, 0.721569, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.470588, 0.301961, 0.196078, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_large_pressed"]
-bg_color = Color(0.8314, 0.7647, 0.6353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -229,10 +209,6 @@ Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 ButtonLarge/base_type = &"Button"
 ButtonLarge/font_sizes/font_size = 48
-ButtonLarge/styles/focus = SubResource("StyleBoxFlat_btn_large_hover")
-ButtonLarge/styles/hover = SubResource("StyleBoxFlat_btn_large_hover")
-ButtonLarge/styles/normal = SubResource("StyleBoxFlat_btn_large_normal")
-ButtonLarge/styles/pressed = SubResource("StyleBoxFlat_btn_large_pressed")
 HBoxContainer/constants/separation = 8
 Label/colors/font_color = Color(0, 0, 0, 1)
 LabelH1/base_type = &"Label"

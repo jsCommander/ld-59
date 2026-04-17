@@ -10,6 +10,5 @@ description = "Headphones on, world off, features out"
 rarity = 1
 group = 1
 trade_off_type = 1
+feature_damage = 0.15
 boost_damage = 0.15
-feature_damage = 0.2
-bug_damage = -0.05

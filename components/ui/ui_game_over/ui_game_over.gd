@@ -3,7 +3,8 @@ extends BaseDialog
 
 # --- Constants ---
 
-const FACE_SIZE: Vector2 = Vector2(48, 48)
+const DEV_FACE: PackedScene = preload("res://components/ui/ui_game_over/dev_face.tscn")
+const STAT_SUMMARY_ITEM: PackedScene = preload("res://components/ui/ui_upgrade_choice/stat_summary_item.tscn")
 
 # --- @onready ---
 
@@ -11,7 +12,7 @@ const FACE_SIZE: Vector2 = Vector2(48, 48)
 @onready var company_label: Label = %CompanyLabel
 @onready var sprints_label: Label = %SprintsLabel
 @onready var team_grid: GridContainer = %TeamGrid
-@onready var stats_container: VBoxContainer = %StatsContainer
+@onready var stats_container: GridContainer = %StatsContainer
 @onready var restart_button: Button = %RestartButton
 
 # --- Lifecycle ---
@@ -23,7 +24,7 @@ func _ready() -> void:
 
 func set_data(data: Dictionary) -> void:
 	var final_valuation: int = data.get("valuation", 0)
-	valuation_label.text = "Your startup grew to a valuation of $%s" % Utils.format_number(final_valuation)
+	valuation_label.text = "$%s" % Utils.format_number(final_valuation)
 	_show_company_comparison(final_valuation)
 	sprints_label.text = "Sprints closed: %d" % PD.sprint_number
 	_populate_team_grid()
@@ -37,10 +38,10 @@ func _show_company_comparison(val: int) -> void:
 		if val >= milestone["valuation"]:
 			best_company = milestone["name"]
 	if best_company:
-		company_label.text = "This is more than %s" % best_company
-		company_label.visible = true
+		company_label.text = best_company
+		company_label.get_parent().visible = true
 	else:
-		company_label.visible = false
+		company_label.get_parent().visible = false
 
 
 func _populate_team_grid() -> void:
@@ -49,29 +50,22 @@ func _populate_team_grid() -> void:
 	var dev_count: int = PD.developers.size()
 	team_grid.columns = mini(dev_count, 5) if dev_count > 0 else 1
 	for dev: Developer in PD.developers:
-		var tex_rect: TextureRect = TextureRect.new()
-		tex_rect.texture = dev.data.head_texture
-		tex_rect.custom_minimum_size = FACE_SIZE
-		tex_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		team_grid.add_child(tex_rect)
+		if not dev.data:
+			continue
+		var face: DevFace = DEV_FACE.instantiate()
+		face.dev_data = dev.data
+		team_grid.add_child(face)
 
 
 func _populate_stats() -> void:
 	for child: Node in stats_container.get_children():
 		child.queue_free()
-	for stat_key: String in Constants.STAT_ORDER:
-		if not PD.total_stats.has(stat_key):
-			continue
-		var value: float = PD.total_stats[stat_key] as float
-		if is_zero_approx(value):
-			continue
-		var display_name: String = Constants.STAT_DISPLAY_NAMES.get(stat_key, stat_key)
-		var label: Label = Label.new()
-		var sign: String = "+" if value > 0 else ""
-		label.text = "%s: %s%d%%" % [display_name, sign, int(value * 100)]
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		stats_container.add_child(label)
+	for field: String in Constants.STAT_ORDER:
+		var value: float = PD.total_stats.get(field, 0.0) as float
+		var display_name: String = Constants.STAT_DISPLAY_NAMES.get(field, field)
+		var item: StatSummaryItem = STAT_SUMMARY_ITEM.instantiate()
+		item.setup(display_name, value)
+		stats_container.add_child(item)
 
 
 func _on_restart() -> void:

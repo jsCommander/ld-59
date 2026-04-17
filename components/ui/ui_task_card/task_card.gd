@@ -19,7 +19,7 @@ extends Control
 @onready var hp_bar: ProgressBar = %HpBar
 @onready var flashable: FlashableTrait = %FlashableTrait
 @onready var hp_label: Label = %HpLabel
-@onready var damage_number: DamageNumber = %DamageNumber
+@onready var floating_text: FloatingText = %FloatingText
 
 # --- Lifecycle ---
 
@@ -46,7 +46,7 @@ func flash() -> void:
 
 
 func show_damage(damage: int) -> void:
-	damage_number.spawn("-%d" % damage, Vector2.UP, Color.YELLOW)
+	floating_text.spawn(Utils.format_number(damage))
 
 func kill() -> void:
 	task_data = null

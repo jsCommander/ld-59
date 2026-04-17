@@ -27,8 +27,6 @@ const SPRINT_DONE_COMMENTS: Array[String] = [
 const MILESTONE_COMMENTS: Array[String] = [
 	"We're bigger than %s!",
 	"Take that, %s!",
-	"%s? We passed them!",
-	"Bye bye %s, we're growing!",
 ]
 
 # --- @onready ---

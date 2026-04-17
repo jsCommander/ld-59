@@ -9,6 +9,5 @@ display_name = "Technical Debt Payoff"
 description = "Finally fixing that TODO from 2019"
 rarity = 1
 trade_off_type = 1
-bug_damage = 0.2
+bug_damage = 0.15
 bug_chance = 0.15
-feature_chance = -0.05

@@ -9,7 +9,5 @@ display_name = "Incident Response"
 description = "Page everyone. Blame no one. Fix nothing."
 rarity = 1
 trade_off_type = 1
-bug_damage = 0.05
 bug_chance = 0.2
-feature_chance = -0.05
 global_speed = 0.1
