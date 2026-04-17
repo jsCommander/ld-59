@@ -9,5 +9,5 @@ display_name = "Venture Capital"
 description = "Money solves everything. Temporarily."
 rarity = 3
 group = 3
-reward_bonus = 0.83
-rarity_luck = 0.42
+rarity_luck = 0.2
+global_damage = 0.3

@@ -9,4 +9,4 @@ display_name = "Turbo Build"
 description = "Incremental compilation goes brrrr"
 rarity = 2
 group = 1
-boost_damage = 1.2
+boost_damage = 0.6

@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "strategy_offsite"
-display_name = "Strategy Offsite"
-description = "Expensive hotel, expensive ideas, expensive mistakes"
+id = "exterminator_sprint"
+display_name = "Exterminator Sprint"
+description = "Dedicated bug-crushing week"
 rarity = 2
+group = 0
 trade_off_type = 0
-global_damage = 0.6
+bug_speed = 0.6

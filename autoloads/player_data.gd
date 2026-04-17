@@ -225,7 +225,7 @@ func _apply_upgrade(upgrade: UpgradeData) -> void:
 
 func _recalculate_total_stats() -> void:
 	total_stats.clear()
-	for field: String in Constants.STAT_DISPLAY_NAMES:
+	for field: String in Constants.STAT_ORDER:
 		var total: float = 0.0
 		for upgrade: UpgradeData in global_upgrades:
 			total += upgrade.get(field) as float

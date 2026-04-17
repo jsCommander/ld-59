@@ -9,5 +9,5 @@ display_name = "Unicorn Status"
 description = "Billion dollar valuation, zero profit"
 rarity = 3
 group = 3
-reward_bonus = 0.37
-rarity_luck = 0.74
+reward_bonus = 0.15
+rarity_luck = 0.3

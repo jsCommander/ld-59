@@ -13,8 +13,8 @@ func _ready() -> void:
 	SB.level_up.connect(_on_level_up)
 	SB.sprint_number_changed.connect(_on_sprint_number_changed)
 	SB.game_timer_changed.connect(_on_game_timer_changed)
-	level_label.text = "Level %d" % PD.level
-	sprint_label.text = "Sprint %d" % PD.sprint_number
+	level_label.text = "%d" % PD.level
+	sprint_label.text = "%d" % PD.sprint_number
 
 # --- Handlers ---
 

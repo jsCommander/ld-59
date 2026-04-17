@@ -9,5 +9,5 @@ display_name = "Feature Rush"
 description = "Ship features, collect bugs later"
 group = 2
 trade_off_type = 1
-feature_chance = 0.21
-boost_duration = -0.04
+feature_chance = 0.1
+boost_duration = 0

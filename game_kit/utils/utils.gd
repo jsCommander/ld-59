@@ -55,3 +55,45 @@ static func deactivate_collider(collider: CollisionShape2D, duration: float) -> 
 
 static func get_move_input_vector() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
+
+static func format_number(value: int) -> String:
+	var abs_value: int = absi(value)
+	if abs_value < 1000:
+		return str(value)
+
+	var sign_str: String = "-" if value < 0 else ""
+	var thresholds: Array[int] = [1_000, 1_000_000, 1_000_000_000, 1_000_000_000_000]
+	var suffixes: Array[String] = ["K", "M", "B", "T"]
+
+	var tier: int = 0
+	for i in range(thresholds.size() - 1, -1, -1):
+		if abs_value >= thresholds[i]:
+			tier = i
+			break
+
+	var scaled: float = float(abs_value) / thresholds[tier]
+	var decimals: int = _format_number_decimals(scaled)
+
+	var mult: float = pow(10.0, decimals)
+	if round(scaled * mult) / mult >= 1000.0 and tier < thresholds.size() - 1:
+		tier += 1
+		scaled = float(abs_value) / thresholds[tier]
+		decimals = _format_number_decimals(scaled)
+
+	var formatted: String
+	match decimals:
+		0: formatted = "%d" % roundi(scaled)
+		1: formatted = "%.1f" % scaled
+		_: formatted = "%.2f" % scaled
+
+	if "." in formatted:
+		formatted = formatted.rstrip("0").rstrip(".")
+
+	return sign_str + formatted + suffixes[tier]
+
+static func _format_number_decimals(scaled: float) -> int:
+	if scaled < 10.0:
+		return 2
+	if scaled < 100.0:
+		return 1
+	return 0

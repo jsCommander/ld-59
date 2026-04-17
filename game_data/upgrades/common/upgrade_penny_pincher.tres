@@ -9,5 +9,5 @@ display_name = "Penny Pincher"
 description = "Budget so tight it squeaks"
 group = 3
 trade_off_type = 1
-feature_damage = -0.04
-reward_bonus = 0.15
+reward_bonus = 0.05
+auto_click_speed = 0.05

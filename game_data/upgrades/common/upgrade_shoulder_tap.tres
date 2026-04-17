@@ -10,4 +10,5 @@ description = "\"Hey, got a sec?\" They never have just a sec."
 rarity = 0
 group = 1
 trade_off_type = 0
-boost_damage = 0.2
+boost_damage = 0.05
+boost_lifetime = 0.05

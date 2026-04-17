@@ -8,4 +8,4 @@ id = "code_dojo"
 display_name = "Code Dojo"
 description = "Weekly kata sessions keep the blade sharp"
 rarity = 2
-feature_damage = 1.2
+feature_damage = 0.6

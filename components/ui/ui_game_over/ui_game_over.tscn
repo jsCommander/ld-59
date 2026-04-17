@@ -1,9 +1,8 @@
-[gd_scene format=3 uid="uid://ui_game_over"]
+[gd_scene format=3 uid="uid://dbr0abosx7w1w"]
 
-[ext_resource type="Script" path="res://components/ui/ui_game_over/ui_game_over.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://damkc2kgcdfhe" path="res://components/ui/ui_game_over/ui_game_over.gd" id="1_script"]
 
-[node name="UiGameOver" type="Control"]
-layout_mode = 3
+[node name="UiGameOver" type="CenterContainer" unique_id=2035887992]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,57 +10,51 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1500789356]
 layout_mode = 2
+theme_type_variation = &"PanelContainerCard"
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=992474785]
 layout_mode = 2
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1727353538]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="TitleLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1230111758]
 layout_mode = 2
-theme_override_font_sizes/font_size = 36
+theme_type_variation = &"LabelMoneyH1"
 text = "Time's Up!"
 horizontal_alignment = 1
 
-[node name="ValuationLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1229828738]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
+text = "dfdfdf"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=901859479]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 
-[node name="TeamLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="TeamLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1941953478]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="CompanyLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CompanyLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2012610182]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=409575687]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2

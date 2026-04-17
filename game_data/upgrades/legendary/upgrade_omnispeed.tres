@@ -4,8 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "legendary_codebase"
-display_name = "Legendary Codebase"
-description = "The kind of code people write blog posts about"
+id = "omnispeed"
+display_name = "Omnispeed"
+description = "Time dilates around keyboards"
 rarity = 3
-global_damage = 1.0
+group = 0
+trade_off_type = 0
+global_speed = 1

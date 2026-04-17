@@ -70,7 +70,7 @@ func _gui_input(event: InputEvent) -> void:
 
 # --- Private ---
 func _populate_stats() -> void:
-	for field: String in Constants.STAT_DISPLAY_NAMES:
+	for field: String in Constants.STAT_ORDER:
 		var value: float = _upgrade.get(field)
 		if not is_zero_approx(value):
 			var stat_row: StatModifier = STAT_MODIFIER.instantiate()

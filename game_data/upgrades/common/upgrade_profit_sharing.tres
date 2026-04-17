@@ -10,4 +10,5 @@ description = "0.001% equity. Life changing."
 rarity = 0
 group = 3
 trade_off_type = 0
-reward_bonus = 0.14
+reward_bonus = 0.05
+global_damage = 0.05

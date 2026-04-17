@@ -10,5 +10,5 @@ description = "Ring the bell, cash the stock, crash the price"
 rarity = 3
 group = 3
 trade_off_type = 1
-reward_bonus = 1.38
-boost_duration = -0.24
+reward_bonus = 1.1
+boost_duration = -0.1

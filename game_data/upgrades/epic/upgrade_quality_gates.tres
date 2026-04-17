@@ -9,4 +9,4 @@ display_name = "Quality Gates"
 description = "Nothing ships without passing the gates"
 rarity = 2
 group = 2
-bug_chance = 1.2
+bug_chance = 0.6

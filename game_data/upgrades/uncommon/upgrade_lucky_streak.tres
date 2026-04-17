@@ -10,4 +10,4 @@ description = "Horseshoe on the monitor, clover in the repo"
 rarity = 1
 group = 3
 trade_off_type = 0
-rarity_luck = 0.3
+rarity_luck = 0.1

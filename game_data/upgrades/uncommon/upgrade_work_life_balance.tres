@@ -10,5 +10,5 @@ description = "Leaves at 5pm. Revolutionary."
 rarity = 1
 group = 1
 trade_off_type = 0
-boost_duration = 0.39
-boost_damage = 0.21
+boost_duration = 0.2
+bug_speed = 0.1

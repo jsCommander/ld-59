@@ -10,4 +10,5 @@ description = "Grafana dashboards nobody looks at until 3am"
 rarity = 1
 group = 1
 trade_off_type = 0
-boost_damage = 0.6
+boost_damage = 0.2
+boost_lifetime = 0.1

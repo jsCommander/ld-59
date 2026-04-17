@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func set_data(data: Dictionary) -> void:
 	var final_valuation: int = data.get("valuation", 0)
-	valuation_label.text = "$%d" % final_valuation
+	valuation_label.text = "$" + Utils.format_number(final_valuation)
 	level_label.text = "Level: %d" % PD.level
 	var team_text: String = ""
 	for dev: Developer in PD.developers:

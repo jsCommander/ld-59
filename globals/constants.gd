@@ -12,10 +12,14 @@ enum UpgradeStat {
 	GLOBAL_DAMAGE,
 	FEATURE_DAMAGE,
 	BUG_DAMAGE,
+	GLOBAL_SPEED,
+	FEATURE_SPEED,
+	BUG_SPEED,
 	FEATURE_CHANCE,
 	BUG_CHANCE,
 	BOOST_DAMAGE,
 	BOOST_DURATION,
+	BOOST_LIFETIME,
 	AUTO_CLICK_SPEED,
 	REWARD_BONUS,
 	RARITY_LUCK,
@@ -28,13 +32,13 @@ enum UpgradeType {HIRE, UPGRADE}
 # --- Combat ---
 
 const BASE_HP: int = 100
-const BASE_DAMAGE: int = int(BASE_HP * 0.4)
+const BASE_DAMAGE: int = int(BASE_HP * 0.6)
 const BASE_ATTACK_SPEED: float = 2.0
 const SPEED_CAP: float = 0.1
 
 # --- Boost ---
 
-const MAX_BOOST_STACKS: int = 5
+const MAX_BOOST_STACKS: int = 6
 const BOOST_STACK_MAX_LIFETIME: float = 1
 const BOOST_STACK_TICK_INTERVAL: float = 0.1
 const AUTO_CLICK_BASE_INTERVAL: float = 2.0
@@ -49,13 +53,13 @@ const HIRE_LEVELS: Array[int] = [0, 3, 6, 10, 14, 18, 23, 28, 34]
 
 # --- Tasks ---
 
-const BASE_FEATURE_CHANCE: float = 50.0
-const BASE_BUG_CHANCE: float = 50.0
+const BASE_FEATURE_CHANCE: float = 0.5
+const BASE_BUG_CHANCE: float = 0.5
 
 # --- Upgrades ---
 
 const UPGRADE_CHOICES: int = 4
-const TRADE_OFF_RETURN_RATE: float = 0.3
+const TRADE_OFF_RETURN_RATE: float = 1.0
 
 const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
 	UpgradeRarity.COMMON: 99,
@@ -75,13 +79,17 @@ const STAT_COSTS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: 1.0,
 	UpgradeStat.FEATURE_DAMAGE: 1.0,
 	UpgradeStat.BUG_DAMAGE: 1.0,
+	UpgradeStat.GLOBAL_SPEED: 1.0,
+	UpgradeStat.FEATURE_SPEED: 1.0,
+	UpgradeStat.BUG_SPEED: 1.0,
 	UpgradeStat.FEATURE_CHANCE: 1.0,
 	UpgradeStat.BUG_CHANCE: 1.0,
 	UpgradeStat.BOOST_DAMAGE: 1.0,
 	UpgradeStat.BOOST_DURATION: 1.0,
+	UpgradeStat.BOOST_LIFETIME: 1.0,
 	UpgradeStat.AUTO_CLICK_SPEED: 1.0,
 	UpgradeStat.REWARD_BONUS: 1,
-	UpgradeStat.RARITY_LUCK: 3.0,
+	UpgradeStat.RARITY_LUCK: 2.0,
 }
 
 const RARITY_BUDGETS: Dictionary = {
@@ -95,10 +103,14 @@ const STAT_FIELDS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: "global_damage",
 	UpgradeStat.FEATURE_DAMAGE: "feature_damage",
 	UpgradeStat.BUG_DAMAGE: "bug_damage",
+	UpgradeStat.GLOBAL_SPEED: "global_speed",
+	UpgradeStat.FEATURE_SPEED: "feature_speed",
+	UpgradeStat.BUG_SPEED: "bug_speed",
 	UpgradeStat.FEATURE_CHANCE: "feature_chance",
 	UpgradeStat.BUG_CHANCE: "bug_chance",
 	UpgradeStat.BOOST_DAMAGE: "boost_damage",
 	UpgradeStat.BOOST_DURATION: "boost_duration",
+	UpgradeStat.BOOST_LIFETIME: "boost_lifetime",
 	UpgradeStat.AUTO_CLICK_SPEED: "auto_click_speed",
 	UpgradeStat.REWARD_BONUS: "reward_bonus",
 	UpgradeStat.RARITY_LUCK: "rarity_luck",
@@ -117,8 +129,12 @@ const STAT_TO_GROUP_DICT: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: UpgradeGroup.DPS_DEV,
 	UpgradeStat.FEATURE_DAMAGE: UpgradeGroup.DPS_DEV,
 	UpgradeStat.BUG_DAMAGE: UpgradeGroup.DPS_DEV,
+	UpgradeStat.GLOBAL_SPEED: UpgradeGroup.DPS_DEV,
+	UpgradeStat.FEATURE_SPEED: UpgradeGroup.DPS_DEV,
+	UpgradeStat.BUG_SPEED: UpgradeGroup.DPS_DEV,
 	UpgradeStat.BOOST_DAMAGE: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.BOOST_DURATION: UpgradeGroup.CLICK_BOOST,
+	UpgradeStat.BOOST_LIFETIME: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.AUTO_CLICK_SPEED: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.FEATURE_CHANCE: UpgradeGroup.TASK_TYPE,
 	UpgradeStat.BUG_CHANCE: UpgradeGroup.TASK_TYPE,
@@ -161,10 +177,14 @@ const UPGRADE_MAX_COUNT_DICT: Dictionary = {
 const STAT_GLOBAL_DAMAGE: String = "global_damage"
 const STAT_FEATURE_DAMAGE: String = "feature_damage"
 const STAT_BUG_DAMAGE: String = "bug_damage"
+const STAT_GLOBAL_SPEED: String = "global_speed"
+const STAT_FEATURE_SPEED: String = "feature_speed"
+const STAT_BUG_SPEED: String = "bug_speed"
 const STAT_FEATURE_CHANCE: String = "feature_chance"
 const STAT_BUG_CHANCE: String = "bug_chance"
 const STAT_BOOST_DAMAGE: String = "boost_damage"
 const STAT_BOOST_DURATION: String = "boost_duration"
+const STAT_BOOST_LIFETIME: String = "boost_lifetime"
 const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
 const STAT_REWARD_BONUS: String = "reward_bonus"
 const STAT_RARITY_LUCK: String = "rarity_luck"
@@ -174,14 +194,40 @@ const FORBIDDEN_POSITIVE_STAT_COMBINATIONS: Array[Array] = [
 	[STAT_FEATURE_DAMAGE, STAT_BUG_DAMAGE],
 ]
 
+const STAT_ORDER: Array[String] = [
+	# Damage
+	STAT_GLOBAL_DAMAGE,
+	STAT_FEATURE_DAMAGE,
+	STAT_BUG_DAMAGE,
+	# Speed
+	STAT_GLOBAL_SPEED,
+	STAT_FEATURE_SPEED,
+	STAT_BUG_SPEED,
+	# Boosts
+	STAT_BOOST_DAMAGE,
+	STAT_BOOST_DURATION,
+	STAT_BOOST_LIFETIME,
+	STAT_AUTO_CLICK_SPEED,
+	# Chances
+	STAT_FEATURE_CHANCE,
+	STAT_BUG_CHANCE,
+	# Luck / economy
+	STAT_REWARD_BONUS,
+	STAT_RARITY_LUCK,
+]
+
 const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_GLOBAL_DAMAGE: "Global Damage",
 	STAT_FEATURE_DAMAGE: "Feature Damage",
 	STAT_BUG_DAMAGE: "Bug Damage",
+	STAT_GLOBAL_SPEED: "Global Speed",
+	STAT_FEATURE_SPEED: "Feature Speed",
+	STAT_BUG_SPEED: "Bug Speed",
 	STAT_FEATURE_CHANCE: "Feature Chance",
 	STAT_BUG_CHANCE: "Bug Chance",
 	STAT_BOOST_DAMAGE: "Boost Damage",
 	STAT_BOOST_DURATION: "Boost Speed",
+	STAT_BOOST_LIFETIME: "Boost Lifetime",
 	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
 	STAT_REWARD_BONUS: "Reward Bonus",
 	STAT_RARITY_LUCK: "Rarity Luck",

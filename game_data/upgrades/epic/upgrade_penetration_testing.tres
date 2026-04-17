@@ -8,4 +8,4 @@ id = "penetration_testing"
 display_name = "Penetration Testing"
 description = "Finding bugs before they find you"
 rarity = 2
-bug_damage = 1.2
+bug_damage = 0.6

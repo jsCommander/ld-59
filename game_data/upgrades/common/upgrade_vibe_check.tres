@@ -9,4 +9,5 @@ display_name = "Vibe Check"
 description = "Does the code pass the vibe check? Ship it."
 rarity = 0
 trade_off_type = 0
-feature_damage = 0.2
+feature_damage = 0.05
+feature_speed = 0.05

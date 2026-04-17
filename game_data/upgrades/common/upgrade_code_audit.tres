@@ -9,4 +9,5 @@ display_name = "Code Audit"
 description = "\"Who wrote this garbage?\" *git blame* \"Oh. Me.\""
 rarity = 0
 trade_off_type = 0
-bug_damage = 0.2
+bug_damage = 0.05
+bug_speed = 0.05

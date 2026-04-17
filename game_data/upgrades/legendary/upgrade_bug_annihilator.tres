@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "debugging_mastery"
-display_name = "Debugging Mastery"
-description = "Can read stack traces like poetry. Sad poetry."
-rarity = 1
-trade_off_type = 1
-global_damage = 0.32
-reward_bonus = -0.08
+id = "bug_annihilator"
+display_name = "Bug Annihilator"
+description = "Bugs die before they spawn"
+rarity = 3
+group = 0
+trade_off_type = 0
+bug_speed = 1

@@ -12,11 +12,14 @@ static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskT
 	return base * task_mult * global_dmg_mult * type_dmg_mult * boost_dmg_mult
 
 
-## Attack speed = base / (1 + stacks × boost_duration), clamped to SPEED_CAP
-static func calculate_attack_speed(dev_data: DeveloperData, boost_stacks: int = 0, stats: Dictionary = {}) -> float:
+## Attack speed = base / ((1 + global_speed) × (1 + type_speed) × (1 + stacks × boost_duration)), clamped to SPEED_CAP
+static func calculate_attack_speed(dev_data: DeveloperData, boost_stacks: int = 0, stats: Dictionary = {}, task_type: Constants.TaskType = Constants.TaskType.FEATURE) -> float:
 	var base: float = dev_data.base_attack_speed
+	var global_speed_mult: float = 1.0 + _get_stat(Constants.STAT_GLOBAL_SPEED, stats)
+	var type_field: String = Constants.STAT_FEATURE_SPEED if task_type == Constants.TaskType.FEATURE else Constants.STAT_BUG_SPEED
+	var type_speed_mult: float = 1.0 + _get_stat(type_field, stats)
 	var boost_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_DURATION, stats)
-	var interval: float = base / boost_mult
+	var interval: float = base / (global_speed_mult * type_speed_mult * boost_mult)
 	return maxf(interval, Constants.SPEED_CAP)
 
 
@@ -37,8 +40,8 @@ static func calculate_reward_multiplier(stats: Dictionary) -> float:
 static func calculate_task_type_weights(stats: Dictionary) -> Dictionary:
 	var feature_w: float = Constants.BASE_FEATURE_CHANCE + _get_stat(Constants.STAT_FEATURE_CHANCE, stats)
 	var bug_w: float = Constants.BASE_BUG_CHANCE + _get_stat(Constants.STAT_BUG_CHANCE, stats)
-	feature_w = maxf(feature_w, 1.0)
-	bug_w = maxf(bug_w, 1.0)
+	feature_w = maxf(feature_w, 0.01)
+	bug_w = maxf(bug_w, 0.01)
 	var total: float = feature_w + bug_w
 	return {
 		Constants.TaskType.FEATURE: feature_w / total,

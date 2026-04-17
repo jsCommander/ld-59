@@ -32,6 +32,7 @@ var _attack_timer: float = 0.0
 var _current_task: TaskData = null
 var _boost_stacks: Array[BoostStack] = []
 var _auto_click_timer: float = 0.0
+var _click_flash_tween: Tween
 
 # --- Lifecycle ---
 
@@ -136,7 +137,7 @@ func _process_auto_click(delta: float) -> void:
 	_auto_click_timer += delta
 	if _auto_click_timer >= interval:
 		_auto_click_timer -= interval
-		_apply_boost()
+		_apply_boost(false)
 
 
 func _change_state(new_state: State) -> void:
@@ -167,22 +168,37 @@ func _perform_attack() -> void:
 
 
 func _get_attack_speed() -> float:
-	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.total_stats)
+	var task_type: Constants.TaskType = _current_task.task_type if _current_task else Constants.TaskType.FEATURE
+	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.total_stats, task_type)
 
 
-func _apply_boost() -> void:
+func _apply_boost(from_player: bool = true) -> void:
 	if _boost_stacks.size() >= Constants.MAX_BOOST_STACKS:
 		return
 	var stack: BoostStack = BoostStack.new()
+	var lifetime_bonus: float = PD.total_stats.get(Constants.STAT_BOOST_LIFETIME, 0.0)
+	stack.max_lifetime = Constants.BOOST_STACK_MAX_LIFETIME * (1.0 + lifetime_bonus)
 	_boost_stacks.append(stack)
+	_flash_click()
 	_update_boost_visuals()
-	SB.boost_applied.emit(self)
+	if from_player:
+		SB.boost_applied.emit(self)
+
+
+func _flash_click() -> void:
+	const FLASH_COLOR: Color = Color(1.4, 0.5, 0.4)
+	const FLASH_IN: float = 0.05
+	const FLASH_OUT: float = 0.2
+	if _click_flash_tween and _click_flash_tween.is_valid():
+		_click_flash_tween.kill()
+	dev_rig.modulate = Color.WHITE
+	_click_flash_tween = create_tween()
+	_click_flash_tween.tween_property(dev_rig, "modulate", FLASH_COLOR, FLASH_IN)
+	_click_flash_tween.tween_property(dev_rig, "modulate", Color.WHITE, FLASH_OUT)
 
 
 func _update_boost_visuals() -> void:
 	var count: int = _boost_stacks.size()
-	var heat: float = float(count) / float(Constants.MAX_BOOST_STACKS)
-	dev_rig.modulate = Color.WHITE.lerp(Color(1.4, 0.5, 0.4), heat)
 	sweat_effect.emitting = count > 0
 	boost_stack_ui.stack_count = count
 

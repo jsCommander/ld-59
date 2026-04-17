@@ -33,7 +33,7 @@ func _build_cards(upgrades: Array[UpgradeData]) -> void:
 func _build_stats_summary() -> void:
 	for child: Node in stats_grid.get_children():
 		child.queue_free()
-	for field: String in Constants.STAT_DISPLAY_NAMES:
+	for field: String in Constants.STAT_ORDER:
 		var value: float = PD.total_stats.get(field, 0.0)
 		var item: StatSummaryItem = STAT_SUMMARY_ITEM.instantiate()
 		item.setup(Constants.STAT_DISPLAY_NAMES[field], value)

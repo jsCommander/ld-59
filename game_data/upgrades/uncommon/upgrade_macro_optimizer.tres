@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "series_a_funding"
-display_name = "Series A Funding"
-description = "$10M to find product-market fit. Again."
-rarity = 3
-group = 3
+id = "macro_optimizer"
+display_name = "Macro Optimizer"
+description = "Everything runs a bit smoother"
+rarity = 1
+group = 0
 trade_off_type = 0
-global_damage = 0.48
-reward_bonus = 0.74
+global_damage = 0.3

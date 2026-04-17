@@ -9,5 +9,5 @@ display_name = "Quantum Compiler"
 description = "Compiles in all timelines simultaneously"
 rarity = 3
 group = 1
-boost_damage = 1.0
-boost_duration = 1.0
+boost_damage = 0.35
+boost_duration = 0.65

@@ -10,4 +10,4 @@ description = "15 minutes max. Haha, just kidding."
 rarity = 0
 group = 1
 trade_off_type = 0
-boost_duration = 0.2
+boost_duration = 0.1

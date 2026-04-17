@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "master_craftsman"
-display_name = "Master Craftsman"
-description = "Writes code like poetry, debugs like a surgeon"
-rarity = 3
-feature_damage = 1.0
-bug_damage = 1.0
+id = "turbo_mode"
+display_name = "Turbo Mode"
+description = "All devs slam the gas pedal"
+rarity = 2
+group = 0
+trade_off_type = 0
+global_speed = 0.6

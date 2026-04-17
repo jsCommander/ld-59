@@ -8,5 +8,5 @@ id = "quick_patch"
 display_name = "Quick Patch"
 description = "Hotfix deployed, tests skipped"
 trade_off_type = 1
-bug_damage = 0.21
-feature_chance = -0.04
+bug_damage = 0.05
+boost_damage = 0.05

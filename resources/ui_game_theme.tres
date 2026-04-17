@@ -50,8 +50,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_upgrade_hover"]
-bg_color = Color(0.42, 0.671, 0.573, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_large_hover"]
+bg_color = Color(0.9608, 0.9098, 0.7843, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -62,8 +62,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_upgrade_normal"]
-bg_color = Color(0, 0.8, 0.267, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_large_normal"]
+bg_color = Color(0.917647, 0.85098, 0.721569, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -74,8 +74,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_upgrade_pressed"]
-bg_color = Color(0.29, 0.533, 0.439, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_large_pressed"]
+bg_color = Color(0.8314, 0.7647, 0.6353, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -218,7 +218,9 @@ Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
 Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/constants/outline_size = 3
 Button/styles/disabled = null
 Button/styles/focus = SubResource("StyleBoxFlat_btn_focus")
 Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
@@ -226,19 +228,10 @@ Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 ButtonLarge/base_type = &"Button"
 ButtonLarge/font_sizes/font_size = 48
-ButtonUpgrade/base_type = &"Button"
-ButtonUpgrade/colors/font_color = Color(1, 1, 1, 1)
-ButtonUpgrade/colors/font_focus_color = Color(1, 1, 1, 1)
-ButtonUpgrade/colors/font_hover_color = Color(1, 1, 1, 1)
-ButtonUpgrade/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-ButtonUpgrade/colors/font_outline_color = Color(0, 0, 0, 1)
-ButtonUpgrade/colors/font_pressed_color = Color(1, 1, 1, 1)
-ButtonUpgrade/colors/font_shadow_color = Color(0, 0, 0, 1)
-ButtonUpgrade/font_sizes/font_size = 48
-ButtonUpgrade/styles/focus = SubResource("StyleBoxFlat_btn_upgrade_hover")
-ButtonUpgrade/styles/hover = SubResource("StyleBoxFlat_btn_upgrade_hover")
-ButtonUpgrade/styles/normal = SubResource("StyleBoxFlat_btn_upgrade_normal")
-ButtonUpgrade/styles/pressed = SubResource("StyleBoxFlat_btn_upgrade_pressed")
+ButtonLarge/styles/focus = SubResource("StyleBoxFlat_btn_large_hover")
+ButtonLarge/styles/hover = SubResource("StyleBoxFlat_btn_large_hover")
+ButtonLarge/styles/normal = SubResource("StyleBoxFlat_btn_large_normal")
+ButtonLarge/styles/pressed = SubResource("StyleBoxFlat_btn_large_pressed")
 HBoxContainer/constants/separation = 8
 Label/colors/font_color = Color(0, 0, 0, 1)
 LabelH1/base_type = &"Label"

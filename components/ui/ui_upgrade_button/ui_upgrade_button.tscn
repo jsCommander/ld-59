@@ -3,12 +3,14 @@
 [ext_resource type="Script" uid="uid://snn6jm3do3j" path="res://components/ui/ui_upgrade_button/ui_upgrade_button.gd" id="1_script"]
 
 [node name="UiUpgradeButton" type="MarginContainer" unique_id=1484721170]
-custom_minimum_size = Vector2(0, 177)
+custom_minimum_size = Vector2(200, 177)
+offset_right = 320.0
+offset_bottom = 177.0
 script = ExtResource("1_script")
 
 [node name="UpgradeBtn" type="Button" parent="." unique_id=357864302]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-theme_type_variation = &"ButtonUpgrade"
+theme_type_variation = &"ButtonLarge"
 text = "Get Upgrades(0)"

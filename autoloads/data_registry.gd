@@ -116,6 +116,8 @@ func _validate_upgrades() -> void:
 	_validate_upgrade_budgets(warnings)
 	_validate_upgrade_pool_counts(warnings)
 	_validate_upgrade_stat_coverage(warnings)
+	_validate_upgrade_duplicates(warnings)
+	_validate_upgrade_step(warnings)
 	if warnings.is_empty():
 		return
 	warnings.sort()
@@ -164,6 +166,50 @@ func _validate_upgrade_pool_counts(warnings: PackedStringArray) -> void:
 					Constants.UpgradeRarity.keys()[rarity],
 					count,
 					max_limit,
+				])
+
+
+func _validate_upgrade_duplicates(warnings: PackedStringArray) -> void:
+	var seen: Dictionary = {}
+	for upgrade: UpgradeData in upgrades.values():
+		var parts: PackedStringArray = []
+		for stat: Constants.UpgradeStat in Constants.STAT_FIELDS:
+			var field: String = Constants.STAT_FIELDS[stat]
+			var value: float = upgrade.get(field) as float
+			if value > 0.0:
+				parts.append("+%s" % field)
+			elif value < 0.0:
+				parts.append("-%s" % field)
+		parts.sort()
+		var fingerprint: String = ",".join(parts)
+		if not seen.has(upgrade.rarity):
+			seen[upgrade.rarity] = {}
+		if not seen[upgrade.rarity].has(fingerprint):
+			seen[upgrade.rarity][fingerprint] = [] as Array[String]
+		(seen[upgrade.rarity][fingerprint] as Array).append(upgrade.id)
+	for rarity: Constants.UpgradeRarity in seen:
+		for fingerprint: String in seen[rarity]:
+			var ids: Array = seen[rarity][fingerprint]
+			if ids.size() > 1:
+				warnings.append("Duplicate stats in %s: [%s] share pattern [%s]" % [
+					Constants.UpgradeRarity.keys()[rarity],
+					", ".join(ids),
+					fingerprint,
+				])
+
+
+func _validate_upgrade_step(warnings: PackedStringArray) -> void:
+	const STEP: float = 0.05
+	for upgrade: UpgradeData in upgrades.values():
+		for stat: Constants.UpgradeStat in Constants.STAT_FIELDS:
+			var field: String = Constants.STAT_FIELDS[stat]
+			var value: float = upgrade.get(field) as float
+			if is_zero_approx(value):
+				continue
+			var ratio: float = value / STEP
+			if not is_equal_approx(ratio, roundf(ratio)):
+				warnings.append("%s: %s=%+.3f is not a multiple of %.2f" % [
+					upgrade.id, field, value, STEP,
 				])
 
 

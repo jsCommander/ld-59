@@ -27,7 +27,7 @@ func _on_level_up(_level: int) -> void:
 # --- Private ---
 
 func _update_valuation() -> void:
-	valuation_label.text = "$%d" % PD.valuation
+	valuation_label.text = "$" + Utils.format_number(PD.valuation)
 	_update_milestone()
 	_update_next_level()
 
@@ -47,6 +47,6 @@ func _update_milestone() -> void:
 func _update_next_level() -> void:
 	var target: int = PD.get_xp_for_level(PD.level + 1)
 	if target > 0:
-		next_level_label.text = "$%d / $%d" % [PD.valuation, target]
+		next_level_label.text = "$%s / $%s" % [Utils.format_number(PD.valuation), Utils.format_number(target)]
 	else:
 		next_level_label.text = "MAX"
