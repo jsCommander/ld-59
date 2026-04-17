@@ -52,6 +52,12 @@ func start_game(desks: Array[Developer]) -> void:
 	developers.assign(desks)
 	timer_remaining = Balance.get_game_duration()
 	_game_active = true
+	# Emit initial state so UI resets
+	SB.valuation_changed.emit()
+	SB.game_timer_changed.emit(timer_remaining)
+	SB.level_up.emit(level)
+	SB.pending_upgrades_changed.emit()
+	SB.task_queue_changed.emit(sprint_slots)
 	_tick_timer.start()
 	_generate_sprint()
 	# Hire first dev at game start
