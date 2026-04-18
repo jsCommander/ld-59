@@ -13,8 +13,6 @@ const STAT_SUMMARY_ITEM: PackedScene = preload("res://components/ui/ui_upgrade_c
 # --- Public ---
 
 func set_data(data: Dictionary) -> void:
-	var level: int = data.get("level", 1)
-	title_label.text = "Level %d — Pick an Upgrade" % level
 	var upgrades: Array[UpgradeData] = PD.get_level_up_upgrades()
 	_build_cards(upgrades)
 	_build_stats_summary()

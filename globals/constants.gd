@@ -12,14 +12,9 @@ enum UpgradeStat {
 	GLOBAL_DAMAGE,
 	FEATURE_DAMAGE,
 	REFACTORING_DAMAGE,
-	GLOBAL_SPEED,
-	FEATURE_SPEED,
-	REFACTORING_SPEED,
 	FEATURE_CHANCE,
 	REFACTORING_CHANCE,
-	BOOST_DAMAGE,
-	BOOST_DURATION,
-	BOOST_LIFETIME,
+	BOOST_SPEED,
 	AUTO_CLICK_SPEED,
 }
 enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
@@ -36,14 +31,15 @@ const DEV_TYPE_DISPLAY_NAMES: Dictionary[DevType, String] = {
 # --- Combat ---
 
 const BASE_HP: int = 100
-const BASE_DAMAGE: int = int(BASE_HP * 0.5)
-const BASE_ATTACK_SPEED: float = 2.0
-const SPEED_CAP: float = 0.1
+const BASE_DAMAGE: int = int(BASE_HP * 0.4)
+const BASE_ATTACK_SPEED: float = 2
+const SPEED_CAP: float = 0.05
 const HP_GROWTH_EXPONENTS: Array[Dictionary] = [
 	{"min_lvl": 1, "growth_exponent": 1.3},
-	{"min_lvl": 10, "growth_exponent": 1.3},
-	{"min_lvl": 20, "growth_exponent": 1.3},
-	{"min_lvl": 30, "growth_exponent": 1.5},
+	{"min_lvl": 5, "growth_exponent": 1.2},
+	{"min_lvl": 10, "growth_exponent": 1.2},
+	{"min_lvl": 20, "growth_exponent": 1.2},
+	{"min_lvl": 30, "growth_exponent": 1.2},
 	{"min_lvl": 40, "growth_exponent": 1.5},
 ]
 
@@ -52,7 +48,8 @@ const HP_GROWTH_EXPONENTS: Array[Dictionary] = [
 const MAX_BOOST_STACKS: int = 6
 const BOOST_STACK_MAX_LIFETIME: float = 3
 const BOOST_STACK_TICK_INTERVAL: float = 0.1
-const AUTO_CLICK_BASE_INTERVAL: float = 2.0
+const BASE_BOOST_SPEED: float = 1.5
+const AUTO_CLICK_BASE_INTERVAL: float = 3.0
 const AUTO_CLICK_CAP: float = 0.1
 const BOOST_HELP_DELAY: float = 5.0
 const BOOST_HELP_CLICKS_TO_LEARN: int = 5
@@ -60,23 +57,22 @@ const BOOST_HELP_CLICKS_TO_LEARN: int = 5
 # --- Progression ---
 
 const MAX_SPRINT_SIZE: int = 12
-const SPRINT_SIZES: Array[int] = [
-	2, # level 1:  1 dev
-	4, # level 2:  2 devs (hire)
-	6, # level 3:  3 devs (hire)
-	8, # level 4:  4 devs (hire)
-	10, # level 5:  5 devs (hire)
-	10, # level 6:  5 devs
-	12, # level 7:  6 devs (hire)
+const SPRINT_SIZES: Array[Dictionary] = [
+	{"min_level": 0, "size": 2}, # 1 dev
+	{"min_level": 3, "size": 4}, # 2 devs
+	{"min_level": 5, "size": 6}, # 3 devs
+	{"min_level": 7, "size": 8}, # 4 devs
+	{"min_level": 9, "size": 10}, # 5 devs
+	{"min_level": 15, "size": 12}, # 6 devs
 ]
-const MAX_DEV_STAT_MULTIPLIER: float = 2.0
-const BASE_TOTAL_GAME_TIME: float = 600.0
-const HIRE_LEVELS: Array[int] = [0, 2, 3, 4, 5, 7, 8, 9, 10]
+const HIRE_LEVELS: Array[int] = [0, 3, 5, 7, 9, 11, 13, 15, 17]
 const SPRINTS_TO_LEVEL_UP: Array[Dictionary] = [
 	{"level": 1, "sprints": 1},
 	{"level": 30, "sprints": 2},
 	{"level": 40, "sprints": 3},
 ]
+const MAX_DEV_STAT_MULTIPLIER: float = 2.0
+const BASE_TOTAL_GAME_TIME: float = 600.0
 
 # --- Tasks ---
 
@@ -86,7 +82,7 @@ const BASE_REFACTORING_CHANCE: float = 0.5
 
 # --- Upgrades ---
 
-const UPGRADE_CHOICES: int = 4
+const UPGRADE_CHOICES: int = 3
 const TRADE_OFF_RETURN_RATE: float = 1.0
 
 const RARITY_MAX_STAT_COUNT: Dictionary[UpgradeRarity, int] = {
@@ -111,17 +107,12 @@ const OFFER_RARITY_CAP_DICT: Dictionary[UpgradeRarity, int] = {
 }
 
 const STAT_COSTS: Dictionary = {
-	UpgradeStat.GLOBAL_DAMAGE: 2,
+	UpgradeStat.GLOBAL_DAMAGE: 1.5,
 	UpgradeStat.FEATURE_DAMAGE: 1.0,
 	UpgradeStat.REFACTORING_DAMAGE: 1.0,
-	UpgradeStat.GLOBAL_SPEED: 2,
-	UpgradeStat.FEATURE_SPEED: 1.5,
-	UpgradeStat.REFACTORING_SPEED: 1.5,
-	UpgradeStat.FEATURE_CHANCE: 1.5,
-	UpgradeStat.REFACTORING_CHANCE: 1.5,
-	UpgradeStat.BOOST_DAMAGE: 1.0,
-	UpgradeStat.BOOST_DURATION: 1.0,
-	UpgradeStat.BOOST_LIFETIME: 1.0,
+	UpgradeStat.FEATURE_CHANCE: 1.0,
+	UpgradeStat.REFACTORING_CHANCE: 1.0,
+	UpgradeStat.BOOST_SPEED: 1.0,
 	UpgradeStat.AUTO_CLICK_SPEED: 1.0,
 }
 
@@ -136,14 +127,9 @@ const STAT_FIELDS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: "global_damage",
 	UpgradeStat.FEATURE_DAMAGE: "feature_damage",
 	UpgradeStat.REFACTORING_DAMAGE: "refactoring_damage",
-	UpgradeStat.GLOBAL_SPEED: "global_speed",
-	UpgradeStat.FEATURE_SPEED: "feature_speed",
-	UpgradeStat.REFACTORING_SPEED: "refactoring_speed",
 	UpgradeStat.FEATURE_CHANCE: "feature_chance",
 	UpgradeStat.REFACTORING_CHANCE: "refactoring_chance",
-	UpgradeStat.BOOST_DAMAGE: "boost_damage",
-	UpgradeStat.BOOST_DURATION: "boost_duration",
-	UpgradeStat.BOOST_LIFETIME: "boost_lifetime",
+	UpgradeStat.BOOST_SPEED: "boost_speed",
 	UpgradeStat.AUTO_CLICK_SPEED: "auto_click_speed",
 }
 
@@ -160,12 +146,7 @@ const STAT_TO_GROUP_DICT: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: UpgradeGroup.DPS_DEV,
 	UpgradeStat.FEATURE_DAMAGE: UpgradeGroup.DPS_DEV,
 	UpgradeStat.REFACTORING_DAMAGE: UpgradeGroup.DPS_DEV,
-	UpgradeStat.GLOBAL_SPEED: UpgradeGroup.DPS_DEV,
-	UpgradeStat.FEATURE_SPEED: UpgradeGroup.DPS_DEV,
-	UpgradeStat.REFACTORING_SPEED: UpgradeGroup.DPS_DEV,
-	UpgradeStat.BOOST_DAMAGE: UpgradeGroup.CLICK_BOOST,
-	UpgradeStat.BOOST_DURATION: UpgradeGroup.CLICK_BOOST,
-	UpgradeStat.BOOST_LIFETIME: UpgradeGroup.CLICK_BOOST,
+	UpgradeStat.BOOST_SPEED: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.AUTO_CLICK_SPEED: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.FEATURE_CHANCE: UpgradeGroup.TASK_TYPE,
 	UpgradeStat.REFACTORING_CHANCE: UpgradeGroup.TASK_TYPE,
@@ -206,14 +187,9 @@ const UPGRADE_MAX_COUNT_DICT: Dictionary = {
 const STAT_GLOBAL_DAMAGE: String = "global_damage"
 const STAT_FEATURE_DAMAGE: String = "feature_damage"
 const STAT_REFACTORING_DAMAGE: String = "refactoring_damage"
-const STAT_GLOBAL_SPEED: String = "global_speed"
-const STAT_FEATURE_SPEED: String = "feature_speed"
-const STAT_REFACTORING_SPEED: String = "refactoring_speed"
 const STAT_FEATURE_CHANCE: String = "feature_chance"
 const STAT_REFACTORING_CHANCE: String = "refactoring_chance"
-const STAT_BOOST_DAMAGE: String = "boost_damage"
-const STAT_BOOST_DURATION: String = "boost_duration"
-const STAT_BOOST_LIFETIME: String = "boost_lifetime"
+const STAT_BOOST_SPEED: String = "boost_speed"
 const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
 
 const FORBIDDEN_POSITIVE_STAT_COMBINATIONS: Array[Array] = [
@@ -226,14 +202,8 @@ const STAT_ORDER: Array[String] = [
 	STAT_GLOBAL_DAMAGE,
 	STAT_FEATURE_DAMAGE,
 	STAT_REFACTORING_DAMAGE,
-	# Speed
-	STAT_GLOBAL_SPEED,
-	STAT_FEATURE_SPEED,
-	STAT_REFACTORING_SPEED,
 	# Boosts
-	STAT_BOOST_DAMAGE,
-	STAT_BOOST_DURATION,
-	STAT_BOOST_LIFETIME,
+	STAT_BOOST_SPEED,
 	STAT_AUTO_CLICK_SPEED,
 	# Chances
 	STAT_FEATURE_CHANCE,
@@ -244,14 +214,9 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_GLOBAL_DAMAGE: "Global Damage",
 	STAT_FEATURE_DAMAGE: "Feature Damage",
 	STAT_REFACTORING_DAMAGE: "Refactoring Damage",
-	STAT_GLOBAL_SPEED: "Global Speed",
-	STAT_FEATURE_SPEED: "Feature Speed",
-	STAT_REFACTORING_SPEED: "Refactoring Speed",
 	STAT_FEATURE_CHANCE: "Feature Chance",
 	STAT_REFACTORING_CHANCE: "Refactoring Chance",
-	STAT_BOOST_DAMAGE: "Boost Damage",
-	STAT_BOOST_DURATION: "Boost Speed",
-	STAT_BOOST_LIFETIME: "Boost Lifetime",
+	STAT_BOOST_SPEED: "Boost Speed",
 	STAT_AUTO_CLICK_SPEED: "Auto Click Speed",
 }
 

@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "time_dilation"
-display_name = "Time Dilation"
-description = "Meetings still take forever, but the work flies"
-rarity = 2
-group = 0
+id = "sugar_rush"
+display_name = "Sugar Rush"
+description = "Double espresso, half the impulse control"
+rarity = 0
+group = 1
 trade_off_type = 0
-global_speed = 0.2
-feature_speed = 0.1
+boost_speed = 0.1

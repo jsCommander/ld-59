@@ -10,6 +10,6 @@ description = "\"We don't have tech debt. We have learning opportunities.\""
 rarity = 3
 group = 2
 trade_off_type = 1
-refactoring_damage = 0.3
+refactoring_damage = 0.5
 refactoring_chance = 0.45
 feature_damage = -0.05

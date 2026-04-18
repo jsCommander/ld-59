@@ -9,5 +9,5 @@ display_name = "Agile Pivot"
 description = "We were waterfall all along"
 rarity = 1
 trade_off_type = 1
-feature_damage = 0.125
-feature_chance = 0.125
+feature_damage = 0.15
+feature_chance = 0.15

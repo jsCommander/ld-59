@@ -2,11 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="1_d2hj0"]
 [ext_resource type="Script" uid="uid://iic4vsj3bbt6" path="res://components/ui/ui_hire_choice/hire_card.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_makh5"]
-[ext_resource type="Texture2D" uid="uid://b1dqipykhm0sk" path="res://assets/exports/task_refactor.png" id="3_ej3om"]
 
 [node name="HireCard" type="MarginContainer" unique_id=1455506027]
-custom_minimum_size = Vector2(256, 0)
+custom_minimum_size = Vector2(320, 0)
 offset_right = 200.0
 offset_bottom = 300.0
 script = ExtResource("1_script")
@@ -42,49 +40,19 @@ size_flags_horizontal = 4
 texture = ExtResource("1_d2hj0")
 expand_mode = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1355200845]
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=631087785]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1155431188]
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 2
-texture = ExtResource("2_makh5")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="FeatureBar" type="ProgressBar" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=665203518]
+[node name="Stats" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1355200845]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_type_variation = &"ProgressBarFeature"
-max_value = 1.0
-show_percentage = false
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1040951770]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1437452753]
-custom_minimum_size = Vector2(16, 16)
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1459968512]
 layout_mode = 2
-texture = ExtResource("3_ej3om")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="RefactoringBar" type="ProgressBar" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1454025280]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_type_variation = &"ProgressBarRefactoring"
-max_value = 1.0
-show_percentage = false
 
 [node name="DescriptionLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2071312975]
 unique_name_in_owner = true
 layout_mode = 2
-horizontal_alignment = 1
+text = "ddsafsfsafsafasdfsadfsdafsdafsadfsdfsadsd"
 vertical_alignment = 1
 autowrap_mode = 3

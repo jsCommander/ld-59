@@ -10,4 +10,4 @@ description = "Sees every hidden tech debt before it compounds"
 rarity = 3
 group = 2
 trade_off_type = 0
-refactoring_chance = 0.6
+refactoring_chance = 0.9

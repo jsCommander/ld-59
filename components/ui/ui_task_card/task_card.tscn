@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://oeqgun0rje75" path="res://components/traits/flashable_trait.gd" id="3_flash"]
 [ext_resource type="PackedScene" uid="uid://08mpeha8oo0c" path="res://game_kit/components/floating_text/floating_text.tscn" id="4_ftxt"]
 
-[node name="MarginContainer" type="MarginContainer" unique_id=175095984]
+[node name="TaskCard" type="MarginContainer" unique_id=175095984]
 custom_minimum_size = Vector2(128, 168)
 offset_right = 128.0
 offset_bottom = 168.0
@@ -16,7 +16,6 @@ layout_mode = 2
 
 [node name="HpBar" type="ProgressBar" parent="VBoxContainer" unique_id=300]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 8
@@ -62,6 +61,6 @@ travel_distance = 50.0
 [node name="Label" type="Label" parent="FloatingText" unique_id=1642797799]
 offset_right = 29.0
 offset_bottom = 41.0
-theme_type_variation = &"LabelH3OnAccent"
+theme_type_variation = &"LabelDamageNumber"
 text = "99"
 horizontal_alignment = 1

@@ -24,8 +24,17 @@ func _ready() -> void:
 	if _is_integer:
 		var int_val: int = int(_value)
 		modifier_label.text = "+%d" % int_val if int_val > 0 else "%d" % int_val
+		if int_val > 0:
+			modifier_label.add_theme_color_override("font_color", ThemeTokens.STAT_POSITIVE)
+		elif int_val < 0:
+			modifier_label.add_theme_color_override("font_color", ThemeTokens.STAT_NEGATIVE)
 	else:
 		var percent: int = int(_value * 100)
-		modifier_label.text = "+%d%%" % percent if percent >= 0 else "%d%%" % percent
-	var color: Color = ThemeTokens.STAT_POSITIVE if _value >= 0 else ThemeTokens.STAT_NEGATIVE
-	modifier_label.add_theme_color_override("font_color", color)
+		if percent > 0:
+			modifier_label.text = "+%d%%" % percent
+			modifier_label.add_theme_color_override("font_color", ThemeTokens.STAT_POSITIVE)
+		elif percent < 0:
+			modifier_label.text = "%d%%" % percent
+			modifier_label.add_theme_color_override("font_color", ThemeTokens.STAT_NEGATIVE)
+		else:
+			modifier_label.text = "0%"

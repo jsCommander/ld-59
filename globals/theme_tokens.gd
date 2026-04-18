@@ -27,8 +27,8 @@ const NEUTRAL: Color = Color("#dfe0d9")
 
 # --- Feedback ---
 
-const SUCCESS: Color = Color("#33cc33")
-const DESTRUCTIVE: Color = Color("#e63333")
+const SUCCESS: Color = Color("#218521")
+const DESTRUCTIVE: Color = Color("#962121")
 
 # --- Colors ---
 

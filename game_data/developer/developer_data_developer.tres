@@ -12,6 +12,5 @@ task_mults = {
 0: 1.0,
 1: 1.0
 }
-base_attack_speed = 2.0
 task_select = ExtResource("3_task_select")
 id = "developer_developer"

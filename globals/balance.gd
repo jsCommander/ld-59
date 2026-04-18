@@ -1,27 +1,21 @@
 class_name Balance
 
 
-## Damage = BASE_DAMAGE × task_mult × (1 + global_damage) × (1 + type_damage) × (1 + stacks × boost_damage)
-static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskType, stats: Dictionary, boost_stacks: int = 0) -> float:
+## Damage = BASE_DAMAGE × task_mult × (1 + global_damage) × (1 + type_damage)
+static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskType, stats: Dictionary) -> float:
 	var base: float = Constants.BASE_DAMAGE
 	var task_mult: float = get_task_mult(dev_data, task_type)
 	var global_dmg_mult: float = 1.0 + _get_stat(Constants.STAT_GLOBAL_DAMAGE, stats)
 	var type_field: String = Constants.STAT_FEATURE_DAMAGE if task_type == Constants.TaskType.FEATURE else Constants.STAT_REFACTORING_DAMAGE
 	var type_dmg_mult: float = 1.0 + _get_stat(type_field, stats)
-	var boost_dmg_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_DAMAGE, stats)
-	return base * task_mult * global_dmg_mult * type_dmg_mult * boost_dmg_mult
+	return base * task_mult * global_dmg_mult * type_dmg_mult
 
 
-## Attack speed = base / ((1 + global_speed) × (1 + type_speed) × (1 + stacks × boost_duration)), clamped to SPEED_CAP
-static func calculate_attack_speed(dev_data: DeveloperData, boost_stacks: int = 0, stats: Dictionary = {}, task_type: Constants.TaskType = Constants.TaskType.FEATURE) -> float:
-	var raw: float = _raw_attack_interval(dev_data, stats, task_type)
-	var boost_mult: float = 1.0 + boost_stacks * _get_stat(Constants.STAT_BOOST_DURATION, stats)
-	return maxf(raw / boost_mult, Constants.SPEED_CAP)
-
-
-## True if base attack interval (no boost) already hits SPEED_CAP — further speed stats are wasted
-static func is_attack_speed_capped(dev_data: DeveloperData, stats: Dictionary, task_type: Constants.TaskType) -> bool:
-	return _raw_attack_interval(dev_data, stats, task_type) <= Constants.SPEED_CAP
+## Attack speed = base / (1 + stacks × (BASE_BOOST_SPEED + boost_speed)), clamped to SPEED_CAP
+static func calculate_attack_speed(dev_data: DeveloperData, boost_stacks: int = 0, stats: Dictionary = {}) -> float:
+	var per_stack: float = Constants.BASE_BOOST_SPEED + _get_stat(Constants.STAT_BOOST_SPEED, stats)
+	var boost_mult: float = 1.0 + boost_stacks * per_stack
+	return maxf(dev_data.base_attack_speed / boost_mult, Constants.SPEED_CAP)
 
 
 ## Auto click interval = BASE_INTERVAL / (1 + auto_click_speed), clamped to AUTO_CLICK_CAP. Returns 0 if no auto_click_speed.
@@ -121,15 +115,6 @@ static func get_game_duration() -> float:
 ## Read a stat value from the totals dictionary
 static func _get_stat(field: String, stats: Dictionary) -> float:
 	return stats.get(field, 0.0)
-
-
-## Attack interval before boost stacks and SPEED_CAP clamp
-static func _raw_attack_interval(dev_data: DeveloperData, stats: Dictionary, task_type: Constants.TaskType) -> float:
-	var base: float = dev_data.base_attack_speed
-	var global_speed_mult: float = 1.0 + _get_stat(Constants.STAT_GLOBAL_SPEED, stats)
-	var type_field: String = Constants.STAT_FEATURE_SPEED if task_type == Constants.TaskType.FEATURE else Constants.STAT_REFACTORING_SPEED
-	var type_speed_mult: float = 1.0 + _get_stat(type_field, stats)
-	return base / (global_speed_mult * type_speed_mult)
 
 
 ## Pick the rates from the bracket whose min_lvl is the highest <= player_level.

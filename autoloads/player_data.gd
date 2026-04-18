@@ -33,12 +33,14 @@ var _boost_help_timer: Timer
 func get_level_up_upgrades() -> Array[UpgradeData]:
 	var result: Array[UpgradeData] = []
 	var used_ids: Array[String] = []
+	var used_groups: Array[Constants.UpgradeGroup] = []
 	var rarities: Array[Constants.UpgradeRarity] = Balance.distribute_rarities(level, Constants.UPGRADE_CHOICES)
 	for rarity: Constants.UpgradeRarity in rarities:
-		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
+		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids, used_groups)
 		if pick:
 			result.append(pick)
 			used_ids.append(pick.id)
+			used_groups.append(pick.group)
 	return result
 
 
@@ -248,8 +250,11 @@ func _get_available_tasks() -> Array[TaskData]:
 
 
 func _get_sprint_size() -> int:
-	var idx: int = clampi(level - 1, 0, Constants.SPRINT_SIZES.size() - 1)
-	return Constants.SPRINT_SIZES[idx]
+	var result: int = Constants.SPRINT_SIZES[0]["size"]
+	for bracket: Dictionary in Constants.SPRINT_SIZES:
+		if level >= bracket["min_level"]:
+			result = bracket["size"]
+	return result
 
 
 # --- Upgrade application ---
@@ -306,8 +311,36 @@ func _is_upgrade_available(upgrade: UpgradeData) -> bool:
 	return count < limit
 
 
-func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:
+func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String], exclude_groups: Array[Constants.UpgradeGroup]) -> UpgradeData:
+	# Try: target rarity + unused group
 	var pool: Array[UpgradeData] = []
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if not _is_upgrade_available(upgrade):
+			continue
+		if upgrade.id in exclude_ids:
+			continue
+		if upgrade.group in exclude_groups:
+			continue
+		if not _is_upgrade_useful(upgrade):
+			continue
+		if upgrade.rarity == target_rarity:
+			pool.append(upgrade)
+	if not pool.is_empty():
+		return _pick_random_from(pool)
+	# Fallback 1: any rarity + unused group
+	for upgrade: UpgradeData in DR.upgrades.values():
+		if not _is_upgrade_available(upgrade):
+			continue
+		if upgrade.id in exclude_ids:
+			continue
+		if upgrade.group in exclude_groups:
+			continue
+		if not _is_upgrade_useful(upgrade):
+			continue
+		pool.append(upgrade)
+	if not pool.is_empty():
+		return _pick_random_from(pool)
+	# Fallback 2: ignore group constraint
 	for upgrade: UpgradeData in DR.upgrades.values():
 		if not _is_upgrade_available(upgrade):
 			continue
@@ -315,18 +348,7 @@ func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids
 			continue
 		if not _is_upgrade_useful(upgrade):
 			continue
-		if upgrade.rarity == target_rarity:
-			pool.append(upgrade)
-	if pool.is_empty():
-		# Fallback: try any rarity
-		for upgrade: UpgradeData in DR.upgrades.values():
-			if not _is_upgrade_available(upgrade):
-				continue
-			if upgrade.id in exclude_ids:
-				continue
-			if not _is_upgrade_useful(upgrade):
-				continue
-			pool.append(upgrade)
+		pool.append(upgrade)
 	return _pick_random_from(pool)
 
 
@@ -346,29 +368,10 @@ func _is_upgrade_useful(upgrade: UpgradeData) -> bool:
 
 func _is_stat_useful(field: String) -> bool:
 	match field:
-		Constants.STAT_GLOBAL_SPEED:
-			return not _all_devs_capped_on_all_types()
-		Constants.STAT_FEATURE_SPEED:
-			return not _all_devs_capped(Constants.TaskType.FEATURE)
-		Constants.STAT_REFACTORING_SPEED:
-			return not _all_devs_capped(Constants.TaskType.REFACTORING)
 		Constants.STAT_AUTO_CLICK_SPEED:
 			return not Balance.is_auto_click_capped(total_stats)
 		_:
 			return true
-
-
-func _all_devs_capped(task_type: Constants.TaskType) -> bool:
-	if hired_data.is_empty():
-		return false
-	for dev_data: DeveloperData in hired_data:
-		if not Balance.is_attack_speed_capped(dev_data, total_stats, task_type):
-			return false
-	return true
-
-
-func _all_devs_capped_on_all_types() -> bool:
-	return _all_devs_capped(Constants.TaskType.FEATURE) and _all_devs_capped(Constants.TaskType.REFACTORING)
 
 
 func _add_sprint_task(template: TaskData, task_level: int) -> void:

@@ -10,5 +10,5 @@ description = "\"Just checking in!\" every 5 minutes"
 rarity = 1
 group = 1
 trade_off_type = 0
-boost_damage = 0.15
+boost_speed = 0.15
 auto_click_speed = 0.15

@@ -209,7 +209,7 @@ func _validate_upgrade_step(warnings: PackedStringArray) -> void:
 				continue
 			var ratio: float = value / STEP
 			if not is_equal_approx(ratio, roundf(ratio)):
-				warnings.append("%s: %s=%+.3f is not a multiple of %.2f" % [
+				warnings.append("%s: %s=%+.3f is not a multiple of %.3f" % [
 					upgrade.id, field, value, STEP,
 				])
 

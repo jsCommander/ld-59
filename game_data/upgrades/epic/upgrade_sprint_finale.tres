@@ -10,5 +10,5 @@ description = "Last day before demo. Max output."
 rarity = 2
 group = 1
 trade_off_type = 1
-boost_damage = 0.25
-boost_duration = 0.35
+boost_speed = 0.65
+feature_damage = -0.05

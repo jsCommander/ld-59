@@ -10,4 +10,4 @@ description = "$2M/month, runway shrinking, ship faster"
 rarity = 2
 group = 0
 trade_off_type = 0
-global_damage = 0.3
+global_damage = 0.4

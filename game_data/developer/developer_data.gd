@@ -5,5 +5,5 @@ class_name DeveloperData extends BaseGameData
 @export var head_texture: Texture2D
 @export var head_offset: Vector2 = Vector2.ZERO
 @export var task_mults: Dictionary = {}
-@export var base_attack_speed: float = 2.0
+@export var base_attack_speed: float = Constants.BASE_ATTACK_SPEED
 @export var task_select: TaskSelectFunction

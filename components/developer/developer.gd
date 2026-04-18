@@ -45,6 +45,8 @@ func _ready() -> void:
 	SB.task_fly_ended.connect(_on_task_fly_ended)
 	clickable.clicked.connect(on_clicked)
 	boost_tick_timer.timeout.connect(_on_boost_tick)
+	animation_player.play("working")
+	_update_boost_visuals()
 
 
 func _process(delta: float) -> void:
@@ -145,19 +147,14 @@ func _change_state(new_state: State) -> void:
 	_state = new_state
 	Log.log_debug(name, "State: %s -> %s" % [State.keys()[old_state], State.keys()[new_state]])
 
-	if old_state == State.WORKING:
-		animation_player.stop()
-
 	match new_state:
-		State.WORKING:
-			animation_player.play("working")
 		State.IDLE:
 			_attack_timer = 0.0
 			task_display.hide_task()
 
 
 func _perform_attack() -> void:
-	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.total_stats, _boost_stacks.size())
+	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.total_stats)
 	_current_task.current_hp -= damage
 	task_display.update_hp()
 	task_display.flash()
@@ -168,23 +165,21 @@ func _perform_attack() -> void:
 
 
 func _get_attack_speed() -> float:
-	var task_type: Constants.TaskType = _current_task.task_type if _current_task else Constants.TaskType.FEATURE
-	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.total_stats, task_type)
+	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.total_stats)
 
 
 func _apply_boost(from_player: bool = true) -> void:
 	if _boost_stacks.size() >= Constants.MAX_BOOST_STACKS:
 		return
 	var stack: BoostStack = BoostStack.new()
-	var lifetime_bonus: float = PD.total_stats.get(Constants.STAT_BOOST_LIFETIME, 0.0)
-	stack.max_lifetime = Constants.BOOST_STACK_MAX_LIFETIME * (1.0 + lifetime_bonus)
+	stack.max_lifetime = Constants.BOOST_STACK_MAX_LIFETIME
 	_boost_stacks.append(stack)
 	_flash_click()
 	_update_boost_visuals()
 	if from_player:
-		SB.player_boost_applied.emit(self)
+		SB.player_boost_applied.emit(self )
 	else:
-		SB.auto_boost_applied.emit(self)
+		SB.auto_boost_applied.emit(self )
 
 
 func _flash_click() -> void:
@@ -203,6 +198,7 @@ func _update_boost_visuals() -> void:
 	var count: int = _boost_stacks.size()
 	sweat_effect.emitting = count > 0
 	boost_stack_ui.stack_count = count
+	animation_player.speed_scale = 0.4 + count * 0.2
 
 
 func _apply_data() -> void:

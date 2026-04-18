@@ -9,4 +9,4 @@ display_name = "Feature Pipeline"
 description = "CI/CD for features, not just code"
 rarity = 2
 group = 2
-feature_chance = 0.4
+feature_chance = 0.6

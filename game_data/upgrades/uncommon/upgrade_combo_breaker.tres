@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "refactor_overdrive"
-display_name = "Refactor Overdrive"
-description = "Tech debt dies before it can compound"
-rarity = 3
-group = 0
+id = "combo_breaker"
+display_name = "Combo Breaker"
+description = "Each click begets the next. Don't break the chain."
+rarity = 1
+group = 1
 trade_off_type = 0
-refactoring_speed = 0.6
+boost_speed = 0.3

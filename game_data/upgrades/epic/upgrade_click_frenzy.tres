@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "turbo_mode"
-display_name = "Turbo Mode"
-description = "All devs slam the gas pedal"
+id = "click_frenzy"
+display_name = "Click Frenzy"
+description = "Carpal tunnel is a badge of honor"
 rarity = 2
-group = 0
+group = 1
 trade_off_type = 0
-global_speed = 0.2
+boost_speed = 0.6

@@ -1,22 +1,22 @@
 [gd_scene format=3 uid="uid://b2dtmqk0i163f"]
 
-[ext_resource type="Script" path="res://components/ui/ui_sprint_panel/stat_modifier.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dkhhgla86ek2u" path="res://components/ui/ui_sprint_panel/stat_modifier.gd" id="1_script"]
 
 [node name="StatModifier" type="HBoxContainer" unique_id=1369429806]
-offset_right = 105.0
-offset_bottom = 32.0
+offset_right = 153.0
+offset_bottom = 39.0
 script = ExtResource("1_script")
 
 [node name="StatNameLabel" type="Label" parent="." unique_id=1165413022]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"LabelOnAccent"
 text = "name"
+vertical_alignment = 1
 
 [node name="ModifierLabel" type="Label" parent="." unique_id=1711904429]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"LabelOnAccent"
+theme_type_variation = &"LabelH3"
 text = "+ 50%"
 horizontal_alignment = 2

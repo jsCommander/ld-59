@@ -9,6 +9,5 @@ display_name = "Product Roadmap"
 description = "Grand strategy, ignores the backlog"
 rarity = 2
 trade_off_type = 1
-global_damage = 0.15
-refactoring_speed = 0.2
+global_damage = 0.45
 refactoring_chance = -0.05
