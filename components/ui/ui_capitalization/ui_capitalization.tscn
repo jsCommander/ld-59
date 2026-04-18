@@ -52,6 +52,7 @@ text = "$228K"
 horizontal_alignment = 1
 
 [node name="CompareVbox" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1080593077]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1

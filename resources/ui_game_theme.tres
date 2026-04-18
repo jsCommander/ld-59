@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://crpirwghwbflu"]
 
-[ext_resource type="FontFile" uid="uid://b3u2v4unutk0g" path="res://game_kit/fonts/Caveat-VariableFont_wght.ttf" id="1_ibuqq"]
+[ext_resource type="FontFile" uid="uid://ic1crbje1oah" path="res://game_kit/fonts/Lato-Regular.ttf" id="1_ibuqq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
 content_margin_left = 24.0
