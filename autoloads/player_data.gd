@@ -21,7 +21,8 @@ var hired_data: Array[DeveloperData] = []
 
 var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
-var total_stats: Dictionary = {}
+var player_stats: PlayerStatsResource = PlayerStatsResource.new()
+var rerolls_left: int = Constants.INITIAL_REROLLS
 
 var is_user_knows_how_to_boost: bool = false
 var player_boost_count: int = 0
@@ -77,7 +78,8 @@ func reset() -> void:
 
 	upgrades_taken.clear()
 	global_upgrades.clear()
-	total_stats.clear()
+	player_stats = Balance.get_player_stats_from_upgrades(global_upgrades)
+	rerolls_left = Constants.INITIAL_REROLLS
 	_tick_timer.stop()
 	_boost_help_timer.stop()
 
@@ -116,7 +118,6 @@ func _ready() -> void:
 	SB.player_boost_applied.connect(_on_player_boost_applied)
 	_tick_timer = _create_tick_timer()
 	_boost_help_timer = _create_boost_help_timer()
-
 
 
 # --- Handlers ---
@@ -190,7 +191,6 @@ func _find_next_desk() -> Developer:
 	return null
 
 
-
 func _create_tick_timer() -> Timer:
 	var timer: Timer = Timer.new()
 	timer.wait_time = 1.0
@@ -213,16 +213,13 @@ func _create_boost_help_timer() -> Timer:
 func _generate_sprint() -> void:
 	sprint_number += 1
 	sprint_time = 0.0
-	var weights: Dictionary = Balance.calculate_task_type_weights(total_stats)
-	var sprint_size: int = _get_sprint_size()
-	var feature_count: int = roundi(sprint_size * (weights[Constants.TaskType.FEATURE] as float))
-	var refactoring_count: int = sprint_size - feature_count
+	var composition: Dictionary = Balance.get_sprint_composition(player_stats, level)
 	sprint_slots.clear()
-	for i: int in feature_count:
+	for i: int in (composition["features"] as int):
 		_add_sprint_task(TASK_DATA_FEATURE, level)
-	for i: int in refactoring_count:
+	for i: int in (composition["refactoring"] as int):
 		_add_sprint_task(TASK_DATA_REFACTORING, level)
-	sprint_slots.shuffle()
+	# sprint_slots.shuffle()
 	SB.task_queue_changed.emit(sprint_slots)
 	Log.log_info(name, "Level %d: %d tasks" % [level, sprint_slots.size()])
 
@@ -249,30 +246,12 @@ func _get_available_tasks() -> Array[TaskData]:
 	return tasks
 
 
-func _get_sprint_size() -> int:
-	var result: int = Constants.SPRINT_SIZES[0]["size"]
-	for bracket: Dictionary in Constants.SPRINT_SIZES:
-		if level >= bracket["min_level"]:
-			result = bracket["size"]
-	return result
-
-
 # --- Upgrade application ---
 
 func _apply_upgrade(upgrade: UpgradeData) -> void:
 	global_upgrades.append(upgrade)
-	_recalculate_total_stats()
+	player_stats = Balance.get_player_stats_from_upgrades(global_upgrades)
 	Log.log_info(name, "Applied upgrade: %s (%s)" % [upgrade.id, upgrade.display_name])
-
-
-func _recalculate_total_stats() -> void:
-	total_stats.clear()
-	for field: String in Constants.STAT_ORDER:
-		var total: float = 0.0
-		for upgrade: UpgradeData in global_upgrades:
-			total += upgrade.get(field) as float
-		if not is_zero_approx(total):
-			total_stats[field] = total
 
 
 # --- Level-up ---
@@ -281,6 +260,9 @@ func _level_up() -> void:
 	level += 1
 	SB.level_up.emit(level)
 	Log.log_info(name, "Level up! Level %d" % level)
+	if level % Constants.ADD_REROLL_EVERY_X_LEVEL == 0:
+		rerolls_left += 1
+		Log.log_info(name, "Granted reroll, total: %d" % rerolls_left)
 	if level in Constants.HIRE_LEVELS:
 		pending_upgrades.append(Constants.UpgradeType.HIRE)
 	pending_upgrades.append(Constants.UpgradeType.UPGRADE)
@@ -369,7 +351,9 @@ func _is_upgrade_useful(upgrade: UpgradeData) -> bool:
 func _is_stat_useful(field: String) -> bool:
 	match field:
 		Constants.STAT_AUTO_CLICK_SPEED:
-			return not Balance.is_auto_click_capped(total_stats)
+			return not Balance.is_auto_click_capped(player_stats)
+		Constants.STAT_BOOST_SPEED:
+			return not Balance.is_boost_speed_capped(player_stats, hired_data)
 		_:
 			return true
 

@@ -2,6 +2,103 @@
 
 [ext_resource type="PackedScene" uid="uid://cfjcwt6msfm4u" path="res://components/ui/ui_arrow.tscn" id="2_bn3mh"]
 
+[sub_resource type="Animation" id="Animation_5y8qa"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-307, 209)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(748, 78)]
+}
+
+[sub_resource type="Animation" id="Animation_eofxs"]
+resource_name = "pulse"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-307, 209)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(748, 78)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Label:scale")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bsiq1"]
+_data = {
+&"RESET": SubResource("Animation_5y8qa"),
+&"pulse": SubResource("Animation_eofxs")
+}
+
 [node name="BoostArrows" type="Control" unique_id=992226455]
 layout_mode = 3
 anchors_preset = 0
@@ -21,3 +118,18 @@ rotation = 1.8387508
 [node name="Arrow4" parent="." unique_id=733436364 instance=ExtResource("2_bn3mh")]
 position = Vector2(144, -56.000004)
 rotation = 2.4331315
+
+[node name="Label" type="Label" parent="." unique_id=763159268]
+layout_mode = 0
+offset_left = -307.0
+offset_top = 209.0
+offset_right = 441.0
+offset_bottom = 287.0
+scale = Vector2(1.1863414, 1.1863414)
+pivot_offset = Vector2(308, 46)
+theme_type_variation = &"LabelMoneyH1"
+text = "Click for speed boost!"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1690631483]
+libraries/ = SubResource("AnimationLibrary_bsiq1")
+autoplay = &"pulse"

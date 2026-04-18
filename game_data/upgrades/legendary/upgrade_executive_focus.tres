@@ -10,5 +10,5 @@ description = "Cares about metrics, not commits. Skips the rah-rah."
 rarity = 3
 group = 0
 trade_off_type = 0
-global_damage = 0.5
-feature_damage = 0.15
+global_damage = 0.3
+feature_damage = 0.45

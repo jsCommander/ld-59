@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://dbr0abosx7w1w"]
+[gd_scene load_steps=3 format=3 uid="uid://dbr0abosx7w1w"]
 
 [ext_resource type="Script" uid="uid://damkc2kgcdfhe" path="res://components/ui/ui_game_over/ui_game_over.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://bdsplayed17x2" path="res://components/ui/ui_player_stats/ui_player_stats.tscn" id="2_playerstats"]
 
 [node name="UiGameOver" type="CenterContainer" unique_id=2035887992]
 anchors_preset = 15
@@ -80,11 +81,9 @@ theme_type_variation = &"LabelH2"
 text = "Your Final Stats"
 horizontal_alignment = 1
 
-[node name="StatsContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1820249151]
+[node name="UiPlayerStats" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_playerstats")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-columns = 3
 
 [node name="RestartButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=268304023]
 unique_name_in_owner = true

@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "sprint_finale"
-display_name = "Sprint Finale"
-description = "Last day before demo. Max output."
-rarity = 2
-group = 1
+id = "ship_it_culture"
+display_name = "Ship It Culture"
+description = "\"Move fast and break things\" — still breaking, still moving."
+rarity = 1
+group = 0
 trade_off_type = 1
-boost_speed = 0.675
-feature_damage = -0.075
+feature_damage = 0.35
+refactoring_chance = -0.05

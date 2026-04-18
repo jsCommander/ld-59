@@ -4,15 +4,13 @@ extends BaseDialog
 # --- Constants ---
 
 const DEV_FACE: PackedScene = preload("res://components/ui/ui_game_over/dev_face.tscn")
-const STAT_SUMMARY_ITEM: PackedScene = preload("res://components/ui/ui_upgrade_choice/stat_summary_item.tscn")
 
 # --- @onready ---
 
 @onready var valuation_label: Label = %ValuationLabel
 @onready var company_label: Label = %CompanyLabel
-@onready var sprints_label: Label = %SprintsLabel
 @onready var team_grid: GridContainer = %TeamGrid
-@onready var stats_container: GridContainer = %StatsContainer
+@onready var player_stats_view: UiPlayerStats = %UiPlayerStats
 @onready var restart_button: Button = %RestartButton
 
 # --- Lifecycle ---
@@ -26,9 +24,8 @@ func set_data(data: Dictionary) -> void:
 	var final_valuation: int = data.get("valuation", 0)
 	valuation_label.text = "$%s" % Utils.format_number(final_valuation)
 	_show_company_comparison(final_valuation)
-	sprints_label.text = "Sprints closed: %d" % PD.sprint_number
 	_populate_team_grid()
-	_populate_stats()
+	player_stats_view.stats = PD.player_stats
 
 # --- Private ---
 
@@ -55,17 +52,6 @@ func _populate_team_grid() -> void:
 		var face: DevFace = DEV_FACE.instantiate()
 		face.dev_data = dev.data
 		team_grid.add_child(face)
-
-
-func _populate_stats() -> void:
-	for child: Node in stats_container.get_children():
-		child.queue_free()
-	for field: String in Constants.STAT_ORDER:
-		var value: float = PD.total_stats.get(field, 0.0) as float
-		var display_name: String = Constants.STAT_DISPLAY_NAMES.get(field, field)
-		var item: StatSummaryItem = STAT_SUMMARY_ITEM.instantiate()
-		item.setup(display_name, value)
-		stats_container.add_child(item)
 
 
 func _on_restart() -> void:

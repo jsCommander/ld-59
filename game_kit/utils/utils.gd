@@ -56,6 +56,10 @@ static func deactivate_collider(collider: CollisionShape2D, duration: float) -> 
 static func get_move_input_vector() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
+static func format_mult(value: float) -> String:
+	return "×%.2f" % value
+
+
 static func format_number(value: int) -> String:
 	var abs_value: int = absi(value)
 	if abs_value < 1000:

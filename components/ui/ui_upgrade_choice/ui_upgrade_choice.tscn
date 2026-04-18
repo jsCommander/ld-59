@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bbeg72o2c6442"]
 
 [ext_resource type="Script" uid="uid://dl4p74kq17ijc" path="res://components/ui/ui_upgrade_choice/ui_upgrade_choice.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://bdsplayed17x2" path="res://components/ui/ui_player_stats/ui_player_stats.tscn" id="2_playerstats"]
 
 [node name="CenterContainer" type="CenterContainer" unique_id=1163224932]
 anchors_preset = 15
@@ -11,7 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_script")
 
 [node name="UiHireChoice" type="PanelContainer" parent="." unique_id=450250193]
-custom_minimum_size = Vector2(512, 256)
+custom_minimum_size = Vector2(1216, 768)
 layout_mode = 2
 theme_type_variation = &"PanelContainerCard"
 
@@ -31,21 +32,30 @@ horizontal_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1318206242]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(0, 384)
 layout_mode = 2
+size_flags_vertical = 6
 alignment = 1
 
-[node name="StatsSectionLabel" type="Label" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=678697404]
+[node name="UiPlayerStats" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=224893530 instance=ExtResource("2_playerstats")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"LabelH2"
-text = "Current Stats"
-horizontal_alignment = 1
 
-[node name="StatsGrid" type="GridContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=1758887623]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 128)
+[node name="ButtonRow" type="HBoxContainer" parent="UiHireChoice/MarginContainer/VBoxContainer" unique_id=751838431]
 layout_mode = 2
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 8
-columns = 3
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TakeButton" type="Button" parent="UiHireChoice/MarginContainer/VBoxContainer/ButtonRow" unique_id=1318206244]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+disabled = true
+text = "Take"
+
+[node name="RerollButton" type="Button" parent="UiHireChoice/MarginContainer/VBoxContainer/ButtonRow" unique_id=1318206243]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Reroll"

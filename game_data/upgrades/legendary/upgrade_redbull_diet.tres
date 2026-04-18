@@ -4,10 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "feature_machine"
-display_name = "Feature Machine"
-description = "Ships features in its sleep. Literally."
-rarity = 2
-trade_off_type = 0
-global_damage = 0.2
-feature_damage = 0.3
+id = "redbull_diet"
+display_name = "Red Bull Diet"
+description = "Hydration is overrated. So is accuracy."
+rarity = 3
+group = 1
+trade_off_type = 1
+auto_click_speed = 1.0
+global_damage = -0.075

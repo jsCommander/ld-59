@@ -64,16 +64,18 @@ const STAT_POSITIVE: Color = SUCCESS
 const STAT_NEGATIVE: Color = DESTRUCTIVE
 
 # --- Rarity ---
+# Base = pastel (unselected cards). Selected = darker saturated color — high contrast
+# so the selected card visibly pops out against its pastel neighbours.
 
-const RARITY_COMMON: Color = Color("#6f6d68")
-const RARITY_UNCOMMON: Color = Color("#2c5dd4")
-const RARITY_EPIC: Color = Color("#7a2eb5")
-const RARITY_LEGENDARY: Color = Color("#d99117")
+const RARITY_COMMON: Color = Color("#b8b5ad")
+const RARITY_UNCOMMON: Color = Color("#8fafe3")
+const RARITY_EPIC: Color = Color("#b993d3")
+const RARITY_LEGENDARY: Color = Color("#e8c580")
 
-const RARITY_COMMON_HOVER: Color = Color("#85837e")
-const RARITY_UNCOMMON_HOVER: Color = Color("#4a82ff")
-const RARITY_EPIC_HOVER: Color = Color("#9b4dd3")
-const RARITY_LEGENDARY_HOVER: Color = Color("#f0a82c")
+const RARITY_COMMON_HOVER: Color = Color("#6f6d68")
+const RARITY_UNCOMMON_HOVER: Color = Color("#2c5dd4")
+const RARITY_EPIC_HOVER: Color = Color("#7a2eb5")
+const RARITY_LEGENDARY_HOVER: Color = Color("#d99117")
 
 const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 	Constants.UpgradeRarity.COMMON: RARITY_COMMON,

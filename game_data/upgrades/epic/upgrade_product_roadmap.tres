@@ -10,4 +10,4 @@ description = "Grand strategy, ignores the backlog"
 rarity = 2
 trade_off_type = 1
 global_damage = 0.45
-refactoring_chance = -0.05
+refactoring_chance = -0.075

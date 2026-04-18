@@ -10,5 +10,5 @@ description = "Cleans up legacy code and feature requests alike"
 rarity = 2
 trade_off_type = 1
 refactoring_damage = 0.3
-refactoring_chance = 0.35
-feature_chance = -0.05
+refactoring_chance = 0.375
+feature_chance = -0.075

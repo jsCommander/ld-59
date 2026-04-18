@@ -11,6 +11,9 @@ class_name FloatingText
 @export var fade_out_time: float = 0.3
 @export var pop_scale: float = 1.4
 @export var pop_duration: float = 0.15
+## Minimum seconds between spawns. Calls that come faster are silently dropped.
+## Set to 0.0 to disable throttling.
+@export var throttle_time: float = 0.1
 @export var debug: bool = false:
 	set(value):
 		debug = value
@@ -21,6 +24,7 @@ class_name FloatingText
 var _label_template: Label
 var _spawned_labels: Array[Label] = []
 var _debug_timer: float = 0.0
+var _last_spawn_time: float = 0.0
 
 # --- Lifecycle ---
 
@@ -39,6 +43,11 @@ func _process(delta: float) -> void:
 # --- Public ---
 
 func spawn(text: String) -> void:
+	if throttle_time > 0.0:
+		var now: float = Time.get_ticks_msec() * 0.001
+		if now - _last_spawn_time < throttle_time:
+			return
+		_last_spawn_time = now
 	if not _label_template:
 		_label_template = _find_label()
 		if _label_template:

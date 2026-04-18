@@ -10,5 +10,5 @@ description = "Changed direction so fast got whiplash"
 rarity = 2
 group = 2
 trade_off_type = 1
-feature_chance = 0.65
-boost_speed = -0.05
+feature_chance = 0.675
+boost_speed = -0.075

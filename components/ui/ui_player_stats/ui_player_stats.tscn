@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://bdsplayed17x2"]
+
+[ext_resource type="Script" uid="uid://cdug4gjlhjewp" path="res://components/ui/ui_player_stats/ui_player_stats.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://o1ivcd7rwp7n" path="res://components/ui/ui_player_stats/ui_player_stat_row.tscn" id="2_statrow"]
+
+[node name="UiPlayerStats" type="MarginContainer" unique_id=2056490329]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -1415.0
+offset_bottom = 127.0
+grow_horizontal = 2
+script = ExtResource("1_script")
+
+[node name="StatsPanel" type="HBoxContainer" parent="." unique_id=1791174525]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="StatsPanel" unique_id=1977059758]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="DamageColumn" type="VBoxContainer" parent="StatsPanel/PanelContainer" unique_id=935730530]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="HeaderLabel" type="Label" parent="StatsPanel/PanelContainer/DamageColumn" unique_id=1578535433]
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "Damage"
+horizontal_alignment = 1
+
+[node name="RowDamageFeatures" parent="StatsPanel/PanelContainer/DamageColumn" unique_id=501850755 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RowDamageRefactor" parent="StatsPanel/PanelContainer/DamageColumn" unique_id=129931852 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="StatsPanel" unique_id=675890423]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="ClickColumn" type="VBoxContainer" parent="StatsPanel/PanelContainer2" unique_id=48089299]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="HeaderLabel" type="Label" parent="StatsPanel/PanelContainer2/ClickColumn" unique_id=516191187]
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "Click Boost"
+horizontal_alignment = 1
+
+[node name="RowClickPerStack" parent="StatsPanel/PanelContainer2/ClickColumn" unique_id=235588794 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RowClickAuto" parent="StatsPanel/PanelContainer2/ClickColumn" unique_id=1571138375 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="StatsPanel" unique_id=237943042]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="SprintColumn" type="VBoxContainer" parent="StatsPanel/PanelContainer3" unique_id=388690152]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="HeaderLabel" type="Label" parent="StatsPanel/PanelContainer3/SprintColumn" unique_id=80189303]
+layout_mode = 2
+theme_type_variation = &"LabelH3"
+text = "Sprint Tasks"
+horizontal_alignment = 1
+
+[node name="RowSprintFeatures" parent="StatsPanel/PanelContainer3/SprintColumn" unique_id=69860521 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RowSprintRefactor" parent="StatsPanel/PanelContainer3/SprintColumn" unique_id=343679923 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2

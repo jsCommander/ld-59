@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "automation_suite"
-display_name = "Automation Suite"
-description = "CI/CD pipeline that's longer than the actual code"
-rarity = 2
+id = "caffeine_abuse"
+display_name = "Caffeine Abuse"
+description = "Fifth espresso kicks in. Features fly out, quality not so much."
+rarity = 1
 group = 1
-trade_off_type = 0
-auto_click_speed = 0.3
-boost_speed = 0.3
+trade_off_type = 1
+auto_click_speed = 0.35
+feature_damage = -0.05

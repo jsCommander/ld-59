@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://o1ivcd7rwp7n"]
+
+[ext_resource type="Script" uid="uid://dclfar7xnj1pl" path="res://components/ui/ui_player_stats/ui_player_stat_row.gd" id="1_script"]
+
+[node name="UiPlayerStatRow" type="MarginContainer" unique_id=1889914245]
+offset_right = 142.0
+offset_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("1_script")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=942605304]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="NameLabel" type="Label" parent="HBoxContainer" unique_id=930145463]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stat"
+
+[node name="ValueLabel" type="Label" parent="HBoxContainer" unique_id=1792330173]
+unique_name_in_owner = true
+layout_mode = 2
+text = "×1.00"
+horizontal_alignment = 2

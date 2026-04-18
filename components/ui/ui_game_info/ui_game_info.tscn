@@ -21,7 +21,7 @@ alignment = 1
 
 [node name="ValuationLabel2" type="Label" parent="PanelContainer/MarginContainer/HBox/Labels" unique_id=1651923219]
 layout_mode = 2
-theme_type_variation = &"LabelH3"
+theme_type_variation = &"LabelMoneyH3"
 text = "Valuation:"
 
 [node name="TimeLeftLabel" type="Label" parent="PanelContainer/MarginContainer/HBox/Labels" unique_id=2037264855]
@@ -42,7 +42,7 @@ alignment = 1
 [node name="ValuationLabel" type="Label" parent="PanelContainer/MarginContainer/HBox/Data" unique_id=215746324]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"LabelH3"
+theme_type_variation = &"LabelMoneyH3"
 text = "$0"
 horizontal_alignment = 1
 

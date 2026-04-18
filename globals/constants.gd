@@ -21,6 +21,7 @@ enum UpgradeRarity {COMMON, UNCOMMON, EPIC, LEGENDARY}
 enum TradeOffType {PURE, TRADE_OFF_CROSS_GROUP}
 enum UpgradeGroup {DPS_DEV, CLICK_BOOST, TASK_TYPE, ECONOMY}
 enum UpgradeType {HIRE, UPGRADE}
+enum DiffType {NONE, POSITIVE, NEGATIVE}
 
 const DEV_TYPE_DISPLAY_NAMES: Dictionary[DevType, String] = {
 	DevType.VIBECODER: "Vibe Coder",
@@ -30,7 +31,7 @@ const DEV_TYPE_DISPLAY_NAMES: Dictionary[DevType, String] = {
 
 # --- Combat ---
 
-const BASE_HP: int = 100
+const BASE_HP: int = 1000
 const BASE_DAMAGE: int = int(BASE_HP * 0.4)
 const BASE_ATTACK_SPEED: float = 2
 const SPEED_CAP: float = 0.05
@@ -48,7 +49,7 @@ const HP_GROWTH_EXPONENTS: Array[Dictionary] = [
 const MAX_BOOST_STACKS: int = 6
 const BOOST_STACK_MAX_LIFETIME: float = 3
 const BOOST_STACK_TICK_INTERVAL: float = 0.1
-const BASE_BOOST_SPEED: float = 1.5
+const BASE_BOOST_SPEED: float = 1.2
 const AUTO_CLICK_BASE_INTERVAL: float = 3.0
 const AUTO_CLICK_CAP: float = 0.1
 const BOOST_HELP_DELAY: float = 5.0
@@ -72,7 +73,7 @@ const SPRINTS_TO_LEVEL_UP: Array[Dictionary] = [
 	{"level": 40, "sprints": 3},
 ]
 const MAX_DEV_STAT_MULTIPLIER: float = 2.0
-const BASE_TOTAL_GAME_TIME: float = 600.0
+const BASE_TOTAL_GAME_TIME: float = 480.0
 
 # --- Tasks ---
 
@@ -83,6 +84,8 @@ const BASE_REFACTORING_CHANCE: float = 0.5
 # --- Upgrades ---
 
 const UPGRADE_CHOICES: int = 3
+const INITIAL_REROLLS: int = 1
+const ADD_REROLL_EVERY_X_LEVEL: int = 3
 const TRADE_OFF_RETURN_RATE: float = 1.0
 
 const RARITY_MAX_STAT_COUNT: Dictionary[UpgradeRarity, int] = {
@@ -136,10 +139,10 @@ const STAT_FIELDS: Dictionary = {
 const BUDGET_TOLERANCE: float = 0.15
 
 const NEGATIVE_BUDGET_LIMITS: Dictionary = {
-	UpgradeRarity.COMMON: 3,
-	UpgradeRarity.UNCOMMON: 6,
-	UpgradeRarity.EPIC: 9,
-	UpgradeRarity.LEGENDARY: 12,
+	UpgradeRarity.COMMON: 5,
+	UpgradeRarity.UNCOMMON: 10,
+	UpgradeRarity.EPIC: 20,
+	UpgradeRarity.LEGENDARY: 40
 }
 
 const STAT_TO_GROUP_DICT: Dictionary = {
@@ -238,38 +241,35 @@ const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
 
 const COMPANY_MILESTONES: Array[Dictionary] = [
 	# Everyday items
-	{"valuation": 100, "name": "Cup of Coffee"},
-	{"valuation": 300, "name": "Pair of AirPods"},
-	{"valuation": 500, "name": "Kebab Stand"},
-	{"valuation": 1500, "name": "PS5"},
+	{"valuation": 2000, "name": "PS5"},
 	{"valuation": 5000, "name": "MacBook Pro"},
 	{"valuation": 15000, "name": "Used Car"},
-	{"valuation": 50000, "name": "Tesla Model 3"},
-	{"valuation": 150000, "name": "Developer Salary"},
-	{"valuation": 500000, "name": "Studio Apartment"},
-	{"valuation": 1500000, "name": "House"},
-	{"valuation": 3000000, "name": "Penthouse"},
-	{"valuation": 5000000, "name": "Yacht"},
+	{"valuation": 40000, "name": "Tesla Model 3"},
+	{"valuation": 200000, "name": "Developer Salary"},
+	{"valuation": 800000, "name": "Studio Apartment"},
+	{"valuation": 2000000, "name": "House"},
+	{"valuation": 10000000, "name": "Penthouse"},
+	{"valuation": 30000000, "name": "Yacht"},
 	# Companies
-	{"valuation": 8000000, "name": "Indie Game Studio"},
-	{"valuation": 15000000, "name": "Mobile Game Studio"},
-	{"valuation": 30000000, "name": "Supergiant Games"},
-	{"valuation": 50000000, "name": "Ubisoft"},
-	{"valuation": 80000000, "name": "Zynga"},
-	{"valuation": 150000000, "name": "Valve"},
-	{"valuation": 300000000, "name": "Discord"},
-	{"valuation": 500000000, "name": "Epic Games"},
-	{"valuation": 800000000, "name": "Roblox"},
-	{"valuation": 1500000000, "name": "EA"},
-	{"valuation": 3000000000, "name": "Spotify"},
-	{"valuation": 5000000000, "name": "Nintendo"},
-	{"valuation": 10000000000, "name": "AMD"},
-	{"valuation": 15000000000, "name": "Netflix"},
-	{"valuation": 30000000000, "name": "Sony"},
-	{"valuation": 50000000000, "name": "Samsung"},
-	{"valuation": 80000000000, "name": "Oracle"},
-	{"valuation": 150000000000, "name": "Meta"},
-	{"valuation": 300000000000, "name": "Tesla"},
-	{"valuation": 500000000000, "name": "Google"},
-	{"valuation": 1000000000000, "name": "World Domination"},
+	{"valuation": 50000000, "name": "Team Cherry"},
+	{"valuation": 300000000, "name": "Devolver Digital"},
+	{"valuation": 800000000, "name": "Supergiant Games"},
+	{"valuation": 3000000000, "name": "Ubisoft"},
+	{"valuation": 10000000000, "name": "Valve"},
+	{"valuation": 13000000000, "name": "Zynga"},
+	{"valuation": 15000000000, "name": "Discord"},
+	{"valuation": 32000000000, "name": "Epic Games"},
+	{"valuation": 40000000000, "name": "EA"},
+	{"valuation": 60000000000, "name": "Roblox"},
+	{"valuation": 75000000000, "name": "Nintendo"},
+	{"valuation": 100000000000, "name": "Spotify"},
+	{"valuation": 130000000000, "name": "Sony"},
+	{"valuation": 250000000000, "name": "AMD"},
+	{"valuation": 300000000000, "name": "Netflix"},
+	{"valuation": 400000000000, "name": "Samsung"},
+	{"valuation": 800000000000, "name": "Oracle"},
+	{"valuation": 1000000000000, "name": "Tesla"},
+	{"valuation": 1500000000000, "name": "Meta"},
+	{"valuation": 2000000000000, "name": "Google"},
+	{"valuation": 10000000000000, "name": "World Domination"},
 ]

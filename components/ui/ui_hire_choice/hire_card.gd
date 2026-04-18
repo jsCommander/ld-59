@@ -1,9 +1,6 @@
 class_name HireCard
 extends Control
 
-# --- Constants ---
-const STAT_MODIFIER: PackedScene = preload("res://components/ui/ui_sprint_panel/stat_modifier.tscn")
-
 # --- Signals ---
 signal chosen(dev_data: DeveloperData)
 
@@ -13,8 +10,9 @@ var _dev_data: DeveloperData
 # --- @onready ---
 @onready var icon_rect: TextureRect = %IconRect
 @onready var name_label: Label = %NameLabel
-@onready var stats_container: VBoxContainer = %Stats
 @onready var description_label: Label = %DescriptionLabel
+@onready var feature_damage_row: UiPlayerStatRow = %FeatureDamageRow
+@onready var refactor_damage_row: UiPlayerStatRow = %RefactorDamageRow
 
 
 func setup(dev_data: DeveloperData) -> void:
@@ -35,18 +33,17 @@ func _ready() -> void:
 
 # --- Private ---
 func _populate_stats() -> void:
-	var rows: Array[Array] = [
-		[Constants.TaskType.FEATURE, Constants.STAT_DISPLAY_NAMES[Constants.STAT_FEATURE_DAMAGE]],
-		[Constants.TaskType.REFACTORING, Constants.STAT_DISPLAY_NAMES[Constants.STAT_REFACTORING_DAMAGE]],
-	]
-	for row: Array in rows:
-		var task_type: Constants.TaskType = row[0]
-		var label: String = row[1]
-		var mult: float = _dev_data.task_mults.get(task_type, 1.0)
-		var bonus: float = mult - 1.0
-		var stat_row: StatModifier = STAT_MODIFIER.instantiate()
-		stat_row.setup(label, bonus)
-		stats_container.add_child(stat_row)
+	var stats: PlayerStatsResource = PD.player_stats
+	var feature_total: float = _dev_data.task_mults.get(Constants.TaskType.FEATURE, 1.0) * stats.damage_features
+	var refactor_total: float = _dev_data.task_mults.get(Constants.TaskType.REFACTORING, 1.0) * stats.damage_refactor
+	feature_damage_row.setup("Feature damage", Utils.format_mult(feature_total), _diff_vs_baseline(feature_total))
+	refactor_damage_row.setup("Refactor damage", Utils.format_mult(refactor_total), _diff_vs_baseline(refactor_total))
+
+
+func _diff_vs_baseline(value: float) -> Constants.DiffType:
+	if is_equal_approx(value, 1.0):
+		return Constants.DiffType.NONE
+	return Constants.DiffType.POSITIVE if value > 1.0 else Constants.DiffType.NEGATIVE
 
 
 # --- Handlers ---

@@ -133,7 +133,7 @@ func _process_working(delta: float) -> void:
 
 
 func _process_auto_click(delta: float) -> void:
-	var interval: float = Balance.calculate_auto_click_interval(PD.total_stats)
+	var interval: float = PD.player_stats.auto_click_interval
 	if interval <= 0.0:
 		return
 	_auto_click_timer += delta
@@ -154,7 +154,7 @@ func _change_state(new_state: State) -> void:
 
 
 func _perform_attack() -> void:
-	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.total_stats)
+	var damage: float = Balance.calculate_damage(data, _current_task.task_type, PD.player_stats)
 	_current_task.current_hp -= damage
 	task_display.update_hp()
 	task_display.flash()
@@ -165,7 +165,7 @@ func _perform_attack() -> void:
 
 
 func _get_attack_speed() -> float:
-	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.total_stats)
+	return Balance.calculate_attack_speed(data, _boost_stacks.size(), PD.player_stats)
 
 
 func _apply_boost(from_player: bool = true) -> void:

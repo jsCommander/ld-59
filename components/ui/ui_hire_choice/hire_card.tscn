@@ -1,7 +1,8 @@
-[gd_scene format=3 uid="uid://3b6iatpunoxt"]
+[gd_scene load_steps=4 format=3 uid="uid://3b6iatpunoxt"]
 
 [ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="1_d2hj0"]
 [ext_resource type="Script" uid="uid://iic4vsj3bbt6" path="res://components/ui/ui_hire_choice/hire_card.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://o1ivcd7rwp7n" path="res://components/ui/ui_player_stats/ui_player_stat_row.tscn" id="3_statrow"]
 
 [node name="HireCard" type="MarginContainer" unique_id=1455506027]
 custom_minimum_size = Vector2(320, 0)
@@ -44,6 +45,14 @@ expand_mode = 1
 layout_mode = 2
 
 [node name="Stats" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1355200845]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FeatureDamageRow" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" instance=ExtResource("3_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RefactorDamageRow" parent="PanelContainer/MarginContainer/VBoxContainer/Stats" instance=ExtResource("3_statrow")]
 unique_name_in_owner = true
 layout_mode = 2
 

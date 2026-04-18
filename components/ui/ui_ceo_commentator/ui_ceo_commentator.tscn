@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cj558tdw8w55" path="res://components/ui/ui_ceo_commentator/ui_ceo_commentator.gd" id="1_330iy"]
 [ext_resource type="Texture2D" uid="uid://b8u7ysamf4oqr" path="res://assets/exports/ceo.png" id="1_sumtp"]
+[ext_resource type="Texture2D" uid="uid://ci5ajj7h018kc" path="res://assets/exports/ceo_happy_mouth.png" id="3_330iy"]
+[ext_resource type="Texture2D" uid="uid://c02o5kt1m7h1" path="res://assets/exports/ceo_sad_mouth.png" id="4_0a1g6"]
+[ext_resource type="Texture2D" uid="uid://bseaelos2ubj8" path="res://assets/exports/ceo_eyes_dollar.png" id="4_5llq4"]
 
 [node name="UiCeoCommentator" type="MarginContainer" unique_id=1141117849]
 offset_right = 488.0
@@ -35,6 +38,7 @@ autowrap_mode = 3
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainer2" unique_id=915659583]
+custom_minimum_size = Vector2(106, 128)
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/PanelContainer2/MarginContainer" unique_id=1654423982]
@@ -50,10 +54,36 @@ flip_h = true
 [node name="Node2D" type="Node2D" parent="HBoxContainer/PanelContainer2/MarginContainer" unique_id=1935937548]
 
 [node name="Label" type="Label" parent="HBoxContainer/PanelContainer2/MarginContainer/Node2D" unique_id=2003164695]
-offset_left = 24.0
-offset_top = 91.0
-offset_right = 72.0
-offset_bottom = 132.0
+offset_left = 18.0
+offset_top = 86.0
+offset_right = 84.0
+offset_bottom = 127.0
 theme_type_variation = &"LabelMoneyH3"
 text = "CEO"
 horizontal_alignment = 1
+
+[node name="MouthGood" type="Sprite2D" parent="HBoxContainer/PanelContainer2/MarginContainer/Node2D" unique_id=612019150]
+unique_name_in_owner = true
+position = Vector2(49, 64)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_330iy")
+flip_h = true
+
+[node name="Dollars" type="Sprite2D" parent="HBoxContainer/PanelContainer2/MarginContainer/Node2D" unique_id=209337259]
+unique_name_in_owner = true
+visible = false
+position = Vector2(52, 24)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_5llq4")
+flip_h = true
+
+[node name="MouthBad" type="Sprite2D" parent="HBoxContainer/PanelContainer2/MarginContainer/Node2D" unique_id=565927437]
+unique_name_in_owner = true
+visible = false
+position = Vector2(49, 64)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_0a1g6")
+flip_h = true
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/PanelContainer2/MarginContainer" unique_id=89746440]
+layout_mode = 2
