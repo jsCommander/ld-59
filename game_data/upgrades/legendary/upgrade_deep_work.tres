@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "code_rage"
-display_name = "Code Rage"
-description = "Angry typing, faster shipping"
-rarity = 1
+id = "deep_work"
+display_name = "Deep Work"
+description = "The zone. Indefinitely."
+rarity = 3
 group = 1
 trade_off_type = 0
-global_speed = 0.075
-boost_duration = 0.15
+boost_lifetime = 0.9

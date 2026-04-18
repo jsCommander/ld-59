@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "code_rage"
-display_name = "Code Rage"
-description = "Angry typing, faster shipping"
-rarity = 1
+id = "keyboard_macros"
+display_name = "Keyboard Macros"
+description = "Every keystroke is three keystrokes"
+rarity = 2
 group = 1
 trade_off_type = 0
-global_speed = 0.075
-boost_duration = 0.15
+auto_click_speed = 0.6

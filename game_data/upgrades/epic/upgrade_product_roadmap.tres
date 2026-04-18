@@ -6,9 +6,9 @@
 script = ExtResource("1")
 id = "product_roadmap"
 display_name = "Product Roadmap"
-description = "Beautifully designed fiction"
+description = "Grand strategy, ignores the backlog"
 rarity = 2
 trade_off_type = 1
-feature_damage = 0.275
-feature_chance = 0.275
+global_damage = 0.15
+refactoring_speed = 0.2
 refactoring_chance = -0.05

@@ -10,8 +10,9 @@ var upgrades: Dictionary[String, UpgradeData] = {}
 func _ready() -> void:
 	developers.merge(_find_game_data_in_path(DEVELOPER_PATH))
 	upgrades.merge(_find_game_data_in_path(UPGRADE_PATH))
-	_write_upgrade_data_log()
-	_validate_upgrades()
+	if OS.has_feature("editor"):
+		_write_upgrade_data_log()
+		_validate_upgrades()
 
 
 func _write_upgrade_data_log() -> void:

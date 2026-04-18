@@ -20,14 +20,22 @@ func _scan_directory(path: String, result: Dictionary[String, BaseGameData]) -> 
 		var full_path: String = path.path_join(file_name)
 		if dir.current_is_dir() and not file_name.begins_with("."):
 			_scan_directory(full_path, result)
-		elif file_name.ends_with(".tres"):
-			var res: Resource = load(full_path)
+		else:
+			var load_path: String = ""
+			if file_name.ends_with(".tres"):
+				load_path = full_path
+			elif file_name.ends_with(".tres.remap"):
+				load_path = full_path.trim_suffix(".remap")
+			if load_path.is_empty():
+				file_name = dir.get_next()
+				continue
+			var res: Resource = load(load_path)
 			if res is BaseGameData:
 				var id: String = res.id
 				if id.is_empty():
-					Log.log_warn(name, "Empty id in %s" % full_path)
+					Log.log_warn(name, "Empty id in %s" % load_path)
 				elif id in result:
-					Log.log_warn(name, "Duplicate id '%s' in %s" % [id, full_path])
+					Log.log_warn(name, "Duplicate id '%s' in %s" % [id, load_path])
 				else:
 					result[id] = res
 		file_name = dir.get_next()

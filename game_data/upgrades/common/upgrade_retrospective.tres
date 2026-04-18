@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "code_rage"
-display_name = "Code Rage"
-description = "Angry typing, faster shipping"
-rarity = 1
-group = 1
+id = "retrospective"
+display_name = "Retrospective"
+description = "We'll do better next sprint. Promise."
+rarity = 0
+group = 0
 trade_off_type = 0
-global_speed = 0.075
-boost_duration = 0.15
+refactoring_speed = 0.025
+feature_chance = 0.05

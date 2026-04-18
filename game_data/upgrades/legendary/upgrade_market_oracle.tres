@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1")
 id = "market_oracle"
-display_name = "Market Oracle"
-description = "Predicts what users want before they know it"
+display_name = "Legacy Oracle"
+description = "Sees every hidden tech debt before it compounds"
 rarity = 3
 group = 2
-feature_chance = 0.6
+trade_off_type = 0
+refactoring_chance = 0.6

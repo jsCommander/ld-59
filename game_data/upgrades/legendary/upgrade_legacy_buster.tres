@@ -4,11 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "code_rage"
-display_name = "Code Rage"
-description = "Angry typing, faster shipping"
-rarity = 1
-group = 1
+id = "legacy_buster"
+display_name = "Legacy Buster"
+description = "Rewrites COBOL in its sleep"
+rarity = 3
+group = 0
 trade_off_type = 0
-global_speed = 0.075
-boost_duration = 0.15
+refactoring_damage = 0.9

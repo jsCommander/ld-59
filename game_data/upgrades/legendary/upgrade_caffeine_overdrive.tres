@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "code_rage"
-display_name = "Code Rage"
-description = "Angry typing, faster shipping"
-rarity = 1
-group = 1
-trade_off_type = 0
-global_speed = 0.075
-boost_duration = 0.15
+id = "caffeine_overdrive"
+display_name = "Caffeine Overdrive"
+description = "Typing at 300 WPM, focus fades faster"
+rarity = 3
+group = 0
+trade_off_type = 1
+global_speed = 0.4
+boost_lifetime = -0.05

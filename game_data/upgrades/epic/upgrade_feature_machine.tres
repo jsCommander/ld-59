@@ -6,9 +6,9 @@
 script = ExtResource("1")
 id = "feature_machine"
 display_name = "Feature Machine"
-description = "Features per hour is off the charts. Quality per feature..."
+description = "Ships features in its sleep. Literally."
 rarity = 2
-trade_off_type = 1
-feature_chance = 0.225
-feature_speed = 0.15
+trade_off_type = 0
 feature_damage = 0.05
+feature_speed = 0.15
+boost_lifetime = 0.3
