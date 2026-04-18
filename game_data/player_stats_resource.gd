@@ -13,6 +13,10 @@ class_name PlayerStatsResource extends Resource
 @export var boost_per_stack: float = 0.0
 ## Seconds between auto-click ticks. 0.0 means auto-click is disabled.
 @export var auto_click_interval: float = 0.0
+## Base seconds between dev hits (no boost stacks).
+@export var dev_speed_base: float = Constants.BASE_ATTACK_SPEED
+## Seconds between dev hits under MAX_BOOST_STACKS, clamped to SPEED_CAP.
+@export var dev_speed_max_boost: float = Constants.BASE_ATTACK_SPEED
 
 @export_group("Sprint")
 ## Normalized probability 0..1 that a generated sprint task is a feature.

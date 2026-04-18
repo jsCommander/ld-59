@@ -23,6 +23,7 @@ buses/default_bus_layout="uid://baoc86f6np62k"
 [autoload]
 
 SB="*uid://im1hpuaks3nm"
+SD="*res://autoloads/save_data.gd"
 AM="*res://autoloads/audio_manager.gd"
 DR="*res://autoloads/data_registry.gd"
 PD="*res://autoloads/player_data.gd"

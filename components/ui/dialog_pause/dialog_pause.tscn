@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://ci3n20a6fbfvs"]
+
+[ext_resource type="Script" uid="uid://oklok28gh663" path="res://components/ui/dialog_pause/dialog_pause.gd" id="1_15lov"]
+
+[node name="PauseDialog" type="CenterContainer" unique_id=238227686]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_15lov")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=578421251]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_type_variation = &"PanelContainerCard"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=2066530730]
+layout_mode = 2
+theme_type_variation = &"MarginContainerLarge"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1232809817]
+layout_mode = 2
+theme_type_variation = &"VBoxContainerLarge"
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=521956535]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelH1"
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=577093807]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MusicRow" unique_id=1291160065]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_type_variation = &"LabelH2"
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MusicRow" unique_id=1551821197]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
+
+[node name="SfxRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2044412881]
+layout_mode = 2
+
+[node name="SfxLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/SfxRow" unique_id=362257139]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_type_variation = &"LabelH2"
+text = "SFX"
+
+[node name="SfxSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/SfxRow" unique_id=964777743]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=581222591]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CenterContainer" unique_id=542368969]
+layout_mode = 2
+
+[node name="ResumeButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer" unique_id=2120337721]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ButtonLarge"
+text = "Resume"
+
+[node name="ExitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer" unique_id=364897668]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ButtonLarge"
+text = "Exit"
+
+[connection signal="value_changed" from="PanelContainer/MarginContainer/VBoxContainer/MusicRow/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MarginContainer/VBoxContainer/SfxRow/SfxSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_button_down"]
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_button_down"]

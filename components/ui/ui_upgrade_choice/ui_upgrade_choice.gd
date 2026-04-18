@@ -59,7 +59,7 @@ func _on_reroll_pressed() -> void:
 
 # --- Public ---
 
-func set_data(data: Dictionary) -> void:
+func set_data(_data: Dictionary) -> void:
 	var upgrades: Array[UpgradeData] = PD.get_level_up_upgrades()
 	_build_cards(upgrades)
 	player_stats_view.stats = PD.player_stats

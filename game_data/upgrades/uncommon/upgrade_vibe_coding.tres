@@ -10,5 +10,5 @@ description = "Headphones on, world off, numbers up"
 rarity = 1
 group = 0
 trade_off_type = 0
-global_damage = 0.1
+global_damage = 0.15
 feature_damage = 0.15

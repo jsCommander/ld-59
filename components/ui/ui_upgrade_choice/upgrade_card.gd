@@ -20,7 +20,6 @@ const RARITY_SELECTED_VARIATIONS: Dictionary = {
 
 # --- Signals ---
 
-signal chosen(upgrade: UpgradeData)
 signal selected_changed(card: UpgradeCard, is_selected: bool)
 
 # --- @onready ---

@@ -19,7 +19,8 @@ extends Control
 
 @onready var row_damage_features: UiPlayerStatRow = %RowDamageFeatures
 @onready var row_damage_refactor: UiPlayerStatRow = %RowDamageRefactor
-@onready var row_click_per_stack: UiPlayerStatRow = %RowClickPerStack
+@onready var row_dev_speed_base: UiPlayerStatRow = %RowDevSpeedBase
+@onready var row_dev_speed_max_boost: UiPlayerStatRow = %RowDevSpeedMaxBoost
 @onready var row_click_auto: UiPlayerStatRow = %RowClickAuto
 @onready var row_sprint_features: UiPlayerStatRow = %RowSprintFeatures
 @onready var row_sprint_refactor: UiPlayerStatRow = %RowSprintRefactor
@@ -37,7 +38,8 @@ func _refresh() -> void:
 	var shown: PlayerStatsResource = stats_for_diff if stats_for_diff != null else stats
 	row_damage_features.setup("Features:", Utils.format_mult(shown.damage_features), _diff(stats.damage_features, shown.damage_features))
 	row_damage_refactor.setup("Refactor:", Utils.format_mult(shown.damage_refactor), _diff(stats.damage_refactor, shown.damage_refactor))
-	row_click_per_stack.setup("Dev Speed Per Stack:", Utils.format_mult(1.0 + shown.boost_per_stack), _diff(stats.boost_per_stack, shown.boost_per_stack))
+	row_dev_speed_base.setup("Attack per second:", _fmt_rate(shown.dev_speed_base), _diff_interval(stats.dev_speed_base, shown.dev_speed_base))
+	row_dev_speed_max_boost.setup("With full boosts", _fmt_rate(shown.dev_speed_max_boost), _diff_interval(stats.dev_speed_max_boost, shown.dev_speed_max_boost))
 	row_click_auto.setup("Auto click:", _fmt_interval(shown.auto_click_interval), _diff_interval(stats.auto_click_interval, shown.auto_click_interval))
 	row_sprint_features.setup("Features:", _fmt_ratio(shown.feature_ratio), _diff(stats.feature_ratio, shown.feature_ratio))
 	row_sprint_refactor.setup("Refactoring:", _fmt_ratio(shown.refactoring_ratio), _diff(stats.refactoring_ratio, shown.refactoring_ratio))
@@ -63,9 +65,19 @@ func _diff_interval(current: float, preview: float) -> Constants.DiffType:
 func _fmt_interval(seconds: float) -> String:
 	if is_zero_approx(seconds):
 		return "Off"
-	return "%.1fs" % seconds
+	if seconds <= Constants.AUTO_CLICK_CAP:
+		return "%.2fs (cap)" % seconds
+	return "%.2fs" % seconds
+
+
+func _fmt_rate(seconds: float) -> String:
+	if is_zero_approx(seconds):
+		return "Off"
+	var rate: float = 1.0 / seconds
+	if seconds <= Constants.SPEED_CAP:
+		return "%.2f atk/s (cap)" % rate
+	return "%.2f atk/s" % rate
 
 
 func _fmt_ratio(ratio: float) -> String:
-	var size: int = Balance.get_sprint_size(PD.level)
-	return "%.1f/%d" % [ratio * size, size]
+	return "%.0f%%" % (ratio * 100.0)

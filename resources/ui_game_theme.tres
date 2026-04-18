@@ -1,6 +1,8 @@
 [gd_resource type="Theme" format=3 uid="uid://crpirwghwbflu"]
 
 [ext_resource type="FontFile" uid="uid://ic1crbje1oah" path="res://game_kit/fonts/Lato-Regular.ttf" id="1_ibuqq"]
+[ext_resource type="Texture2D" uid="uid://coo2fy17030pm" path="res://assets/icons/slider_grabber.svg" id="2_slider_grabber"]
+[ext_resource type="Texture2D" uid="uid://b8rwck2unurnv" path="res://assets/icons/slider_grabber_highlight.svg" id="3_slider_grabber_hl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_disabled"]
 content_margin_left = 24.0
@@ -81,6 +83,24 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.780392, 0.321569, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_track"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.34407577, 0.34407574, 0.34407574, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_default"]
 bg_color = Color(1, 1, 1, 1)
@@ -228,6 +248,12 @@ Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 ButtonLarge/base_type = &"Button"
 ButtonLarge/font_sizes/font_size = 48
 HBoxContainer/constants/separation = 8
+HSlider/icons/grabber = ExtResource("2_slider_grabber")
+HSlider/icons/grabber_disabled = ExtResource("2_slider_grabber")
+HSlider/icons/grabber_highlight = ExtResource("3_slider_grabber_hl")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+HSlider/styles/slider = SubResource("StyleBoxFlat_slider_track")
 Label/colors/font_color = Color(0, 0, 0, 1)
 LabelDamageNumber/base_type = &"Label"
 LabelDamageNumber/colors/font_color = Color(1, 1, 1, 1)

@@ -9,5 +9,5 @@ display_name = "Feature Machine"
 description = "Ships features in its sleep. Literally."
 rarity = 2
 trade_off_type = 0
-global_damage = 0.2
+global_damage = 0.3
 feature_damage = 0.3

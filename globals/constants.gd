@@ -102,15 +102,8 @@ const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
 	UpgradeRarity.LEGENDARY: 99,
 }
 
-const OFFER_RARITY_CAP_DICT: Dictionary[UpgradeRarity, int] = {
-	UpgradeRarity.COMMON: 99,
-	UpgradeRarity.UNCOMMON: 10,
-	UpgradeRarity.EPIC: 4,
-	UpgradeRarity.LEGENDARY: 2,
-}
-
 const STAT_COSTS: Dictionary = {
-	UpgradeStat.GLOBAL_DAMAGE: 1.5,
+	UpgradeStat.GLOBAL_DAMAGE: 1.0,
 	UpgradeStat.FEATURE_DAMAGE: 1.0,
 	UpgradeStat.REFACTORING_DAMAGE: 1.0,
 	UpgradeStat.FEATURE_CHANCE: 1.0,

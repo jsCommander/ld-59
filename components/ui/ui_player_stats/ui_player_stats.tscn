@@ -54,7 +54,11 @@ theme_type_variation = &"LabelH3"
 text = "Click Boost"
 horizontal_alignment = 1
 
-[node name="RowClickPerStack" parent="StatsPanel/PanelContainer2/ClickColumn" unique_id=235588794 instance=ExtResource("2_statrow")]
+[node name="RowDevSpeedBase" parent="StatsPanel/PanelContainer2/ClickColumn" unique_id=235588794 instance=ExtResource("2_statrow")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RowDevSpeedMaxBoost" parent="StatsPanel/PanelContainer2/ClickColumn" unique_id=1571138376 instance=ExtResource("2_statrow")]
 unique_name_in_owner = true
 layout_mode = 2
 

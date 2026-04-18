@@ -14,6 +14,8 @@ static func get_player_stats_from_upgrades(upgrades: Array[UpgradeData]) -> Play
 	res.damage_refactor = global_mult * (1.0 + _get_stat(Constants.STAT_REFACTORING_DAMAGE, deltas))
 	res.boost_per_stack = Constants.BASE_BOOST_SPEED + _get_stat(Constants.STAT_BOOST_SPEED, deltas)
 	res.auto_click_interval = _auto_click_interval(deltas)
+	res.dev_speed_base = Constants.BASE_ATTACK_SPEED
+	res.dev_speed_max_boost = _calculate_attack_interval(Constants.BASE_ATTACK_SPEED, Constants.MAX_BOOST_STACKS, res.boost_per_stack)
 	res.feature_ratio = weights[Constants.TaskType.FEATURE] as float
 	res.refactoring_ratio = weights[Constants.TaskType.REFACTORING] as float
 	return res
@@ -29,8 +31,7 @@ static func calculate_damage(dev_data: DeveloperData, task_type: Constants.TaskT
 
 ## Attack speed = base / (1 + stacks × boost_per_stack), clamped to SPEED_CAP
 static func calculate_attack_speed(dev_data: DeveloperData, boost_stacks: int, player_stats: PlayerStatsResource) -> float:
-	var boost_mult: float = 1.0 + boost_stacks * player_stats.boost_per_stack
-	return maxf(dev_data.base_attack_speed / boost_mult, Constants.SPEED_CAP)
+	return _calculate_attack_interval(dev_data.base_attack_speed, boost_stacks, player_stats.boost_per_stack)
 
 
 ## True if auto click interval is already at AUTO_CLICK_CAP — further auto_click_speed is wasted
@@ -139,6 +140,11 @@ static func get_game_duration() -> float:
 
 
 # --- Private ---
+
+static func _calculate_attack_interval(base: float, boost_stacks: int, boost_per_stack: float) -> float:
+	var boost_mult: float = 1.0 + boost_stacks * boost_per_stack
+	return maxf(base / boost_mult, Constants.SPEED_CAP)
+
 
 static func _sum_upgrade_deltas(upgrades: Array[UpgradeData]) -> Dictionary:
 	var result: Dictionary = {}

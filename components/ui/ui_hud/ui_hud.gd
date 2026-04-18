@@ -4,7 +4,7 @@ extends CanvasLayer
 const UI_UPGRADE_CHOICE: PackedScene = preload("res://components/ui/ui_upgrade_choice/ui_upgrade_choice.tscn")
 const UI_HIRE_CHOICE: PackedScene = preload("res://components/ui/ui_hire_choice/ui_hire_choice.tscn")
 const UI_GAME_OVER: PackedScene = preload("res://components/ui/ui_game_over/ui_game_over.tscn")
-const UI_PAUSE: PackedScene = preload("res://game_kit/dialogs/dialog_pause.tscn")
+const UI_PAUSE: PackedScene = preload("res://components/ui/dialog_pause/dialog_pause.tscn")
 
 const FLY_DURATION: float = 0.4
 const FLY_ICON_SIZE: Vector2 = Vector2(64, 64)

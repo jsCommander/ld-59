@@ -10,5 +10,5 @@ description = "Numbers must go up. Any numbers."
 rarity = 0
 group = 0
 trade_off_type = 0
-global_damage = 0.025
+global_damage = 0.05
 feature_damage = 0.05

@@ -9,4 +9,4 @@ display_name = "Stock Options"
 description = "Vest or die trying."
 rarity = 3
 group = 0
-global_damage = 0.6
+global_damage = 0.9
