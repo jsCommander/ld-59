@@ -4,10 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-id = "bug_annihilator"
-display_name = "Bug Annihilator"
-description = "Bugs die before they spawn"
-rarity = 3
-group = 0
+id = "refactor_friday"
+display_name = "Refactor Friday"
+description = "Pizza-fueled refactoring Friday. Mostly pizza."
+rarity = 0
 trade_off_type = 0
-bug_speed = 1
+refactoring_damage = 0.1

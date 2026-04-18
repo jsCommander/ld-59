@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bpp0w1gjd6j5q" path="res://assets/exports/developer_head_senior.png" id="1_d2hj0"]
 [ext_resource type="Script" uid="uid://iic4vsj3bbt6" path="res://components/ui/ui_hire_choice/hire_card.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://x31xwr1mfymu" path="res://assets/exports/task_feature.png" id="2_makh5"]
-[ext_resource type="Texture2D" uid="uid://c63gwqgjnqpvx" path="res://assets/exports/task_bug.png" id="3_ej3om"]
+[ext_resource type="Texture2D" uid="uid://b1dqipykhm0sk" path="res://assets/exports/task_refactor.png" id="3_ej3om"]
 
 [node name="HireCard" type="MarginContainer" unique_id=1455506027]
 custom_minimum_size = Vector2(256, 0)
@@ -72,13 +72,13 @@ texture = ExtResource("3_ej3om")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BugBar" type="ProgressBar" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1454025280]
+[node name="RefactoringBar" type="ProgressBar" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1454025280]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_type_variation = &"ProgressBarBug"
+theme_type_variation = &"ProgressBarRefactoring"
 max_value = 1.0
 show_percentage = false
 

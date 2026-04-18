@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "growth_hacking"
-display_name = "Growth Hacking"
-description = "Revenue is vanity, growth is sanity, profit is... later"
+id = "cleanup_sprint"
+display_name = "Cleanup Sprint"
+description = "Dedicated refactoring week"
 rarity = 2
 group = 0
 trade_off_type = 0
-global_damage = 0.6
+refactoring_speed = 0.4

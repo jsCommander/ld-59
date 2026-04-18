@@ -4,10 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "quantum_compiler"
-display_name = "Quantum Compiler"
-description = "Compiles in all timelines simultaneously"
-rarity = 3
+id = "weekend_warrior"
+display_name = "Weekend Warrior"
+description = "Saturday commits, Sunday hotfixes"
+rarity = 1
 group = 1
-boost_damage = 0.35
-boost_duration = 0.65
+trade_off_type = 0
+boost_duration = 0.2
+refactoring_speed = 0.075

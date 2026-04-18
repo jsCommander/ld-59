@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "incident_response"
-display_name = "Incident Response"
-description = "Page everyone. Blame no one. Fix nothing."
-rarity = 1
-trade_off_type = 1
-bug_chance = 0.2
-global_speed = 0.1
+id = "overclocked_ide"
+display_name = "Overclocked IDE"
+description = "CPU fans screaming, autocomplete instant"
+rarity = 3
+group = 1
+boost_damage = 0.325
+boost_duration = 0.575

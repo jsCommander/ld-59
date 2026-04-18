@@ -4,9 +4,8 @@
 
 [resource]
 script = ExtResource("1")
-id = "venture_capital"
-display_name = "Venture Capital"
-description = "Money solves everything. Temporarily."
-rarity = 3
-group = 0
-global_damage = 1.0
+id = "fast_forward"
+display_name = "Fast Forward"
+description = "Skip the standup, ship the feature"
+trade_off_type = 1
+global_speed = 0.025

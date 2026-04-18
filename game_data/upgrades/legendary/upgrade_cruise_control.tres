@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "pair_programming"
-display_name = "Pair Programming"
-description = "Two devs, one keyboard, zero personal space"
-rarity = 1
+id = "cruise_control"
+display_name = "Cruise Control"
+description = "Set and forget. Watch the dashboard."
+rarity = 3
 group = 1
-trade_off_type = 0
-boost_damage = 0.15
-boost_duration = 0.15
+trade_off_type = 1
+boost_duration = 0.625
+boost_lifetime = 0.275

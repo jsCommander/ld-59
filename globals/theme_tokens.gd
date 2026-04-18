@@ -65,15 +65,15 @@ const STAT_NEGATIVE: Color = DESTRUCTIVE
 
 # --- Rarity ---
 
-const RARITY_COMMON: Color = GREY
-const RARITY_UNCOMMON: Color = BLUE
-const RARITY_EPIC: Color = PURPLE
-const RARITY_LEGENDARY: Color = Color("#ffd68a")
+const RARITY_COMMON: Color = Color("#6f6d68")
+const RARITY_UNCOMMON: Color = Color("#2c5dd4")
+const RARITY_EPIC: Color = Color("#7a2eb5")
+const RARITY_LEGENDARY: Color = Color("#d99117")
 
-const RARITY_COMMON_HOVER: Color = Color("#cac8c3")
-const RARITY_UNCOMMON_HOVER: Color = Color("#adc5ff")
-const RARITY_EPIC_HOVER: Color = Color("#d0aceb")
-const RARITY_LEGENDARY_HOVER: Color = Color("#ffe4ad")
+const RARITY_COMMON_HOVER: Color = Color("#85837e")
+const RARITY_UNCOMMON_HOVER: Color = Color("#4a82ff")
+const RARITY_EPIC_HOVER: Color = Color("#9b4dd3")
+const RARITY_LEGENDARY_HOVER: Color = Color("#f0a82c")
 
 const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 	Constants.UpgradeRarity.COMMON: RARITY_COMMON,
@@ -85,8 +85,8 @@ const RARITY_COLORS_DICT: Dictionary[Constants.UpgradeRarity, Color] = {
 # --- Game Entities ---
 
 const FEATURE: Color = Color("#4ea8e0")
-const BUG: Color = Color("#e86b6b")
-const HP: Color = BUG
+const REFACTORING: Color = Color("#e86b6b")
+const HP: Color = REFACTORING
 const MONEY: Color = Color("#00cc44")
 
 # ============================================================
@@ -138,6 +138,6 @@ const PANEL_CONTAINER_RARITY_LEGENDARY_HOVER_BG: Color = RARITY_LEGENDARY_HOVER
 const PROGRESS_DEFAULT_BG: Color = SURFACE
 const PROGRESS_DEFAULT_FILL: Color = PRIMARY
 const PROGRESS_FEATURE_FILL: Color = FEATURE
-const PROGRESS_BUG_FILL: Color = BUG
+const PROGRESS_REFACTORING_FILL: Color = REFACTORING
 const PROGRESS_HP_FILL: Color = HP
 const PROGRESS_EXP_FILL: Color = MONEY

@@ -9,5 +9,5 @@ display_name = "Product Visionary"
 description = "Sees the roadmap three quarters ahead"
 rarity = 3
 group = 2
-feature_chance = 0.65
-feature_speed = 0.35
+feature_chance = 0.375
+feature_speed = 0.225

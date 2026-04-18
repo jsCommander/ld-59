@@ -4,12 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "zero_bug_policy"
-display_name = "Zero Bug Policy"
-description = "\"We don't have bugs. We have undocumented features.\""
-rarity = 3
-group = 2
+id = "war_room"
+display_name = "War Room"
+description = "Everyone on the call. Mute yourself."
+rarity = 1
 trade_off_type = 1
-bug_damage = 0.45
-bug_chance = 0.65
-feature_damage = -0.1
+refactoring_chance = 0.1
+global_speed = 0.05

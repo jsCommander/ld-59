@@ -4,10 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "exterminator_sprint"
-display_name = "Exterminator Sprint"
-description = "Dedicated bug-crushing week"
-rarity = 2
-group = 0
+id = "code_rage"
+display_name = "Code Rage"
+description = "Angry typing, faster shipping"
+rarity = 1
+group = 1
 trade_off_type = 0
-bug_speed = 0.6
+boost_damage = 0.15
+boost_duration = 0.15

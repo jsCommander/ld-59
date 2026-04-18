@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-id = "quick_patch"
-display_name = "Quick Patch"
-description = "Hotfix deployed, tests skipped"
-trade_off_type = 1
-global_speed = 0.1
+id = "stock_options"
+display_name = "Stock Options"
+description = "Vest or die trying."
+rarity = 3
+group = 0
+global_damage = 0.5

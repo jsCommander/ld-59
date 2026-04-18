@@ -9,4 +9,4 @@ display_name = "Market Oracle"
 description = "Predicts what users want before they know it"
 rarity = 3
 group = 2
-feature_chance = 1
+feature_chance = 0.6

@@ -40,3 +40,7 @@ signal pending_upgrades_changed
 signal player_boost_applied(developer: Developer)
 @warning_ignore("unused_signal")
 signal auto_boost_applied(developer: Developer)
+@warning_ignore("unused_signal")
+signal boost_help_show_requested
+@warning_ignore("unused_signal")
+signal boost_help_hide_requested

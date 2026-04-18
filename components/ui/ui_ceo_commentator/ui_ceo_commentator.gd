@@ -26,7 +26,7 @@ const SPRINT_DONE_COMMENTS: Array[String] = [
 
 const MILESTONE_COMMENTS: Array[String] = [
 	"We're bigger than %s!",
-	"Take that, %s!",
+	# "Take that, %s!",
 ]
 
 # --- @onready ---
@@ -58,7 +58,8 @@ func _process(_delta: float) -> void:
 # --- Handlers ---
 
 func _on_sprint_completed(_level: int) -> void:
-	_set_comment(SPRINT_DONE_COMMENTS[randi() % SPRINT_DONE_COMMENTS.size()])
+	pass
+	#_set_comment(SPRINT_DONE_COMMENTS[randi() % SPRINT_DONE_COMMENTS.size()])
 
 func _on_valuation_changed() -> void:
 	var current_company: String = ""

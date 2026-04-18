@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
 fi
 
 ITCH_USERNAME="jscommander"
-ITCH_GAME_NAME="ld58"
+ITCH_GAME_NAME="this-is-ai"
 
 GAME_ZIP="./releases/web.zip"
 

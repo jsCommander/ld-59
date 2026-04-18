@@ -4,11 +4,12 @@
 
 [resource]
 script = ExtResource("1")
-id = "rage_deploy"
-display_name = "Rage Deploy"
-description = "Force pushed to main on a Friday night"
+id = "clean_code_mandate"
+display_name = "Clean Code Mandate"
+description = "\"We don't have tech debt. We have learning opportunities.\""
 rarity = 3
-group = 1
+group = 2
 trade_off_type = 1
-boost_duration = 0.75
-boost_lifetime = 0.3
+refactoring_damage = 0.3
+refactoring_chance = 0.45
+feature_damage = -0.05

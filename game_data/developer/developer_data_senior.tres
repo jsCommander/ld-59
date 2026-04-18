@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_script")
 dev_type = 2
-description = "Great at bugs, to old for features"
+description = "Great at refactoring, too old for features. Picks refactoring first."
 head_texture = ExtResource("1_tnv43")
 task_mults = {
 0: 0.7,

@@ -13,12 +13,12 @@ class_name UpgradeData extends BaseGameData
 @export_group("Stat Effects")
 @export var global_damage: float = 0.0
 @export var feature_damage: float = 0.0
-@export var bug_damage: float = 0.0
+@export var refactoring_damage: float = 0.0
 @export var global_speed: float = 0.0
 @export var feature_speed: float = 0.0
-@export var bug_speed: float = 0.0
+@export var refactoring_speed: float = 0.0
 @export var feature_chance: float = 0.0
-@export var bug_chance: float = 0.0
+@export var refactoring_chance: float = 0.0
 @export var boost_damage: float = 0.0
 @export var boost_duration: float = 0.0
 @export var boost_lifetime: float = 0.0

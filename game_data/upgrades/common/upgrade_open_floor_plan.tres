@@ -10,4 +10,5 @@ description = "\"Collaboration!\" screams the CEO from his private office"
 rarity = 0
 group = 1
 trade_off_type = 1
-boost_damage = 0.1
+boost_damage = 0.125
+feature_damage = -0.025

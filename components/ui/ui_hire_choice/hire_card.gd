@@ -8,7 +8,7 @@ var _dev_data: DeveloperData
 @onready var icon_rect: TextureRect = %IconRect
 @onready var name_label: Label = %NameLabel
 @onready var feature_bar: ProgressBar = %FeatureBar
-@onready var bug_bar: ProgressBar = %BugBar
+@onready var refactoring_bar: ProgressBar = %RefactoringBar
 @onready var description_label: Label = %DescriptionLabel
 
 
@@ -25,7 +25,7 @@ func _ready() -> void:
 		icon_rect.texture = _dev_data.head_texture
 	name_label.text = Constants.DEV_TYPE_DISPLAY_NAMES[_dev_data.dev_type]
 	feature_bar.value = _dev_data.task_mults.get(Constants.TaskType.FEATURE, 1.0) / Constants.MAX_DEV_STAT_MULTIPLIER
-	bug_bar.value = _dev_data.task_mults.get(Constants.TaskType.BUG, 1.0) / Constants.MAX_DEV_STAT_MULTIPLIER
+	refactoring_bar.value = _dev_data.task_mults.get(Constants.TaskType.REFACTORING, 1.0) / Constants.MAX_DEV_STAT_MULTIPLIER
 	description_label.text = _dev_data.description
 
 

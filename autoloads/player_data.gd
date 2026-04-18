@@ -1,7 +1,7 @@
 class_name PlayerData extends Node
 
 const TASK_DATA_FEATURE: TaskData = preload("res://game_data/task/task_data_feature.tres")
-const TASK_DATA_BUG: TaskData = preload("res://game_data/task/task_data_bug.tres")
+const TASK_DATA_REFACTORING: TaskData = preload("res://game_data/task/task_data_refactoring.tres")
 
 # --- State ---
 
@@ -23,24 +23,19 @@ var upgrades_taken: Array[UpgradeData] = []
 var global_upgrades: Array[UpgradeData] = []
 var total_stats: Dictionary = {}
 
-var player_click_count: int = 0
-var is_boost_help_showed: bool = false
+var is_user_knows_how_to_boost: bool = false
+var player_boost_count: int = 0
 var _tick_timer: Timer
+var _boost_help_timer: Timer
 
 # --- Public ---
 
 func get_level_up_upgrades() -> Array[UpgradeData]:
-	const REQUIRED_GROUPS: Array[Constants.UpgradeGroup] = [
-		Constants.UpgradeGroup.DPS_DEV,
-		Constants.UpgradeGroup.DPS_DEV,
-		Constants.UpgradeGroup.CLICK_BOOST,
-		Constants.UpgradeGroup.TASK_TYPE,
-	]
 	var result: Array[UpgradeData] = []
 	var used_ids: Array[String] = []
-	for group: Constants.UpgradeGroup in REQUIRED_GROUPS:
-		var rarity: Constants.UpgradeRarity = Balance.roll_rarity(level)
-		var pick: UpgradeData = _pick_upgrade_by_group_and_rarity(group, rarity, used_ids)
+	var rarities: Array[Constants.UpgradeRarity] = Balance.distribute_rarities(level, Constants.UPGRADE_CHOICES)
+	for rarity: Constants.UpgradeRarity in rarities:
+		var pick: UpgradeData = _pick_upgrade_by_rarity(rarity, used_ids)
 		if pick:
 			result.append(pick)
 			used_ids.append(pick.id)
@@ -71,8 +66,8 @@ func reset() -> void:
 	sprint_time = 0.0
 	timer_remaining = Constants.BASE_TOTAL_GAME_TIME
 	_game_active = false
-	player_click_count = 0
-	is_boost_help_showed = false
+	is_user_knows_how_to_boost = false
+	player_boost_count = 0
 	pending_upgrades.clear()
 	sprint_slots.clear()
 	developers.clear()
@@ -82,6 +77,7 @@ func reset() -> void:
 	global_upgrades.clear()
 	total_stats.clear()
 	_tick_timer.stop()
+	_boost_help_timer.stop()
 
 
 func take_task(task: TaskData) -> TaskData:
@@ -117,15 +113,21 @@ func _ready() -> void:
 	SB.task_requested.connect(_on_task_requested)
 	SB.player_boost_applied.connect(_on_player_boost_applied)
 	_tick_timer = _create_tick_timer()
+	_boost_help_timer = _create_boost_help_timer()
 
 
 
 # --- Handlers ---
 
 func _on_player_boost_applied(_developer: Developer) -> void:
-	player_click_count += 1
-	if player_click_count >= 5 and not is_boost_help_showed:
-		is_boost_help_showed = true
+	if is_user_knows_how_to_boost:
+		return
+	player_boost_count += 1
+	if player_boost_count < Constants.BOOST_HELP_CLICKS_TO_LEARN:
+		return
+	is_user_knows_how_to_boost = true
+	_boost_help_timer.stop()
+	SB.boost_help_hide_requested.emit()
 
 
 func _on_task_requested(developer: Developer, task_position: Vector2) -> void:
@@ -163,6 +165,14 @@ func _on_upgrade_chosen(upgrade: UpgradeData) -> void:
 
 func _on_developer_chosen(dev_data: DeveloperData) -> void:
 	hire_developer(dev_data)
+	if not is_user_knows_how_to_boost and _boost_help_timer.is_stopped():
+		_boost_help_timer.start()
+
+
+func _on_boost_help_timer_timeout() -> void:
+	if is_user_knows_how_to_boost:
+		return
+	SB.boost_help_show_requested.emit()
 
 
 func _on_task_destroyed(task: TaskData) -> void:
@@ -187,6 +197,15 @@ func _create_tick_timer() -> Timer:
 	return timer
 
 
+func _create_boost_help_timer() -> Timer:
+	var timer: Timer = Timer.new()
+	timer.wait_time = Constants.BOOST_HELP_DELAY
+	timer.one_shot = true
+	timer.timeout.connect(_on_boost_help_timer_timeout)
+	add_child(timer)
+	return timer
+
+
 # --- Sprint system ---
 
 func _generate_sprint() -> void:
@@ -195,12 +214,12 @@ func _generate_sprint() -> void:
 	var weights: Dictionary = Balance.calculate_task_type_weights(total_stats)
 	var sprint_size: int = _get_sprint_size()
 	var feature_count: int = roundi(sprint_size * (weights[Constants.TaskType.FEATURE] as float))
-	var bug_count: int = sprint_size - feature_count
+	var refactoring_count: int = sprint_size - feature_count
 	sprint_slots.clear()
 	for i: int in feature_count:
 		_add_sprint_task(TASK_DATA_FEATURE, level)
-	for i: int in bug_count:
-		_add_sprint_task(TASK_DATA_BUG, level)
+	for i: int in refactoring_count:
+		_add_sprint_task(TASK_DATA_REFACTORING, level)
 	sprint_slots.shuffle()
 	SB.task_queue_changed.emit(sprint_slots)
 	Log.log_info(name, "Level %d: %d tasks" % [level, sprint_slots.size()])
@@ -287,33 +306,14 @@ func _is_upgrade_available(upgrade: UpgradeData) -> bool:
 	return count < limit
 
 
-func _pick_upgrade_by_group_and_rarity(target_group: Constants.UpgradeGroup, target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:
-	var pool: Array[UpgradeData] = []
-	for upgrade: UpgradeData in DR.upgrades.values():
-		if not _is_upgrade_available(upgrade):
-			continue
-		if upgrade.id in exclude_ids:
-			continue
-		if upgrade.group == target_group and upgrade.rarity == target_rarity:
-			pool.append(upgrade)
-	if pool.is_empty():
-		# Fallback: same group, any rarity
-		for upgrade: UpgradeData in DR.upgrades.values():
-			if not _is_upgrade_available(upgrade):
-				continue
-			if upgrade.id in exclude_ids:
-				continue
-			if upgrade.group == target_group:
-				pool.append(upgrade)
-	return _pick_random_from(pool)
-
-
 func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids: Array[String]) -> UpgradeData:
 	var pool: Array[UpgradeData] = []
 	for upgrade: UpgradeData in DR.upgrades.values():
 		if not _is_upgrade_available(upgrade):
 			continue
 		if upgrade.id in exclude_ids:
+			continue
+		if not _is_upgrade_useful(upgrade):
 			continue
 		if upgrade.rarity == target_rarity:
 			pool.append(upgrade)
@@ -324,8 +324,51 @@ func _pick_upgrade_by_rarity(target_rarity: Constants.UpgradeRarity, exclude_ids
 				continue
 			if upgrade.id in exclude_ids:
 				continue
+			if not _is_upgrade_useful(upgrade):
+				continue
 			pool.append(upgrade)
 	return _pick_random_from(pool)
+
+
+## Skip upgrades whose positive stats are all already capped (speed, auto click).
+func _is_upgrade_useful(upgrade: UpgradeData) -> bool:
+	var has_positive: bool = false
+	for stat: Constants.UpgradeStat in Constants.STAT_FIELDS:
+		var field: String = Constants.STAT_FIELDS[stat]
+		var value: float = upgrade.get(field) as float
+		if value <= 0.0:
+			continue
+		has_positive = true
+		if _is_stat_useful(field):
+			return true
+	return not has_positive
+
+
+func _is_stat_useful(field: String) -> bool:
+	match field:
+		Constants.STAT_GLOBAL_SPEED:
+			return not _all_devs_capped_on_all_types()
+		Constants.STAT_FEATURE_SPEED:
+			return not _all_devs_capped(Constants.TaskType.FEATURE)
+		Constants.STAT_REFACTORING_SPEED:
+			return not _all_devs_capped(Constants.TaskType.REFACTORING)
+		Constants.STAT_AUTO_CLICK_SPEED:
+			return not Balance.is_auto_click_capped(total_stats)
+		_:
+			return true
+
+
+func _all_devs_capped(task_type: Constants.TaskType) -> bool:
+	if hired_data.is_empty():
+		return false
+	for dev_data: DeveloperData in hired_data:
+		if not Balance.is_attack_speed_capped(dev_data, total_stats, task_type):
+			return false
+	return true
+
+
+func _all_devs_capped_on_all_types() -> bool:
+	return _all_devs_capped(Constants.TaskType.FEATURE) and _all_devs_capped(Constants.TaskType.REFACTORING)
 
 
 func _add_sprint_task(template: TaskData, task_level: int) -> void:

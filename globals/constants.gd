@@ -5,18 +5,18 @@ const BUILTIN_SIGNALS: Array[String] = BaseConstants.BUILTIN_SIGNALS
 # --- Enums ---
 
 enum DevType {VIBECODER, DEVELOPER, SENIOR}
-enum TaskType {FEATURE, BUG}
+enum TaskType {FEATURE, REFACTORING}
 enum Music {FR, FR3, SG, SPB}
 enum Sfx {PICKUP, HIT_HURT, EXPLOSION, CLICK}
 enum UpgradeStat {
 	GLOBAL_DAMAGE,
 	FEATURE_DAMAGE,
-	BUG_DAMAGE,
+	REFACTORING_DAMAGE,
 	GLOBAL_SPEED,
 	FEATURE_SPEED,
-	BUG_SPEED,
+	REFACTORING_SPEED,
 	FEATURE_CHANCE,
-	BUG_CHANCE,
+	REFACTORING_CHANCE,
 	BOOST_DAMAGE,
 	BOOST_DURATION,
 	BOOST_LIFETIME,
@@ -35,11 +35,17 @@ const DEV_TYPE_DISPLAY_NAMES: Dictionary[DevType, String] = {
 
 # --- Combat ---
 
-const BASE_HP: int = 1000
+const BASE_HP: int = 100
 const BASE_DAMAGE: int = int(BASE_HP * 0.5)
 const BASE_ATTACK_SPEED: float = 2.0
 const SPEED_CAP: float = 0.1
-const HP_PER_LEVEL: float = 1500
+const HP_GROWTH_EXPONENTS: Array[Dictionary] = [
+	{"min_lvl": 1, "growth_exponent": 1.3},
+	{"min_lvl": 10, "growth_exponent": 1.3},
+	{"min_lvl": 20, "growth_exponent": 1.3},
+	{"min_lvl": 30, "growth_exponent": 1.5},
+	{"min_lvl": 40, "growth_exponent": 1.5},
+]
 
 # --- Boost ---
 
@@ -47,10 +53,12 @@ const MAX_BOOST_STACKS: int = 6
 const BOOST_STACK_MAX_LIFETIME: float = 3
 const BOOST_STACK_TICK_INTERVAL: float = 0.1
 const AUTO_CLICK_BASE_INTERVAL: float = 2.0
+const AUTO_CLICK_CAP: float = 0.1
+const BOOST_HELP_DELAY: float = 5.0
+const BOOST_HELP_CLICKS_TO_LEARN: int = 5
 
 # --- Progression ---
 
-const XP_BASE: int = 100
 const MAX_SPRINT_SIZE: int = 12
 const SPRINT_SIZES: Array[int] = [
 	2, # level 1:  1 dev
@@ -62,18 +70,19 @@ const SPRINT_SIZES: Array[int] = [
 	12, # level 7:  6 devs (hire)
 ]
 const MAX_DEV_STAT_MULTIPLIER: float = 2.0
-const BASE_TOTAL_GAME_TIME: float = 60.0
+const BASE_TOTAL_GAME_TIME: float = 600.0
 const HIRE_LEVELS: Array[int] = [0, 2, 3, 4, 5, 7, 8, 9, 10]
 const SPRINTS_TO_LEVEL_UP: Array[Dictionary] = [
 	{"level": 1, "sprints": 1},
-	{"level": 20, "sprints": 2},
+	{"level": 30, "sprints": 2},
 	{"level": 40, "sprints": 3},
 ]
 
 # --- Tasks ---
 
 const BASE_FEATURE_CHANCE: float = 0.5
-const BASE_BUG_CHANCE: float = 0.5
+const BASE_REFACTORING_CHANCE: float = 0.5
+
 
 # --- Upgrades ---
 
@@ -81,7 +90,7 @@ const UPGRADE_CHOICES: int = 4
 const TRADE_OFF_RETURN_RATE: float = 1.0
 
 const RARITY_MAX_STAT_COUNT: Dictionary[UpgradeRarity, int] = {
-	UpgradeRarity.COMMON: 1,
+	UpgradeRarity.COMMON: 2,
 	UpgradeRarity.UNCOMMON: 2,
 	UpgradeRarity.EPIC: 3,
 	UpgradeRarity.LEGENDARY: 4,
@@ -89,27 +98,27 @@ const RARITY_MAX_STAT_COUNT: Dictionary[UpgradeRarity, int] = {
 
 const RARITY_MAX_COUNT_DICT: Dictionary[UpgradeRarity, int] = {
 	UpgradeRarity.COMMON: 99,
-	UpgradeRarity.UNCOMMON: 10,
-	UpgradeRarity.EPIC: 10,
-	UpgradeRarity.LEGENDARY: 5,
+	UpgradeRarity.UNCOMMON: 99,
+	UpgradeRarity.EPIC: 99,
+	UpgradeRarity.LEGENDARY: 99,
 }
 
 const OFFER_RARITY_CAP_DICT: Dictionary[UpgradeRarity, int] = {
-	UpgradeRarity.COMMON: 4,
-	UpgradeRarity.UNCOMMON: 4,
+	UpgradeRarity.COMMON: 99,
+	UpgradeRarity.UNCOMMON: 10,
 	UpgradeRarity.EPIC: 4,
-	UpgradeRarity.LEGENDARY: 4,
+	UpgradeRarity.LEGENDARY: 2,
 }
 
 const STAT_COSTS: Dictionary = {
-	UpgradeStat.GLOBAL_DAMAGE: 1.0,
+	UpgradeStat.GLOBAL_DAMAGE: 2,
 	UpgradeStat.FEATURE_DAMAGE: 1.0,
-	UpgradeStat.BUG_DAMAGE: 1.0,
-	UpgradeStat.GLOBAL_SPEED: 1.0,
-	UpgradeStat.FEATURE_SPEED: 1.0,
-	UpgradeStat.BUG_SPEED: 1.0,
-	UpgradeStat.FEATURE_CHANCE: 1.0,
-	UpgradeStat.BUG_CHANCE: 1.0,
+	UpgradeStat.REFACTORING_DAMAGE: 1.0,
+	UpgradeStat.GLOBAL_SPEED: 2,
+	UpgradeStat.FEATURE_SPEED: 1.5,
+	UpgradeStat.REFACTORING_SPEED: 1.5,
+	UpgradeStat.FEATURE_CHANCE: 1.5,
+	UpgradeStat.REFACTORING_CHANCE: 1.5,
 	UpgradeStat.BOOST_DAMAGE: 1.0,
 	UpgradeStat.BOOST_DURATION: 1.0,
 	UpgradeStat.BOOST_LIFETIME: 1.0,
@@ -120,18 +129,18 @@ const RARITY_BUDGETS: Dictionary = {
 	UpgradeRarity.COMMON: 10,
 	UpgradeRarity.UNCOMMON: 30,
 	UpgradeRarity.EPIC: 60,
-	UpgradeRarity.LEGENDARY: 100,
+	UpgradeRarity.LEGENDARY: 90,
 }
 
 const STAT_FIELDS: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: "global_damage",
 	UpgradeStat.FEATURE_DAMAGE: "feature_damage",
-	UpgradeStat.BUG_DAMAGE: "bug_damage",
+	UpgradeStat.REFACTORING_DAMAGE: "refactoring_damage",
 	UpgradeStat.GLOBAL_SPEED: "global_speed",
 	UpgradeStat.FEATURE_SPEED: "feature_speed",
-	UpgradeStat.BUG_SPEED: "bug_speed",
+	UpgradeStat.REFACTORING_SPEED: "refactoring_speed",
 	UpgradeStat.FEATURE_CHANCE: "feature_chance",
-	UpgradeStat.BUG_CHANCE: "bug_chance",
+	UpgradeStat.REFACTORING_CHANCE: "refactoring_chance",
 	UpgradeStat.BOOST_DAMAGE: "boost_damage",
 	UpgradeStat.BOOST_DURATION: "boost_duration",
 	UpgradeStat.BOOST_LIFETIME: "boost_lifetime",
@@ -150,16 +159,16 @@ const NEGATIVE_BUDGET_LIMITS: Dictionary = {
 const STAT_TO_GROUP_DICT: Dictionary = {
 	UpgradeStat.GLOBAL_DAMAGE: UpgradeGroup.DPS_DEV,
 	UpgradeStat.FEATURE_DAMAGE: UpgradeGroup.DPS_DEV,
-	UpgradeStat.BUG_DAMAGE: UpgradeGroup.DPS_DEV,
+	UpgradeStat.REFACTORING_DAMAGE: UpgradeGroup.DPS_DEV,
 	UpgradeStat.GLOBAL_SPEED: UpgradeGroup.DPS_DEV,
 	UpgradeStat.FEATURE_SPEED: UpgradeGroup.DPS_DEV,
-	UpgradeStat.BUG_SPEED: UpgradeGroup.DPS_DEV,
+	UpgradeStat.REFACTORING_SPEED: UpgradeGroup.DPS_DEV,
 	UpgradeStat.BOOST_DAMAGE: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.BOOST_DURATION: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.BOOST_LIFETIME: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.AUTO_CLICK_SPEED: UpgradeGroup.CLICK_BOOST,
 	UpgradeStat.FEATURE_CHANCE: UpgradeGroup.TASK_TYPE,
-	UpgradeStat.BUG_CHANCE: UpgradeGroup.TASK_TYPE,
+	UpgradeStat.REFACTORING_CHANCE: UpgradeGroup.TASK_TYPE,
 }
 
 const UPGRADE_MIN_COUNT_DICT: Dictionary = {
@@ -196,31 +205,31 @@ const UPGRADE_MAX_COUNT_DICT: Dictionary = {
 
 const STAT_GLOBAL_DAMAGE: String = "global_damage"
 const STAT_FEATURE_DAMAGE: String = "feature_damage"
-const STAT_BUG_DAMAGE: String = "bug_damage"
+const STAT_REFACTORING_DAMAGE: String = "refactoring_damage"
 const STAT_GLOBAL_SPEED: String = "global_speed"
 const STAT_FEATURE_SPEED: String = "feature_speed"
-const STAT_BUG_SPEED: String = "bug_speed"
+const STAT_REFACTORING_SPEED: String = "refactoring_speed"
 const STAT_FEATURE_CHANCE: String = "feature_chance"
-const STAT_BUG_CHANCE: String = "bug_chance"
+const STAT_REFACTORING_CHANCE: String = "refactoring_chance"
 const STAT_BOOST_DAMAGE: String = "boost_damage"
 const STAT_BOOST_DURATION: String = "boost_duration"
 const STAT_BOOST_LIFETIME: String = "boost_lifetime"
 const STAT_AUTO_CLICK_SPEED: String = "auto_click_speed"
 
 const FORBIDDEN_POSITIVE_STAT_COMBINATIONS: Array[Array] = [
-	[STAT_FEATURE_CHANCE, STAT_BUG_CHANCE],
-	[STAT_FEATURE_DAMAGE, STAT_BUG_DAMAGE],
+	[STAT_FEATURE_CHANCE, STAT_REFACTORING_CHANCE],
+	[STAT_FEATURE_DAMAGE, STAT_REFACTORING_DAMAGE],
 ]
 
 const STAT_ORDER: Array[String] = [
 	# Damage
 	STAT_GLOBAL_DAMAGE,
 	STAT_FEATURE_DAMAGE,
-	STAT_BUG_DAMAGE,
+	STAT_REFACTORING_DAMAGE,
 	# Speed
 	STAT_GLOBAL_SPEED,
 	STAT_FEATURE_SPEED,
-	STAT_BUG_SPEED,
+	STAT_REFACTORING_SPEED,
 	# Boosts
 	STAT_BOOST_DAMAGE,
 	STAT_BOOST_DURATION,
@@ -228,18 +237,18 @@ const STAT_ORDER: Array[String] = [
 	STAT_AUTO_CLICK_SPEED,
 	# Chances
 	STAT_FEATURE_CHANCE,
-	STAT_BUG_CHANCE,
+	STAT_REFACTORING_CHANCE,
 ]
 
 const STAT_DISPLAY_NAMES: Dictionary = {
 	STAT_GLOBAL_DAMAGE: "Global Damage",
 	STAT_FEATURE_DAMAGE: "Feature Damage",
-	STAT_BUG_DAMAGE: "Bug Damage",
+	STAT_REFACTORING_DAMAGE: "Refactoring Damage",
 	STAT_GLOBAL_SPEED: "Global Speed",
 	STAT_FEATURE_SPEED: "Feature Speed",
-	STAT_BUG_SPEED: "Bug Speed",
+	STAT_REFACTORING_SPEED: "Refactoring Speed",
 	STAT_FEATURE_CHANCE: "Feature Chance",
-	STAT_BUG_CHANCE: "Bug Chance",
+	STAT_REFACTORING_CHANCE: "Refactoring Chance",
 	STAT_BOOST_DAMAGE: "Boost Damage",
 	STAT_BOOST_DURATION: "Boost Speed",
 	STAT_BOOST_LIFETIME: "Boost Lifetime",
@@ -249,54 +258,14 @@ const STAT_DISPLAY_NAMES: Dictionary = {
 # --- Rarity Rates (by player level) ---
 
 const RARITY_APPEARANCE_RATES: Array[Dictionary] = [
-	# lvl 1-5: common + uncommon only
-	{UpgradeRarity.COMMON: 0.75, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.70, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.65, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.60, UpgradeRarity.UNCOMMON: 0.40, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.55, UpgradeRarity.UNCOMMON: 0.45, UpgradeRarity.EPIC: 0.0, UpgradeRarity.LEGENDARY: 0.0},
-	# lvl 6-10: epics unlock
-	{UpgradeRarity.COMMON: 0.45, UpgradeRarity.UNCOMMON: 0.45, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.40, UpgradeRarity.UNCOMMON: 0.40, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.35, UpgradeRarity.UNCOMMON: 0.35, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.30, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.25, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.50, UpgradeRarity.LEGENDARY: 0.0},
-	# lvl 11-15: epic dominant
-	{UpgradeRarity.COMMON: 0.20, UpgradeRarity.UNCOMMON: 0.20, UpgradeRarity.EPIC: 0.60, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.18, UpgradeRarity.UNCOMMON: 0.17, UpgradeRarity.EPIC: 0.65, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.15, UpgradeRarity.UNCOMMON: 0.15, UpgradeRarity.EPIC: 0.70, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.12, UpgradeRarity.UNCOMMON: 0.13, UpgradeRarity.EPIC: 0.75, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.80, UpgradeRarity.LEGENDARY: 0.0},
-	# lvl 16-20: epic peaks, legendaries unlock at 20
-	{UpgradeRarity.COMMON: 0.08, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.82, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.07, UpgradeRarity.UNCOMMON: 0.08, UpgradeRarity.EPIC: 0.85, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.07, UpgradeRarity.EPIC: 0.88, UpgradeRarity.LEGENDARY: 0.0},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.85, UpgradeRarity.LEGENDARY: 0.05},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.80, UpgradeRarity.LEGENDARY: 0.10},
-	# lvl 21-25: legendary rises
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.12, UpgradeRarity.EPIC: 0.43, UpgradeRarity.LEGENDARY: 0.40},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.40, UpgradeRarity.LEGENDARY: 0.45},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.35, UpgradeRarity.LEGENDARY: 0.50},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.55},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.10, UpgradeRarity.EPIC: 0.25, UpgradeRarity.LEGENDARY: 0.60},
-	# lvl 26-30: legendary dominant
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.08, UpgradeRarity.EPIC: 0.22, UpgradeRarity.LEGENDARY: 0.65},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.07, UpgradeRarity.EPIC: 0.18, UpgradeRarity.LEGENDARY: 0.70},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.15, UpgradeRarity.LEGENDARY: 0.75},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.12, UpgradeRarity.LEGENDARY: 0.78},
-	{UpgradeRarity.COMMON: 0.05, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.80},
-	# lvl 31-35: mostly legendary
-	{UpgradeRarity.COMMON: 0.03, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.82},
-	{UpgradeRarity.COMMON: 0.03, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.08, UpgradeRarity.LEGENDARY: 0.84},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.05, UpgradeRarity.EPIC: 0.07, UpgradeRarity.LEGENDARY: 0.86},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.04, UpgradeRarity.EPIC: 0.06, UpgradeRarity.LEGENDARY: 0.88},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
-	# lvl 36-40: endgame
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
-	{UpgradeRarity.COMMON: 0.02, UpgradeRarity.UNCOMMON: 0.03, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.90},
+	{"min_lvl": 1, "rates": {UpgradeRarity.COMMON: 0.75, UpgradeRarity.UNCOMMON: 0.25, UpgradeRarity.EPIC: 0.00, UpgradeRarity.LEGENDARY: 0.00}},
+	{"min_lvl": 6, "rates": {UpgradeRarity.COMMON: 0.45, UpgradeRarity.UNCOMMON: 0.45, UpgradeRarity.EPIC: 0.05, UpgradeRarity.LEGENDARY: 0.05}},
+	{"min_lvl": 11, "rates": {UpgradeRarity.COMMON: 0.20, UpgradeRarity.UNCOMMON: 0.65, UpgradeRarity.EPIC: 0.10, UpgradeRarity.LEGENDARY: 0.05}},
+	{"min_lvl": 16, "rates": {UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.60, UpgradeRarity.EPIC: 0.20, UpgradeRarity.LEGENDARY: 0.10}},
+	{"min_lvl": 21, "rates": {UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.40, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.20}},
+	{"min_lvl": 26, "rates": {UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.30}},
+	{"min_lvl": 31, "rates": {UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.30}},
+	{"min_lvl": 36, "rates": {UpgradeRarity.COMMON: 0.10, UpgradeRarity.UNCOMMON: 0.30, UpgradeRarity.EPIC: 0.30, UpgradeRarity.LEGENDARY: 0.30}},
 ]
 
 

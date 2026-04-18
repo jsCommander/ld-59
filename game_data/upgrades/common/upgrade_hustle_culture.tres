@@ -9,4 +9,5 @@ display_name = "Hustle Culture"
 description = "Sleep is for the weak and well-adjusted"
 group = 1
 trade_off_type = 1
-boost_lifetime = 0.1
+boost_lifetime = 0.125
+refactoring_damage = -0.025

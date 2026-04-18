@@ -4,11 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-id = "work_life_balance"
-display_name = "Work-Life Balance"
-description = "Leaves at 5pm. Revolutionary."
-rarity = 1
+id = "crunch_mode"
+display_name = "Crunch Mode"
+description = "Deadline tomorrow. Sleep is optional."
+rarity = 2
 group = 1
-trade_off_type = 0
-boost_duration = 0.2
-bug_speed = 0.1
+boost_damage = 0.6

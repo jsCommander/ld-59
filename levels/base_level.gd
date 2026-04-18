@@ -18,8 +18,9 @@ extends Node2D
 func _ready() -> void:
 	add_to_group("level")
 	AM.play_playlist([Constants.Music.SPB])
-	SB.player_boost_applied.connect(_on_player_boost_applied)
-	SB.developer_chosen.connect(_on_developer_chosen_for_help)
+	boost_help.visible = false
+	SB.boost_help_show_requested.connect(_on_boost_help_show_requested)
+	SB.boost_help_hide_requested.connect(_on_boost_help_hide_requested)
 	PD.start_game([
 		dev_center_mid, dev_left_mid, dev_right_mid,
 		dev_center_bot, dev_left_bot, dev_right_bot,
@@ -28,16 +29,17 @@ func _ready() -> void:
 
 # --- Handlers ---
 
-func _on_developer_chosen_for_help(_dev_data: DeveloperData) -> void:
-	if PD.is_boost_help_showed or boost_help.visible:
+func _on_boost_help_show_requested() -> void:
+	if boost_help.visible:
 		return
 	boost_help.visible = true
 
 
-func _on_player_boost_applied(_developer: Developer) -> void:
+func _on_boost_help_hide_requested() -> void:
 	if not boost_help.visible:
 		return
-	if PD.is_boost_help_showed:
-		var tween: Tween = create_tween()
-		tween.tween_property(boost_help, "modulate:a", 0.0, 0.5)
-		tween.tween_callback(func() -> void: boost_help.visible = false)
+	var tween: Tween = create_tween()
+	tween.tween_property(boost_help, "modulate:a", 0.0, 0.5)
+	tween.tween_callback(func() -> void:
+		boost_help.visible = false
+		boost_help.modulate.a = 1.0)

@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "bug_bash"
-display_name = "Bug Bash"
-description = "Pizza-fueled bug hunting Friday. Mostly pizza."
-rarity = 0
+id = "refactor_overdrive"
+display_name = "Refactor Overdrive"
+description = "Tech debt dies before it can compound"
+rarity = 3
+group = 0
 trade_off_type = 0
-bug_damage = 0.1
+refactoring_speed = 0.6

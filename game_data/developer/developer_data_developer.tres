@@ -2,12 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://b51wgb25nq66" path="res://assets/exports/developer_head.png" id="1_pvxg2"]
 [ext_resource type="Script" uid="uid://bvh16nid7twav" path="res://game_data/developer/developer_data.gd" id="1_script"]
-[ext_resource type="Resource" path="res://game_data/task_select_function_default.tres" id="3_task_select"]
+[ext_resource type="Resource" path="res://game_data/task_select_function_compensating.tres" id="3_task_select"]
 
 [resource]
 script = ExtResource("1_script")
 head_texture = ExtResource("1_pvxg2")
-description = "Jack of all trades"
+description = "Jack of all trades. Picks whichever task type piles up in the queue."
 task_mults = {
 0: 1.0,
 1: 1.0

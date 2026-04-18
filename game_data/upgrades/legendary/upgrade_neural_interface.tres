@@ -9,5 +9,5 @@ display_name = "Neural Interface"
 description = "Think it, ship it"
 rarity = 3
 group = 1
-boost_damage = 0.3
-auto_click_speed = 0.7
+boost_damage = 0.275
+auto_click_speed = 0.625

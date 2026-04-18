@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "vibe_check"
-display_name = "Vibe Check"
-description = "Does the code pass the vibe check? Ship it."
+id = "all_hands_meeting"
+display_name = "All Hands Meeting"
+description = "Scheduled for 30 minutes. Will be 2 hours."
 rarity = 0
+group = 1
 trade_off_type = 0
-feature_speed = 0.1
+boost_duration = 0.1

@@ -199,7 +199,7 @@ func _validate_upgrade_duplicates(warnings: PackedStringArray) -> void:
 
 
 func _validate_upgrade_step(warnings: PackedStringArray) -> void:
-	const STEP: float = 0.05
+	const STEP: float = 0.025
 	for upgrade: UpgradeData in upgrades.values():
 		for stat: Constants.UpgradeStat in Constants.STAT_FIELDS:
 			var field: String = Constants.STAT_FIELDS[stat]

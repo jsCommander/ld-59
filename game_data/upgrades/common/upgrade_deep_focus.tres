@@ -10,4 +10,5 @@ description = "4 hours in the zone. 3 hours recovering from interruption."
 rarity = 0
 group = 1
 trade_off_type = 1
-boost_duration = 0.1
+boost_duration = 0.125
+refactoring_damage = -0.025

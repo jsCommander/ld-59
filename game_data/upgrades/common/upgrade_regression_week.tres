@@ -10,4 +10,4 @@ description = "Block the sprint, the tests have feelings too"
 rarity = 0
 group = 2
 trade_off_type = 0
-bug_chance = 0.1
+refactoring_chance = 0.075

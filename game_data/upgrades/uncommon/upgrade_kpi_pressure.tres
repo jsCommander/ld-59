@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-id = "ai_copilot"
-display_name = "AI Copilot"
-description = "It wrote the code. Nobody understands it. It works."
+id = "kpi_pressure"
+display_name = "KPI Pressure"
+description = "Green metrics or your bonus is gone"
 rarity = 1
-group = 1
+group = 0
 trade_off_type = 0
-boost_damage = 0.3
+global_damage = 0.15

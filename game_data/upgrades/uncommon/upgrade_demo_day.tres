@@ -9,5 +9,5 @@ display_name = "Demo Day"
 description = "Smoke and mirrors, but the investors loved it"
 rarity = 1
 trade_off_type = 1
-feature_chance = 0.2
-feature_speed = 0.1
+feature_chance = 0.125
+feature_speed = 0.075

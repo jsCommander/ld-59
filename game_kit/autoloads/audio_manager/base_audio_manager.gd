@@ -69,6 +69,7 @@ func _on_music_finished() -> void:
 	_playlist_index = (_playlist_index + 1) % _playlist.size()
 	if _playlist_index == 0:
 		_playlist.shuffle()
+	_current_music_id = -1
 	_play_music_internal(_playlist[_playlist_index])
 
 

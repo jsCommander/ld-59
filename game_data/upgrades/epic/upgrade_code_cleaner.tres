@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "sprint_burnout"
-display_name = "Sprint Burnout"
-description = "Full speed ahead, crash later"
+id = "code_cleaner"
+display_name = "Code Cleaner"
+description = "Cleans up legacy code and feature requests alike"
 rarity = 2
-group = 1
 trade_off_type = 1
-boost_damage = 0.25
-boost_duration = 0.35
+refactoring_damage = 0.275
+refactoring_chance = 0.275
+feature_chance = -0.05

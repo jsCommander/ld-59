@@ -4,10 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-id = "golden_handcuffs"
-display_name = "Golden Handcuffs"
-description = "Great compensation, no escape"
-rarity = 3
+id = "sprint_finale"
+display_name = "Sprint Finale"
+description = "Last day before demo. Max output."
+rarity = 2
 group = 1
-trade_off_type = 0
-auto_click_speed = 1.0
+trade_off_type = 1
+boost_damage = 0.25
+boost_duration = 0.35
