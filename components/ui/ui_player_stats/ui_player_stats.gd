@@ -38,9 +38,9 @@ func _refresh() -> void:
 	var shown: PlayerStatsResource = stats_for_diff if stats_for_diff != null else stats
 	row_damage_features.setup("Features:", Utils.format_mult(shown.damage_features), _diff(stats.damage_features, shown.damage_features))
 	row_damage_refactor.setup("Refactor:", Utils.format_mult(shown.damage_refactor), _diff(stats.damage_refactor, shown.damage_refactor))
-	row_dev_speed_base.setup("Attack per second:", _fmt_rate(shown.dev_speed_base), _diff_interval(stats.dev_speed_base, shown.dev_speed_base))
-	row_dev_speed_max_boost.setup("With full boosts", _fmt_rate(shown.dev_speed_max_boost), _diff_interval(stats.dev_speed_max_boost, shown.dev_speed_max_boost))
-	row_click_auto.setup("Auto click:", _fmt_interval(shown.auto_click_interval), _diff_interval(stats.auto_click_interval, shown.auto_click_interval))
+	row_dev_speed_base.setup("Attack per second:", _fmt_rate(shown.dev_speed_base, Constants.SPEED_CAP), _diff_interval(stats.dev_speed_base, shown.dev_speed_base))
+	row_dev_speed_max_boost.setup("With full boosts", _fmt_rate(shown.dev_speed_max_boost, Constants.SPEED_CAP), _diff_interval(stats.dev_speed_max_boost, shown.dev_speed_max_boost))
+	row_click_auto.setup("Auto clicks per second:", _fmt_rate(shown.auto_click_interval, Constants.AUTO_CLICK_CAP), _diff_interval(stats.auto_click_interval, shown.auto_click_interval))
 	row_sprint_features.setup("Features:", _fmt_ratio(shown.feature_ratio), _diff(stats.feature_ratio, shown.feature_ratio))
 	row_sprint_refactor.setup("Refactoring:", _fmt_ratio(shown.refactoring_ratio), _diff(stats.refactoring_ratio, shown.refactoring_ratio))
 
@@ -62,21 +62,13 @@ func _diff_interval(current: float, preview: float) -> Constants.DiffType:
 	return Constants.DiffType.POSITIVE if preview < current else Constants.DiffType.NEGATIVE
 
 
-func _fmt_interval(seconds: float) -> String:
-	if is_zero_approx(seconds):
-		return "Off"
-	if seconds <= Constants.AUTO_CLICK_CAP:
-		return "%.2fs (cap)" % seconds
-	return "%.2fs" % seconds
-
-
-func _fmt_rate(seconds: float) -> String:
+func _fmt_rate(seconds: float, cap: float) -> String:
 	if is_zero_approx(seconds):
 		return "Off"
 	var rate: float = 1.0 / seconds
-	if seconds <= Constants.SPEED_CAP:
-		return "%.2f atk/s (cap)" % rate
-	return "%.2f atk/s" % rate
+	if seconds <= cap:
+		return "%.2f (cap)" % rate
+	return "%.2f" % rate
 
 
 func _fmt_ratio(ratio: float) -> String:
