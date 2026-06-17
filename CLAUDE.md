@@ -1,7 +1,7 @@
 # Godot Game Development Rules
 
 - Check `game_kit/` before building anything from scratch. Game code depends on kit, never the reverse.
-- Find other entities through groups. Not autoloads, not manual wiring — entities self-connect or gracefully idle.
+- Find other entities through groups. Not autoload-held references, not manual wiring — entities self-connect or gracefully idle.
 - Build entities by composing child scenes. Not inheritance trees — add/remove components as nodes.
 - Emit signals up, call methods down. Siblings never talk directly — a common ancestor mediates.
 - Separate logic from data: one scene + many `.tres` Resource variants. Not a scene-per-type.
@@ -23,7 +23,7 @@ Dependencies flow one way: game code imports from kit. Not the reverse — kit s
 Query groups to discover other entities at runtime. Entities self-connect or gracefully idle when no target exists.
 
 ```gdscript
-func _physics_process(_delta):
+func _physics_process(_delta: float) -> void:
     if not is_instance_valid(target):
         target = _find_target()
     if not target:
@@ -31,12 +31,14 @@ func _physics_process(_delta):
     move_toward(target.global_position)
 
 func _find_target() -> Node2D:
-    var targets = get_tree().get_nodes_in_group("player")
+    var targets: Array[Node] = get_tree().get_nodes_in_group("player")
     return Utils.find_closest_target(targets, self)
 ```
 
 Not `GameManager.player` (autoload) — can't test standalone, crashes without the whole game running.
 Not level-wired references (`enemy.target = player`) — silent bugs when new entities are added.
+
+Autoloads are fine for cross-cutting services (`Log`, `BaseSignalBus`, `BaseConstants`) — just never for holding entity references.
 
 ---
 
@@ -45,7 +47,7 @@ Not level-wired references (`enemy.target = player`) — silent bugs when new en
 Every entity acts independently. It finds what it needs through the environment (groups, collision layers, component detection). Drop it on a map — it works.
 
 ```gdscript
-func _on_area_entered(area):
+func _on_area_entered(area: Area2D) -> void:
     if area is Hurtbox:
         area.take_damage(damage, self, knockback)
 ```
@@ -75,32 +77,21 @@ Boss needs melee AND ranged? It has both Hitbox and BulletSpawn. Not an inherita
 
 ## Emit Up, Call Down
 
-Children emit signals. Parents connect and react. Siblings never talk directly.
+Children emit signals. Parents connect and react. Siblings never talk directly. This governs nodes *within one entity's tree* — interactions *between* entities go through component pairs and collision layers (see Autonomous Entities), not direct sibling calls.
 
 ```gdscript
 # finish_trigger.gd
 signal triggered
 
-func _on_body_entered(body):
+func _on_body_entered(body: Node2D) -> void:
     triggered.emit()  # don't know or care what happens next
 
 # level.gd
-func _ready():
-    $FinishTrigger.triggered.connect(_on_level_complete)
+func _ready() -> void:
+    %FinishTrigger.triggered.connect(_on_level_complete)
 ```
 
-Not `get_parent().get_parent().load_next_level()` — couples to tree structure, breaks on reorganization.
-
-Scenes emit `finished` to signal completion. The scene manager routes to the next scene.
-
-```gdscript
-const FLOW: Dictionary[PackedScene, PackedScene] = {
-    START: LEVEL_1, LEVEL_1: LEVEL_2, LEVEL_2: LEVEL_3, LEVEL_3: END, END: START,
-}
-
-func handle_scene_finished(_data: Dictionary):
-    load_scene(FLOW[current_scene])
-```
+Not `get_parent().get_parent().load_next_level()`
 
 ---
 
@@ -122,7 +113,7 @@ New enemy type = duplicate a `.tres`, change values. Not a new scene + new scrip
 **Shared instance gotcha:** multiple nodes referencing the same `.tres` share ONE instance. Duplicate mutable state in `_ready()`:
 
 ```gdscript
-func _ready():
+func _ready() -> void:
     stat = stat.duplicate()
 ```
 
@@ -133,9 +124,9 @@ func _ready():
 Add dynamic objects (bullets, drops, effects) as children of the level. Find it by group.
 
 ```gdscript
-func _shoot(target_pos: Vector2):
-    var bullet = BULLET.instantiate()
-    var level = get_tree().get_first_node_in_group("level")
+func _shoot(target_pos: Vector2) -> void:
+    var bullet: Bullet = BULLET.instantiate()
+    var level: Node = get_tree().get_first_node_in_group("level")
     level.add_child(bullet)
     bullet.init(global_position, target_pos)
 ```
@@ -161,7 +152,7 @@ Use `%NodeName` for intra-scene references. Not `$Path/To/Deep/Node` — breaks 
 Collision layers define who interacts with whom. Name them, assign them systematically. The layer setup IS the interaction rulebook.
 
 ```gdscript
-func _on_area_entered(area):
+func _on_area_entered(area: Area2D) -> void:
     if area is Hurtbox:
         area.take_damage(stat.damage, self, stat.knockback_force)
     kill()
