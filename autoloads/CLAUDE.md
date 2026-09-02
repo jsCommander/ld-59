@@ -2,7 +2,7 @@
 
 - Put global state and cross-system coordination here. Not entity behavior or pure math — those go in `components/` and `globals/`.
 - Extend a `game_kit/autoloads/` base class. Game-specific logic here, reusable plumbing in the kit.
-- Route all cross-system events through SB (SignalBus). Not direct calls between autoloads.
+- Route cross-system notifications through SB (SignalBus). Direct autoload calls are allowed for commands and queries owned by that service.
 - Register in `project.godot` with a 2-3 letter uppercase alias (SB, SD, AM, DR, PD).
 - Access by alias everywhere: `SB.task_destroyed.emit()`, `PD.level`, `AM.play_sfx(Constants.Sfx.CLICK)`.
 

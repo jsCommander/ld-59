@@ -1,7 +1,7 @@
 # Game Kit — Autoloads
 
 - Base classes for autoload singletons. Game-specific autoloads extend these in `autoloads/`.
-- All classes are prefixed with `Base` (`BaseSignalBus`, `BaseAudioManager`, `BaseDataRegistry`).
+- Public base classes intended for game subclassing are prefixed with `Base` (`BaseSignalBus`, `BaseAudioManager`, `BaseDataRegistry`).
 - NEVER import game code, game data, or game autoloads. Dependencies flow one way: game extends kit.
 - NEVER add game-specific enums, signals, constants, or asset paths here.
 
@@ -24,7 +24,7 @@ Not a "universal" signal bus with signals for specific game events — that coup
 
 ---
 
-## Prefix Everything with Base
+## Prefix Public Base Classes with Base
 
 Name classes `Base*` so the game can claim the unprefixed name.
 
