@@ -1,14 +1,14 @@
 # Game Kit — Build
 
 - Shell scripts for exporting and publishing Godot projects. Run from project root.
-- NEVER hardcode game-specific names (`Panda.apk`, `ld57`) here — these scripts are shared across projects. Parametrize or move game-specific values to the game repo.
-- NEVER modify export presets or Godot project settings from scripts. Scripts only invoke `godot --export-*`.
+- These scripts currently contain project-specific artifact and itch.io names; verify them before reusing the kit in another project.
+- Do not modify source scenes or resources during a build.
 
 ---
 
-## Build Scripts Export, Nothing Else
+## Build Scripts Export and Package
 
-Scripts clean the output folder, run `godot --export-*`, and report the result. No game logic, no asset processing, no post-build patching.
+Scripts clean the output folder, run `godot --export-*`, and may package or publish the resulting artifacts.
 
 ```bash
 clean

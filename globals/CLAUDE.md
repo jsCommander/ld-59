@@ -1,10 +1,10 @@
 # Globals
 
-- Keep classes stateless — static methods with explicit parameters, no side effects.
+- Keep classes free of persistent mutable state. Deterministic helpers should be pure; explicitly random selection helpers may consume RNG state.
 - Add enums, constants, and tuning numbers to `Constants`. Not scattered across game scripts.
 - Add balance formulas and game math to `Balance`. Not inline calculations in components.
 - Use `Growth` scaling curves from `game_kit/globals/`. Not hand-rolled math per call site.
-- Add colors and font sizes to `ThemeTokens`. Not hardcoded values in scenes.
+- Add shared semantic colors and font sizes to `ThemeTokens`. Local effect and scene-specific values may remain inline.
 - Dependencies flow one way: game code reads globals. Globals NEVER import autoloads or components.
 
 ---
@@ -36,7 +36,7 @@ Not magic numbers in component scripts — a tuning change should require editin
 
 ---
 
-## ThemeTokens for All Visual Values
+## ThemeTokens for Shared Visual Values
 
 Reference `ThemeTokens` constants for colors, font sizes, and component variants.
 
@@ -45,4 +45,4 @@ var color: Color = ThemeTokens.RARITY_EPIC
 var size: int = ThemeTokens.FONT_SIZE_H2
 ```
 
-Not `Color(0.6, 0.2, 0.8)` in scripts or scenes — changing a token updates every UI element at once.
+Use inline values only when they are local to one effect or scene and have no shared semantic meaning.

@@ -22,18 +22,17 @@ Not entity behavior (`move_toward`, `take_damage`) in the level script — that 
 
 ---
 
-## Emit Finished, Don't Route
+## Keep Game Flow in Player Data
 
-Signal completion with `finished.emit()`. The scene manager decides what loads next.
+The current game has one main level. `PD` owns the game lifecycle and publishes state changes through `SB`; the level only starts the game and reacts to those events.
 
 ```gdscript
-signal finished(data: Dictionary)
-
-func _on_win_condition_met() -> void:
-    finished.emit({})
+func _ready() -> void:
+    SB.boost_help_show_requested.connect(_on_boost_help_show_requested)
+    PD.start_game(desks)
 ```
 
-Not `get_tree().change_scene_to_file("res://levels/Level2.tscn")` — levels don't know the scene order.
+Not gameplay progression or persistent state owned by the level.
 
 ---
 

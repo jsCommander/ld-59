@@ -21,14 +21,14 @@ Not `find_closest_enemy()` or references to game-specific types (`Player`, `Enem
 
 ## Groups Helper Over Raw Calls
 
-Use `Groups` for querying nodes by group. It handles filtering, type-checking, and empty results.
+`Groups` centralizes empty-result handling and optional runtime type filtering for group queries. Existing code may still use raw group calls where the helper adds no value.
 
 ```gdscript
 var player: Node = Groups.get_first(get_tree(), "player")
-var enemies: Array = Groups.get_all_of_type(get_tree(), "enemy", Enemy)
+var actors: Array = Groups.get_all_of_type(get_tree(), "actor", Node2D)
 ```
 
-Not `get_tree().get_nodes_in_group()` with manual filtering — `Groups` centralizes null-safety and type narrowing.
+Prefer `Groups` when its filtering behavior avoids duplicated query code.
 
 ---
 

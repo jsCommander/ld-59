@@ -14,12 +14,12 @@ Each `.gd` file is a `Resource` subclass with `@export` fields. It describes wha
 ```gdscript
 # developer/developer_data.gd
 class_name DeveloperData extends BaseGameData
-@export var texture: Texture2D
-@export var attack_speed: float = 1.0
-@export var damage_mult: float = 1.0
+@export var head_texture: Texture2D
+@export var task_mults: Dictionary = {}
+@export var base_attack_speed: float = Constants.BASE_ATTACK_SPEED
 ```
 
-Not logic or behavior — Resources are pure data containers. Methods that calculate from this data belong in `globals/balance.gd`.
+Data resources may contain validation or interchangeable strategy behavior tied to their schema. Broader gameplay calculations belong in `globals/balance.gd`.
 
 ---
 
@@ -27,7 +27,7 @@ Not logic or behavior — Resources are pure data containers. Methods that calcu
 
 Each `.tres` is a filled-in copy of its Resource class. Edit in the Godot Inspector, not by hand.
 
-```text
+```
 developer/
   developer_data.gd              # schema
   developer_data_vibecoder.tres   # variant: fast, low damage
@@ -43,7 +43,7 @@ Not separate scripts per variant — one schema, many data files.
 
 Group related `.gd` + `.tres` files in a folder named after the domain. Upgrades subdivide further by rarity.
 
-```text
+```
 game_data/
   developer/       # DeveloperData + instances
   task/            # TaskData + instances
@@ -62,13 +62,13 @@ Use Resource subclasses when behavior varies by configuration (cost curves, sele
 ```gdscript
 # cost_function.gd — base interface
 class_name CostFunction extends Resource
-func calculate(level: int) -> int:
-    return 0
+func get_cost(base_cost: int, _level: int) -> int:
+    return base_cost
 
 # cost_function_exponential.gd — one strategy
 class_name CostFunctionExponential extends CostFunction
-func calculate(level: int) -> int:
-    return Growth.exponential(level, base, multiplier)
+func get_cost(base_cost: int, level: int) -> int:
+    return base_cost * int(pow(2, level - 1))
 ```
 
 Swap strategies by assigning a different `.tres` in the Inspector. Not `if/else` branches in game code.
