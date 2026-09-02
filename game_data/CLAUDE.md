@@ -27,7 +27,7 @@ Not logic or behavior — Resources are pure data containers. Methods that calcu
 
 Each `.tres` is a filled-in copy of its Resource class. Edit in the Godot Inspector, not by hand.
 
-```
+```text
 developer/
   developer_data.gd              # schema
   developer_data_vibecoder.tres   # variant: fast, low damage
@@ -43,7 +43,7 @@ Not separate scripts per variant — one schema, many data files.
 
 Group related `.gd` + `.tres` files in a folder named after the domain. Upgrades subdivide further by rarity.
 
-```
+```text
 game_data/
   developer/       # DeveloperData + instances
   task/            # TaskData + instances

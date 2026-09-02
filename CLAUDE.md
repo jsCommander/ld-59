@@ -62,7 +62,7 @@ Interactions are defined by component pairs (Hurtbox/Hitbox, PickupCatcher/Picku
 
 Assemble entities from small, self-contained child scenes. Each component does one thing and knows nothing about its host.
 
-```
+```text
 Entity (CharacterBody2D)
   +-- CharacterRig    # visual rig, walk animation, hit flash
   +-- HealthBar       # HP display
@@ -213,7 +213,7 @@ Every GDScript file follows this section order, separated by `# --- Section Name
 
 ## Reference: Project Structure
 
-```
+```text
 game_kit/     # Reusable kit — scene manager, rigs, camera, dialogs, UI, effects, shaders, utils
 components/   # Game entities — player, enemies, bullets, interactive objects
 levels/       # Level scenes and level-specific scripts
@@ -226,7 +226,7 @@ data/         # External data files (dialog JSON, configs)
 
 ## Reference: Game Kit Contents
 
-```
+```text
 game_kit/
   components/base_game/ # Scene manager with fade transitions
   components/base_rig/  # Character animation rig (walk, hit flash, sprites)
